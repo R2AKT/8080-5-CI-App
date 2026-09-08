@@ -1,0 +1,41 @@
+# Микроша (1988)
+# Процессор: КР580ВМ80А @ 1.78 МГц
+# ОЗУ: 16 КБ (0000-3FFF)
+# ПЗУ: 2 КБ монитор (F800-FFFF)
+# Клавиатура: матрица через порт
+# Магнитофон: для загрузки программ
+
+[profiles.microsha]
+description = "Микроша (1988) — учебный микрокомпьютер"
+
+[profiles.microsha.system]
+name = "Микроша"
+cpu = "i8080"
+clock_mhz = 1.78
+
+# ОЗУ 16 КБ
+[[profiles.microsha.memory.regions]]
+type = "ram"
+start = 0x0000
+end = 0x3FFF
+name = "RAM 16KB"
+
+# ПЗУ монитора 2 КБ
+[[profiles.microsha.memory.regions]]
+type = "rom"
+start = 0xF800
+end = 0xFFFF
+name = "Monitor ROM"
+# file = "roms/microsha_monitor.bin"
+
+# 8255 для клавиатуры/дисплея
+[[profiles.microsha.devices]]
+type = "i8255"
+name = "PPI Keyboard/Display"
+base_port = 0x00
+
+# Таймер
+[[profiles.microsha.devices]]
+type = "i8253"
+name = "PIT Timer"
+base_port = 0x04

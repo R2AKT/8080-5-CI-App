@@ -1,0 +1,16 @@
+# 05_banked_ram_addr.toml
+# Банковая RAM: переключение банка записью по адресу 0xFFFE
+# Пример: некоторые советские системы
+
+[system]
+name = "Banked RAM (addr switch)"
+cpu = "i8080A"
+clock = 2000000
+
+[[memory.regions]]
+type = "banked_ram"
+name = "Banked RAM"
+start = 0x0000
+end = 0xFFFF
+num_banks = 8         # 8 банков по 64 КБ = 512 КБ
+switch_addr = 0xFFFE  # Запись по этому адресу выбирает банк

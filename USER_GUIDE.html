@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>i8080-5 CI — Руководство пользователя</title>
+    <style>
+        :root {
+            --primary: #0078d4;
+            --bg: #f5f5f5;
+            --card-bg: #ffffff;
+            --text: #1e1e1e;
+            --border: #d0d0d0;
+            --code-bg: #1e1e1e;
+            --code-text: #d4d4d4;
+            --accent: #0078d4;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        header {
+            background: linear-gradient(135deg, #1a237e, #0078d4);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        header h1 { font-size: 2.2em; margin-bottom: 8px; }
+        header p { opacity: 0.85; font-size: 1.1em; }
+        nav {
+            background: var(--card-bg);
+            border-bottom: 2px solid var(--primary);
+            padding: 12px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        nav a {
+            color: var(--primary);
+            text-decoration: none;
+            margin-right: 16px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        nav a:hover { text-decoration: underline; }
+        h2 {
+            color: var(--primary);
+            margin: 30px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary);
+        }
+        h3 { color: #333; margin: 20px 0 10px; }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th { background: var(--primary); color: white; }
+        tr:nth-child(even) { background: #f9f9f9; }
+        kbd {
+            background: #333;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-family: Consolas, monospace;
+        }
+        code {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            font-size: 0.9em;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+        .badge-done { background: #e8f5e9; color: #2e7d32; }
+        .badge-warn { background: #fff3e0; color: #e65100; }
+        .tab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 12px;
+            margin: 15px 0;
+        }
+        .tab-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px;
+            border-left: 4px solid var(--primary);
+        }
+        .tab-card h4 { color: var(--primary); margin-bottom: 6px; }
+        .tip {
+            background: #e3f2fd;
+            border-left: 4px solid var(--primary);
+            padding: 12px 16px;
+            margin: 12px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        .warning {
+            background: #fff3e0;
+            border-left: 4px solid var(--warning);
+            padding: 12px 16px;
+            margin: 12px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #888;
+            font-size: 0.85em;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🖥️ i8080-5 CI</h1>
+    <p>Руководство пользователя — эмулятор i8080, отладчик, работа с устройством</p>
+    <p style="margin-top:8px; font-size:0.9em;">Версия 2.0 • Август 2026</p>
+</header>
+
+<nav>
+    <a href="#overview">Обзор</a>
+    <a href="#install">Установка</a>
+    <a href="#tabs">Вкладки</a>
+    <a href="#emulator">Эмулятор</a>
+    <a href="#trace">Трассировка</a>
+    <a href="#device">Устройство</a>
+    <a href="#hotkeys">Горячие клавиши</a>
+    <a href="#mcp">MCP</a>
+</nav>
+
+<div class="container">
+
+    <h2 id="overview">📋 Обзор программы</h2>
+    <div class="card">
+        <p><strong>i8080-5 CI</strong> (i8080-5 Control Interface) — комплексная среда для работы с процессором Intel 8080:</p>
+        <ul style="margin-top:10px; padding-left:20px;">
+            <li>🖥️ <strong>Эмулятор i8080</strong> — все 256 инструкций, включая недокументированные</li>
+            <li>🐛 <strong>Отладчик</strong> — breakpoints (обычные и условные), Run to Cursor, Watch-окна</li>
+            <li>📜 <strong>Трассировка</strong> — запись каждой инструкции с состоянием регистров</li>
+            <li>🔧 <strong>Hex-редактор</strong> — редактирование памяти с подсказками мнемоник</li>
+            <li>📖 <strong>Дизассемблер</strong> — со стрелками переходов и цветовой подсветкой</li>
+            <li>🔌 <strong>Работа с устройством</strong> — чтение/запись памяти и IO через COM-порт</li>
+            <li>🤖 <strong>MCP-сервер</strong> — интеграция с AI-ассистентами</li>
+        </ul>
+    </div>
+
+    <h2 id="install">⚙️ Установка и запуск</h2>
+    <div class="card">
+        <h3>Зависимости</h3>
+        <p><code>pip install PySide6 pyserial</code></p>
+        <p>Для MCP: <code>pip install mcp uvicorn starlette pydantic pydantic-settings</code></p>
+        <h3 style="margin-top:15px;">Запуск</h3>
+        <p><code>python i8080_CI.py</code></p>
+    </div>
+
+    <h2 id="tabs">📑 Вкладки программы</h2>
+    <div class="tab-grid">
+        <div class="tab-card">
+            <h4>🎛️ Управление</h4>
+            <p>Подключение COM-порта, управление шиной (HOLD/UNHOLD), загрузка/сохранение прошивок, MCP-сервер</p>
+        </div>
+        <div class="tab-card">
+            <h4>📊 Данные</h4>
+            <p>Чтение/запись памяти и IO-портов с выбором разрядности и порядка байтов</p>
+        </div>
+        <div class="tab-card">
+            <h4>🔢 Hex Редактор</h4>
+            <p>Редактирование памяти, поиск, подсказки мнемоник, Undo/Redo</p>
+        </div>
+        <div class="tab-card">
+            <h4>📖 Дизассемблер</h4>
+            <p>Дизассемблирование со стрелками переходов, цветовая подсветка типов команд</p>
+        </div>
+        <div class="tab-card">
+            <h4>🧪 Тест Памяти</h4>
+            <p>Тестирование RAM паттернами: Checker, Zero, One, Addr</p>
+        </div>
+        <div class="tab-card">
+            <h4>🔀 IO Секвенсор</h4>
+            <p>Последовательности IO-операций: W (запись), R (чтение), D (задержка)</p>
+        </div>
+        <div class="tab-card">
+            <h4>🔍 Сравнение</h4>
+            <p>Сравнение текущего дампа с файлом, экспорт отчёта</p>
+        </div>
+        <div class="tab-card">
+            <h4>📝 Скрипты</h4>
+            <p>Python-скрипты для автоматизации через AutomationAPI</p>
+        </div>
+        <div class="tab-card">
+            <h4>🖥️ Эмулятор</h4>
+            <p>Отладчик: регистры, флаги, стек, breakpoints, Watch-окна</p>
+        </div>
+        <div class="tab-card">
+            <h4>📜 Трассировка</h4>
+            <p>Запись каждой инструкции, поиск, экспорт в TXT/CSV/JSON</p>
+        </div>
+    </div>
+
+    <h2 id="emulator">🖥️ Эмулятор</h2>
+    <div class="card">
+        <h3>Управление выполнением</h3>
+        <table>
+            <tr><th>Кнопка</th><th>Клавиша</th><th>Действие</th></tr>
+            <tr><td>Reset</td><td><kbd>Ctrl+F2</kbd></td><td>Сброс: PC=0x0000, SP=0xFFFF, регистры=0</td></tr>
+            <tr><td>Step Into</td><td><kbd>F11</kbd></td><td>Одна инструкция, заходит в CALL</td></tr>
+            <tr><td>Step Over</td><td><kbd>F10</kbd></td><td>Одна инструкция, CALL выполняется целиком</td></tr>
+            <tr><td>Run</td><td><kbd>F5</kbd></td><td>Запуск до BP / HLT / остановки</td></tr>
+            <tr><td>Stop</td><td><kbd>F8</kbd></td><td>Остановка выполнения</td></tr>
+            <tr><td>Run to Cursor</td><td><kbd>Ctrl+F10</kbd></td><td>Выполнение до курсора</td></tr>
+        </table>
+
+        <h3 style="margin-top:20px;">Условные точки останова</h3>
+        <p>Доступные переменные в условиях:</p>
+        <table>
+            <tr><th>Переменная</th><th>Описание</th><th>Пример</th></tr>
+            <tr><td><code>A, B, C, D, E, H, L</code></td><td>8-битные регистры</td><td><code>A == 0x55</code></td></tr>
+            <tr><td><code>BC, DE, HL</code></td><td>Регистровые пары</td><td><code>HL > 0x1000</code></td></tr>
+            <tr><td><code>SP, PC</code></td><td>Указатель стека / счётчик команд</td><td><code>SP < 0xF000</code></td></tr>
+            <tr><td><code>S, Z, AC, P, CY</code></td><td>Флаги (0 или 1)</td><td><code>Z == 1</code></td></tr>
+            <tr><td><code>mem[addr]</code></td><td>Байт памяти</td><td><code>mem[0x0100] == 0xFF</code></td></tr>
+            <tr><td><code>io[port]</code></td><td>Байт IO-порта</td><td><code>io[0x01] == 0xFF</code></td></tr>
+            <tr><td><code>cycles</code></td><td>Счётчик тактов</td><td><code>cycles > 10000</code></td></tr>
+        </table>
+    </div>
+
+    <h2 id="trace">📜 Трассировка</h2>
+    <div class="card">
+        <h3>Поиск в трассировке</h3>
+        <table>
+            <tr><th>Запрос</th><th>Что найдёт</th></tr>
+            <tr><td><code>0010</code></td><td>Все записи с PC = 0x0010</td></tr>
+            <tr><td><code>A==55</code> или <code>A=55</code></td><td>Записи, где A = 0x55</td></tr>
+            <tr><td><code>A!=55</code></td><td>Записи, где A ≠ 0x55</td></tr>
+            <tr><td><code>HL>1000</code></td><td>Записи, где HL > 0x1000</td></tr>
+            <tr><td><code>SP<=F000</code></td><td>Записи, где SP ≤ 0xF000</td></tr>
+            <tr><td><code>CPI</code></td><td>Все записи с мнемоникой CPI</td></tr>
+        </table>
+
+        <h3 style="margin-top:15px;">Экспорт трассировки</h3>
+        <p>Форматы: <strong>TXT</strong> (текстовый), <strong>CSV</strong> (для таблиц), <strong>JSON</strong> (для программной обработки)</p>
+
+        <div class="tip">
+            💡 <strong>Совет:</strong> включите трассировку чек-боксом на вкладке «Эмулятор» или кнопкой на вкладке «Трассировка» перед запуском программы.
+        </div>
+    </div>
+
+    <h2 id="device">🔌 Работа с устройством</h2>
+    <div class="card">
+        <h3>Порядок работы</h3>
+        <ol style="padding-left:20px;">
+            <li>Выберите COM-порт и скорость</li>
+            <li>Нажмите «Подключиться»</li>
+            <li>Нажмите «Захватить шину (HOLD)» и дождитесь подтверждения</li>
+            <li>Выполняйте операции чтения/записи</li>
+            <li>Нажмите «Освободить шину (UnHOLD)» для возврата управления процессору</li>
+        </ol>
+        <div class="warning">
+            ⚠️ <strong>Внимание:</strong> перед операциями чтения/записи памяти устройства необходимо захватить шину. При закрытии программы шина освобождается автоматически.
+        </div>
+    </div>
+
+    <h2 id="hotkeys">⌨️ Горячие клавиши</h2>
+    <div class="card">
+        <table>
+            <tr><th>Клавиша</th><th>Действие</th></tr>
+            <tr><td><kbd>Ctrl+O</kbd></td><td>Загрузить прошивку</td></tr>
+            <tr><td><kbd>Ctrl+S</kbd></td><td>Сохранить дамп</td></tr>
+            <tr><td><kbd>Ctrl+E</kbd></td><td>Экспорт дизассемблера</td></tr>
+            <tr><td><kbd>Ctrl+F</kbd></td><td>Поиск в памяти</td></tr>
+            <tr><td><kbd>Ctrl+G</kbd></td><td>Переход к адресу</td></tr>
+            <tr><td><kbd>Ctrl+Z</kbd> / <kbd>Ctrl+Y</kbd></td><td>Undo / Redo</td></tr>
+            <tr><td><kbd>F5</kbd> / <kbd>F8</kbd></td><td>Run / Stop эмулятора</td></tr>
+            <tr><td><kbd>F10</kbd> / <kbd>F11</kbd></td><td>Step Over / Step Into</td></tr>
+            <tr><td><kbd>Ctrl+F2</kbd></td><td>Reset эмулятора</td></tr>
+            <tr><td><kbd>Ctrl+F10</kbd></td><td>Run to Cursor</td></tr>
+            <tr><td><kbd>Ctrl+H</kbd> / <kbd>Ctrl+U</kbd></td><td>HOLD / UNHOLD шины</td></tr>
+        </table>
+    </div>
+
+    <h2 id="mcp">🤖 MCP-интеграция</h2>
+    <div class="card">
+        <p>Программа включает встроенный MCP-сервер для интеграции с AI-ассистентами.</p>
+        <p style="margin-top:10px;">Подробное описание — в файле <strong>MCP_GUIDE.md</strong></p>
+        <p style="margin-top:8px;">Адрес сервера: <code>http://127.0.0.1:8000/sse</code></p>
+    </div>
+
+</div>
+
+<footer>
+    <p>i8080-5 CI — Руководство пользователя • Версия 2.0 • Август 2026</p>
+    <p>Эмулятор Intel 8080 с отладчиком, дизассемблером и MCP-интеграцией</p>
+</footer>
+
+</body>
+</html>

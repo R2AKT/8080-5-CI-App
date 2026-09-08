@@ -1,0 +1,24 @@
+# 08_shadow_rom_mem.toml
+# Теневое ПЗУ: переключение записью по адресу памяти
+# Запись по 0xE000 — переместить ROM на high_addr
+
+[system]
+name = "Shadow ROM (mem switch)"
+cpu = "i8080A"
+clock = 2000000
+
+[[memory.regions]]
+type = "shadow_rom"
+name = "Boot ROM"
+low_addr = 0x0000
+high_addr = 0xE000
+file = "boot.bin"
+mode = "mem_write"    # Переключение по записи в память
+trigger_addr = 0xE000 # Адрес переключения
+action = "move"
+
+[[memory.regions]]
+type = "ram"
+name = "Main RAM"
+start = 0x0000
+end = 0xFFFF

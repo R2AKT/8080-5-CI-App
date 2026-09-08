@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=65.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "i8080-5-ci"
+version = "0.5.0"
+description = "i8080-5 Master Controller — GUI, emulator, MCP server and Arduino bridge for i8080-based hardware"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "i8080-5 CI Team"}
+]
+keywords = ["i8080", "emulator", "retrocomputing", "mcp", "arduino"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: System :: Hardware",
+    "Topic :: System :: Emulators",
+]
+dependencies = [
+    "PySide6>=6.6.0",
+    "pyserial>=3.5",
+    "mcp>=1.0.0",
+    "uvicorn>=0.23.0",
+    "starlette>=0.27.0",
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
+    "toml>=0.10.2",
+    "tomli>=2.0.0; python_version < \"3.11\"",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "mypy>=1.0.0",
+    "pyinstaller>=6.0.0",
+]
+
+[project.scripts]
+i8080-ci = "i8080_CI:main"
+
+[tool.setuptools.packages.find]
+include = ["modules*", "ui*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true

@@ -1,0 +1,32 @@
+# Львов ПК-01 (1988)
+# Процессор: КР580ВМ80А @ 2.5 МГц
+# ОЗУ: 64 КБ
+# Графика: 256×256, 4 цвета
+# Клавиатура: матрица через порт
+
+[profiles.lvovpk01]
+description = "Львов ПК-01 (1988) — графический микрокомпьютер"
+
+[profiles.lvovpk01.system]
+name = "Львов ПК-01"
+cpu = "i8080"
+clock_mhz = 2.5
+
+# ОЗУ 64 КБ
+[[profiles.lvovpk01.memory.regions]]
+type = "ram"
+start = 0x0000
+end = 0xFFFF
+name = "RAM 64KB"
+
+# 8255 для клавиатуры
+[[profiles.lvovpk01.devices]]
+type = "i8255"
+name = "PPI Keyboard"
+base_port = 0x00
+
+# Таймер
+[[profiles.lvovpk01.devices]]
+type = "i8253"
+name = "PIT Timer"
+base_port = 0x04

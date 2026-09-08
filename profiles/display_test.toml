@@ -1,0 +1,40 @@
+# Тестовый профиль со всеми дисплейными устройствами
+
+[profiles.display_test]
+description = "Тест дисплеев: LCD1602, LCD2004, TFT8080, 8275, 8276"
+
+[profiles.display_test.system]
+name = "Display Test System"
+cpu = "i8080"
+clock_mhz = 2
+
+[[profiles.display_test.memory.regions]]
+type = "ram"
+start = 0x0000
+end = 0xFFFF
+name = "RAM"
+
+[[profiles.display_test.devices]]
+type = "lcd1602"
+name = "LCD1602"
+base_port = 0x10
+
+[[profiles.display_test.devices]]
+type = "lcd2004"
+name = "LCD2004"
+base_port = 0x14
+
+[[profiles.display_test.devices]]
+type = "tft8080"
+name = "TFT8080"
+base_port = 0x20
+
+[[profiles.display_test.devices]]
+type = "i8275"
+name = "I8275"
+base_port = 0x30
+
+[[profiles.display_test.devices]]
+type = "i8276"
+name = "I8276"
+base_port = 0x34

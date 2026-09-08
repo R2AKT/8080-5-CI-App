@@ -1,0 +1,40 @@
+# Вектор-06Ц (1986)
+# Процессор: КР580ВМ80А @ 3 МГц
+# ОЗУ: 64 КБ (0000-FFFF) + 16 КБ видеопамяти
+# Графика: 256×256, 16 цветов
+# Звук: AY-3-8910 (YM2149)
+# Клавиатура: матрица через порт
+
+[profiles.vector06c]
+description = "Вектор-06Ц (1986) — графический микрокомпьютер"
+
+[profiles.vector06c.system]
+name = "Вектор-06Ц"
+cpu = "i8080"
+clock_mhz = 3
+
+# ОЗУ 64 КБ
+[[profiles.vector06c.memory.regions]]
+type = "ram"
+start = 0x0000
+end = 0xFFFF
+name = "RAM 64KB"
+
+# 8255 для системного порта и клавиатуры
+[[profiles.vector06c.devices]]
+type = "i8255"
+name = "PPI System/Keyboard"
+base_port = 0x00
+
+# Таймер
+[[profiles.vector06c.devices]]
+type = "i8253"
+name = "PIT Timer"
+base_port = 0x04
+
+# Звук: AY-3-8910 (YM2149) — нет в списке устройств
+# Оставляем комментарий для будущей реализации
+# [[profiles.vector06c.devices]]
+# type = "ay38910"
+# name = "Sound AY-3-8910"
+# base_port = 0x08

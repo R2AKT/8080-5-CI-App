@@ -1,0 +1,89 @@
+# Микро-80 (1979) — предшественник Радио-86РК
+# Процессор: КР580ВМ80А @ 1.78 МГц
+# ОЗУ: 16 КБ (0000-3FFF)
+# ПЗУ: 2 КБ монитор (F800-FFFF)
+# Клавиатура: матрица через порт
+# В оригинале — дискретная логика, эмулируем через 8255
+
+[profiles.micro80]
+description = "Микро-80 (1979) — одноплатный микрокомпьютер, предшественник Радио-86РК"
+
+[profiles.micro80.system]
+name = "Микро-80"
+cpu = "i8080"
+clock_mhz = 1.78
+
+# ОЗУ 16 КБ
+[[profiles.micro80.memory.regions]]
+type = "ram"
+start = 0x0000
+end = 0x3FFF
+name = "RAM 16KB"
+
+# ПЗУ монитора 2 КБ
+[[profiles.micro80.memory.regions]]
+type = "rom"
+start = 0xF800
+end = 0xFFFF
+name = "Monitor ROM"
+file = "roms/micro80_monitor.bin"
+
+# 8255 для клавиатуры
+[[profiles.micro80.devices]]
+type = "i8255"
+name = "PPI"
+base_port = 0x04
+port_invert = true    # ← Регистры перевёрнуты (Микро-80)
+
+[[profiles.micro80.devices]]
+type = "keyboard8x8"
+name = "Keyboard"
+ppi_device = "PPI"
+output_port = 0    # Порт A — выбор строки
+input_port = 1     # Порт B — чтение столбцов
+
+# Видеопамять (0xE000..0xEFFF)
+[[profiles.micro80.memory.regions]]
+type = "ram"
+start = 0xE000
+end = 0xEFFF
+name = "Video RAM"
+
+# Дискретное видео
+[[profiles.micro80.devices]]
+type = "discrete_video"
+name = "Video"
+video_addr = 0xE800       # Видеопамять символов
+attr_addr = 0xE000        # Видеопамять атрибутов/курсора
+chars_per_line = 64
+lines_per_screen = 32
+char_width = 6
+char_height = 8
+chargen_file = "roms/micro80_font.rom"	# опционально, иначе встроенный
+invert = true
+bit_reverse = true
+num_chars = 128
+
+############
+## MMIO-регион для 8255 (доступ через память)
+#[[profiles.micro80.memory.regions]]
+#type = "mmio"
+#name = "PPI_regs"
+#device = "PPI"
+#
+#[[profiles.micro80.memory.regions.mappings]]
+#addr = 0x04
+#port = 0x04
+#
+#[[profiles.micro80.memory.regions.mappings]]
+#addr = 0x05
+#port = 0x05
+#
+#[[profiles.micro80.memory.regions.mappings]]
+#addr = 0x06
+#port = 0x06
+#
+#[[profiles.micro80.memory.regions.mappings]]
+#addr = 0x07
+#port = 0x07
+############

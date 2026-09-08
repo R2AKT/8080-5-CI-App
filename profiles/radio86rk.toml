@@ -1,0 +1,72 @@
+# Радио-86РК (1986)
+# Процессор: КР580ВМ80А @ 1.78 МГц
+# ОЗУ: 16 КБ (0000-3FFF)
+# ПЗУ: 2 КБ монитор (F800-FFFF)
+# Клавиатура: матрица через порт
+# В оригинале — дискретная логика, эмулируем через 8255
+
+[profiles.radio86rk]
+description = "Радио-86РК (1986) — одноплатный микрокомпьютер"
+
+[profiles.radio86rk.system]
+name = "Радио-86РК"
+cpu = "i8080"
+clock_mhz = 1.78
+
+# ОЗУ 16 КБ
+[[profiles.radio86rk.memory.regions]]
+type = "ram"
+start = 0x0000
+end = 0x3FFF
+name = "RAM 16KB"
+
+# ПЗУ монитора 2 КБ
+[[profiles.radio86rk.memory.regions]]
+type = "rom"
+start = 0xF800
+end = 0xFFFF
+name = "Monitor ROM"
+file = "roms/radio86rk_monitor.bin"
+
+# 8255 для клавиатуры
+[[profiles.radio86rk.devices]]
+type = "i8255"
+name = "PPI"
+base_port = 0x00
+
+[[profiles.radio86rk.devices]]
+type = "keyboard8x8"
+name = "Keyboard"
+ppi_device = "PPI"
+output_port = 0    # Порт A — выбор строки
+input_port = 1     # Порт B — чтение столбцов
+
+[[profiles.radio86rk.devices]]
+type = "i8275"
+name = "CRT"
+base_port = 0x08
+video_addr = 0x3800
+chars_per_line = 64
+lines_per_screen = 25
+char_height = 8
+char_width = 6
+chargen_file = "roms/radio86rk_font.rom"	# опционально, иначе встроенный
+invert = true
+bit_reverse = true
+num_chars = 256
+shift_bits = 0
+
+# === MMIO: регистры ВГ75 через память ===
+[[profiles.radio86rk.memory.regions]]
+type = "mmio"
+name = "VG75_regs"
+device = "CRT"
+
+# Маппинг: адреса памяти → порты 8275
+[[profiles.radio86rk.memory.regions.mappings]]
+addr = 0xC000
+port = 0x08        # Порт 0: Status (чтение) / P1 (запись)
+
+[[profiles.radio86rk.memory.regions.mappings]]
+addr = 0xC001
+port = 0x09        # Порт 1: Command (чтение) / P2/Command (запись)

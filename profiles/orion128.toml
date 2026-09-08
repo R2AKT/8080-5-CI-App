@@ -1,0 +1,42 @@
+# Орион-128 (1987)
+# Процессор: КР580ВМ80А @ 2.5 МГц
+# ОЗУ: 32 КБ (0000-7FFF) + банковая до 128 КБ
+# Графика: 384×288, 2 цвета
+# Клавиатура: матрица через порт
+
+[profiles.orion128]
+description = "Орион-128 (1987) — графический микрокомпьютер с банковой памятью"
+
+[profiles.orion128.system]
+name = "Орион-128"
+cpu = "i8080"
+clock_mhz = 2.5
+
+# Банковая память: 32 КБ окно, 4 банка по 32 КБ (128 КБ всего)
+[[profiles.orion128.memory.regions]]
+type = "banked"
+start = 0x0000
+end = 0x7FFF
+name = "Banked RAM 128KB"
+num_banks = 4
+switch_port = 0x00
+switch_addr = 0x0000
+
+# Видеопамять (переключаемая страница)
+[[profiles.orion128.memory.regions]]
+type = "ram"
+start = 0x8000
+end = 0xFFFF
+name = "Video RAM / Additional RAM"
+
+# 8255 для клавиатуры
+[[profiles.orion128.devices]]
+type = "i8255"
+name = "PPI Keyboard"
+base_port = 0x04
+
+# Таймер
+[[profiles.orion128.devices]]
+type = "i8253"
+name = "PIT Timer"
+base_port = 0x08

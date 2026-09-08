@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "breakpoints": [
+    {
+      "addr": 63531,
+      "condition": "",
+      "enabled": true,
+      "hit_count": 0
+    },
+    {
+      "addr": 64922,
+      "condition": "",
+      "enabled": true,
+      "hit_count": 0
+    },
+    {
+      "addr": 64930,
+      "condition": "",
+      "enabled": true,
+      "hit_count": 0
+    },
+    {
+      "addr": 64943,
+      "condition": "",
+      "enabled": true,
+      "hit_count": 0
+    },
+    {
+      "addr": 65010,
+      "condition": "",
+      "enabled": true,
+      "hit_count": 0
+    },
+    {
+      "addr": 65018,
+      "condition": "",
+      "enabled": true,
+      "hit_count": 0
+    },
+    {
+      "addr": 65355,
+      "condition": "",
+      "enabled": true,
+      "hit_count": 1
+    },
+    {
+      "addr": 65359,
+      "condition": "",
+      "enabled": true,
+      "hit_count": 0
+    },
+    {
+      "addr": 65427,
+      "condition": "",
+      "enabled": true,
+      "hit_count": 0
+    },
+    {
+      "addr": 65486,
+      "condition": "",
+      "enabled": true,
+      "hit_count": 0
+    },
+    {
+      "addr": 65520,
+      "condition": "",
+      "enabled": true,
+      "hit_count": 0
+    },
+    {
+      "addr": 65522,
+      "condition": "",
+      "enabled": true,
+      "hit_count": 0
+    }
+  ]
+}

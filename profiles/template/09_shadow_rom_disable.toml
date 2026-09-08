@@ -1,0 +1,24 @@
+# 09_shadow_rom_disable.toml
+# Теневое ПЗУ: после переключения полностью отключается
+# Пример: boot-загрузчик, который после запуска исчезает
+
+[system]
+name = "Boot ROM (disable)"
+cpu = "i8080A"
+clock = 2000000
+
+[[memory.regions]]
+type = "shadow_rom"
+name = "Boot ROM"
+low_addr = 0x0000
+high_addr = 0x0000    # Не используется при action = "disable"
+file = "bootloader.bin"
+mode = "io_write"
+trigger_port = 0x40
+action = "disable"    # Полностью отключить ROM после переключения
+
+[[memory.regions]]
+type = "ram"
+name = "Main RAM"
+start = 0x0000
+end = 0xFFFF

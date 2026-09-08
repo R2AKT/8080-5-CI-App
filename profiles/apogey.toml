@@ -1,0 +1,41 @@
+# Апогей БК-01 (1988)
+# Процессор: КР580ВМ80А @ 2 МГц
+# ОЗУ: 32 КБ (0000-7FFF)
+# ПЗУ: 2 КБ монитор (F800-FFFF)
+# Клавиатура: матрица через порт
+# Улучшенный Радио-86РК
+
+[profiles.apogey]
+description = "Апогей БК-01 (1988) — улучшенный Радио-86РК"
+
+[profiles.apogey.system]
+name = "Апогей БК-01"
+cpu = "i8080"
+clock_mhz = 2
+
+# ОЗУ 32 КБ
+[[profiles.apogey.memory.regions]]
+type = "ram"
+start = 0x0000
+end = 0x7FFF
+name = "RAM 32KB"
+
+# ПЗУ монитора 2 КБ
+[[profiles.apogey.memory.regions]]
+type = "rom"
+start = 0xF800
+end = 0xFFFF
+name = "Monitor ROM"
+# file = "roms/apogey_monitor.bin"
+
+# 8255 для клавиатуры/дисплея
+[[profiles.apogey.devices]]
+type = "i8255"
+name = "PPI Keyboard/Display"
+base_port = 0x00
+
+# Таймер
+[[profiles.apogey.devices]]
+type = "i8253"
+name = "PIT Timer"
+base_port = 0x04

@@ -1,0 +1,25 @@
+# 02_radio86rk.toml
+# Радио-86РК: теневое ПЗУ с переключением по 2-му такту M1
+# После сброса ROM виден по 0x0000, после чтения 3 байт (JMP)
+# переезжает на 0xF800, освобождая нижние 2КБ для RAM
+
+[system]
+name = "Радио-86РК"
+cpu = "i8080A"
+clock = 1780000  # 1.78 МГц
+
+[[memory.regions]]
+type = "shadow_rom"
+name = "Monitor ROM"
+low_addr = 0x0000
+high_addr = 0xF800
+file = "radio86rk_monitor.bin"
+mode = "m1"           # Переключение по N чтениям
+m1_count = 3          # 3 байта = размер JMP
+action = "move"       # Переместить на high_addr
+
+[[memory.regions]]
+type = "ram"
+name = "Main RAM"
+start = 0x0000
+end = 0x7FFF          # 32 КБ RAM

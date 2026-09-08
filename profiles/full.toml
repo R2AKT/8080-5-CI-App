@@ -1,0 +1,102 @@
+[profiles.full_system]
+description = "Полная система с устройствами"
+
+[profiles.full_system.system]
+name = "Full System with devices"
+cpu = "i8080"
+clock_mhz = 2
+
+[[profiles.full_system.memory.regions]]
+type = "ram"
+start = 0x0000
+end = 0xFFFF
+#image_file = "images/full_ram.bin"
+
+[[profiles.full_system.devices]]
+type = "i8251"
+name = "USART"
+base_port = 0x01
+
+[[profiles.full_system.devices]]
+type = "i8253"
+name = "PIT"
+base_port = 0x04
+
+[[profiles.full_system.devices]]
+type = "i8255"
+name = "PPI"
+base_port = 0x08
+
+[[profiles.full_system.devices]]
+type = "i512vi1"
+name = "RTC"
+base_port = 0x0D
+#image_file = "images/nvram.bin"
+
+[[profiles.full_system.devices]]
+type = "i8259"
+name = "PIC"
+base_port = 0x10
+
+[[profiles.full_system.devices]]
+type = "i8279"
+name = "KBD"
+base_port = 0x16
+
+[[profiles.full_system.devices]]
+type = "keyboard8279"
+name = "Keyboard"
+i8279_device = "KBD"
+
+[[profiles.full_system.devices]]
+type = "i8272"
+name = "FDC"
+base_port = 0x20
+
+[[profiles.full_system.devices]]
+type = "i8257"
+name = "DMA"
+base_port = 0x24
+
+[[profiles.full_system.devices]]
+type = "lcd1602"
+name = "LCD16x2"
+base_port = 0x36
+cols = 16
+rows = 2
+
+[[profiles.full_system.devices]]
+type = "lcd2004"
+name = "LCD20x4"
+base_port = 0x38
+cols = 20
+rows = 4
+
+[[profiles.full_system.devices]]
+type = "i8275"
+name = "CRT8275"
+base_port = 0x40
+
+[[profiles.full_system.devices]]
+type = "i8276"
+name = "Matrix8276"
+base_port = 0x50
+
+[[profiles.full_system.devices]]
+type = "tft8080"
+name = "TFT320x240"
+base_port = 0x60
+
+[[profiles.full_system.devices]]
+type = "cf_ide"
+name = "IDE8"
+base_port = 0x70
+#image_file = "images/cf_ide.bin"
+
+[[profiles.full_system.devices]]
+type = "cube3d"
+name = "Cube3D"
+ppi_device = "PPI"
+port_x = 0
+port_y = 1
+port_z = 2
