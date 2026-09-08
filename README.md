@@ -192,11 +192,7 @@ python i8080_emulator.py
 
 ## Hardware Module
 
-**8080-5-CI Module** — debug and download board for the i8080-5 platform.
-
-<img src="8080-5 CI_top.png" width="400">
-
-Connect to the debugging board via: [Stepper project](https://github.com/R2AKT/Stepper)
+**8080-5-CI Module** — debug and download board for the i8080-5 platform - https://github.com/R2AKT/8080-5-CI
 
 ## License
 
