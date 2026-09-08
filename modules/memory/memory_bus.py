@@ -149,7 +149,7 @@ class MemoryBus:
     # =============================================
     # Memory-Mapped IO
     # =============================================
-    def add_mmio_region(self, region) -> None:
+    def add_mmio_region(self, region: object) -> None:
         """Добавить MMIO-регион"""
         self._mmio_regions.append(region)
 
@@ -205,7 +205,7 @@ class MemoryRegion:
     """Базовый регион памяти (абстрактный).
     Подклассы: RAMRegion, ROMRegion, ShadowROM, BankedMemory и т.д.
     """
-    def __init__(self, start, end, name="region"):
+    def __init__(self, start: int, end: int, name: str = "region") -> None:
         self.start = start & 0xFFFF
         self.end = end & 0xFFFF
         self.name = name
@@ -228,7 +228,7 @@ class MemoryRegion:
 
 class RAMRegion(MemoryRegion):
     """RAM: чтение и запись. Может использовать внешний dict как хранилище."""
-    def __init__(self, start, end, data=None, name="RAM"):
+    def __init__(self, start: int, end: int, data: dict | None = None, name: str = "RAM") -> None:
         super().__init__(start, end, name)
         self.data = data if data is not None else {}
 
@@ -244,7 +244,7 @@ class RAMRegion(MemoryRegion):
 
 class ROMRegion(MemoryRegion):
     """ROM: только чтение. Запись игнорируется."""
-    def __init__(self, start, end, data=None, name="ROM"):
+    def __init__(self, start: int, end: int, data: dict | None = None, name: str = "ROM") -> None:
         super().__init__(start, end, name)
         self.data = dict(data) if data else {}
 

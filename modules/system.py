@@ -23,19 +23,19 @@ class _IOPortsAdapter:
     """Мост: эмулятор работает с io_ports как со словарём,
     а адаптер маршрутизирует обращения к шине системы."""
 
-    def __init__(self, bus: 'MemoryBus'):
+    def __init__(self, bus: 'MemoryBus') -> None:
         self.bus = bus
 
     def get(self, port: int, default: int = 0xFF) -> int:          # IN  → io_ports.get(port, 0xFF)
         return self.bus.io_read(port)
 
-    def __getitem__(self, port):                # чтение через io_ports[port]
+    def __getitem__(self, port: int) -> int:                # чтение через io_ports[port]
         return self.bus.io_read(port)
 
-    def __setitem__(self, port, value):         # OUT → io_ports[port] = value
+    def __setitem__(self, port: int, value: int) -> None:         # OUT → io_ports[port] = value
         self.bus.io_write(port, value)
 
-    def __contains__(self, port):               # port in io_ports
+    def __contains__(self, port: int) -> int:               # port in io_ports
         return port in self.bus.io_devices
 
 class ComputerSystem:
@@ -247,7 +247,7 @@ class ComputerSystem:
         # Построить плоский индекс
         self.bus.build_mmio_index()
 
-    def _apply_device_params(self, device, config) -> None:
+    def _apply_device_params(self, device: object, config: dict) -> None:
         """Применение дополнительных параметров устройства"""
         # Подключение образа диска (для CFIDE, CH376S)
         if "disk_image" in config and hasattr(device, 'set_disk_image'):
@@ -292,7 +292,7 @@ class ComputerSystem:
     # =============================================
     # УПРАВЛЕНИЕ УСТРОЙСТВАМИ
     # =============================================
-    def get_device(self, name: str):
+    def get_device(self, name: str) -> object:
         """Получить устройство по имени"""
         return self.devices.get(name, None)
 
@@ -304,7 +304,7 @@ class ComputerSystem:
                 result.append(device)
         return result
 
-    def list_devices(self) -> list[str]:
+    def list_devices(self) -> list[dict]:
         """Список устройств для Диспетчера устройств"""
         result = []
         for name, device in self.devices.items():
@@ -357,7 +357,7 @@ class ComputerSystem:
     # =============================================
     # СОХРАНЕНИЕ/ЗАГРУЗКА NVM
     # =============================================
-    def save_all_nvram(self) -> None:
+    def save_all_nvram(self) -> list[str]:
         """Сохранить все NVM (для RTC, батарейных устройств)"""
         saved = []
         for name, device in self.devices.items():
@@ -366,7 +366,7 @@ class ComputerSystem:
                     saved.append(name)
         return saved
 
-    def load_all_nvram(self) -> None:
+    def load_all_nvram(self) -> list[str]:
         """Загрузить все NVM"""
         loaded = []
         for name, device in self.devices.items():
@@ -431,7 +431,7 @@ class ComputerSystem:
                 device.acknowledge_interrupt()
                 break  # Обрабатываем одно прерывание за раз
 
-    def _get_interrupt_vector(self, device_name: str, device) -> int:
+    def _get_interrupt_vector(self, device_name: str, device: object) -> int:
         """Определить вектор прерывания для устройства.
         По умолчанию: RST 7 (0xFF). Можно переопределить в конфигурации."""
         # Проверяем, есть ли пользовательский вектор в конфигурации

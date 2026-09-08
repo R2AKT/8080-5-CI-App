@@ -7,6 +7,8 @@
 
 ---
 
+> **Note (v2.1):** Application code is now organized in the `i8080_ci/` package. Entry point remains `i8080_CI.py`.
+
 ## Содержание
 
 1. [Обзор программы](#1-обзор-программы)
