@@ -30,6 +30,8 @@ class MemoryBus:
         self.io_devices: dict = {}
         self.io_range_devices = []
         self._unmapped_read = 0xFF
+        # === Инверсия диапазона портов устройств (Микро-80) ===
+        self._port_invert_map = {}  # {порт: инвертированный_порт}
         # === Memory-Mapped IO ===
         self._mmio_regions = []   # Список MMIO-регионов
         self._mmio_index = {}     # Плоский индекс {адрес: (устройство, порт)}
@@ -127,9 +129,10 @@ class MemoryBus:
                     return result
             if hasattr(region, 'io_access'):
                 region.io_access(port, is_write=False)
-        # Затем IO-устройства
+        # Затем IO-устройства (с учётом инверсии диапазона портов)
         if port in self.io_devices:
-            return self.io_devices[port].io_read(port)
+            dev_port = self._port_invert_map.get(port, port)
+            return self.io_devices[port].io_read(dev_port)
         return 0xFF
 
     def io_write(self, port: int, value: int) -> None:
@@ -142,9 +145,10 @@ class MemoryBus:
                     return  # Запись обработана регионом
             if hasattr(region, 'io_access'):
                 region.io_access(port, is_write=True)
-        # Затем IO-устройства
+        # Затем IO-устройства (с учётом инверсии диапазона портов)
         if port in self.io_devices:
-            self.io_devices[port].io_write(port, value)
+            dev_port = self._port_invert_map.get(port, port)
+            self.io_devices[port].io_write(dev_port, value)
     
     # =============================================
     # Memory-Mapped IO

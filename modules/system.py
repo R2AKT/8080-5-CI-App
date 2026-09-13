@@ -172,6 +172,13 @@ class ComputerSystem:
                     for offset in range(num_ports):
                         port = device.base_port + offset
                         self.bus.register_io(port, device)
+                    # === Инверсия диапазона портов устройства (Микро-80) ===
+                    if dev_config.get("port_invert", False):
+                        base = device.base_port
+                        for offset in range(num_ports):
+                            port = base + offset
+                            inverted_port = base + (num_ports - 1 - offset)
+                            self.bus._port_invert_map[port] = inverted_port
 
             # === Виджет клавиатуры ===
             if dev_type == "keyboard8x8":
