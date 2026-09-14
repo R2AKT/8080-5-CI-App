@@ -74,7 +74,7 @@ class I8255(IODevice):
             else:  # Режим 0/1, выход
                 return self.port_a
         elif offset == 1:  # Port B
-            if (ctrl >> 1) & 1:  # Вход
+            if ctrl & 1:  # D0: 1=вход, 0=выход
                 return self.external_input[1]
             else:  # Выход
                 return self.port_b
@@ -178,16 +178,19 @@ class I8255(IODevice):
     def set_port_input(self, port_name, value):
         """Внешний сигнал на вход порта (для эмуляции внешних устройств).
         port_name: 'A', 'B', 'C'
+        
+        Устанавливает external_input — то, что ио_read вернёт
+        при чтении порта в режиме входа.
         """
         value &= 0xFF
         if port_name == 'A':
-            self.port_a = value
+            self.external_input[0] = value
             self._check_interrupt_a()
         elif port_name == 'B':
-            self.port_b = value
+            self.external_input[1] = value
             self._check_interrupt_b()
         elif port_name == 'C':
-            self.port_c = value
+            self.external_input[2] = value
     
     def _check_interrupt_a(self):
         """Проверка прерывания порта A (Mode 1/2)."""

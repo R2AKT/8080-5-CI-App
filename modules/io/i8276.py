@@ -146,13 +146,13 @@ class I8276(IODevice):
                 self._apply_init_params()
             return
         # Запись в видеопамять
-        self.video_ram[self.video_addr] = (value, 0x00)
+        self.video_ram[self.video_addr] = (value, 0x07)  # 0x07 = bright white (default)
         self.video_addr += 1
         # Уведомляем об обновлении
         if self.on_display_update:
             x = self.video_addr % self.chars_per_line
             y = self.video_addr // self.chars_per_line
-            self.on_display_update(value, 0x00, x, y)
+            self.on_display_update(value, 0x07, x, y)
 
     def _apply_init_params(self):
         """Применить параметры инициализации"""

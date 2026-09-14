@@ -20,7 +20,7 @@ class SearchDialog(QDialog):
         input_layout = QHBoxLayout()
         self.lbl_pattern = QLabel(self.tr("search_pattern"))
         self.txt_pattern = QLineEdit()
-        self.txt_pattern.setPlaceholderText("C3 00 10 or HELLO")
+        self.txt_pattern.setPlaceholderText(self.tr("search_placeholder"))
         input_layout.addWidget(self.lbl_pattern)
         input_layout.addWidget(self.txt_pattern)
         layout.addLayout(input_layout)
@@ -67,6 +67,7 @@ class SearchDialog(QDialog):
     def retranslate(self):
         self.setWindowTitle(self.tr("search_title"))
         self.lbl_pattern.setText(self.tr("search_pattern"))
+        self.txt_pattern.setPlaceholderText(self.tr("search_placeholder"))
         self.lbl_mode.setText(self.tr("search_mode"))
         self.btn_find.setText(self.tr("search_find_next"))
         self.btn_find_all.setText(self.tr("search_find_all"))

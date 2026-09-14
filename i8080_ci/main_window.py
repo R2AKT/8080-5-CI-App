@@ -26,7 +26,7 @@ except ImportError as e:
     MCP_AVAILABLE = False
     print(f"MCP Server доступен: {e}")
 
-from .i18n import LANGS, THEMES, get_system_language
+from .i18n import LANGS, THEMES, get_system_language, set_language
 from .slip import (SlipProtocol, _FEND, _FESC, _TFEND, _TFESC,
                    CMD_NOP, CMD_HOLD, CMD_UNHOLD,
                    CMD_MEM_READ_BYTE, CMD_MEM_READ_BLOCK,
@@ -70,8 +70,10 @@ class MainWindow(QMainWindow):
         # Определение языка: сохранённый -> системный -> английский
         if saved_lang in LANGS:
             self.current_lang = saved_lang
+            set_language(self.current_lang)
         else:
             self.current_lang = get_system_language()
+            set_language(self.current_lang)
             
         # Определение темы: сохранённая -> светлая
         if saved_theme in THEMES:
@@ -142,9 +144,9 @@ class MainWindow(QMainWindow):
         self.profile_menu = self.menuBar().addMenu("Профиль системы")
         
         # Меню устройств
-        devices_menu = self.menuBar().addMenu("Устройства")
-        act_manager = devices_menu.addAction("Диспетчер устройств")
-        act_manager.triggered.connect(self.show_device_manager)
+        self.devices_menu = self.menuBar().addMenu(self.tr("menu_devices"))
+        self.act_device_manager = self.devices_menu.addAction(self.tr("device_manager"))
+        self.act_device_manager.triggered.connect(self.show_device_manager)
 
         # Группа действий: только один профиль одновременно
         self.profile_group = QActionGroup(self)
@@ -176,11 +178,11 @@ class MainWindow(QMainWindow):
         # 6. СТАТУСНАЯ СТРОКА (после init_ui)
         # ============================================================
         self.statusBar = self.statusBar()
-        self.status_label_addr = QLabel("Адрес: -")
-        self.status_label_data = QLabel("Данные: -")
-        self.status_label_mnem = QLabel("Мнемоника: -")
-        self.status_label_size = QLabel("Размер: 0 байт")
-        self.status_label_conn = QLabel("Отключено")
+        self.status_label_addr = QLabel(self.tr("status_addr") + "-")
+        self.status_label_data = QLabel(self.tr("status_data") + "-")
+        self.status_label_mnem = QLabel(self.tr("status_mnem") + "-")
+        self.status_label_size = QLabel(self.tr("status_size") + "0 " + self.tr("bytes"))
+        self.status_label_conn = QLabel(self.tr("disconnected"))
         
         self.statusBar.addWidget(self.status_label_conn)
         self.statusBar.addPermanentWidget(self.status_label_size)
@@ -263,7 +265,7 @@ class MainWindow(QMainWindow):
         
         self.lbl_theme = QLabel()
         self.theme_combo = QComboBox()
-        self.theme_combo.addItems(["Light", "Dark"])
+        self.theme_combo.addItems([self.tr("light"), self.tr("dark")])
         # Устанавливаем сохранённую тему
         self.theme_combo.setCurrentIndex(0 if self.current_theme == "Light" else 1)
         self.theme_combo.currentIndexChanged.connect(self.on_theme_changed)
@@ -540,7 +542,7 @@ class MainWindow(QMainWindow):
         self.tabs.addTab(tab, "")
         self.tab_control = tab
 		
-        self.btn_mcp = QPushButton("MCP Server: OFF")
+        self.btn_mcp = QPushButton(self.tr("mcp_off"))
         self.btn_mcp.clicked.connect(self.on_mcp_toggle)
         layout.addWidget(self.btn_mcp)
 
@@ -557,8 +559,9 @@ class MainWindow(QMainWindow):
         self.mem_data_bits.setCurrentText("8")
         self.mem_data_value = QLineEdit("00")
         self.mem_data_endian = QComboBox()
-        self.mem_data_endian.addItems(["Little", "Big"])
-        self.mem_data_endian.setCurrentText("Little")
+        self.mem_data_endian.addItem(self.tr("endian_little"), "Little")
+        self.mem_data_endian.addItem(self.tr("endian_big"), "Big")
+        self.mem_data_endian.setCurrentIndex(0)
         
         self.btn_mem_read = QPushButton()
         self.btn_mem_write = QPushButton()
@@ -593,8 +596,9 @@ class MainWindow(QMainWindow):
         self.io_data_bits.setCurrentText("8")
         self.io_data_value = QLineEdit("00")
         self.io_data_endian = QComboBox()
-        self.io_data_endian.addItems(["Little", "Big"])
-        self.io_data_endian.setCurrentText("Little")
+        self.io_data_endian.addItem(self.tr("endian_little"), "Little")
+        self.io_data_endian.addItem(self.tr("endian_big"), "Big")
+        self.io_data_endian.setCurrentIndex(0)
         
         self.btn_io_read = QPushButton()
         self.btn_io_write = QPushButton()
@@ -712,7 +716,10 @@ class MainWindow(QMainWindow):
         self.test_end = QLineEdit("00FF")
         self.lbl_test_pattern = QLabel()
         self.test_pattern = QComboBox()
-        self.test_pattern.addItems(["Checker", "Zero", "One", "Addr"])
+        self.test_pattern.addItem(self.tr("test_pattern_checker"), "Checker")
+        self.test_pattern.addItem(self.tr("test_pattern_zero"), "Zero")
+        self.test_pattern.addItem(self.tr("test_pattern_one"), "One")
+        self.test_pattern.addItem(self.tr("test_pattern_addr"), "Addr")
         
         form_layout.addWidget(self.lbl_test_start)
         form_layout.addWidget(self.test_start)
@@ -781,6 +788,7 @@ class MainWindow(QMainWindow):
     # ==================== ЛОКАЛИЗАЦИЯ И ТЕМЫ ====================
     def on_lang_changed(self, index):
         self.current_lang = "ru" if index == 0 else "en"
+        set_language(self.current_lang)  # Уведомляем все диалоги
         self.settings.setValue("language", self.current_lang)  # Сохраняем настройку
         self.retranslate_ui()
         
@@ -1008,6 +1016,57 @@ class MainWindow(QMainWindow):
         # === Устройства ===
         if hasattr(self, 'devices_menu'):
             self.devices_menu.setTitle(self.tr("menu_devices"))
+        if hasattr(self, 'act_device_manager'):
+            self.act_device_manager.setText(self.tr("device_manager"))
+
+        # === Status bar ===
+        self.status_label_addr.setText(self.tr("status_addr") + "-")
+        self.status_label_data.setText(self.tr("status_data") + "-")
+        self.status_label_mnem.setText(self.tr("status_mnem") + "-")
+        self.status_label_size.setText(self.tr("status_size") + "0 " + self.tr("bytes"))
+        self.status_label_conn.setText(self.tr("disconnected"))
+
+        # Theme combo (preserve index)
+        idx = self.theme_combo.currentIndex()
+        self.theme_combo.clear()
+        self.theme_combo.addItems([self.tr("light"), self.tr("dark")])
+        self.theme_combo.setCurrentIndex(idx)
+
+        # Endianness combos (preserve index)
+        for combo in [self.mem_data_endian, self.io_data_endian]:
+            idx = combo.currentIndex()
+            combo.clear()
+            combo.addItem(self.tr("endian_little"), "Little")
+            combo.addItem(self.tr("endian_big"), "Big")
+            combo.setCurrentIndex(idx)
+
+        # Test pattern combo (preserve index)
+        idx = self.test_pattern.currentIndex()
+        self.test_pattern.clear()
+        self.test_pattern.addItem(self.tr("test_pattern_checker"), "Checker")
+        self.test_pattern.addItem(self.tr("test_pattern_zero"), "Zero")
+        self.test_pattern.addItem(self.tr("test_pattern_one"), "One")
+        self.test_pattern.addItem(self.tr("test_pattern_addr"), "Addr")
+        self.test_pattern.setCurrentIndex(idx)
+
+        # MCP button
+        if hasattr(self, 'btn_mcp'):
+            if hasattr(self, 'mcp_server') and self.mcp_server and getattr(self.mcp_server, 'running', False):
+                self.btn_mcp.setText(self.tr("mcp_on"))
+            else:
+                self.btn_mcp.setText(self.tr("mcp_off"))
+
+        # Emulator stats
+        if hasattr(self, 'cycles_label'):
+            self.cycles_label.setText(self.tr("emu_cycles") + "0")
+        if hasattr(self, 'state_label'):
+            self.state_label.setText(self.tr("emu_state") + self.tr("emu_state_halted"))
+
+        # Trace status
+        if hasattr(self, 'lbl_trace_status'):
+            self.lbl_trace_status.setText(self.tr("trace_records") + "0 / 10000")
+        if hasattr(self, 'txt_trace_search'):
+            self.txt_trace_search.setPlaceholderText(self.tr("trace_search_hint"))
             
     # ==================== ЛОГИКА ====================
     def refresh_ports(self):
@@ -1252,7 +1311,7 @@ class MainWindow(QMainWindow):
             addr = int(self.mem_data_addr.text(), 16)
             bits = int(self.mem_data_bits.currentText())
             size = bits // 8
-            endian = self.mem_data_endian.currentText()
+            endian = self.mem_data_endian.currentData()
             self.pending_read = {"addr": addr, "bits": bits, "endian": endian, "is_io": False}
             self.start_worker("read_block", (addr, size))
         except ValueError:
@@ -1262,7 +1321,7 @@ class MainWindow(QMainWindow):
         try:
             addr = int(self.mem_data_addr.text(), 16)
             bits = int(self.mem_data_bits.currentText())
-            endian = self.mem_data_endian.currentText()
+            endian = self.mem_data_endian.currentData()
             value = int(self.mem_data_value.text(), 16)
             byte_list = self.value_to_bytes(value, bits, endian)
             mem_dict = {addr + i: byte_list[i] for i in range(len(byte_list))}
@@ -1278,7 +1337,7 @@ class MainWindow(QMainWindow):
             port = int(self.io_data_addr.text(), 16)
             bits = int(self.io_data_bits.currentText())
             size = bits // 8
-            endian = self.io_data_endian.currentText()
+            endian = self.io_data_endian.currentData()
             self.pending_read = {"addr": port, "bits": bits, "endian": endian, "is_io": True}
             self.start_worker("read_io_block", (port, size))
         except ValueError:
@@ -1288,7 +1347,7 @@ class MainWindow(QMainWindow):
         try:
             port = int(self.io_data_addr.text(), 16)
             bits = int(self.io_data_bits.currentText())
-            endian = self.io_data_endian.currentText()
+            endian = self.io_data_endian.currentData()
             value = int(self.io_data_value.text(), 16)
             byte_list = self.value_to_bytes(value, bits, endian)
             io_dict = {port + i: byte_list[i] for i in range(len(byte_list))}
@@ -1415,7 +1474,7 @@ class MainWindow(QMainWindow):
         try:
             start = int(self.test_start.text(), 16)
             end = int(self.test_end.text(), 16)
-            pat = self.test_pattern.currentText()
+            pat = self.test_pattern.currentData()
             self.start_worker("test_mem", (start, end, pat))
         except ValueError:
             QMessageBox.warning(self, self.tr("error"), self.tr("err_addr"))
@@ -1707,9 +1766,9 @@ class MainWindow(QMainWindow):
         if not connected:
             self.status_label_conn.setText(self.tr("disconnected"))
         elif active:
-            self.status_label_conn.setText(f"{self.tr('connected')} | BUS ACTIVE")
+            self.status_label_conn.setText(f"{self.tr('connected')} | {self.tr('bus_active')}")
         else:
-            self.status_label_conn.setText(f"{self.tr('connected')} | BUS FREE")
+            self.status_label_conn.setText(f"{self.tr('connected')} | {self.tr('bus_free')}")
 			
     def closeEvent(self, event):
         """Принудительное закрытие всех окон и виджетов"""
@@ -2234,10 +2293,10 @@ class MainWindow(QMainWindow):
             
         if self.mcp_server.running:
             self.mcp_server.stop()
-            self.btn_mcp.setText("MCP Server: OFF")
+            self.btn_mcp.setText(self.tr("mcp_off"))
         else:
             self.mcp_server.start()
-            self.btn_mcp.setText("MCP Server: ON")
+            self.btn_mcp.setText(self.tr("mcp_on"))
 			
     def create_tab_emulator(self):
         """Создаёт вкладку эмулятора — трёхколоночный отладчик"""
@@ -2470,8 +2529,8 @@ class MainWindow(QMainWindow):
         self.stats_group = QGroupBox("Статистика")
         stats_layout = QVBoxLayout()
         
-        self.cycles_label = QLabel("Такты: 0")
-        self.state_label = QLabel("Состояние: Остановлен")
+        self.cycles_label = QLabel(self.tr("emu_cycles") + "0")
+        self.state_label = QLabel(self.tr("emu_state") + self.tr("emu_state_halted"))
         stats_layout.addWidget(self.cycles_label)
         stats_layout.addWidget(self.state_label)
         
@@ -3284,7 +3343,7 @@ class MainWindow(QMainWindow):
         ctrl_layout.addSpacing(20)
         
         # Статус трассировки
-        self.lbl_trace_status = QLabel("Записей: 0 / 10000")
+        self.lbl_trace_status = QLabel(self.tr("trace_records") + "0 / 10000")
         self.lbl_trace_status.setStyleSheet("color: #666;")
         ctrl_layout.addWidget(self.lbl_trace_status)
         
@@ -3294,7 +3353,7 @@ class MainWindow(QMainWindow):
         self.lbl_trace_search = QLabel("Поиск:")
         ctrl_layout.addWidget(self.lbl_trace_search)
         self.txt_trace_search = QLineEdit()
-        self.txt_trace_search.setPlaceholderText("Адрес (HEX) или регистр OP значение (A==55, HL>1000, SP<=F000)")
+        self.txt_trace_search.setPlaceholderText(self.tr("trace_search_hint"))
         self.txt_trace_search.setMaximumWidth(250)
         self.txt_trace_search.returnPressed.connect(self.on_trace_search)
         ctrl_layout.addWidget(self.txt_trace_search)

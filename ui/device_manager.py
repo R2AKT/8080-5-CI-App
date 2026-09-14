@@ -20,6 +20,32 @@ from .cube3d_widget import Cube3DWidget
 class DeviceManagerDialog(QDialog):
     """Диспетчер устройств: список + открытие индивидуальных окон"""
 
+    def tr(self, key: str, **kwargs) -> str:
+        """Translate a key, optionally with format args."""
+        from i8080_ci.i18n import LANGS, get_system_language
+        lang = get_system_language()
+        text = LANGS.get(lang, {}).get(key, key)
+        if kwargs:
+            try:
+                text = text.format(**kwargs)
+            except (KeyError, IndexError):
+                pass
+        return text
+
+    def retranslate(self):
+        """Update all translatable strings (call on language change)."""
+        self.setWindowTitle(self.tr("dm_title"))
+        if hasattr(self, 'title_label'):
+            self.title_label.setText(self.tr("dm_subtitle"))
+        if hasattr(self, 'btn_open'):
+            self.btn_open.setText(self.tr("dm_open"))
+        if hasattr(self, 'btn_close_all'):
+            self.btn_close_all.setText(self.tr("dm_close_all"))
+        if hasattr(self, 'btn_refresh'):
+            self.btn_refresh.setText(self.tr("dm_refresh"))
+        if hasattr(self, 'chk_always_on_top'):
+            self.chk_always_on_top.setText(self.tr("dm_always_on_top"))
+
     def __init__(self, system, parent=None):
         super().__init__()  # Диспетчер без родителя — независим
         self.setWindowFlags(Qt.Window | Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
@@ -28,7 +54,7 @@ class DeviceManagerDialog(QDialog):
         self.device_windows = {}
         self._always_on_top = False
         
-        self.setWindowTitle("Диспетчер устройств")
+        self.setWindowTitle(self.tr("dm_title"))
         self.setMinimumSize(420, 500)
         self.resize(440, 520)
 
@@ -40,7 +66,7 @@ class DeviceManagerDialog(QDialog):
         layout.setContentsMargins(8, 8, 8, 8)
 
         # Заголовок
-        title = QLabel("Устройства текущего профиля")
+        title = QLabel(self.tr("dm_subtitle"))
         title.setFont(QFont("Segoe UI", 11, QFont.Bold))
         layout.addWidget(title)
 
@@ -57,11 +83,11 @@ class DeviceManagerDialog(QDialog):
 
         # Кнопки
         btn_layout = QHBoxLayout()
-        self.btn_open = QPushButton("Открыть окно")
+        self.btn_open = QPushButton(self.tr("dm_open"))
         self.btn_open.clicked.connect(self._open_selected)
-        self.btn_close_all = QPushButton("Закрыть все")
+        self.btn_close_all = QPushButton(self.tr("dm_close_all"))
         self.btn_close_all.clicked.connect(self.close_all_windows)
-        self.btn_refresh = QPushButton("Обновить")
+        self.btn_refresh = QPushButton(self.tr("dm_refresh"))
         self.btn_refresh.clicked.connect(self.refresh_devices)
         btn_layout.addWidget(self.btn_open)
         btn_layout.addWidget(self.btn_close_all)
@@ -69,7 +95,7 @@ class DeviceManagerDialog(QDialog):
         layout.addLayout(btn_layout)
 
         # Опция "поверх всех"
-        self.chk_always_on_top = QCheckBox("Окна устройств всегда поверх всех")
+        self.chk_always_on_top = QCheckBox(self.tr("dm_always_on_top"))
         self.chk_always_on_top.toggled.connect(self._toggle_always_on_top)
         layout.addWidget(self.chk_always_on_top)
 
@@ -88,7 +114,7 @@ class DeviceManagerDialog(QDialog):
             self.device_list.addItem(item)
 
         if self.device_list.count() == 0:
-            item = QListWidgetItem("(нет устройств)")
+            item = QListWidgetItem(self.tr("dm_no_devices"))
             item.setFlags(Qt.NoItemFlags)
             self.device_list.addItem(item)
 
@@ -121,14 +147,14 @@ class DeviceManagerDialog(QDialog):
             if type(device).__name__ == 'Cube3D':
                 # Для Cube3D — чистое окно с виджетом, без полей регистров
                 win = Cube3DWidget(device, parent=self._main_window)
-                win.setWindowTitle(f"3D Куб 8×8×8 — {device_name}")
+                win.setWindowTitle(self.tr("dm_cube_title", name=device_name))
                 win.resize(640, 600)
                 if self._always_on_top:
                     win.setWindowFlags(win.windowFlags() | Qt.WindowStaysOnTopHint)
             elif type(device).__name__ in ('Keyboard8x8', 'Keyboard8279Adapter'):
                 # Для клавиатуры — чистое окно с виджетом, без полей
                 win = KeyboardWidget(device, parent=self._main_window)
-                win.setWindowTitle(f"Клавиатура — {device_name}")
+                win.setWindowTitle(self.tr("dm_keyboard_title", name=device_name))
                 if self._always_on_top:
                     win.setWindowFlags(win.windowFlags() | Qt.WindowStaysOnTopHint)
             else:

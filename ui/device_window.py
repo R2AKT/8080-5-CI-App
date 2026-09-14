@@ -24,6 +24,18 @@ from .cube3d_widget import Cube3DWidget
 class DeviceWindow(QWidget):
     """Индивидуальное окно устройства с автообновлением состояния"""
 
+    def tr(self, key: str, **kwargs) -> str:
+        """Translate a key."""
+        from i8080_ci.i18n import LANGS, get_system_language
+        lang = get_system_language()
+        text = LANGS.get(lang, {}).get(key, key)
+        if kwargs:
+            try:
+                text = text.format(**kwargs)
+            except (KeyError, IndexError):
+                pass
+        return text
+
     def __init__(self, device, device_name, lang="en", always_on_top=False, parent=None):
         super().__init__(parent)
         self.device = device
@@ -99,8 +111,8 @@ class DeviceWindow(QWidget):
         ctrl = QHBoxLayout()
         self.chk_auto = QCheckBox("Авто")
         self.chk_auto.setChecked(True)
-        self.chk_auto.setToolTip("Автообновление каждые 200 мс")
-        self.btn_refresh = QPushButton("Обновить")
+        self.chk_auto.setToolTip(self.tr("dw_auto_tooltip"))
+        self.btn_refresh = QPushButton(self.tr("dw_refresh"))
         self.btn_refresh.clicked.connect(self.refresh)
         ctrl.addWidget(self.chk_auto)
         ctrl.addWidget(self.btn_refresh)

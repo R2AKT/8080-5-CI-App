@@ -1,7 +1,6 @@
 """Internationalization strings, themes, and system language detection."""
 from PySide6.QtCore import QLocale
 
-
 LANGS = {
     "en": {
         "app_title": "i8080-5 CI",
@@ -233,6 +232,33 @@ LANGS = {
         "bp_col_enabled":   "On  ",   "bp_col_hits":   "Hits  ",
         # Устройства
         "menu_devices": "Devices", "device_manager": "Device Manager",
+        "endian_little": "Little-Endian",
+        "endian_big": "Big-Endian",
+        "test_pattern_checker": "Checker",
+        "test_pattern_zero": "Zero",
+        "test_pattern_one": "One",
+        "test_pattern_addr": "Address",
+        "mcp_off": "MCP Server: OFF",
+        "mcp_on": "MCP Server: ON",
+        "bus_active": "BUS ACTIVE",
+        "bus_free": "BUS FREE",
+        "search_placeholder": "C3 00 10 or HELLO",
+        # === Device Manager ===
+        "dm_title": "Device Manager",
+        "dm_subtitle": "Devices of current profile",
+        "dm_open": "Open Window",
+        "dm_close_all": "Close All",
+        "dm_refresh": "Refresh",
+        "dm_always_on_top": "Device windows always on top",
+        "dm_no_devices": "(no devices)",
+        "dm_cube_title": "3D Cube 8x8x8 - {name}",
+        "dm_keyboard_title": "Keyboard - {name}",
+        # === Device Window ===
+        "dw_auto": "Auto",
+        "dw_auto_tooltip": "Auto-refresh every 200ms",
+        "dw_refresh": "Refresh",
+        "dw_yes": "yes",
+        "dw_no": "no",
     },
     "ru": {
         "app_title": "i8080-5 CI",
@@ -463,6 +489,33 @@ LANGS = {
         "bp_col_enabled":   "Вкл  ",   "bp_col_hits":   "Сраб.  ",
         # Устройства
         "menu_devices": "Устройства", "device_manager": "Диспетчер устройств",
+        "endian_little": "Little-Endian",
+        "endian_big": "Big-Endian",
+        "test_pattern_checker": "Шахматный",
+        "test_pattern_zero": "Нули",
+        "test_pattern_one": "Единички",
+        "test_pattern_addr": "Адрес",
+        "mcp_off": "MCP Сервер: выкл",
+        "mcp_on": "MCP Сервер: вкл",
+        "bus_active": "Шина занята",
+        "bus_free": "Шина свободна",
+        "search_placeholder": "C3 00 10 или HELLO",
+        # === Device Manager ===
+        "dm_title": "Диспетчер устройств",
+        "dm_subtitle": "Устройства текущего профиля",
+        "dm_open": "Открыть окно",
+        "dm_close_all": "Закрыть все",
+        "dm_refresh": "Обновить",
+        "dm_always_on_top": "Окна устройств всегда поверх всех",
+        "dm_no_devices": "(нет устройств)",
+        "dm_cube_title": "3D куб 8×8×8 - {name}",
+        "dm_keyboard_title": "Клавиатура - {name}",
+        # === Device Window ===
+        "dw_auto": "Авт.",
+        "dw_auto_tooltip": "Автообновление каждые 200 мс",
+        "dw_refresh": "Обновить",
+        "dw_yes": "да",
+        "dw_no": "нет",
     }
 }
 
@@ -486,16 +539,26 @@ THEMES = {
     """
 }
 
-def get_system_language():
-    """Определяет системный язык. Возвращает 'ru', 'en' или 'en' по умолчанию."""
+_current_lang = None  # Язык, выбранный пользователем (None = определять из системы)
+
+
+def set_language(lang: str) -> None:
+    """Устанавливает язык, выбранный пользователем. Вызывается при переключении языка."""
+    global _current_lang
+    _current_lang = lang
+
+
+def get_system_language() -> str:
+    """Возвращает текущий язык. Сначала проверяет выбранный пользователем, затем системный."""
+    if _current_lang is not None:
+        return _current_lang
     try:
-        lang = QLocale.system().name()  # Например: 'ru_RU', 'en_US', 'de_DE'
+        lang = QLocale.system().name()
         if lang.startswith('ru'):
             return "ru"
         elif lang.startswith('en'):
             return "en"
-        # Можно добавить другие языки здесь
     except Exception:
         pass
-    return "en"  # По умолчанию английский
+    return "en"
 
