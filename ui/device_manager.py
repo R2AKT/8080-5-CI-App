@@ -22,7 +22,7 @@ class DeviceManagerDialog(QDialog):
 
     def tr(self, key: str, **kwargs) -> str:
         """Translate a key, optionally with format args."""
-        from i8080_ci.i18n import LANGS, get_system_language
+        from common.i18n import LANGS, get_system_language
         lang = get_system_language()
         text = LANGS.get(lang, {}).get(key, key)
         if kwargs:

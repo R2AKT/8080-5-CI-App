@@ -1,5 +1,5 @@
 """i8080-5 CI - Intel 8080 emulator, debugger, and device interface package."""
-from .i18n import LANGS, THEMES, get_system_language
+from common.i18n import LANGS, THEMES, get_system_language
 from .slip import SlipProtocol
 from .intelhex import IntelHex
 from .disassembler import I8080Disassembler, JUMP_OPCODES

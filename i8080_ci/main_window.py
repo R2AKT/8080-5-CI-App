@@ -26,7 +26,7 @@ except ImportError as e:
     MCP_AVAILABLE = False
     print(f"MCP Server доступен: {e}")
 
-from .i18n import LANGS, THEMES, get_system_language, set_language
+from common.i18n import LANGS, THEMES, get_system_language, set_language
 from .slip import (SlipProtocol, _FEND, _FESC, _TFEND, _TFESC,
                    CMD_NOP, CMD_HOLD, CMD_UNHOLD,
                    CMD_MEM_READ_BYTE, CMD_MEM_READ_BLOCK,
@@ -287,16 +287,17 @@ class MainWindow(QMainWindow):
         
         self.tabs = QTabWidget()
         main_layout.addWidget(self.tabs)
-        
-        self.create_tab_control()
-        self.create_tab_data()
-        self.create_tab_hex()
-        self.create_tab_disasm()
-        self.create_tab_test()
-        self.create_tab_io_seq()
-        self.create_tab_compare()
-        self.create_tab_scripts()
-        
+        # === Новый порядок вкладок ===
+        self.create_tab_disasm()       # 0. Дизассемблер
+        self.create_tab_hex()          # 1. HEX-редактор
+        self.create_tab_emulator()     # 2. Эмулятор
+        self.create_tab_trace()        # 3. Трассировка
+        self.create_tab_scripts()      # 4. Скрипты
+        self.create_tab_control()      # 5. Управление
+        self.create_tab_data()         # 6. Данные
+        self.create_tab_test()         # 7. Тесты
+        self.create_tab_io_seq()       # 8. Секвенсор
+        self.create_tab_compare()      # 9. Сравнение
         self.lbl_log = QLabel()
         main_layout.addWidget(self.lbl_log)
         self.log_text = QTextEdit()
@@ -304,15 +305,8 @@ class MainWindow(QMainWindow):
         self.log_text.setMaximumHeight(150)
         self.log_text.setStyleSheet("font-family: Consolas, Courier New, monospace;")
         main_layout.addWidget(self.log_text)
-        
         # Подключаем сигнал изменения данных в hex-редакторе
         self.hex_model.dataEdited.connect(self.on_hex_data_changed)
-        
-        # Эмулятор
-        self.create_tab_emulator()
-        
-        # Трассировка
-        self.create_tab_trace()
         
     def update_emulator_ui(self):
         """Обновляет UI эмулятора с подсветкой изменений"""
@@ -823,16 +817,16 @@ class MainWindow(QMainWindow):
         # ============================================================
         # ВКЛАДКИ (в порядке создания)
         # ============================================================
-        self.tabs.setTabText(0, self.tr("tab_control"))    # Управление
-        self.tabs.setTabText(1, self.tr("tab_data"))       # Данные
-        self.tabs.setTabText(2, self.tr("tab_hex"))        # Hex Редактор
-        self.tabs.setTabText(3, self.tr("tab_disasm"))     # Дизассемблер
-        self.tabs.setTabText(4, self.tr("tab_test"))       # Тест Памяти
-        self.tabs.setTabText(5, self.tr("tab_io_seq"))     # IO Секвенсор
-        self.tabs.setTabText(6, self.tr("tab_compare"))    # Сравнение
-        self.tabs.setTabText(7, self.tr("tab_scripts"))    # Скрипты
-        self.tabs.setTabText(8, self.tr("tab_emulator"))   # Эмулятор
-        self.tabs.setTabText(9, self.tr("tab_trace"))      # Трассировка
+        self.tabs.setTabText(0, self.tr("tab_disasm"))     # Дизассемблер
+        self.tabs.setTabText(1, self.tr("tab_hex"))        # Hex Редактор
+        self.tabs.setTabText(2, self.tr("tab_emulator"))   # Эмулятор
+        self.tabs.setTabText(3, self.tr("tab_trace"))      # Трассировка
+        self.tabs.setTabText(4, self.tr("tab_scripts"))    # Скрипты
+        self.tabs.setTabText(5, self.tr("tab_control"))    # Управление
+        self.tabs.setTabText(6, self.tr("tab_data"))       # Данные
+        self.tabs.setTabText(7, self.tr("tab_test"))       # Тест Памяти
+        self.tabs.setTabText(8, self.tr("tab_io_seq"))     # IO Секвенсор
+        self.tabs.setTabText(9, self.tr("tab_compare"))    # Сравнение
         
         # ============================================================
         # ВКЛАДКА "УПРАВЛЕНИЕ"

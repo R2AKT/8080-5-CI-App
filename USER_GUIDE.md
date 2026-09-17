@@ -120,17 +120,16 @@ python i8080_CI.py
 
 | # | EN | RU | Purpose |
 |---|---|---|---|
-| 0 | Control | Управление | Connection, bus, files |
-| 1 | Data | Данные | Read/write memory and IO |
-| 2 | Hex Editor | Hex Редактор | View and edit memory |
-| 3 | Disassembler | Дизассемблер | Disassemble code |
-| 4 | Memory Test | Тест Памяти | Test RAM |
-| 5 | IO Sequencer | IO Секвенсор | IO sequences |
-| 6 | Comparison | Сравнение | Compare memory images |
-| 7 | Scripts | Скрипты | Automation |
-| 8 | Emulator | Эмулятор | i8080 debugger |
-| 9 | Trace Log | Трассировка | Execution trace view |
-
+| 0 | Disassembler | Дизассемблер | Disassemble code |
+| 1 | Hex Editor | Hex редактор | View and edit memory |
+| 2 | Emulator | Эмулятор | i8080 debugger |
+| 3 | Trace Log | Трассировка | Execution trace view |
+| 4 | Scripts | Скрипты | Automation |
+| 5 | Control | Управление | Connection, bus, files |
+| 6 | Data | Данные | Read/write memory and IO |
+| 7 | Memory Test | Тест памяти | Test RAM |
+| 8 | IO Sequencer | IO последовательность | IO sequences |
+| 9 | Comparison | Сравнение | Compare memory images |
 ---
 
 ## 4. Control Tab / Вкладка «Управление»

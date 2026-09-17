@@ -18,7 +18,7 @@ from .slip import (SlipProtocol, _FEND, _FESC, _TFEND, _TFESC,
                    ACK_EEPROM_READ_BYTE, ACK_EEPROM_READ_BLOCK,
                    ACK_EEPROM_WRITE_BYTE, ACK_EEPROM_WRITE_BLOCK,
                    ACK_ERROR, ACK_GET_SIZE_SETUP)
-from .i18n import LANGS
+from common.i18n import LANGS
 
 class BusWorker(QObject):
     progress = Signal(int)

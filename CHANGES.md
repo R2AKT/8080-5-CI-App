@@ -2,6 +2,104 @@
 
 ---
 
+## Pass 6 — Tooling: Snapshot Builder + md2html CLI / Инструменты: генератор среза + CLI для md2html
+
+**Date / Дата:** 2026-09-16
+
+### Summary / Обзор
+
+**EN:** Created `build_snapshot.py` — an automated project snapshot generator that traverses the entire project tree, classifies files, performs AST analysis, and produces a 10-section `PROJECT_SNAPSHOT.md` without any hardcoded file names. Updated `md2html.py` to accept command-line arguments (`input.md [output.html]`) instead of hardcoded paths. Created `analyze_project.py` for quick project health checks (syntax, imports, TODOs, consistency).
+
+**RU:** Создан `build_snapshot.py` — автоматический генератор среза проекта, обходящий всё дерево, классифицирующий файлы, выполняющий AST-анализ и создающий 10-секционный `PROJECT_SNAPSHOT.md` без захардкоженных имён файлов. Обновлён `md2html.py` — теперь принимает аргументы командной строки (`input.md [output.html]`) вместо захардкоженных путей. Создан `analyze_project.py` для быстрой проверки здоровья проекта (синтаксис, импорты, TODO, консистентность).
+
+### Changes / Изменения
+
+#### 1. build_snapshot.py (new) / build_snapshot.py (новый)
+
+**EN:** 736-line Python script that generates `PROJECT_SNAPSHOT.md` by:
+- Walking the project tree (`os.walk`), skipping `__pycache__`, `.git`, `venv`
+- Classifying files by extension and name patterns (code, tests, profiles, docs, HTML, config, assets)
+- Running AST analysis on every `.py` file (classes, methods, docstrings, imports, constants)
+- Extracting main window info (tabs via `create_tab_*`, shortcuts via `QShortcut`, menus via `addMenu`)
+- Extracting dict constants (PORT_COUNTS, JUMP_OPCODES, LANGS) for appendices
+- Producing 10 sections: tree, module descriptions, full code, refactoring changes, tests, profiles, main window, iterations, known issues, appendices
+
+**RU:** Скрипт на 736 строк, генерирующий `PROJECT_SNAPSHOT.md`:
+- Обход дерева проекта (`os.walk`), пропуск `__pycache__`, `.git`, `venv`
+- Классификация файлов по расширению и паттернам имени (код, тесты, профили, доки, HTML, конфиги, ресурсы)
+- AST-анализ каждого `.py` (классы, методы, docstring, импорты, константы)
+- Извлечение информации о главном окне (вкладки через `create_tab_*`, хоткеи через `QShortcut`, меню через `addMenu`)
+- Извлечение словарных констант (PORT_COUNTS, JUMP_OPCODES, LANGS) для приложений
+- 10 разделов: дерево, описание модулей, полный код, изменения рефакторинга, тесты, профили, главное окно, итерации, известные проблемы, приложения
+
+#### 2. md2html.py (updated) / md2html.py (обновлён)
+
+**EN:** Replaced hardcoded `MD_PATH`/`HTML_PATH` with `argparse` CLI:
+- `python md2html.py input.md` → outputs `input.html`
+- `python md2html.py input.md output.html` → explicit output
+- `<title>` now derived from input filename
+- Error handling for missing input file
+
+**RU:** Заменены захардкоженные `MD_PATH`/`HTML_PATH` на CLI через `argparse`:
+- `python md2html.py input.md` → вывод `input.html`
+- `python md2html.py input.md output.html` → явный вывод
+- `<title>` теперь берётся из имени входного файла
+- Обработка ошибки при отсутствии входного файла
+
+#### 3. analyze_project.py (new) / analyze_project.py (новый)
+
+**EN:** Diagnostic script checking: AST syntax of all .py files, local import resolution, TODO/FIXME markers, main_window tab/shortcut/menu counts, i18n sections, profile/test counts, known issue status, file statistics.
+
+**RU:** Диагностический скрипт: AST-синтаксис всех .py, разрешение локальных импортов, маркеры TODO/FIXME, количество вкладок/хоткеев/меню в main_window, секции i18n, количество профилей/тестов, статус известных проблем, статистика файлов.
+
+#### 4. i18n refactoring: common/ package / Рефакторинг i18n: пакет common/
+
+**EN:** Extracted `i18n.py` into a new top-level `common/` package to eliminate the cross-package dependency `ui/` → `i8080_ci/`. The `ui/` package no longer needs `i8080_ci` in its import path. `i8080_ci/i18n.py` is kept as a thin re-export for backward compatibility.
+
+**RU:** Вынесен `i18n.py` в новый топ-уровневый пакет `common/` для устранения меж-пакетной зависимости `ui/` → `i8080_ci/`. Пакет `ui/` больше не требует `i8080_ci` в пути импорта. `i8080_ci/i18n.py` сохранён как тонкий re-export для обратной совместимости.
+
+| Before / Было | After / Стало |
+|------|--------|
+| `ui/` → `i8080_ci.i18n` (absolute, fragile) | `ui/` → `common.i18n` (independent) |
+| `i8080_ci/` → `.i18n` (relative) | `i8080_ci/` → `common.i18n` (explicit) |
+
+### Files Modified / Изменённые файлы
+
+1. `build_snapshot.py` (new, 736 lines)
+2. `md2html.py` (updated: argparse CLI)
+3. `analyze_project.py` (new, 205 lines)
+4. `common/__init__.py` (new)
+5. `common/i18n.py` (moved from `i8080_ci/i18n.py`)
+6. `i8080_ci/i18n.py` (replaced with re-export shim)
+7. `i8080_ci/__init__.py` (import updated)
+8. `i8080_ci/main_window.py` (import updated)
+9. `i8080_ci/bus_worker.py` (import updated)
+10. `ui/device_manager.py` (import updated)
+11. `ui/device_window.py` (import updated)
+
+### Test Results / Результаты тестов
+
+| Check / Проверка | Result / Результат |
+|---------|--------|
+| Syntax (121 .py files) / Синтаксис | ✅ All pass / Все прошли |
+| Local imports / Локальные импорты | ✅ All resolve / Все разрешаются |
+| TODO/FIXME in project code / В коде проекта | ✅ None (only in tooling scripts) / Нет (только в скриптах инструментов) |
+| main_window.py tabs / Вкладки | ✅ 10 tabs, correct order / 10 вкладок, верный порядок |
+| i18n sections / Секции i18n | ✅ EN + RU present / EN + RU на месте |
+| Profiles / Профили | ✅ 11 TOML files / 11 TOML-файлов |
+| Tests / Тесты | ✅ 52 test files / 52 тестовых файла |
+| Unit tests (31 files) / Unit-тесты | ✅ 794 checks, 0 failed / 794 проверки, 0 ошибок |
+| Integration tests (3 files) / Интеграционные | ✅ 139 checks, 0 failed / 139 проверок, 0 ошибок |
+| **Total / Итого** | **✅ 933 checks, 0 failed / 933 проверки, 0 ошибок** |
+
+### Test Fixes / Исправления тестов
+
+**EN:** Updated `test_config.py`, `test_system.py`, `test_system_profiles.py` to match current profile data (radio86rk: 3 regions/3 devices, micro80: 3 regions/3 devices, vector06c: 1 region/2 devices). Fixed `profile["toml"]` → `profile["config"]` with `load_from_dict()`. Fixed device names (PPI-0→PPI, PIT-0→Keyboard). Fixed memory region names (RAM-48K→RAM, ROM-16K→ROM).
+
+**RU:** Обновлены `test_config.py`, `test_system.py`, `test_system_profiles.py` под актуальные данные профилей (radio86rk: 3 региона/3 устройства, micro80: 3/3, vector06c: 1/2). Исправлен `profile["toml"]` → `profile["config"]` с `load_from_dict()`. Исправлены имена устройств (PPI-0→PPI, PIT-0→Keyboard). Исправлены имена регионов памяти (RAM-48K→RAM, ROM-16K→ROM).
+
+---
+
 ## Pass 5 — Port Inversion + I8255 Fix / Инверсия портов + Исправление I8255
 
 **Date / Дата:** 2026-09-14

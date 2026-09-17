@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHANGES</title>
+<style>
+:root {
+    --bg: #1a1a2e;
+    --bg-alt: #16213e;
+    --text: #e0e0e0;
+    --text-muted: #a0a0a0;
+    --accent: #0f3460;
+    --accent-light: #1a5276;
+    --code-bg: #0d1117;
+    --code-text: #c9d1d9;
+    --border: #2a2a4a;
+    --nav-bg: #0f1626;
+    --table-stripe: #1e2a4a;
+    --link: #58a6ff;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding-top: 60px;
+}
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 20px;
+    z-index: 1000;
+    overflow-x: auto;
+    white-space: nowrap;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    transition: all 0.2s;
+}
+nav a:hover {
+    color: var(--text);
+    background: var(--accent);
+}
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+}
+h1 { color: #fff; margin: 30px 0 15px; font-size: 2em; border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+h2 { color: #fff; margin: 35px 0 15px; font-size: 1.5em; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+h3 { color: var(--link); margin: 25px 0 10px; font-size: 1.2em; }
+h4 { color: var(--text); margin: 20px 0 8px; font-size: 1.05em; }
+p { margin: 10px 0; }
+a { color: var(--link); }
+code {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.9em;
+    font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+}
+pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 15px;
+    overflow-x: auto;
+    margin: 15px 0;
+}
+pre code {
+    background: none;
+    padding: 0;
+    font-size: 0.85em;
+    line-height: 1.5;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 0.9em;
+}
+th {
+    background: var(--accent);
+    color: #fff;
+    padding: 10px 12px;
+    text-align: left;
+    border: 1px solid var(--border);
+}
+td {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+}
+tr:nth-child(even) td { background: var(--table-stripe); }
+ul, ol { margin: 10px 0 10px 25px; }
+li { margin: 4px 0; }
+blockquote {
+    border-left: 4px solid var(--accent-light);
+    padding: 10px 15px;
+    margin: 15px 0;
+    background: var(--bg-alt);
+    border-radius: 0 6px 6px 0;
+}
+hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 30px 0;
+}
+strong { color: #fff; }
+@media (max-width: 768px) {
+    body { padding-top: 80px; }
+    nav { padding: 8px 10px; }
+    nav a { font-size: 0.75em; padding: 3px 6px; }
+    .container { padding: 10px; }
+    h1 { font-size: 1.5em; }
+    h2 { font-size: 1.2em; }
+    table { font-size: 0.8em; }
+}
+</style>
+</head>
+<body>
+<nav>
+<a href="#pass-5--port-inversion--i8255-fix--инверсия-портов--исправление-i8255">Pass 5 — Port Inversion + I8255 Fix</a>
+<a href="#pass-4--i18n-complete--i18n-завершено">Pass 4 — i18n Complete</a>
+<a href="#pass-3--module-split--разбиение-на-модули">Pass 3 — Module Split</a>
+<a href="#pass-2--type-hints-fix--исправление-типизации">Pass 2 — Type Hints Fix</a>
+<a href="#pass-1--initial-refactoring--начальный-рефакторинг">Pass 1 — Initial Refactoring</a>
+</nav>
+<div class="container">
+<h1 id="changelog--журнал-изменений">Changelog / Журнал изменений</h1>
+<hr>
+<h2 id="pass-5--port-inversion--i8255-fix--инверсия-портов--исправление-i8255">Pass 5 — Port Inversion + I8255 Fix / Инверсия портов + Исправление I8255</h2>
+<p><strong>Date / Дата:</strong> 2026-09-14</p>
+<h3 id="summary--обзор">Summary / Обзор</h3>
+<p><strong>EN:</strong> Implemented port range inversion for Mikro-80 profile (PPI registers physically wired in reverse order). Fixed I8255 Port B direction check bug. Fixed I8255 <code>set_port_input</code> to write to <code>external_input</code>. Fixed I8276 default character attribute (0x00→0x07). Added global language state for cross-dialog i18n. 30 new test checks in <code>test_port_invert.py</code>.</p>
+<p><strong>RU:</strong> Реализована инверсия диапазона портов для профиля Микро-80 (регистры PPI физически перевёрнуты). Исправлен баг проверки направления Port B в I8255. Исправлен <code>set_port_input</code> I8255 для записи в <code>external_input</code>. Исправлен атрибут по умолчанию в I8276 (0x00→0x07). Добавлено глобальное состояние языка для меж-диалоговой i18n. 30 новых проверок в <code>test_port_invert.py</code>.</p>
+<h3 id="changes--изменения">Changes / Изменения</h3>
+<h4 id="1-port-inversion-mikro-80--инверсия-портов-микро-80">1. Port Inversion (Mikro-80) / Инверсия портов (Микро-80)</h4>
+<p><strong>EN:</strong></p>
+<p><strong>Problem:</strong> Mikro-80 hardware has I8255 PPI registers wired in reverse: CPU port 0x04 reaches device offset 3 (Ctrl) instead of offset 0 (Port A).</p>
+<p><strong>Solution:</strong> Added <code>_port_invert_map</code> to <code>MemoryBus</code> and <code>port_invert</code> option in device config profiles.</p>
+<p><strong>RU:</strong></p>
+<p><strong>Проблема:</strong> В аппаратной части Микро-80 регистры I8255 PPI перевёрнуты: CPU-порт 0x04 достигает device offset 3 (Ctrl) вместо offset 0 (Port A).</p>
+<p><strong>Решение:</strong> Добавлена <code>_port_invert_map</code> в <code>MemoryBus</code> и опция <code>port_invert</code> в профилях конфигурации устройств.</p>
+<table>
+<tr><th>File / Файл</th><th>Change / Изменение</th></tr>
+<tr><td><code>modules/memory/memory_bus.py</code></td><td>Added <code>_port_invert_map</code> dict; <code>io_read</code>/<code>io_write</code> now check it</td></tr>
+<tr><td><code>modules/system.py</code></td><td><code>_apply_config()</code>: reads <code>port_invert</code> from device config, builds map</td></tr>
+<tr><td><code>profiles/micro80.toml</code></td><td>Added <code>port_invert = true</code> to PPI device</td></tr>
+</table>
+<p><strong>Mapping (base=0x04, 4 ports):</strong></p>
+<pre><code>CPU 0x04 -> device 0x07 (Ctrl,  offset 3)
+CPU 0x05 -> device 0x06 (Port C, offset 2)
+CPU 0x06 -> device 0x05 (Port B, offset 1)
+CPU 0x07 -> device 0x04 (Port A, offset 0)
+</code></pre>
+<h4 id="2-i8255-fixes--исправления-i8255">2. I8255 Fixes / Исправления I8255</h4>
+<p><strong>EN:</strong></p>
+<ul>
+<li><strong>Port B direction bug:</strong> <code>io_read</code> checked <code>(ctrl >> 1) & 1</code> (Mode B bit) instead of <code>ctrl & 1</code> (Port B direction bit D0)</li>
+<li><strong>set_port_input:</strong> wrote to <code>port_a</code>/<code>port_b</code>/<code>port_c</code> (output registers) instead of <code>external_input</code> (which is what <code>io_read</code> reads in input mode)</li>
+</ul>
+<p><strong>RU:</strong></p>
+<ul>
+<li><strong>Баг направления Port B:</strong> <code>io_read</code> проверял <code>(ctrl >> 1) & 1</code> (бит Mode B) вместо <code>ctrl & 1</code> (бит направления Port B D0)</li>
+<li><strong>set_port_input:</strong> записывал в <code>port_a</code>/<code>port_b</code>/<code>port_c</code> (регистры вывода) вместо <code>external_input</code> (то что читает <code>io_read</code> во входном режиме)</li>
+</ul>
+<table>
+<tr><th>File / Файл</th><th>Before / Было</th><th>After / Стало</th></tr>
+<tr><td><code>modules/io/i8255.py</code></td><td><code>if (ctrl >> 1) & 1:</code></td><td><code>if ctrl & 1:</code></td></tr>
+<tr><td><code>modules/io/i8255.py</code></td><td><code>self.port_a = value</code></td><td><code>self.external_input[0] = value</code></td></tr>
+</table>
+<h4 id="3-i8276-default-attribute--атрибут-по-умолчанию-i8276">3. I8276 Default Attribute / Атрибут по умолчанию I8276</h4>
+<p><strong>EN:</strong> Changed default character attribute from 0x00 (black on black = invisible) to 0x07 (bright white on black).</p>
+<p><strong>RU:</strong> Изменён атрибут символа по умолчанию с 0x00 (чёрный на чёрном = невидимый) на 0x07 (яркий белый на чёрном).</p>
+<h4 id="4-global-language-state-i18n--глобальное-состояние-языка-i18n">4. Global Language State (i18n) / Глобальное состояние языка (i18n)</h4>
+<p><strong>EN:</strong></p>
+<p><strong>Problem:</strong> <code>DeviceManagerDialog.tr()</code> used <code>get_system_language()</code> (system locale) but didn't know about user's language selection in <code>MainWindow.lang_combo</code>.</p>
+<p><strong>Solution:</strong> Added <code>_current_lang</code> + <code>set_language()</code> to <code>i18n.py</code>.</p>
+<p><strong>RU:</strong></p>
+<p><strong>Проблема:</strong> <code>DeviceManagerDialog.tr()</code> использовал <code>get_system_language()</code> (системный locale) и не знал о выборе языка пользователем в <code>MainWindow.lang_combo</code>.</p>
+<p><strong>Решение:</strong> Добавлены <code>_current_lang</code> + <code>set_language()</code> в <code>i18n.py</code>.</p>
+<table>
+<tr><th>File / Файл</th><th>Change / Изменение</th></tr>
+<tr><td><code>i8080_ci/i18n.py</code></td><td>Added <code>_current_lang</code> global, <code>set_language(lang)</code> function</td></tr>
+<tr><td><code>i8080_ci/i18n.py</code></td><td><code>get_system_language()</code> now checks <code>_current_lang</code> first</td></tr>
+<tr><td><code>i8080_ci/main_window.py</code></td><td>Import + call <code>set_language()</code> in <code>__init__</code> and <code>on_lang_changed</code></td></tr>
+</table>
+<h4 id="5-new-tests--новые-тесты">5. New Tests / Новые тесты</h4>
+<p><strong>EN:</strong> <code>tests/test_port_invert.py</code> — 30 checks covering:</p>
+<ul>
+<li>Inversion map correctness</li>
+<li>IO read/write through inversion</li>
+<li>I8255 Port A input mode via inverted bus</li>
+<li>Keyboard8x8 + port_invert full integration (press/release key)</li>
+<li>Reset behavior (new bus = clean map)</li>
+<li>Full profile loading (micro80)</li>
+</ul>
+<p>Also: <code>tests/test_system_integration.py</code> rewritten (54 checks) with correct device names and logical test flow.</p>
+<p><strong>RU:</strong> <code>tests/test_port_invert.py</code> — 30 проверок:</p>
+<ul>
+<li>Корректность карты инверсии</li>
+<li>IO read/write через инверсию</li>
+<li>I8255 Port A во входном режиме через инвертированную шину</li>
+<li>Keyboard8x8 + port_invert полная интеграция (нажатие/отпускание клавиши)</li>
+<li>Поведение Reset (новая шина = чистая карта)</li>
+<li>Полная загрузка профиля (micro80)</li>
+</ul>
+<p>Также: <code>tests/test_system_integration.py</code> переписан (54 проверки) с корректными именами устройств и логической структурой.</p>
+<h3 id="files-modified--изменённые-файлы">Files Modified / Изменённые файлы</h3>
+<ol>
+<li><code>modules/memory/memory_bus.py</code> — <code>_port_invert_map</code> in <code>__init__</code>, <code>io_read</code>, <code>io_write</code></li>
+<li><code>modules/system.py</code> — port inversion setup in <code>_apply_config()</code></li>
+<li><code>modules/io/i8255.py</code> — Port B direction fix (bit 0), set_port_input fix</li>
+<li><code>modules/io/i8276.py</code> — default attribute 0x00→0x07</li>
+<li><code>i8080_ci/i18n.py</code> — <code>set_language()</code>, global state, dm_* key fixes</li>
+<li><code>i8080_ci/main_window.py</code> — <code>set_language()</code> calls</li>
+<li><code>tests/test_port_invert.py</code> — NEW (30 checks)</li>
+<li><code>tests/test_system_integration.py</code> — REWRITTEN (54 checks)</li>
+<li><code>profiles/micro80.toml</code> — <code>port_invert = true</code> added</li>
+</ol>
+<h3 id="test-results--результаты-тестов">Test Results / Результаты тестов</h3>
+<pre><code>test_port_invert.py:         30/30 PASS (new)
+test_i8255.py:               17/17 PASS
+test_i8276.py:               32/32 PASS
+test_system_integration.py:  54/54 PASS (rewritten)
+test_interrupts.py:          12/12 PASS
+test_integration_full.py:    31/31 PASS
+test_i8253.py:               26/26 PASS
+test_i8259.py:               25/25 PASS
+test_i8251.py:               14/14 PASS
+test_i8279.py:               35/35 PASS
+... (30 files total, 767 checks)
+</code></pre>
+<hr>
+<h2 id="pass-4--i18n-complete--i18n-завершено">Pass 4 — i18n Complete / i18n Завершено</h2>
+<p><strong>Date / Дата:</strong> 2026-09-08</p>
+<h3 id="summary--обзор">Summary / Обзор</h3>
+<p><strong>EN:</strong> Fixed all 26 i18n issues identified in I18N_AUDIT.md. All UI strings now properly support RU/EN language switching. Added 11 new keys, fixed 8 status labels, fixed 2 local variable bugs, fixed 1 format bug.</p>
+<p><strong>RU:</strong> Исправлены все 26 проблем i18n, выявленные в I18N_AUDIT.md. Все UI-строки теперь корректно поддерживают переключение RU/EN. Добавлено 11 новых ключей, исправлено 8 статусных меток, исправлены 2 бага с локальными переменными, исправлен 1 форматный баг.</p>
+<h3 id="changes--изменения">Changes / Изменения</h3>
+<ul>
+<li>Added 11 new keys to LANGS (both EN and RU): <code>endian_little</code>, <code>endian_big</code>, <code>test_pattern_checker</code>, <code>test_pattern_zero</code>, <code>test_pattern_one</code>, <code>test_pattern_addr</code>, <code>mcp_off</code>, <code>mcp_on</code>, <code>bus_active</code>, <code>bus_free</code>, <code>search_placeholder</code></li>
+<li>Fixed 8 status/label strings that weren't updated on language switch</li>
+<li>Fixed 2 bugs with local variables (<code>devices_menu</code>, <code>act_device_manager</code>)</li>
+<li>Fixed 1 format bug (<code>status_label_size</code>)</li>
+<li>Fixed combo boxes (theme, endianness x2, test pattern) to use <code>tr()</code></li>
+<li>Fixed MCP button initial text and toggle handler</li>
+<li>Fixed trace search placeholder (was hardcoded Russian)</li>
+<li>Added full <code>retranslate_ui</code> coverage for all previously-missed widgets</li>
+</ul>
+<h3 id="files-modified--изменённые-файлы">Files Modified / Изменённые файлы</h3>
+<ol>
+<li><code>i8080_ci/i18n.py</code> — 11 new keys per language</li>
+<li><code>i8080_ci/main_window.py</code> — 26 fixes across init, retranslate_ui, handlers</li>
+<li><code>i8080_ci/views/search.py</code> — placeholder + retranslate fix</li>
+</ol>
+<hr>
+<h2 id="pass-3--module-split--разбиение-на-модули">Pass 3 — Module Split / Разбиение на модули</h2>
+<p><strong>Date / Дата:</strong> 2026-09-08</p>
+<h3 id="summary--обзор">Summary / Обзор</h3>
+<p><strong>EN:</strong> Split the monolithic <code>i8080_CI.py</code> (6,517 lines) into a modular <code>i8080_ci/</code> package (18 files). <code>MainWindow</code> remains monolithic in <code>main_window.py</code>. All imports verified, application launches successfully.</p>
+<p><strong>RU:</strong> Разбит монолитный <code>i8080_CI.py</code> (6 517 строк) на модульный пакет <code>i8080_ci/</code> (18 файлов). <code>MainWindow</code> остался монолитным в <code>main_window.py</code>. Все импорты верифицированы, приложение запускается успешно.</p>
+<h3 id="new-package-structure--новая-структура-пакета">New Package Structure / Новая структура пакета</h3>
+<pre><code>i8080_CI.py                # Entry point / Точка входа (15 lines, was 6,517)
+i8080_ci/
+│   __init__.py            # Package exports / Экспорт пакета
+│   i18n.py                # LANGS + THEMES + get_system_language()
+│   slip.py                # SLIP constants + SlipProtocol
+│   intelhex.py            # IntelHex parse/generate
+│   disassembler.py        # JUMP_OPCODES + I8080Disassembler
+│   bus_worker.py          # BusWorker (QThread serial communication)
+│   automation.py          # AutomationAPI (script interface)
+│   main_window.py         # MainWindow (monolithic / монолитный)
+│   models/
+┃       hex_model.py       # HexModel (QAbstractTableModel)
+┃       watch_model.py     # WatchModel (QAbstractTableModel)
+┃       bp_model.py        # BreakpointModel (QAbstractTableModel)
+┃       trace_model.py     # TraceModel (QAbstractTableModel)
+│   views/
+┃       disasm_view.py     # DisasmView (QWidget)
+┃       hex_view.py        # HexTableView (QTableView)
+┃       search.py          # SearchDialog (QDialog)
+</code></pre>
+<h3 id="key-decisions--ключевые-решения">Key Decisions / Ключевые решения</h3>
+<table>
+<tr><th>Decision / Решение</th><th>Rationale / Обоснование</th></tr>
+<tr><td>MainWindow stays monolithic / MainWindow остаётся монолитным</td><td>Avoids high-risk mixin refactoring (120+ interdependent methods)</td></tr>
+<tr><td>No circular deps / Нет циклических зависимостей</td><td>MainWindow imports from package; nothing imports from main_window</td></tr>
+<tr><td>Duck typing preserved / Duck typing сохранён</td><td>AutomationAPI accepts main_window without import</td></tr>
+<tr><td>Lazy imports preserved / Lazy imports сохранены</td><td>memory_bus.py, device_config.py unchanged</td></tr>
+</table>
+<h3 id="verification--верификация">Verification / Верификация</h3>
+<table>
+<tr><th>Check / Проверка</th><th>Result / Результат</th></tr>
+<tr><td>18/18 files syntax valid / 18/18 файлов синтаксически валидны</td><td>PASS</td></tr>
+<tr><td>All module imports / Все импорты модулей</td><td>PASS</td></tr>
+<tr><td>Application launch / Запуск приложения</td><td>PASS</td></tr>
+<tr><td>test_memory_bus.py</td><td>PASS</td></tr>
+<tr><td>test_memory_models.py</td><td>PASS (21/21)</td></tr>
+</table>
+<hr>
+<h2 id="pass-2--type-hints-fix--исправление-типизации">Pass 2 — Type Hints Fix / Исправление типизации</h2>
+<p><strong>Date / Дата:</strong> 2026-09-08</p>
+<h3 id="summary--обзор">Summary / Обзор</h3>
+<p><strong>EN:</strong> Full analysis and targeted refactoring. 14 type hint fixes applied across 2 files. README.md created (merged from README_OLD.md + README_NEW.md). ANALYSIS.md updated.</p>
+<p><strong>RU:</strong> Полный анализ и целенаправленный рефакторинг. 14 исправлений type hints в 2 файлах. README.md создан (объединён из README_OLD.md + README_NEW.md). ANALYSIS.md обновлён.</p>
+<h3 id="type-hints-fixed--исправленная-типизация">Type Hints Fixed / Исправленная типизация</h3>
+<p><strong>modules/system.py:</strong></p>
+<table>
+<tr><th>Method / Метод</th><th>Change / Изменение</th></tr>
+<tr><td><code>_IOPortsAdapter.__init__</code></td><td>Added <code>-> None</code></td></tr>
+<tr><td><code>_IOPortsAdapter.__getitem__</code></td><td><code>(self, port)</code> → <code>(self, port: int) -> int</code></td></tr>
+<tr><td><code>_IOPortsAdapter.__setitem__</code></td><td><code>(self, port, value)</code> → <code>(self, port: int, value: int) -> None</code></td></tr>
+<tr><td><code>_IOPortsAdapter.__contains__</code></td><td><code>(self, port)</code> → <code>(self, port: int) -> bool</code></td></tr>
+<tr><td><code>ComputerSystem.get_device</code></td><td>Added <code>-> object</code></td></tr>
+<tr><td><code>ComputerSystem.list_devices</code></td><td><code>-> list[str]</code> → <code>-> list[dict]</code> (was incorrect)</td></tr>
+<tr><td><code>ComputerSystem.save_all_nvram</code></td><td><code>-> None</code> → <code>-> list[str]</code> (was returning a list)</td></tr>
+<tr><td><code>ComputerSystem.load_all_nvram</code></td><td><code>-> None</code> → <code>-> list[str]</code> (was returning a list)</td></tr>
+<tr><td><code>ComputerSystem._apply_device_params</code></td><td><code>(self, device, config)</code> → <code>(self, device: object, config: dict)</code></td></tr>
+<tr><td><code>ComputerSystem._get_interrupt_vector</code></td><td><code>device</code> → <code>device: object</code></td></tr>
+</table>
+<p><strong>modules/memory/memory_bus.py:</strong></p>
+<table>
+<tr><th>Method / Метод</th><th>Change / Изменение</th></tr>
+<tr><td><code>MemoryRegion.__init__</code></td><td>Added full type annotations</td></tr>
+<tr><td><code>RAMRegion.__init__</code></td><td>Added full type annotations</td></tr>
+<tr><td><code>ROMRegion.__init__</code></td><td>Added full type annotations</td></tr>
+<tr><td><code>MemoryBus.add_mmio_region</code></td><td><code>region</code> → <code>region: object</code></td></tr>
+</table>
+<h3 id="documentation--документация">Documentation / Документация</h3>
+<ul>
+<li><strong>README.md</strong> — Created: unified bilingual merge of README_OLD.md and README_NEW.md</li>
+<li><strong>ANALYSIS.md</strong> — Updated with pass 2 findings, corrected metrics</li>
+<li><strong>README_OLD.md</strong> / <strong>README_NEW.md</strong> — Preserved for reference</li>
+</ul>
+<hr>
+<h2 id="pass-1--initial-refactoring--начальный-рефакторинг">Pass 1 — Initial Refactoring / Начальный рефакторинг</h2>
+<p><strong>Date / Дата:</strong> 2026-09-08</p>
+<h3 id="summary--обзор">Summary / Обзор</h3>
+<p><strong>EN:</strong> 16 changes applied across 12 files. All changes verified with <code>ast.parse()</code>.</p>
+<p><strong>RU:</strong> 16 изменений в 12 файлах. Все изменения верифицированы через <code>ast.parse()</code>.</p>
+<h3 id="p0--critical-fixes--критические-исправления">P0 — Critical Fixes / Критические исправления</h3>
+<h4 id="exception-handling-file-io--обработка-исключений-файловый-io">Exception Handling: File I/O / Обработка исключений: Файловый I/O</h4>
+<p><strong>EN:</strong> Changed <code>except Exception:</code> to <code>except OSError:</code> in 9 occurrences across 5 files.</p>
+<p><strong>RU:</strong> Заменено <code>except Exception:</code> на <code>except OSError:</code> в 9 местах в 5 файлах.</p>
+<table>
+<tr><th>File / Файл</th><th>Method / Метод</th><th>Change / Изменение</th></tr>
+<tr><td><code>modules/config/device_config.py</code></td><td><code>_load_rom_file</code></td><td><code>Exception</code> → <code>OSError</code></td></tr>
+<tr><td><code>modules/io/cf_ide.py</code></td><td><code>_read_sector</code></td><td><code>Exception</code> → <code>OSError</code></td></tr>
+<tr><td><code>modules/io/cf_ide.py</code></td><td><code>_write_sector</code></td><td><code>Exception</code> → <code>OSError</code></td></tr>
+<tr><td><code>modules/io/ch376s.py</code></td><td><code>read_sector</code></td><td><code>Exception</code> → <code>OSError</code></td></tr>
+<tr><td><code>modules/io/ch376s.py</code></td><td><code>write_sector</code></td><td><code>Exception</code> → <code>OSError</code></td></tr>
+<tr><td><code>modules/io/i512vi1.py</code></td><td><code>load_nvm</code></td><td><code>Exception</code> → <code>OSError</code></td></tr>
+<tr><td><code>modules/io/i512vi1.py</code></td><td><code>save_nvm</code></td><td><code>Exception</code> → <code>OSError</code></td></tr>
+<tr><td><code>modules/io/i8272.py</code></td><td><code>load_from_file</code></td><td><code>Exception</code> → <code>(OSError, ValueError)</code></td></tr>
+<tr><td><code>modules/io/i8272.py</code></td><td><code>save_to_file</code></td><td><code>Exception</code> → <code>OSError</code></td></tr>
+</table>
+<h4 id="mcp-server-thread-safety--потокобезопасность-mcp-сервера">MCP Server Thread Safety / Потокобезопасность MCP-сервера</h4>
+<p><strong>EN:</strong></p>
+<ul>
+<li>Removed debug comments from <code>stop_event</code></li>
+<li>Renamed <code>stop_event</code> → <code>_stop_event</code> (private by convention)</li>
+<li><code>stop()</code>: Added idempotency guard, timeout increased from 2s to 5s</li>
+<li><code>stop()</code>: Sets <code>self.thread = None</code> after join to prevent double-join</li>
+<li><code>_run_server()</code>: Suppresses error log on graceful shutdown</li>
+<li>Added type hints</li>
+</ul>
+<p><strong>RU:</strong></p>
+<ul>
+<li>Удалены debug-комментарии из <code>stop_event</code></li>
+<li>Переименовано <code>stop_event</code> → <code>_stop_event</code> (частный по конвенции)</li>
+<li><code>stop()</code>: Добавлена идемпотентность, таймаут увеличен с 2с до 5с</li>
+<li><code>stop()</code>: Устанавливает <code>self.thread = None</code> после join</li>
+<li><code>_run_server()</code>: Подавляет лог ошибок при штатном останове</li>
+<li>Добавлены type hints</li>
+</ul>
+<h3 id="p1--structural-improvements--структурные-улучшения">P1 — Structural Improvements / Структурные улучшения</h3>
+<h4 id="dead-code-removal--удаление-мёртвого-кода">Dead Code Removal / Удаление мёртвого кода</h4>
+<p><strong>EN:</strong> 90 lines removed across 4 files.</p>
+<p><strong>RU:</strong> 90 строк удалено в 4 файлах.</p>
+<table>
+<tr><th>File / Файл</th><th>Removed / Удалено</th><th>Reason / Причина</th></tr>
+<tr><td><code>modules/io/i8255.py</code></td><td>26 lines</td><td>Old <code>io_read</code> implementation</td></tr>
+<tr><td><code>modules/io/i8257.py</code></td><td>5 lines</td><td>Old <code>io_write</code> stub</td></tr>
+<tr><td><code>modules/io/keyboard8x8.py</code></td><td>12 lines</td><td>Old <code>get_state</code></td></tr>
+<tr><td><code>ui/display_widgets.py</code></td><td>47 lines</td><td>Old <code>paintEvent</code></td></tr>
+</table>
+<h4 id="dry-device_configpy--dry-device_configpy">DRY: device_config.py / DRY: device_config.py</h4>
+<p><strong>EN:</strong> Extracted repeated parameter-apply patterns into <code>_apply_optional_params()</code> static helper. Used in 3 places.</p>
+<p><strong>RU:</strong> Выделены повторяющиеся паттерны применения параметров в статический helper <code>_apply_optional_params()</code>. Используется в 3 местах.</p>
+<h4 id="type-hints-added--добавленные-type-hints">Type Hints Added / Добавленные type hints</h4>
+<table>
+<tr><th>File / Файл</th><th>Methods annotated / Методы с аннотациями</th></tr>
+<tr><td><code>mcp_server.py</code></td><td><code>__init__</code>, <code>_create_server</code>, <code>_run_server</code>, <code>stop</code></td></tr>
+<tr><td><code>modules/system.py</code></td><td>9 methods</td></tr>
+<tr><td><code>modules/config/device_config.py</code></td><td>All public methods</td></tr>
+<tr><td><code>modules/memory/memory_bus.py</code></td><td>5 methods</td></tr>
+</table>
+<h3 id="files-modified--изменённые-файлы">Files Modified / Изменённые файлы</h3>
+<ol>
+<li><code>mcp_server.py</code></li>
+<li><code>modules/config/device_config.py</code></li>
+<li><code>modules/io/cf_ide.py</code></li>
+<li><code>modules/io/ch376s.py</code></li>
+<li><code>modules/io/i512vi1.py</code></li>
+<li><code>modules/io/i8272.py</code></li>
+<li><code>modules/io/i8255.py</code></li>
+<li><code>modules/io/i8257.py</code></li>
+<li><code>modules/io/keyboard8x8.py</code></li>
+<li><code>ui/display_widgets.py</code></li>
+<li><code>modules/system.py</code></li>
+<li><code>modules/memory/memory_bus.py</code></li>
+</ol>
+</div>
+</body>
+</html>

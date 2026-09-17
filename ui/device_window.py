@@ -26,7 +26,7 @@ class DeviceWindow(QWidget):
 
     def tr(self, key: str, **kwargs) -> str:
         """Translate a key."""
-        from i8080_ci.i18n import LANGS, get_system_language
+        from common.i18n import LANGS, get_system_language
         lang = get_system_language()
         text = LANGS.get(lang, {}).get(key, key)
         if kwargs:
