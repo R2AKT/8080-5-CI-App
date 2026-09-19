@@ -1,9 +1,8 @@
 """Тест BankedRegion"""
 import sys
 sys.path.insert(0, '.')
-from modules.memory.memory_bus import IOBus, MemoryBus
+from modules.memory.memory_bus import MemoryBus
 from modules.memory.banked import BankedRegion
-from modules.memory.shadow import ShadowROMRegion
 
 print("=" * 60)
 print(" ТЕСТ BankedRegion")
@@ -42,7 +41,7 @@ bus2.register_memory(banked2)
 bus2.write(0x0200, 0xCC)  # Запись в банк 0
 bus2.write(0xFFFE, 1)      # Переключение на банк 1
 assert banked2.current_bank == 1, f"Ожидался банк 1, получен {banked2.current_bank}"
-assert bus2.read(0x0200) == 0x00, f"Банк 1 должен быть пуст"
+assert bus2.read(0x0200) == 0x00, "Банк 1 должен быть пуст"
 print("✅ Тест 5: Переключение по адресу памяти")
 
 # Тест 6: Карта памяти

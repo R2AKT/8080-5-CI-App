@@ -1,6 +1,6 @@
 """Hex table view with context menu."""
-from PySide6.QtWidgets import QTableView, QApplication, QInputDialog, QMenu, QToolTip
-from PySide6.QtCore import Qt, QEvent, Signal
+from PySide6.QtWidgets import QApplication, QTableView, QInputDialog, QMenu, QToolTip
+from PySide6.QtCore import QEvent, Signal
 
 class HexTableView(QTableView):
     editOperation = Signal(list)  # ← Добавлено: [(addr, old_val, new_val), ...]
@@ -101,7 +101,6 @@ class HexTableView(QTableView):
         menu.exec(event.globalPos())
         
     def copy_to_clipboard(self, text):
-        from PySide6.QtWidgets import QApplication
         QApplication.clipboard().setText(text)
         
     def invert_byte(self, addr):

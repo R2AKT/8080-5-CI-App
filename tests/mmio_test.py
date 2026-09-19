@@ -15,12 +15,12 @@ print("=" * 60)
 print("MMIO МЕХАНИЗМ — СТАТУС")
 print("=" * 60)
 
-print(f"\n📊 Статистика:")
+print("\n📊 Статистика:")
 print(f"   MMIO регионов: {len(bus._mmio_regions)}")
 print(f"   MMIO маппингов: {len(bus._mmio_index)}")
 
 if bus._mmio_regions:
-    print(f"\n📋 Список MMIO регионов:")
+    print("\n📋 Список MMIO регионов:")
     for i, region in enumerate(bus._mmio_regions, 1):
         print(f"\n   [{i}] Регион '{region.name}':")
         print(f"       Устройство: {region._device_name}")
@@ -92,14 +92,14 @@ else:
             read_back.append(' ')
     
     read_message = ''.join(read_back)
-    print(f"\n🔍 Проверка:")
+    print("\n🔍 Проверка:")
     print(f"   Записано:  '{test_message}'")
     print(f"   Прочитано: '{read_message}'")
     
     if test_message == read_message:
-        print(f"   ✅ Сообщения совпадают!")
+        print("   ✅ Сообщения совпадают!")
     else:
-        print(f"   ⚠️  Сообщения различаются")
+        print("   ⚠️  Сообщения различаются")
 
 # =============================================
 # ЧАСТЬ 3: Итог
@@ -113,11 +113,11 @@ if bus._mmio_index:
     print(f"   Активных маппингов: {len(bus._mmio_index)}")
     
     # Показываем первые 3 адреса из индекса
-    print(f"\n   Примеры маппингов:")
+    print("\n   Примеры маппингов:")
     for i, (addr, (device, port)) in enumerate(list(bus._mmio_index.items())[:3], 1):
         print(f"   {i}. Адрес 0x{addr:04X} → {device.name} порт 0x{port:02X}")
 else:
     print("\n⚠️  MMIO индекс пуст — маппинги не настроены")
 
-print(f"\n📺 Откройте окно устройства из Диспетчера")
+print("\n📺 Откройте окно устройства из Диспетчера")
 print("=" * 60)

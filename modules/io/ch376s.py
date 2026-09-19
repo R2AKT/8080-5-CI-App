@@ -38,7 +38,6 @@ CH376S — USB-контроллер для работы с USB Mass Storage ус
     0x02: GET_STATUS — статус
 """
 from .iodevice import IODevice
-from collections import deque
 import os
 
 # =============================================

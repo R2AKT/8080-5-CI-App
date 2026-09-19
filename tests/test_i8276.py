@@ -1,5 +1,5 @@
 """Тест I8276 CRT-контроллера (итерация E5)"""
-from modules.memory.memory_bus import MemoryBus, RAMRegion
+from modules.memory.memory_bus import MemoryBus
 from modules.io.i8276 import I8276
 
 passed = 0

@@ -117,10 +117,3 @@ class Cube3D:
             "port_z": self._port_z,
         }
 
-    def set_always_on_top(self, enabled):
-        flags = self.windowFlags()
-        if enabled:
-            self.setWindowFlags(flags | Qt.WindowStaysOnTopHint)
-        else:
-            self.setWindowFlags(flags & ~Qt.WindowStaysOnTopHint)
-        self.show()

@@ -1,5 +1,5 @@
 """Execution trace table model."""
-from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex
+from PySide6.QtCore import Qt, QAbstractTableModel
 from PySide6.QtGui import QColor
 from ..i18n import LANGS
 from ..disassembler import JUMP_OPCODES

@@ -68,7 +68,7 @@ class DeviceConfig:
         try:
             data = tomllib.loads(toml_string)
             self._parse(data)
-        except Exception as e:
+        except Exception:
             # При ошибке парсинга создаём пустую конфигурацию
             self.system_name = "Empty System"
             self.cpu = "i8080"

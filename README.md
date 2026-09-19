@@ -241,16 +241,23 @@ Profile files / Файлы профилей: `profiles/` (TOML format / TOML-ф�
 
 ## Testing / Тестирование
 
-**EN:** 30 test files, 767 checks, 100% pass rate.
+**EN:** 33 unit-test files (871 checks) via `run_tests.py`, plus zasm reference
+comparison (15/15 byte-identical), the 69-file ASM_FOR_TEST suite, and GUI smoke
+tests. 100% pass rate.
 
-**RU:** 30 файлов тестов, 767 проверок, 100% прохождение.
+**RU:** 33 файла юнит-тестов (871 проверок) через `run_tests.py`, плюс сравнение с
+эталонами zasm (15/15 побайтово), набор ASM_FOR_TEST (69 файлов) и GUI smoke-тесты.
+100% прохождение.
 
 ```bash
-# Run all tests / Запустить все тесты
-pytest tests/
+# Run all unit tests / Запустить все юнит-тесты
+python run_tests.py
+
+# Run zasm reference comparison / Сравнение с эталонами zasm
+python tests/test_bin_compare.py
 
 # Run a specific test file / Запустить конкретный файл тестов
-pytest tests/test_i8255.py -v
+python tests/test_i8255.py
 
 # Run emulator standalone / Запустить эмулятор самостоятельно
 python i8080_emulator.py

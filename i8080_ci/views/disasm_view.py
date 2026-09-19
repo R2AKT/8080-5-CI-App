@@ -1,9 +1,8 @@
 """Custom disassembly view with syntax highlighting."""
 from PySide6.QtWidgets import QWidget, QMenu
-from PySide6.QtCore import Qt, QEvent, QRect, Signal
-from PySide6.QtGui import QFont, QColor, QPainter, QPen, QBrush
+from PySide6.QtCore import Qt, QRect, Signal
+from PySide6.QtGui import QFont, QColor, QPainter, QPen
 from ..i18n import LANGS
-from ..disassembler import JUMP_OPCODES
 
 class DisasmView(QWidget):
     toggleBreakpoint = Signal(int)  # Сигнал для установки/удаления breakpoint

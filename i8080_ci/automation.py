@@ -1,21 +1,17 @@
 """Automation API for external control."""
+import time
+
 from PySide6.QtWidgets import QApplication
-from .slip import (CMD_NOP, CMD_HOLD, CMD_UNHOLD,
+from .intelhex import IntelHex
+from .slip import (CMD_HOLD, CMD_UNHOLD,
                    CMD_MEM_READ_BYTE, CMD_MEM_READ_BLOCK,
                    CMD_MEM_WRITE_BYTE, CMD_MEM_WRITE_BLOCK,
-                   CMD_IO_READ_BYTE, CMD_IO_READ_BLOCK,
-                   CMD_IO_WRITE_BYTE, CMD_IO_WRITE_BLOCK,
+                   CMD_IO_READ_BYTE, CMD_IO_WRITE_BYTE,
                    CMD_EEPROM_WRITE_BYTE, CMD_EEPROM_WRITE_BLOCK,
-                   CMD_GET_SIZE_SETUP,
-                   ACK_NOP, ACK_HOLD_WAIT_LOW, ACK_HOLD_WAIT_HIGH,
-                   ACK_HOLD_ACTIVE, ACK_WAIT_UNHOLD, ACK_UNHOLD,
                    ACK_MEM_READ_BYTE, ACK_MEM_READ_BLOCK,
                    ACK_MEM_WRITE_BYTE, ACK_MEM_WRITE_BLOCK,
-                   ACK_IO_READ_BYTE, ACK_IO_READ_BLOCK,
-                   ACK_IO_WRITE_BYTE, ACK_IO_WRITE_BLOCK,
-                   ACK_EEPROM_READ_BYTE, ACK_EEPROM_READ_BLOCK,
-                   ACK_EEPROM_WRITE_BYTE, ACK_EEPROM_WRITE_BLOCK,
-                   ACK_ERROR, ACK_GET_SIZE_SETUP)
+                   ACK_IO_READ_BYTE, ACK_IO_WRITE_BYTE,
+                   ACK_EEPROM_WRITE_BYTE, ACK_EEPROM_WRITE_BLOCK)
 
 class AutomationAPI:
     """API для автоматизации работы с программой из скриптов
@@ -29,6 +25,7 @@ class AutomationAPI:
     def __init__(self, main_window):
         self.mw = main_window
         self.system = main_window.system
+        self._last_asm_result = None
         
     # =============================================
     # ПРОВЕРКИ СОСТОЯНИЯ
@@ -583,5 +580,61 @@ class AutomationAPI:
         except Exception as e:
             raise RuntimeError(f"Ошибка экспорта: {e}")
 		
+    # =============================================
+    # АССЕМБЛЕР
+    # =============================================
+    def _check_assembler(self):
+        """Проверяет, что виджет ассемблера создан"""
+        if not hasattr(self.mw, 'assembler_widget') or self.mw.assembler_widget is None:
+            raise RuntimeError("Виджет ассемблера не создан")
+        return self.mw.assembler_widget
+
+    def asm_get_source(self):
+        """Вернуть исходный код из редактора ассемблера."""
+        return self._check_assembler().editor.toPlainText()
+
+    def asm_set_source(self, source):
+        """Установить исходный код в редактор ассемблера."""
+        self._check_assembler().editor.setPlainText(source)
+
+    def asm_load_file(self, path):
+        """Загрузить .asm файл в редактор ассемблера. Возвращает текст."""
+        with open(path, 'r', encoding='utf-8') as f:
+            source = f.read()
+        self.asm_set_source(source)
+        return source
+
+    def asm_assemble(self, source=None, load_to_memory=False):
+        """Ассемблировать код (из редактора или из параметра source).
+
+        Возвращает AsmResult (binary, origin, symbols, errors, warnings).
+        При load_to_memory=True результат загружается в память эмулятора.
+        """
+        widget = self._check_assembler()
+        if source is not None:
+            widget.editor.setPlainText(source)
+        else:
+            source = widget.editor.toPlainText()
+        result = widget.assembler.assemble(source)
+        self._last_asm_result = result
+        if result.errors:
+            return result
+        if load_to_memory and result.binary:
+            widget._load_to_memory(result.binary, result.origin)
+        return result
+
+    def asm_get_binary(self):
+        """Вернуть бинарный результат последней сборки (bytes)."""
+        if not hasattr(self, '_last_asm_result') or self._last_asm_result is None:
+            raise RuntimeError("Сначала вызовите asm_assemble()")
+        return bytes(self._last_asm_result.binary)
+
+    def asm_get_symbols(self):
+        """Вернуть словарь меток последней сборки {имя: адрес}."""
+        if not hasattr(self, '_last_asm_result') or self._last_asm_result is None:
+            raise RuntimeError("Сначала вызовите asm_assemble()")
+        return dict(self._last_asm_result.symbols)
+
+
 # ==================== РАБОЧИЙ ПОТОК ====================
 

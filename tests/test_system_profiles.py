@@ -1,5 +1,5 @@
 """Тест профилей систем (итерация 9.2)"""
-from modules.config.system_profiles import SYSTEM_PROFILES, get_profile, get_profile_names
+from modules.config.system_profiles import get_profile, get_profile_names
 from modules.config.device_config import DeviceConfig, DeviceFactory
 
 passed = 0

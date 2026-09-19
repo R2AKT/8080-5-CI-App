@@ -1,9 +1,6 @@
 """Тест ComputerSystem — полная интеграция (итерация 9.3)"""
 from modules.system import ComputerSystem
-from modules.config.system_profiles import get_profile_names
 from modules.io.i8255 import I8255
-from modules.io.i8253 import I8253
-from modules.io.lcd1602 import LCD1602
 
 passed = 0
 failed = 0

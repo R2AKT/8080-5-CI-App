@@ -10,10 +10,10 @@
 """
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QTextEdit,
-    QLineEdit, QPushButton, QLabel, QCheckBox, QGroupBox
+    QLineEdit, QPushButton, QLabel, QCheckBox
 )
-from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QFont, QTextCursor, QColor
+from PySide6.QtCore import Signal
+from PySide6.QtGui import QFont, QTextCursor
 
 
 class SerialTerminalWidget(QWidget):

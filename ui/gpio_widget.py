@@ -5,7 +5,7 @@
 Двунаправленный режим (порт A, режим 2) — оба активны и разделены.
 """
 from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
+    QWidget, QVBoxLayout, QGridLayout,
     QLabel, QGroupBox, QCheckBox, QFrame
 )
 from PySide6.QtCore import Qt, QTimer

@@ -272,7 +272,7 @@ class CharGenerator:
             # self.log(f"[CharGen] ✅ Загружен шрифт {num_chars}×{width}×{height}, "
                   # f"invert={invert}, reverse={bit_reverse} из {path}")
             return True
-        except Exception as e:
+        except Exception:
             # print(f"[CharGen] ⚠ Ошибка загрузки {path}: {e}")
             # self.log(f"[CharGen] ⚠ Ошибка загрузки {path}: {e}")
             return False

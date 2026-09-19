@@ -31,7 +31,6 @@
   0x83: Load Cursor Position
 """
 from .iodevice import IODevice
-from .chargen import get_char_generator
 
 class I8275(IODevice):
     """8275 (КР580ВГ75) — CRT-контроллер"""
@@ -196,7 +195,6 @@ class I8275(IODevice):
     def _write_command(self, value):
         """Запись команды (бит 7 = 1)"""
         self._current_command = value
-        cmd = value & 0x7F
 
         if value == self.CMD_STOP_DISPLAY:
             self.display_enabled = False

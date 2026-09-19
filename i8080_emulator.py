@@ -246,9 +246,9 @@ class I8080Emulator(QObject):
         
     def _alu_and(self, value) -> None:
         """Логическое И (для ANA, ANI)"""
-        # AC устанавливается, если бит 3 любого операнда = 1
-        self.flag_ac = bool((self.a | value) & 0x08)
         self.a &= value
+        # AC устанавливается, если бит 3 РЕЗУЛЬТАТА = 1 (по спецификации 8080)
+        self.flag_ac = bool(self.a & 0x08)
         self.flag_cy = False
         self.set_flags(self.a)
         
@@ -751,7 +751,7 @@ class I8080Emulator(QObject):
             
         # Неизвестный опкод
         else:
-            self.log_message.emit(f"Unimplemented opcode: 0x{opcode:02X} at 0x{pc_start:04X}")
+            self.log_message.emit(f"Unimplemented opcode: 0x{opcode:02X} at 0x{(self.pc - 1) & 0xFFFF:04X}")
             self.halted = True
             
     def _get_cycles(self, opcode) -> int:

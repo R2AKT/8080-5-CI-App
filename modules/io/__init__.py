@@ -1,4 +1,6 @@
 """IO-устройства для i8080-5 CI."""
+__all__ = ['IODevice', 'I8251', 'I8253', 'I8255', 'I8257', 'I8237', 'I8259', 'I8259A', 'I8272', 'I8275', 'I8276', 'I8279', 'I16550', 'I512VI1', 'CFIDE', 'CH376S', 'AM9511', 'LCD1602', 'LCD2004', 'TFT8080']
+
 from .iodevice import IODevice
 from .i8251 import I8251
 from .i8253 import I8253

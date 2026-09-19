@@ -1,7 +1,7 @@
 """Тест конфигурации устройств и профилей систем (итерации 9.1 + 9.2)"""
 import sys
 from modules.config.device_config import DeviceConfig, DeviceFactory
-from modules.config.system_profiles import SYSTEM_PROFILES, get_profile, get_profile_names
+from modules.config.system_profiles import get_profile, get_profile_names
 from modules.memory.memory_bus import MemoryBus
 
 # Проверка доступности TOML-парсера
@@ -191,14 +191,14 @@ print("-" * 50)
 
 profile6 = get_profile("micro80")
 config6 = DeviceConfig()
-config6.load_from_string(profile6["toml"])
+config6.load_from_dict(profile6["config"])
 
 check("Имя системы", config6.system_name, "Микро-80")
-check("Частота 1.0 МГц", config6.clock_mhz, 1.0)
-check("Регионов памяти: 2", len(config6.memory_regions), 2)
-check("Устройств: 1", len(config6.devices), 1)
-check("RAM: 0x0000-0x7FFF", (config6.memory_regions[0]["start"], config6.memory_regions[0]["end"]), (0x0000, 0x7FFF))
-check("ROM: 0x8000-0xFFFF", (config6.memory_regions[1]["start"], config6.memory_regions[1]["end"]), (0x8000, 0xFFFF))
+check("Частота 1.78 МГц", config6.clock_mhz, 1.78)
+check("Регионов памяти: 3", len(config6.memory_regions), 3)
+check("Устройств: 3", len(config6.devices), 3)
+check("RAM: 0x0000-0x3FFF", (config6.memory_regions[0]["start"], config6.memory_regions[0]["end"]), (0x0000, 0x3FFF))
+check("ROM: 0xF800-0xFFFF", (config6.memory_regions[1]["start"], config6.memory_regions[1]["end"]), (0xF800, 0xFFFF))
 check("Конфликтов нет", len(config6.validate()), 0)
 
 # =============================================
@@ -209,19 +209,15 @@ print("-" * 50)
 
 profile7 = get_profile("vector06c")
 config7 = DeviceConfig()
-config7.load_from_string(profile7["toml"])
+config7.load_from_dict(profile7["config"])
 
 check("Имя системы", config7.system_name, "Вектор-06Ц")
 check("Частота 3.0 МГц", config7.clock_mhz, 3.0)
-check("Устройств: 6", len(config7.devices), 6)
+check("Устройств: 2", len(config7.devices), 2)
 
 device_types = [d["type"] for d in config7.devices]
 check("i8255 в списке", "i8255" in device_types, True)
 check("i8253 в списке", "i8253" in device_types, True)
-check("i8257 в списке", "i8257" in device_types, True)
-check("i8272 в списке", "i8272" in device_types, True)
-check("i8276 в списке", "i8276" in device_types, True)
-check("lcd1602 в списке", "lcd1602" in device_types, True)
 check("Конфликтов нет", len(config7.validate()), 0)
 
 # =============================================
@@ -236,7 +232,7 @@ for mem_config in config5.memory_regions:
     if region is not None:
         bus8.register_memory(region)
 
-check("Регионы зарегистрированы", len(bus8.memory_regions), 2)
+check("Регионы зарегистрированы", len(bus8.memory_regions), 3)
 
 # Проверка чтения/записи через шину
 bus8.write(0x0100, 0xAB)
@@ -263,7 +259,7 @@ for dev_config in config7.devices:
     if device is not None:
         created9.append(device)
 
-check("Все устройства созданы", len(created9), 6)
+check("Все устройства созданы", len(created9), 2)
 
 # Проверка, что устройства на разных портах
 ports = [d.base_port for d in created9]

@@ -1,4 +1,4 @@
-from .memory_bus import MemoryBus, MemoryRegion, RAMRegion, ROMRegion
+from .memory_bus import MemoryRegion
 
 class BankedRegion(MemoryRegion):
     """Банковая память: окно в адресном пространстве, через которое

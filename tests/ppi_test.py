@@ -30,7 +30,7 @@ else:
     dev.io_write(base + 3, 0xC0)  # Биты 6-5 = 11 → режим 2
     modes = dev.get_port_modes()
     print(f"  A: режим {modes['a_mode']}, {modes['a_direction']}")
-    print(f"  Ожидание: режим 2, bidir")
+    print("  Ожидание: режим 2, bidir")
     
     # Проверка двунаправленного режима
     print("\n=== Проверка двунаправленного режима ===")

@@ -19,7 +19,6 @@
     Запись  — Command Register
 """
 from .iodevice import IODevice
-from .chargen import get_char_generator
 
 class I8276(IODevice):
     """8276 — CRT-контроллер"""

@@ -2,7 +2,7 @@
 bus = api.system.bus
 
 print(f"📋 Всего портов в io_devices: {len(bus.io_devices)}")
-print(f"\n📋 Карта портов:")
+print("\n📋 Карта портов:")
 for port in sorted(bus.io_devices.keys()):
     dev = bus.io_devices[port]
     print(f"   порт 0x{port:02X} -> {dev.name} ({type(dev).__name__})")

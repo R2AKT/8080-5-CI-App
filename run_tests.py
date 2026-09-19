@@ -2,7 +2,6 @@
 import sys
 import subprocess
 import os
-import re
 
 sys.stdout.reconfigure(encoding='utf-8')
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -14,6 +13,8 @@ env['PYTHONIOENCODING'] = 'utf-8'
 
 # All test files that are standalone scripts (no 'api' dependency)
 unit_tests = [
+    'tests/test_alu_8080.py',
+    'tests/test_emu_integration.py',
     'tests/test_am9511.py', 'tests/test_banked.py', 'tests/test_banked_rom.py',
     'tests/test_cf_ide.py', 'tests/test_ch376s.py', 'tests/test_ch376s_fs.py',
     'tests/test_displays.py', 'tests/test_dma.py', 'tests/test_dma_device.py',

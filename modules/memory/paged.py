@@ -1,4 +1,4 @@
-from .memory_bus import MemoryBus, MemoryRegion, RAMRegion, ROMRegion
+from .memory_bus import MemoryRegion
 
 class PagedRegion(MemoryRegion):
     """Страничная память: адресное пространство разбито на страницы,

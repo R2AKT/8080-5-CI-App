@@ -47,14 +47,6 @@ class I8272FDD:
         self.two_sided = True
         self.motor_on = False
     
-    def format_disk(self):
-        """Форматирование диска (создание пустых секторов)"""
-        self.data = {}
-        for cyl in range(self.max_cylinder + 1):
-            for head in range(self.max_head + 1):
-                for sec in range(1, self.sectors_per_track + 1):
-                    self.data[(cyl, head, sec)] = [0x00] * self.sector_size
-    
     def read_sector(self, cylinder, head, sector):
         """Чтение сектора"""
         key = (cylinder, head, sector)
@@ -485,7 +477,6 @@ class I8272(IODevice):
     
     def _cmd_write_data(self):
         """Write Data: запись данных на диск"""
-        drive = self.drives[self.selected_drive]
         cylinder = self.command_params[1]
         head = self.command_params[2]
         sector = self.command_params[3]

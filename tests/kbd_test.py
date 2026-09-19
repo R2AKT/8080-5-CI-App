@@ -25,7 +25,7 @@ else:
         # Программа читает столбцы из порта B
         cols = ppi.io_read(ppi.base_port + 1)
         print(f"   Строка 2, столбцы: 0x{cols:02X}")
-        print(f"   Ожидание: 0xFE (бит 0 = 0, клавиша нажата)")
+        print("   Ожидание: 0xFE (бит 0 = 0, клавиша нажата)")
         if cols == 0xFE:
             print("   ✅ ТЕСТ ПРОЙДЕН")
         else:

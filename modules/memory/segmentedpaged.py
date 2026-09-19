@@ -1,4 +1,4 @@
-from .memory_bus import MemoryBus, MemoryRegion, RAMRegion, ROMRegion
+from .memory_bus import MemoryRegion
 
 class SegmentedPagedRegion(MemoryRegion):
     """Сегментно-страничная память: 64КБ разбиты на сегменты,

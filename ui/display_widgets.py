@@ -290,7 +290,6 @@ class GraphicsWidget(QWidget):
 
         # Цвета (монохром: зелёный на чёрном, как ЭЛТ)
         fg = QColor(0x33, 0xFF, 0x33)
-        bg = QColor(0x00, 0x00, 0x00)
 
         for y in range(h):
             row_offset = y * bpl

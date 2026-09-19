@@ -13,7 +13,6 @@ except ImportError:
     # Если класс недоступен, подавляем по сообщению
     warnings.filterwarnings("ignore", message=".*lifespan.*")
 	
-import asyncio
 import json
 import threading
 from mcp.server.fastmcp import FastMCP
@@ -469,7 +468,7 @@ class MCPServerManager:
                     )
                     
                     if emu.pc in emu.breakpoints:
-                        trace.append(f"  → Breakpoint hit!")
+                        trace.append("  → Breakpoint hit!")
                         break
                     
                     if not emu.execute_instruction(silent=True):
@@ -496,22 +495,27 @@ class MCPServerManager:
         
         def emu_trace_start() -> str:
             """Включить запись трассировки выполнения. Трассировка записывает каждую выполненную инструкцию с состоянием регистров."""
+            api = self._get_api()
             return api.emu_trace_start()
         
         def emu_trace_stop() -> str:
             """Выключить запись трассировки выполнения."""
+            api = self._get_api()
             return api.emu_trace_stop()
         
         def emu_trace_clear() -> str:
             """Очистить буфер трассировки."""
+            api = self._get_api()
             return api.emu_trace_clear()
         
         def emu_trace_get(limit: int = 0) -> list:
             """Получить записи трассировки. limit=0 — все записи, иначе последние N записей."""
+            api = self._get_api()
             return api.emu_trace_get(limit if limit > 0 else None)
         
         def emu_trace_export(path: str, format: str = "txt") -> str:
             """Экспорт трассировки в файл. format: txt, csv, json. path — путь к файлу."""
+            api = self._get_api()
             return api.emu_trace_export(path, format)
         
         # =============================================
@@ -741,7 +745,7 @@ class MCPServerManager:
                 return "Emulator not initialized"
             state = self.mw.emulator.get_state()
             lines = [
-                f"Регистры:",
+                "Регистры:",
                 f"  A=0x{state['A']:02X}  B=0x{state['B']:02X}  C=0x{state['C']:02X}",
                 f"  D=0x{state['D']:02X}  E=0x{state['E']:02X}  H=0x{state['H']:02X}  L=0x{state['L']:02X}",
                 f"  BC=0x{state['BC']:04X}  DE=0x{state['DE']:04X}  HL=0x{state['HL']:04X}",

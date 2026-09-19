@@ -2,7 +2,7 @@
 from PySide6.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QPushButton,
                                 QLineEdit, QLabel, QListWidget, QListWidgetItem,
                                 QComboBox)
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import Signal
 
 class SearchDialog(QDialog):
     searchRequested = Signal(str, str)  # pattern, mode

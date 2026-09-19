@@ -1,4 +1,4 @@
-from .memory_bus import MemoryBus, MemoryRegion, RAMRegion, ROMRegion
+from .memory_bus import MemoryRegion
 
 class SegmentedRegion(MemoryRegion):
     """Сегментная память: адресное пространство разбито на сегменты,

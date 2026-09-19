@@ -1,4 +1,6 @@
 """Watch variables table model."""
+import json
+
 from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex
 from PySide6.QtGui import QColor
 from ..i18n import LANGS

@@ -1,23 +1,15 @@
 """Background bus worker for serial communication."""
+import time
+
 import serial
 from PySide6.QtCore import QObject, Signal
-from .slip import (SlipProtocol, _FEND, _FESC, _TFEND, _TFESC,
-                   CMD_NOP, CMD_HOLD, CMD_UNHOLD,
-                   CMD_MEM_READ_BYTE, CMD_MEM_READ_BLOCK,
-                   CMD_MEM_WRITE_BYTE, CMD_MEM_WRITE_BLOCK,
+from .slip import (SlipProtocol, _FEND,
+                   CMD_MEM_READ_BLOCK, CMD_MEM_WRITE_BLOCK,
                    CMD_IO_READ_BYTE, CMD_IO_READ_BLOCK,
                    CMD_IO_WRITE_BYTE, CMD_IO_WRITE_BLOCK,
-                   CMD_EEPROM_WRITE_BYTE, CMD_EEPROM_WRITE_BLOCK,
-                   CMD_GET_SIZE_SETUP,
-                   ACK_NOP, ACK_HOLD_WAIT_LOW, ACK_HOLD_WAIT_HIGH,
-                   ACK_HOLD_ACTIVE, ACK_WAIT_UNHOLD, ACK_UNHOLD,
-                   ACK_MEM_READ_BYTE, ACK_MEM_READ_BLOCK,
-                   ACK_MEM_WRITE_BYTE, ACK_MEM_WRITE_BLOCK,
+                   ACK_MEM_READ_BLOCK, ACK_MEM_WRITE_BLOCK,
                    ACK_IO_READ_BYTE, ACK_IO_READ_BLOCK,
-                   ACK_IO_WRITE_BYTE, ACK_IO_WRITE_BLOCK,
-                   ACK_EEPROM_READ_BYTE, ACK_EEPROM_READ_BLOCK,
-                   ACK_EEPROM_WRITE_BYTE, ACK_EEPROM_WRITE_BLOCK,
-                   ACK_ERROR, ACK_GET_SIZE_SETUP)
+                   ACK_IO_WRITE_BYTE, ACK_IO_WRITE_BLOCK)
 from common.i18n import LANGS
 
 class BusWorker(QObject):
@@ -169,7 +161,7 @@ class BusWorker(QObject):
     def do_test_mem(self):
         start, end, pattern_name = self.params
         size = end - start + 1
-        self.log.emit(f"{self.tr('test_mem')} 0x{start:04X}-0x{end:04X} {self.tr('pattern')} '{pattern_name}'")
+        self.log.emit(f"{self.tr('test_mem')} 0x{start:04X}-0x{end:04X} {self.tr('pattern_word')} '{pattern_name}'")
         
         errors = 0
         chunk_size = self.max_block_size

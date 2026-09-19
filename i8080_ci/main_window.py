@@ -1,22 +1,25 @@
 """Main application window."""
 import sys
-import time
 import json
+import time
+import traceback
 import serial
 import serial.tools.list_ports
-import traceback
 from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                                QHBoxLayout, QGridLayout, QPushButton, QComboBox, QLabel,
                                QLineEdit, QTextEdit, QGroupBox, QMessageBox, QTableWidget, QTableWidgetItem,
                                QTabWidget, QTableView, QHeaderView, QFileDialog,
                                QProgressBar, QSpinBox, QCheckBox, QScrollArea, QInputDialog,
-                               QToolTip, QStyle, QStatusBar, QDialog, QListWidget, QListWidgetItem, QMenu, QSplitter,
+                               QDialog, QListWidget, QListWidgetItem, QMenu, QSplitter,
                                QFormLayout, QStackedWidget)
-from PySide6.QtCore import Qt, QTimer, QThread, QObject, Signal, QAbstractTableModel, QModelIndex, QEvent, QLocale, QSettings, QRect
-from PySide6.QtGui import QFont, QColor, QPainter, QPen, QBrush, QShortcut, QKeySequence, QAction, QActionGroup
+from PySide6.QtCore import Qt, QTimer, QThread, QSettings
+
+from PySide6.QtGui import QFont, QColor, QShortcut, QKeySequence, QAction
+
 
 from i8080_emulator import I8080Emulator
 from ui.device_manager import DeviceManagerDialog
+from i8080_ci.assembler_widget import AssemblerWidget
 
 # === MCP Server (optional) ===
 try:
@@ -26,22 +29,15 @@ except ImportError as e:
     MCP_AVAILABLE = False
     print(f"MCP Server доступен: {e}")
 
-from common.i18n import LANGS, THEMES, get_system_language, set_language
-from .slip import (SlipProtocol, _FEND, _FESC, _TFEND, _TFESC,
-                   CMD_NOP, CMD_HOLD, CMD_UNHOLD,
-                   CMD_MEM_READ_BYTE, CMD_MEM_READ_BLOCK,
-                   CMD_MEM_WRITE_BYTE, CMD_MEM_WRITE_BLOCK,
-                   CMD_IO_READ_BYTE, CMD_IO_READ_BLOCK,
-                   CMD_IO_WRITE_BYTE, CMD_IO_WRITE_BLOCK,
-                   CMD_EEPROM_WRITE_BYTE, CMD_EEPROM_WRITE_BLOCK,
+from common.i18n import LANGS, get_system_language, set_language
+from common.themes import THEMES
+from .slip import (SlipProtocol, _FEND, CMD_NOP, CMD_HOLD, CMD_UNHOLD,
+                   CMD_IO_READ_BYTE, CMD_IO_WRITE_BYTE,
                    CMD_GET_SIZE_SETUP,
                    ACK_NOP, ACK_HOLD_WAIT_LOW, ACK_HOLD_WAIT_HIGH,
                    ACK_HOLD_ACTIVE, ACK_WAIT_UNHOLD, ACK_UNHOLD,
-                   ACK_MEM_READ_BYTE, ACK_MEM_READ_BLOCK,
-                   ACK_MEM_WRITE_BYTE, ACK_MEM_WRITE_BLOCK,
-                   ACK_IO_READ_BYTE, ACK_IO_READ_BLOCK,
-                   ACK_IO_WRITE_BYTE, ACK_IO_WRITE_BLOCK,
-                   ACK_EEPROM_READ_BYTE, ACK_EEPROM_READ_BLOCK,
+                   ACK_MEM_READ_BYTE,
+                   ACK_IO_READ_BYTE, ACK_IO_WRITE_BYTE,
                    ACK_EEPROM_WRITE_BYTE, ACK_EEPROM_WRITE_BLOCK,
                    ACK_ERROR, ACK_GET_SIZE_SETUP)
 from .intelhex import IntelHex
@@ -148,6 +144,27 @@ class MainWindow(QMainWindow):
         self.act_device_manager = self.devices_menu.addAction(self.tr("device_manager"))
         self.act_device_manager.triggered.connect(self.show_device_manager)
 
+        # Меню Справка (F1)
+        self.help_menu = self.menuBar().addMenu(self.tr("menu_help"))
+        self.act_help_guide = self.help_menu.addAction(self.tr("help_user_guide"))
+        self.act_help_guide.triggered.connect(lambda: self._show_doc("USER_GUIDE.md"))
+        self.act_help_readme = self.help_menu.addAction(self.tr("help_readme"))
+        self.act_help_readme.triggered.connect(lambda: self._show_doc("README.md"))
+        self.act_help_changes = self.help_menu.addAction(self.tr("help_changes"))
+        self.act_help_changes.triggered.connect(lambda: self._show_doc("CHANGES.md"))
+        self.act_help_analysis = self.help_menu.addAction(self.tr("help_analysis"))
+        self.act_help_analysis.triggered.connect(lambda: self._show_doc("ANALYSIS.md"))
+        self.act_help_mcp = self.help_menu.addAction(self.tr("help_mcp"))
+        self.act_help_mcp.triggered.connect(lambda: self._show_doc("MCP_GUIDE.md"))
+        self.act_help_scripts = self.help_menu.addAction(self.tr("help_scripts"))
+        self.act_help_scripts.triggered.connect(lambda: self._show_doc("SCRIPTS_GUIDE.md"))
+        self.help_menu.addSeparator()
+        self.act_help_about = self.help_menu.addAction(self.tr("help_about"))
+        self.act_help_about.triggered.connect(self._show_about)
+        # F1 hotkey
+        self._help_shortcut = QShortcut(QKeySequence(Qt.Key_F1), self)
+        self._help_shortcut.activated.connect(lambda: self._show_doc("USER_GUIDE.md"))
+
         # Группа действий: только один профиль одновременно
         self.profile_group = QActionGroup(self)
         self.profile_group.setExclusive(True)  # ← КЛЮЧЕВАЯ СТРОКА
@@ -206,6 +223,8 @@ class MainWindow(QMainWindow):
         # ============================================================
         self.retranslate_ui()
         QApplication.instance().setStyleSheet(THEMES[self.current_theme])
+        
+        is_dark = (self.current_theme == "Dark")
         
         # Применяем тему к дизассемблеру
         is_dark = (self.current_theme == "Dark")
@@ -288,16 +307,17 @@ class MainWindow(QMainWindow):
         self.tabs = QTabWidget()
         main_layout.addWidget(self.tabs)
         # === Новый порядок вкладок ===
-        self.create_tab_disasm()       # 0. Дизассемблер
-        self.create_tab_hex()          # 1. HEX-редактор
-        self.create_tab_emulator()     # 2. Эмулятор
-        self.create_tab_trace()        # 3. Трассировка
-        self.create_tab_scripts()      # 4. Скрипты
-        self.create_tab_control()      # 5. Управление
-        self.create_tab_data()         # 6. Данные
-        self.create_tab_test()         # 7. Тесты
-        self.create_tab_io_seq()       # 8. Секвенсор
-        self.create_tab_compare()      # 9. Сравнение
+        self.create_tab_assembler()    # 0. Ассемблер
+        self.create_tab_disasm()       # 1. Дизассемблер
+        self.create_tab_hex()          # 2. HEX-редактор
+        self.create_tab_emulator()     # 3. Эмулятор
+        self.create_tab_trace()        # 4. Трассировка
+        self.create_tab_scripts()      # 5. Скрипты
+        self.create_tab_control()      # 6. Управление
+        self.create_tab_data()         # 7. Данные
+        self.create_tab_test()         # 8. Тесты
+        self.create_tab_io_seq()       # 9. Секвенсор
+        self.create_tab_compare()      # 10. Сравнение
         self.lbl_log = QLabel()
         main_layout.addWidget(self.lbl_log)
         self.log_text = QTextEdit()
@@ -664,6 +684,13 @@ class MainWindow(QMainWindow):
         
         self.tabs.addTab(tab, "")
         self.tab_hex = tab
+
+    def create_tab_assembler(self):
+        """Создать вкладку Ассемблер"""
+        is_dark = (self.current_theme == "Dark")
+        self.assembler_widget = AssemblerWidget(main_window=self, is_dark=is_dark)
+        self.tabs.addTab(self.assembler_widget, "")
+        self.tab_assembler = self.assembler_widget
         
     def create_tab_disasm(self):
         tab = QWidget()
@@ -790,11 +817,14 @@ class MainWindow(QMainWindow):
         self.current_theme = "Light" if index == 0 else "Dark"
         self.settings.setValue("theme", self.current_theme)  # Сохраняем настройку
         QApplication.instance().setStyleSheet(THEMES[self.current_theme])
-
-        # Обновляем тему дизассемблера
-        is_dark = (self.current_theme == "Dark")
-        self.disasm_view.set_theme(is_dark)
         
+        is_dark = (self.current_theme == "Dark")
+
+        # Обновляем тему ассемблера
+        if hasattr(self, 'assembler_widget'):
+            self.assembler_widget.set_theme(is_dark)
+
+        # Обновляем тему дизассемблера 
         if hasattr(self, 'emu_disasm_view'):
             self.emu_disasm_view.set_theme(is_dark)
         
@@ -817,16 +847,17 @@ class MainWindow(QMainWindow):
         # ============================================================
         # ВКЛАДКИ (в порядке создания)
         # ============================================================
-        self.tabs.setTabText(0, self.tr("tab_disasm"))     # Дизассемблер
-        self.tabs.setTabText(1, self.tr("tab_hex"))        # Hex Редактор
-        self.tabs.setTabText(2, self.tr("tab_emulator"))   # Эмулятор
-        self.tabs.setTabText(3, self.tr("tab_trace"))      # Трассировка
-        self.tabs.setTabText(4, self.tr("tab_scripts"))    # Скрипты
-        self.tabs.setTabText(5, self.tr("tab_control"))    # Управление
-        self.tabs.setTabText(6, self.tr("tab_data"))       # Данные
-        self.tabs.setTabText(7, self.tr("tab_test"))       # Тест Памяти
-        self.tabs.setTabText(8, self.tr("tab_io_seq"))     # IO Секвенсор
-        self.tabs.setTabText(9, self.tr("tab_compare"))    # Сравнение
+        self.tabs.setTabText(0, self.tr("tab_asm"))        # Ассемблер
+        self.tabs.setTabText(1, self.tr("tab_disasm"))     # Дизассемблер
+        self.tabs.setTabText(2, self.tr("tab_hex"))        # Hex Редактор
+        self.tabs.setTabText(3, self.tr("tab_emulator"))   # Эмулятор
+        self.tabs.setTabText(4, self.tr("tab_trace"))      # Трассировка
+        self.tabs.setTabText(5, self.tr("tab_scripts"))    # Скрипты
+        self.tabs.setTabText(6, self.tr("tab_control"))    # Управление
+        self.tabs.setTabText(7, self.tr("tab_data"))       # Данные
+        self.tabs.setTabText(8, self.tr("tab_test"))       # Тест Памяти
+        self.tabs.setTabText(9, self.tr("tab_io_seq"))     # IO Секвенсор
+        self.tabs.setTabText(10, self.tr("tab_compare"))   # Сравнение
         
         # ============================================================
         # ВКЛАДКА "УПРАВЛЕНИЕ"
@@ -1010,6 +1041,15 @@ class MainWindow(QMainWindow):
         # === Устройства ===
         if hasattr(self, 'devices_menu'):
             self.devices_menu.setTitle(self.tr("menu_devices"))
+        if hasattr(self, 'help_menu'):
+            self.help_menu.setTitle(self.tr("menu_help"))
+            self.act_help_guide.setText(self.tr("help_user_guide"))
+            self.act_help_readme.setText(self.tr("help_readme"))
+            self.act_help_changes.setText(self.tr("help_changes"))
+            self.act_help_analysis.setText(self.tr("help_analysis"))
+            self.act_help_mcp.setText(self.tr("help_mcp"))
+            self.act_help_scripts.setText(self.tr("help_scripts"))
+            self.act_help_about.setText(self.tr("help_about"))
         if hasattr(self, 'act_device_manager'):
             self.act_device_manager.setText(self.tr("device_manager"))
 
@@ -1236,9 +1276,9 @@ class MainWindow(QMainWindow):
                 self.update_ui_state()
                 self.log(f"  [{self.tr('ok')}] Bus HOLD active.")
             elif ack == ACK_HOLD_WAIT_LOW:
-                self.log(f"  [WAIT] HLDA low...")
+                self.log("  [WAIT] HLDA low...")
             elif ack == ACK_HOLD_WAIT_HIGH:
-                self.log(f"  [WAIT] HLDA high...")
+                self.log("  [WAIT] HLDA high...")
         elif cmd == CMD_UNHOLD and len(data) >= 2:
             ack = data[1]
             if ack == ACK_UNHOLD:
@@ -1246,7 +1286,7 @@ class MainWindow(QMainWindow):
                 self.update_ui_state()
                 self.log(f"  [{self.tr('ok')}] Bus UNHOLD. CPU running.")
             elif ack == ACK_WAIT_UNHOLD:
-                self.log(f"  [WAIT] HLDA high...")
+                self.log("  [WAIT] HLDA high...")
         elif cmd == ACK_MEM_READ_BYTE and len(data) >= 4:
             addr = (data[1] << 8) | data[2]
             self.mem_data[addr] = data[3]
@@ -1894,7 +1934,7 @@ class MainWindow(QMainWindow):
         if len(self.undo_stack) > self.max_undo_depth:
             self.undo_stack.pop(0)
         self.redo_stack.clear()  # Очищаем redo при новом изменении
-        elf.statusBar.showMessage(f"{self.tr('status_undo_depth')}{len(self.undo_stack)}", 2000)
+        self.statusBar.showMessage(f"{self.tr('status_undo_depth')}{len(self.undo_stack)}", 2000)
         
     def undo(self):
         """Отмена последнего изменения (Ctrl+Z)"""
@@ -2191,12 +2231,18 @@ class MainWindow(QMainWindow):
             'goto': api.goto,
             'dev_write_eeprom_byte': api.dev_write_eeprom_byte,
             'dev_write_eeprom_block': api.dev_write_eeprom_block,
+            # Ассемблер
+            'asm_get_source': api.asm_get_source,
+            'asm_set_source': api.asm_set_source,
+            'asm_load_file': api.asm_load_file,
+            'asm_assemble': api.asm_assemble,
+            'asm_get_binary': api.asm_get_binary,
+            'asm_get_symbols': api.asm_get_symbols,
         }
         
         try:
             # Перенаправляем stdout
             import io
-            import sys
             old_stdout = sys.stdout
             sys.stdout = io.StringIO()
             
@@ -2215,7 +2261,6 @@ class MainWindow(QMainWindow):
         except Exception as e:
             sys.stdout = old_stdout
             self.script_output.append(f"\n{self.tr('script_err')}{str(e)}")
-            import traceback
             self.script_output.append(traceback.format_exc())
             self.statusBar.showMessage(self.tr("script_error"), 3000)
             
@@ -3211,7 +3256,6 @@ class MainWindow(QMainWindow):
             return
         
         try:
-            import json
             data = {
                 "version": 1,
                 "breakpoints": []
@@ -3245,7 +3289,6 @@ class MainWindow(QMainWindow):
             return
         
         try:
-            import json
             with open(path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
             
@@ -3685,7 +3728,7 @@ class MainWindow(QMainWindow):
     def _export_trace_txt(self, path, records):
         """Экспорт в TXT"""
         with open(path, 'w', encoding='utf-8') as f:
-            f.write(f"# i8080 Trace Export\n")
+            f.write("# i8080 Trace Export\n")
             f.write(f"# Records: {len(records)}\n")
             f.write(f"{'#':>6}  {'PC':>4}  {'Bytes':<12}  {'Mnemonic':<20}  {'A':>2}  {'BC':>4}  {'DE':>4}  {'HL':>4}  {'SP':>4}  {'Flags':<5}  {'Cyc':>5}\n")
             f.write("-" * 110 + "\n")
@@ -3718,7 +3761,6 @@ class MainWindow(QMainWindow):
 
     def _export_trace_json(self, path, records):
         """Экспорт в JSON"""
-        import json
         data = {
             "version": 1,
             "records": []
@@ -3773,7 +3815,7 @@ class MainWindow(QMainWindow):
             # === ПРОВЕРКА ФАЙЛОВ ОБРАЗОВ (ИТЕРАЦИЯ 10.4.1) ===
             errors = self.system.validate_profile_files()
             if errors:
-                raise ValueError(f"Ошибки загрузки профиля:\n" + "\n".join(errors))
+                raise ValueError("Ошибки загрузки профиля:\n" + "\n".join(errors))
 
             # Переподключаем CPU к НОВОЙ шине
             self.system.connect_cpu(self.emulator)
@@ -3841,5 +3883,66 @@ class MainWindow(QMainWindow):
         self.device_manager.show()
         self.device_manager.raise_()
         self.device_manager.activateWindow()
-    
 
+    def _on_memory_changed(self):
+        """Вызывается при изменении памяти из любого источника."""
+        if hasattr(self, 'asm_widget'):
+            # Не перезаписываем, если пользователь редактирует
+            if not self.asm_widget.editor.document().isModified():
+                self.asm_widget.sync_from_memory()
+
+    # === Help / Справка ===
+
+    def _show_doc(self, filename: str):
+        """Show documentation file in a dialog."""
+        import os
+        from PySide6.QtWidgets import QDialog, QTextBrowser, QVBoxLayout
+        doc_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        path = os.path.join(doc_dir, filename)
+        if not os.path.exists(path):
+            QMessageBox.warning(self, self.tr("menu_help"), f"File not found: {filename}")
+            return
+        with open(path, 'r', encoding='utf-8', errors='replace') as f:
+            text = f.read()
+        # Simple markdown to HTML
+        html = self._md_to_html(text)
+        dlg = QDialog(self)
+        dlg.setWindowTitle(f"i8080-5 CI — {filename}")
+        dlg.resize(900, 700)
+        layout = QVBoxLayout(dlg)
+        browser = QTextBrowser(dlg)
+        browser.setHtml(html)
+        layout.addWidget(browser)
+        dlg.exec()
+
+    def _show_about(self):
+        """Show About dialog."""
+        QMessageBox.about(self, self.tr("help_about"), self.tr("help_about_text")+self.tr("help_author"))
+
+    @staticmethod
+    def _md_to_html(md_text: str) -> str:
+        """Minimal markdown to HTML conversion for documentation display."""
+        import re
+        html = md_text
+        # Headers
+        html = re.sub(r'^###### (.+)$', r'<h6>\1</h6>', html, flags=re.MULTILINE)
+        html = re.sub(r'^##### (.+)$', r'<h5>\1</h5>', html, flags=re.MULTILINE)
+        html = re.sub(r'^#### (.+)$', r'<h4>\1</h4>', html, flags=re.MULTILINE)
+        html = re.sub(r'^### (.+)$', r'<h3>\1</h3>', html, flags=re.MULTILINE)
+        html = re.sub(r'^## (.+)$', r'<h2>\1</h2>', html, flags=re.MULTILINE)
+        html = re.sub(r'^# (.+)$', r'<h1>\1</h1>', html, flags=re.MULTILINE)
+        # Bold
+        html = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', html)
+        # Italic
+        html = re.sub(r'\*(.+?)\*', r'<em>\1</em>', html)
+        # Code blocks
+        html = re.sub(r'```\n(.+?)```', r'<pre>\1</pre>', html, flags=re.DOTALL)
+        # Inline code
+        html = re.sub(r'`(.+?)`', r'<code>\1</code>', html)
+        # Horizontal rule
+        html = re.sub(r'^---+$', '<hr>', html, flags=re.MULTILINE)
+        # Tables (basic)
+        html = re.sub(r'^\|(.+)\|$', lambda m: '<tr>' + ''.join(f'<td>{c.strip()}</td>' for c in m.group(1).split('|')) + '</tr>', html, flags=re.MULTILINE)
+        # Wrap in HTML
+        html = f'<html><head><meta charset="utf-8"><style>body{{font-family:Segoe UI,Arial,sans-serif;padding:10px;}} pre{{background:#f4f4f4;padding:8px;border-radius:4px;overflow-x:auto;}} code{{background:#f4f4f4;padding:2px 4px;border-radius:2px;}} table{{border-collapse:collapse;width:100%;}} td,th{{border:1px solid #ccc;padding:4px 8px;}} h1{{color:#2c5aa0;}} h2{{color:#3a6db5;}} h3{{color:#4a7dc5;}}</style></head><body>{html}</body></html>'
+        return html

@@ -21,7 +21,6 @@ TFT8080 — TFT-дисплей с 8080-интерфейсом.
   0x2E: Memory Read
 """
 from .iodevice import IODevice
-from collections import deque
 
 
 class TFT8080(IODevice):

@@ -1,4 +1,4 @@
-"""Internationalization strings, themes, and system language detection."""
+"""Internationalization strings and system language detection."""
 from PySide6.QtCore import QLocale
 
 LANGS = {
@@ -6,7 +6,7 @@ LANGS = {
         "app_title": "i8080-5 CI",
         "port": "Port:", "baud": "Baud:", "connect": "Connect", "disconnect": "Disconnect",
         "refresh": "Refresh", "tab_control": "Control", "tab_data": "Data", "tab_hex": "Hex Editor",
-        "tab_disasm": "Disassembler", "tab_test": "Memory Test", "tab_io_seq": "IO Sequencer",
+        "tab_disasm": "Disassembler", "tab_test": "Memory Test", "tab_io_seq": "IO Sequencer", "tab_asm": "Assembler",
         "log": "Log:", "bus_control": "Bus Control", "hold": "Hold Bus (HOLD)", "unhold": "Release Bus (UnHOLD)",
         "files": "Files (Intel HEX / BIN)", "save_dump": "Save Dump (.hex)", "load_fw": "Load Firmware (.hex/.bin)",
         "memory": "Memory (RAM/ROM) — read/write values", "io_port": "IO Port — read/write values",
@@ -37,7 +37,7 @@ LANGS = {
         "io_read_block": "Reading IO block:", "io_read_ok": "Successfully read", "io_bytes": "IO bytes.",
         "io_read_err": "IO block read error!", "io_write_block": "Writing IO block to",
         "io_write_done": "IO write complete", "io_write_err": "IO write error at address",
-        "test_mem": "Memory test", "pattern": "pattern", "test_done": "Test complete.",
+        "test_mem": "Memory test", "pattern_word": "pattern", "test_done": "Test complete.",
         "write_fail": "Write failure at", "read_fail": "Read failure at",
         "expected": "Expected", "got": "Got", "export": "Export", "search": "Search",
         "goto_addr": "Goto Address", "fill_range": "Fill Range", "copy_addr": "Copy Address",
@@ -217,7 +217,6 @@ LANGS = {
         "trace_buf_cleared": "Trace buffer cleared",
         "trace_search_log": "Trace search: '",
         "trace_search_found": "' — found ",
-        "trace_filter_clear":  "Reset filter ",
         "tip_watch_add":  "Add watch item ",  "tip_watch_del":  "Delete selected item ",
         "tip_watch_clear":  "Clear all ",  "tip_watch_save":  "Save preset ",
         "tip_watch_load":  "Load preset ",  "tip_bp_add":  "Add breakpoint ",
@@ -225,7 +224,6 @@ LANGS = {
         "tip_bp_del":  "Delete selected ",  "tip_bp_clear":  "Clear all ",
         "tip_bp_save":  "Save BP preset ",  "tip_bp_load":  "Load BP preset ",
         "tip_trace_enable":  "Enable trace recording ",
-        "trace_filter_clear":  "Reset filter ",
         "watch_col_name":   "Name  ",   "watch_col_target":   "Addr/Reg  ",
         "watch_col_value":   "Value  ",   "watch_col_format":   "Format  ",
         "bp_col_addr":   "Address  ",   "bp_col_cond":   "Condition  ",
@@ -259,12 +257,58 @@ LANGS = {
         "dw_refresh": "Refresh",
         "dw_yes": "yes",
         "dw_no": "no",
+        # === Assembler ===
+        "asm_tab": "Assembler",
+        "asm_new": "\U0001F4C4 New Program",
+        "asm_load": "\U0001F4C2 Load .asm",
+        "asm_save": "\U0001F4BE Save .asm",
+        "asm_assemble": "\U0001F528 Assemble",
+        "asm_assemble_load": "\U0001F680 Assemble & Load",
+        "asm_errors": "Errors",
+        "asm_col_line": "Line",
+        "asm_col_msg": "Message",
+        "asm_labels": "Labels",
+        "asm_col_label": "Label",
+        "asm_col_addr": "Address",
+        "asm_col_line2": "Line",
+        "asm_load_title": "Load Assembler File",
+        "asm_save_title": "Save Assembler File",
+        "asm_file_filter": "Assembler (*.asm *.inc *.s);;All files (*)",
+        "asm_file_filter_save": "Assembler (*.asm);;All files (*)",
+        "asm_loaded": "\U0001F4C2 Loaded: {path}",
+        "asm_saved": "\U0001F4BE Saved: {path}",
+        "asm_err_title": "Error",
+        "asm_load_err": "Failed to load file:\n{e}",
+        "asm_save_err": "Failed to save file:\n{e}",
+        "asm_assembling": "\U0001F528 Assembling...",
+        "asm_no_code": "\u26A0 No code to assemble.",
+        "asm_exception": "\u274C Exception:\n{tb}",
+        "asm_errors_found": "\u274C Assembly errors ({n}):",
+        "asm_err_line": "  Line {line}: {msg}",
+        "asm_warning": "  \u26A0 Warning: {w}",
+        "asm_success": "\u2705 Assembled: {n} bytes",
+        "asm_origin": "  Start address: 0x{addr:04X}",
+        "asm_symbols": "  Symbols: {n}",
+        "asm_loaded_mem": "\U0001F680 Loaded {n} bytes at 0x{addr:04X}",
+        "asm_load_mem_err": "\u274C Load error:\n{tb}",
+        "asm_placeholder": "; Assembler 8080-5 CI\n; Number formats: 0x1A, 1AH, 26, 11010B, 32q\n; Ctrl+wheel \u2014 font size\n\n        ORG 0100H\nSTART:  MVI A, 0x55\n        OUT 01H\n        JMP START\n",
+        # === Help ===
+        "menu_help": "Help",
+        "help_user_guide": "User Guide",
+        "help_readme": "README",
+        "help_changes": "Changelog",
+        "help_analysis": "Project Analysis",
+        "help_mcp": "MCP Guide",
+        "help_scripts": "Scripts Guide",
+        "help_about": "About i8080-5 CI",
+        "help_about_text": "i8080-5 CI\nIntel 8080 Emulator & Debugger\n\nVersion 1.0\n\nFeatures:\n- 8080 CPU emulator (all 256 opcodes)\n- Assembler (M80/zasm formats)\n- Disassembler\n- Memory/IO bus with SLIP protocol\n- 20+ IO device emulators\n- System profiles\n- MCP Server (AI integration)\n- Python automation API",
+        "help_author": "\n\n Author - Sergey Dorozhkin aka R2AKT",
     },
     "ru": {
         "app_title": "i8080-5 CI",
         "port": "Порт:", "baud": "Скорость:", "connect": "Подключиться", "disconnect": "Отключиться",
         "refresh": "Обновить", "tab_control": "Управление", "tab_data": "Данные", "tab_hex": "Hex Редактор",
-        "tab_disasm": "Дизассемблер", "tab_test": "Тест Памяти", "tab_io_seq": "IO Секвенсор",
+        "tab_disasm": "Дизассемблер", "tab_test": "Тест Памяти", "tab_io_seq": "IO Секвенсор", "tab_asm": "Ассемблер",
         "log": "Журнал:", "bus_control": "Управление шиной", "hold": "Захватить шину (HOLD)", "unhold": "Освободить шину (UnHOLD)",
         "files": "Файлы (Intel HEX / BIN)", "save_dump": "Сохранить дамп (.hex)", "load_fw": "Загрузить прошивку (.hex/.bin)",
         "memory": "Память (RAM/ROM) — чтение/запись значений", "io_port": "Порт ввода-вывода (IO) — чтение/запись значений",
@@ -295,7 +339,7 @@ LANGS = {
         "io_read_block": "Чтение IO блока:", "io_read_ok": "Успешно прочитано", "io_bytes": "IO байт.",
         "io_read_err": "Ошибка чтения IO блока!", "io_write_block": "Запись IO блока в",
         "io_write_done": "Запись IO завершена", "io_write_err": "Ошибка записи IO на адресе",
-        "test_mem": "Тест памяти", "pattern": "паттерном", "test_done": "Тест завершен.",
+        "test_mem": "Тест памяти", "pattern_word": "паттерном", "test_done": "Тест завершен.",
         "write_fail": "Сбой записи на", "read_fail": "Сбой чтения на",
         "expected": "Ожидалось", "got": "Получено", "export": "Экспорт", "search": "Поиск",
         "goto_addr": "Перейти к адресу", "fill_range": "Заполнить диапазон", "copy_addr": "Копировать адрес",
@@ -474,7 +518,6 @@ LANGS = {
         "trace_buf_cleared": "Буфер трассировки очищен",
         "trace_search_log": "Поиск в трассировке: '",
         "trace_search_found": "' — найдено ",
-        "trace_filter_clear":  "Сбросить фильтр ",
         "tip_watch_add":  "Добавить элемент наблюдения ",  "tip_watch_del":  "Удалить выбранный элемент ",
         "tip_watch_clear":  "Очистить все ",  "tip_watch_save":  "Сохранить пресет ",
         "tip_watch_load":  "Загрузить пресет ",  "tip_bp_add":  "Добавить точку останова ",
@@ -482,7 +525,6 @@ LANGS = {
         "tip_bp_del":  "Удалить выбранную ",  "tip_bp_clear":  "Очистить все ",
         "tip_bp_save":  "Сохранить пресет BP ",  "tip_bp_load":  "Загрузить пресет BP ",
         "tip_trace_enable":  "Включить запись трассировки выполнения ",
-        "trace_filter_clear":  "Сбросить фильтр ",
         "watch_col_name":   "Имя  ",   "watch_col_target":   "Адрес/Рег  ",
         "watch_col_value":   "Значение  ",   "watch_col_format":   "Формат  ",
         "bp_col_addr":   "Адрес  ",   "bp_col_cond":   "Условие  ",
@@ -516,28 +558,56 @@ LANGS = {
         "dw_refresh": "Обновить",
         "dw_yes": "да",
         "dw_no": "нет",
+        # === Ассемблер ===
+        "asm_tab": "Ассемблер",
+        "asm_new": "\U0001F4C4 Новая программа",
+        "asm_load": "\U0001F4C2 Загрузить .asm",
+        "asm_save": "\U0001F4BE Сохранить .asm",
+        "asm_assemble": "\U0001F528 Ассемблировать",
+        "asm_assemble_load": "\U0001F680 Ассемблировать и загрузить",
+        "asm_errors": "Ошибки",
+        "asm_col_line": "Строка",
+        "asm_col_msg": "Сообщение",
+        "asm_labels": "Метки",
+        "asm_col_label": "Метка",
+        "asm_col_addr": "Адрес",
+        "asm_col_line2": "Строка",
+        "asm_load_title": "Загрузить ассемблерный файл",
+        "asm_save_title": "Сохранить ассемблерный файл",
+        "asm_file_filter": "Ассемблер (*.asm *.inc *.s);;Все файлы (*)",
+        "asm_file_filter_save": "Ассемблер (*.asm);;Все файлы (*)",
+        "asm_loaded": "\U0001F4C2 Загружен: {path}",
+        "asm_saved": "\U0001F4BE Сохранено: {path}",
+        "asm_err_title": "Ошибка",
+        "asm_load_err": "Не удалось загрузить файл:\n{e}",
+        "asm_save_err": "Не удалось сохранить файл:\n{e}",
+        "asm_assembling": "\U0001F528 Ассемблирование...",
+        "asm_no_code": "\u26A0 Нет кода для ассемблирования.",
+        "asm_exception": "\u274C Исключение:\n{tb}",
+        "asm_errors_found": "\u274C Ошибки ассемблирования ({n}):",
+        "asm_err_line": "  Строка {line}: {msg}",
+        "asm_warning": "  \u26A0 Предупреждение: {w}",
+        "asm_success": "\u2705 Ассемблировано: {n} байт",
+        "asm_origin": "  Адрес начала: 0x{addr:04X}",
+        "asm_symbols": "  Символов: {n}",
+        "asm_loaded_mem": "\U0001F680 Загружено {n} байт по адресу 0x{addr:04X}",
+        "asm_load_mem_err": "\u274C Ошибка загрузки:\n{tb}",
+        "asm_placeholder": "; Ассемблер 8080-5 CI\n; Форматы чисел: 0x1A, 1AH, 26, 11010B, 32q\n; Ctrl+колесо мыши — размер шрифта\n\n        ORG 0100H\nSTART:  MVI A, 0x55\n        OUT 01H\n        JMP START\n",
+        # === Справка ===
+        "menu_help": "Справка",
+        "help_user_guide": "Руководство пользователя",
+        "help_readme": "README",
+        "help_changes": "Журнал изменений",
+        "help_analysis": "Анализ проекта",
+        "help_mcp": "MCP Руководство",
+        "help_scripts": "Руководство по скриптам",
+        "help_about": "О программе i8080-5 CI",
+        "help_about_text": "i8080-5 CI\nЭмулятор и отладчик Intel 8080\n\nВерсия 1.0\n\nВозможности:\n- Эмулятор CPU 8080 (все 256 команд)\n- Ассемблер (форматы M80/zasm)\n- Дизассемблер\n- Шина памяти/IO с протоколом SLIP\n- 20+ эмуляторов IO-устройств\n- Системные профили\n- MCP Server (интеграция с ИИ)\n- Python API автоматизации",
+        "help_author": "\n\n - Автор - Сергей Дорожкин aka R2AKT",
     }
 }
 
 
-THEMES = {
-    "Light": "",
-    "Dark": """
-        QMainWindow, QWidget { background-color: #2b2b2b; color: #d4d4d4; }
-        QTabWidget::pane { border: 1px solid #555; }
-        QTabBar::tab { background: #3c3c3c; padding: 5px 10px; }
-        QTabBar::tab:selected { background: #0078d4; color: white; }
-        QPushButton { background-color: #3c3c3c; border: 1px solid #555; padding: 5px; border-radius: 3px; }
-        QPushButton:hover { background-color: #505050; }
-        QLineEdit, QComboBox, QSpinBox { background-color: #3c3c3c; border: 1px solid #555; padding: 3px; border-radius: 3px; }
-        QTextEdit { background-color: #1e1e1e; color: #d4d4d4; border: 1px solid #555; }
-        QTableView { background-color: #1e1e1e; color: #d4d4d4; gridline-color: #555; border: 1px solid #555; }
-        QGroupBox { border: 1px solid #555; border-radius: 5px; margin-top: 10px; padding-top: 10px; }
-        QGroupBox::title { subcontrol-origin: margin; left: 10px; padding: 0 5px; }
-        QProgressBar { border: 1px solid #555; border-radius: 3px; text-align: center; }
-        QProgressBar::chunk { background-color: #0078d4; }
-    """
-}
 
 _current_lang = None  # Язык, выбранный пользователем (None = определять из системы)
 

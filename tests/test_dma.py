@@ -1,7 +1,7 @@
 """Тест DMA память↔память (итерация 10.2)"""
 from modules.memory.memory_bus import MemoryBus, RAMRegion
 #from modules.io.i8257 import I8237
-from modules.io import IODevice, I8257, I8237
+from modules.io import I8237
 
 passed = 0
 failed = 0

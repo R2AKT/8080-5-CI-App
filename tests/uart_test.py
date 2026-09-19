@@ -2,7 +2,6 @@
 Тест терминала для 8251/16550.
 Отправляет тестовое сообщение через порт данных.
 """
-import time
 
 def find_serial_device(api):
     for dev in api.system.devices.values():
