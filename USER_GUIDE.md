@@ -1,11 +1,14 @@
 # i8080-5 CI — User Guide / Пользовательское руководство
 
-> **Version / Версия:** 2.1
-> **Date / Дата:** 2026-09-14
+> **Version / Версия:** 2.2
+> **Date / Дата:** 2026-09-21
 > **Platform / Платформа:** Windows / Linux
 > **UI Languages / Языки интерфейса:** Русский, English
 
 ---
+
+> **Note (v2.2):** Added the **Assembler** tab (section 8) — write, assemble, and load i8080 source. Fixed auto-sync of the assembler view from memory.
+> **Примечание (v2.2):** Добавлена вкладка **«Ассемблер»** (раздел 8) — написание, сборка и загрузка i8080-кода. Исправлена автосинхронизация вида ассемблера с памятью.
 
 > **Note (v2.1):** Application code is organized in the `i8080_ci/` package. Entry point remains `i8080_CI.py`.
 > **Примечание (v2.1):** Код приложения организован в пакете `i8080_ci/`. Точка входа — `i8080_CI.py`.
@@ -19,15 +22,16 @@
 5. [Data Tab / Вкладка «Данные»](#5-data-tab--вкладка-данные)
 6. [Hex Editor / Hex-редактор](#6-hex-editor--hex-редактор)
 7. [Disassembler / Дизассемблер](#7-disassembler--дизассемблер)
-8. [Memory Test / Тест памяти](#8-memory-test--тест-памяти)
-9. [IO Sequencer / IO Секвенсор](#9-io-sequencer--io-секвенсор)
-10. [Comparison / Сравнение](#10-comparison--сравнение)
-11. [Scripts / Скрипты](#11-scripts--скрипты)
-12. [Emulator / Эмулятор](#12-emulator--эмулятор)
-13. [Trace Log / Трассировка](#13-trace-log--трассировка)
-14. [Hotkeys / Горячие клавиши](#14-hotkeys--горячие-клавиши)
-15. [MCP Integration / MCP-интеграция](#15-mcp-integration--mcp-интеграция)
-16. [Typical Workflows / Типовые сценарии](#16-typical-workflows--типовые-сценарии)
+8. [Assembler / Ассемблер](#8-assembler--ассемблер)
+9. [Memory Test / Тест памяти](#9-memory-test--тест-памяти)
+10. [IO Sequencer / IO Секвенсор](#10-io-sequencer--io-секвенсор)
+11. [Comparison / Сравнение](#11-comparison--сравнение)
+12. [Scripts / Скрипты](#12-scripts--скрипты)
+13. [Emulator / Эмулятор](#13-emulator--эмулятор)
+14. [Trace Log / Трассировка](#14-trace-log--трассировка)
+15. [Hotkeys / Горячие клавиши](#15-hotkeys--горячие-клавиши)
+16. [MCP Integration / MCP-интеграция](#16-mcp-integration--mcp-интеграция)
+17. [Typical Workflows / Типовые сценарии](#17-typical-workflows--типовые-сценарии)
 
 ---
 
@@ -108,28 +112,29 @@ python i8080_CI.py
 
 **EN:** The main window consists of:
 1. **Top panel** — COM port selection, baud rate, connect/disconnect, language and theme selection
-2. **Tabs** — 10 tabs with various functions
+2. **Tabs** — 11 tabs with various functions
 3. **Log** — bottom panel with operation log
 
 **RU:** Главное окно состоит из:
 1. **Верхняя панель** — выбор COM-порта, скорости, подключение/отключение, выбор языка и темы
-2. **Вкладки** — 10 вкладок с различными функциями
+2. **Вкладки** — 11 вкладок с различными функциями
 3. **Журнал** — нижняя панель с журналом операций
 
 ### Tab Order / Порядок вкладок
 
 | # | EN | RU | Purpose |
 |---|---|---|---|
-| 0 | Disassembler | Дизассемблер | Disassemble code |
-| 1 | Hex Editor | Hex редактор | View and edit memory |
-| 2 | Emulator | Эмулятор | i8080 debugger |
-| 3 | Trace Log | Трассировка | Execution trace view |
-| 4 | Scripts | Скрипты | Automation |
-| 5 | Control | Управление | Connection, bus, files |
-| 6 | Data | Данные | Read/write memory and IO |
-| 7 | Memory Test | Тест памяти | Test RAM |
-| 8 | IO Sequencer | IO последовательность | IO sequences |
-| 9 | Comparison | Сравнение | Compare memory images |
+| 0 | Assembler | Ассемблер | Write & assemble i8080 code |
+| 1 | Disassembler | Дизассемблер | Disassemble code |
+| 2 | Hex Editor | Hex редактор | View and edit memory |
+| 3 | Emulator | Эмулятор | i8080 debugger |
+| 4 | Trace Log | Трассировка | Execution trace view |
+| 5 | Scripts | Скрипты | Automation |
+| 6 | Control | Управление | Connection, bus, files |
+| 7 | Data | Данные | Read/write memory and IO |
+| 8 | Memory Test | Тест памяти | Test RAM |
+| 9 | IO Sequencer | IO последовательность | IO sequences |
+| 10 | Comparison | Сравнение | Compare memory images |
 ---
 
 ## 4. Control Tab / Вкладка «Управление»
@@ -316,7 +321,287 @@ python i8080_CI.py
 
 ---
 
-## 8. Memory Test / Тест памяти
+## 8. Assembler / Ассемблер
+
+**EN:**
+
+The **Assembler** tab (tab 0, the first tab) lets you write i8080 assembly source, assemble it to machine code, and load the result into the emulator memory for debugging. It is powered by the built-in two-pass assembler (`assemble8080`).
+
+### 8.1. Interface / Интерфейс
+
+| Button | Purpose |
+|---|---|
+| 📄 New Program | Clear the editor and the error/label panels |
+| 📂 Load .asm | Load a source file (`.asm` / `.inc` / `.s`) |
+| 💾 Save .asm | Save the source to a file |
+| 🔨 Assemble | Assemble the code — shows errors, labels, and binary size |
+| 🚀 Assemble & Load | Assemble and write the binary into emulator memory at the `ORG` address |
+
+### 8.2. Editor / Редактор
+
+- **Syntax highlighting** — mnemonics, directives, registers, numbers, labels, comments
+- **Line numbers** — on the left margin
+- **Jump arrows** — colored arrows (next to line numbers) showing jump targets (JMP, CALL, Jcc, Ccc)
+- **Autocomplete** — mnemonics, registers, directives, and your own labels (pops up after 2 characters)
+- **Ctrl + mouse wheel** — change font size (8–36 pt)
+- **Error lines** — highlighted in red after a failed assembly
+
+### 8.3. Error Panel / Панель ошибок
+
+Below the editor. After assembly it lists all errors with line numbers. **Double-click** a row to jump to that line in the editor.
+
+### 8.4. Label Table / Таблица меток
+
+On the right. After a successful assembly it lists all labels with their addresses and source lines. **Double-click** a row to jump to the label's line.
+
+### 8.5. Number Formats / Форматы чисел
+
+| Format | Example | Value |
+|---|---|---|
+| Hex prefix | `0xFF` | 255 |
+| Hex suffix | `FFH`, `0FFH` | 255 |
+| Decimal | `255`, `255D` | 255 |
+| Binary | `11111111B` | 255 |
+| Octal | `377Q`, `377O` | 255 |
+
+### 8.6. Directives / Директивы
+
+| Directive | Purpose |
+|---|---|
+| `ORG addr` | Set the origin (start) address; the binary is emitted starting at `addr` |
+| `DB ...` | Define bytes (numbers, strings, expressions) |
+| `DW ...` | Define words (16-bit, little-endian) |
+| `DS n[,fill]` | Reserve `n` bytes (optionally filled with `fill`) |
+| `EQU expr` | Define a symbolic constant (`LABEL EQU value`) |
+| `END` | End of program (optional) |
+
+Dot-prefixed forms are also accepted: `.org`, `.db`, `.dw`, `.ds`, `.equ`, `.end`, `.byte`, `.word`, `.space`, `.ascii`, `.text`.
+
+### 8.7. Comments and Special Symbols / Комментарии и спецсимволы
+
+- `;` — comment to end of line (anywhere)
+- `*` — comment when at the start of a line (M80 style)
+- `$` — current address (location counter)
+- **Labels** — `LABEL:`; usable in expressions and as jump targets; forward references are supported
+
+### 8.8. Expressions / Выражения
+
+Arithmetic and logical expressions are supported in operands and in `EQU`:
+
+- Arithmetic: `+  -  *  /  %` (integer division)
+- Bitwise: `&  |  ~  ^`, `SHL`/`<<`, `SHR`/`>>`, `MOD`
+- Logical: `AND`, `OR`, `NOT`, `XOR`
+- Comparison (zasm): `EQ`, `NE`, `GT`, `LT`, `GE`, `LE`, `<>`
+- `HIGH expr`, `LOW expr` — high / low byte
+- Character literals: `'A'` = 0x41, with escapes `\n`, `\t`, `\r`, `\0`; e.g. `'A'+80H` = 0xC1
+
+### 8.9. Data (DB) / Данные (DB)
+
+```asm
+DB 42H, 'A', 10010110B      ; byte, char, binary
+DB "Hello"                  ; string (double quotes)
+DB 'Hi'                     ; string (single quotes)
+DB <literal text>           ; zasm: literal text in angle brackets
+DB 10 dup(0)                ; M80: repeat a value 10 times
+DB CR, LF                    ; carriage return, line feed
+DB __date__, __TIME__        ; build date / time
+```
+
+### 8.10. Preprocessor / Препроцессор
+
+| Feature | Syntax |
+|---|---|
+| Include file | `#include "file.inc"` or `include "file.inc"` |
+| Constant | `#define NAME value` |
+| Conditional | `#if expr` / `#elif expr` / `#else` / `#endif` |
+| Conditional (no `#`) | `IF expr` / `ELSE` / `ENDIF` |
+| Macro | `NAME MACRO [params]` … `ENDM` |
+| Repeat block | `REPT n` … `ENDM` |
+
+**Macros** support parameters referenced as `&PARAM`, `%PARAM`, `#PARAM`, or `\PARAM` (zasm style):
+
+```asm
+DELAY MACRO N
+    MVI B, N
+LOOP: DCR B
+      JNZ LOOP
+ENDM
+...
+DELAY 10        ; expands with N = 10
+```
+
+**zasm compatibility:** `#target`, `#charset`, `XDEF`/`XREF`/`SECTION`, `.asm8080`, and the `<...>` line wrapper are recognized.
+
+### 8.11. Loading into Memory / Загрузка в память
+
+**"Assemble & Load"** assembles the code and writes the binary into the emulator memory at the `ORG` address, then sets the emulator PC to that address. After that you can debug it in the **Emulator** tab (F5 to run, F11 to step).
+
+### 8.12. Sync from Memory / Синхронизация с памятью
+
+When you edit memory in the **Hex Editor**, the Assembler view is automatically re-disassembled from the current memory — unless you are actively editing the assembler source. This keeps the assembler in sync with the actual memory contents.
+
+### 8.13. Example / Пример
+
+```asm
+        ORG 0100H
+START:  MVI A, 55H        ; A = 0x55
+        OUT 01H           ; output to port 1
+        MVI B, 0FFH       ; B = FF
+LOOP:   DCR B             ; B = B - 1
+        JNZ LOOP          ; repeat while B != 0
+        LDA DATA
+        STA DATA+1
+        CALL SUBR
+        HLT
+SUBR:   INR A
+        RET
+DATA:   DB 42H, 'A'
+        DW 1234H
+        DS 10
+        END
+```
+
+**RU:**
+
+Вкладка **«Ассемблер»** (вкладка 0, первая) позволяет писать исходный код i8080 на ассемблере, собирать его в машинный код и загружать результат в память эмулятора для отладки. Работает на встроенном двухпроходном ассемблере (`assemble8080`).
+
+### 8.1. Интерфейс
+
+| Кнопка | Назначение |
+|---|---|
+| 📄 Новая программа | Очистить редактор и панели ошибок/меток |
+| 📂 Загрузить .asm | Загрузить исходный файл (`.asm` / `.inc` / `.s`) |
+| 💾 Сохранить .asm | Сохранить исходный код в файл |
+| 🔨 Ассемблировать | Собрать код — показать ошибки, метки и размер бинарника |
+| 🚀 Ассемблировать и загрузить | Собрать и записать бинарник в память эмулятора по адресу `ORG` |
+
+### 8.2. Редактор
+
+- **Подсветка синтаксиса** — мнемоники, директивы, регистры, числа, метки, комментарии
+- **Номера строк** — в левой колонке
+- **Стрелки переходов** — цветные стрелки (рядом с номерами строк) показывают цели переходов (JMP, CALL, Jcc, Ccc)
+- **Автодополнение** — мнемоники, регистры, директивы и ваши метки (появляется после 2 символов)
+- **Ctrl + колесо мыши** — изменение размера шрифта (8–36 pt)
+- **Строки с ошибками** — подсвечиваются красным после неудачной сборки
+
+### 8.3. Панель ошибок
+
+Под редактором. После сборки перечисляет все ошибки с номерами строк. **Двойной клик** по строке — переход к этой строке в редакторе.
+
+### 8.4. Таблица меток
+
+Справа. После успешной сборки перечисляет все метки с их адресами и строками исходника. **Двойной клик** по строке — переход к строке метки.
+
+### 8.5. Форматы чисел
+
+| Формат | Пример | Значение |
+|---|---|---|
+| HEX с префиксом | `0xFF` | 255 |
+| HEX с суффиксом | `FFH`, `0FFH` | 255 |
+| Десятичный | `255`, `255D` | 255 |
+| Двоичный | `11111111B` | 255 |
+| Восьмеричный | `377Q`, `377O` | 255 |
+
+### 8.6. Директивы
+
+| Директива | Назначение |
+|---|---|
+| `ORG addr` | Установить начальный адрес; бинарник выводится начиная с `addr` |
+| `DB ...` | Определить байты (числа, строки, выражения) |
+| `DW ...` | Определить слова (16 бит, little-endian) |
+| `DS n[,fill]` | Зарезервировать `n` байт (опционально заполнить `fill`) |
+| `EQU expr` | Определить символьную константу (`МЕТКА EQU значение`) |
+| `END` | Конец программы (необязательно) |
+
+Принимаются и формы с точкой: `.org`, `.db`, `.dw`, `.ds`, `.equ`, `.end`, `.byte`, `.word`, `.space`, `.ascii`, `.text`.
+
+### 8.7. Комментарии и спецсимволы
+
+- `;` — комментарий до конца строки (в любом месте)
+- `*` — комментарий, если стоит в начале строки (стиль M80)
+- `$` — текущий адрес (счётчик позиции)
+- **Метки** — `МЕТКА:`; используются в выражениях и как цели переходов; поддерживаются вперёд-ссылки
+
+### 8.8. Выражения
+
+В операндах и в `EQU` поддерживаются арифметические и логические выражения:
+
+- Арифметика: `+  -  *  /  %` (целочисленное деление)
+- Побитовые: `&  |  ~  ^`, `SHL`/`<<`, `SHR`/`>>`, `MOD`
+- Логические: `AND`, `OR`, `NOT`, `XOR`
+- Сравнение (zasm): `EQ`, `NE`, `GT`, `LT`, `GE`, `LE`, `<>`
+- `HIGH expr`, `LOW expr` — старший / младший байт
+- Символьные литералы: `'A'` = 0x41, с экранированием `\n`, `\t`, `\r`, `\0`; например `'A'+80H` = 0xC1
+
+### 8.9. Данные (DB)
+
+```asm
+DB 42H, 'A', 10010110B      ; байт, символ, двоичное
+DB "Hello"                  ; строка (двойные кавычки)
+DB 'Hi'                     ; строка (одинарные кавычки)
+DB <literal text>           ; zasm: литеральный текст в угловых скобках
+DB 10 dup(0)                ; M80: повторить значение 10 раз
+DB CR, LF                    ; возврат каретки, перевод строки
+DB __date__, __TIME__        ; дата / время сборки
+```
+
+### 8.10. Препроцессор
+
+| Возможность | Синтаксис |
+|---|---|
+| Включение файла | `#include "file.inc"` или `include "file.inc"` |
+| Константа | `#define NAME value` |
+| Условие | `#if expr` / `#elif expr` / `#else` / `#endif` |
+| Условие (без `#`) | `IF expr` / `ELSE` / `ENDIF` |
+| Макрос | `NAME MACRO [параметры]` … `ENDM` |
+| Повтор блока | `REPT n` … `ENDM` |
+
+**Макросы** поддерживают параметры, ссылаемые как `&PARAM`, `%PARAM`, `#PARAM` или `\PARAM` (стиль zasm):
+
+```asm
+DELAY MACRO N
+    MVI B, N
+LOOP: DCR B
+      JNZ LOOP
+ENDM
+...
+DELAY 10        ; разворачивается с N = 10
+```
+
+**Совместимость с zasm:** распознаются `#target`, `#charset`, `XDEF`/`XREF`/`SECTION`, `.asm8080` и обёртка строки `<...>`.
+
+### 8.11. Загрузка в память
+
+**«Ассемблировать и загрузить»** собирает код и записывает бинарник в память эмулятора по адресу `ORG`, затем устанавливает PC эмулятора на этот адрес. После этого его можно отлаживать на вкладке **«Эмулятор»** (F5 — запуск, F11 — шаг).
+
+### 8.12. Синхронизация с памятью
+
+При редактировании памяти в **Hex-редакторе** вид ассемблера автоматически пере-дизассемблируется из текущей памяти — если вы не редактируете исходный код ассемблера. Это держит ассемблер в синхроне с фактическим содержимым памяти.
+
+### 8.13. Пример
+
+```asm
+        ORG 0100H
+START:  MVI A, 55H        ; A = 0x55
+        OUT 01H           ; вывод в порт 1
+        MVI B, 0FFH       ; B = FF
+LOOP:   DCR B             ; B = B - 1
+        JNZ LOOP          ; повторять пока B != 0
+        LDA DATA
+        STA DATA+1
+        CALL SUBR
+        HLT
+SUBR:   INR A
+        RET
+DATA:   DB 42H, 'A'
+        DW 1234H
+        DS 10
+        END
+```
+
+---
+
+## 9. Memory Test / Тест памяти
 
 **EN:**
 
@@ -352,9 +637,9 @@ Click **"Run Memory Test"**. Progress shown in progress bar. Errors logged with 
 
 ---
 
-## 9. IO Sequencer / IO Секвенсор
+## 10. IO Sequencer / IO Секвенсор
 
-### 9.1. Single IO Operations / Одиночные операции
+### 10.1. Single IO Operations / Одиночные операции
 
 **EN:**
 - **Port (HEX)** — port number
@@ -366,7 +651,7 @@ Click **"Run Memory Test"**. Progress shown in progress bar. Errors logged with 
 - **Значение (HEX)** — значение
 - Кнопки **«Читать (IN)»** и **«Записать (OUT)»**
 
-### 9.2. Sequences / Последовательности
+### 10.2. Sequences / Последовательности
 
 **EN:**
 
@@ -406,7 +691,7 @@ D 10    ; Задержка 10 мс
 
 ---
 
-## 10. Comparison / Сравнение
+## 11. Comparison / Сравнение
 
 **EN:**
 
@@ -444,7 +729,7 @@ Table displays differences:
 
 ---
 
-## 11. Scripts / Скрипты
+## 12. Scripts / Скрипты
 
 **EN:**
 
@@ -534,11 +819,11 @@ Full guide: **SCRIPTS_GUIDE.md**
 
 ---
 
-## 12. Emulator / Эмулятор
+## 13. Emulator / Эмулятор
 
 **EN:** Full i8080 CPU debugger. Tab is divided into 4 columns:
 
-### 12.1. Column 1: Disassembled Code
+### 13.1. Column 1: Disassembled Code
 
 Displays disassembled code with:
 - **►** — current PC position (yellow highlight)
@@ -556,7 +841,7 @@ Displays disassembled code with:
   - ● Toggle Breakpoint
   - ◉ Set Conditional BP...
 
-### 12.2. Column 2: Watch
+### 13.2. Column 2: Watch
 
 Watch window for observing memory and register values.
 
@@ -573,7 +858,7 @@ Watch window for observing memory and register values.
 - Save/Load presets (JSON)
 - Highlight changed values (red background)
 
-### 12.3. Column 3: Breakpoints
+### 13.3. Column 3: Breakpoints
 
 **Table columns:**
 - **Address** — breakpoint address
@@ -590,14 +875,14 @@ Watch window for observing memory and register values.
 - **💾** — save BP preset (JSON)
 - **📂** — load BP preset
 
-### 12.4. Column 4: Registers, Flags, Stack, Statistics
+### 13.4. Column 4: Registers, Flags, Stack, Statistics
 
 - **Registers** — A, B, C, D, E, H, L, SP, PC, BC, DE, HL. Changed registers highlighted in red.
 - **Flags** — S, Z, AC, P, CY. Set flags highlighted in red.
 - **Stack** — top 8 values. Stack top highlighted in red.
 - **Statistics** — cycle count, state (Halted / Running / Ready).
 
-### 12.5. Bottom Control Panel
+### 13.5. Bottom Control Panel
 
 | Button | Hotkey | Purpose |
 |---|---|---|
@@ -609,7 +894,7 @@ Watch window for observing memory and register values.
 | ■ Stop | F8 | Stop execution |
 | ☑ Trace | — | Enable trace recording |
 
-### 12.6. Conditional Breakpoints
+### 13.6. Conditional Breakpoints
 
 **Available variables:**
 - Registers: `A`, `B`, `C`, `D`, `E`, `H`, `L`, `BC`, `DE`, `HL`, `SP`, `PC`
@@ -633,7 +918,7 @@ HL > 0x1000 and Z == 0       — combined conditions
 
 Полноценный отладчик процессора i8080. Вкладка разделена на 4 колонки:
 
-### 12.1. Колонка 1: Дизассемблированный код
+### 13.1. Колонка 1: Дизассемблированный код
 
 Отображает код с:
 - **►** — текущая позиция PC (жёлтая подсветка)
@@ -651,7 +936,7 @@ HL > 0x1000 and Z == 0       — combined conditions
   - ● Toggle Breakpoint
   - ◉ Set Conditional BP...
 
-### 12.2. Колонка 2: Watch
+### 13.2. Колонка 2: Watch
 
 Watch-окно для наблюдения за значениями памяти и регистров.
 
@@ -668,7 +953,7 @@ Watch-окно для наблюдения за значениями памят�
 - Сохранение/загрузка пресетов (JSON)
 - Подсветка изменённых значений (красный фон)
 
-### 12.3. Колонка 3: Breakpoints / Точки останова
+### 13.3. Колонка 3: Breakpoints / Точки останова
 
 **Кнопки:**
 - **+** — добавить точку останова
@@ -679,14 +964,14 @@ Watch-окно для наблюдения за значениями памят�
 - **💾** — сохранить пресет BP (JSON)
 - **📂** — загрузить пресет BP
 
-### 12.4. Колонка 4: Регистры, Флаги, Стек, Статистика
+### 13.4. Колонка 4: Регистры, Флаги, Стек, Статистика
 
 - **Регистры** — изменённые подсвечиваются красным
 - **Флаги** — установленные подсвечиваются красным
 - **Стек** — верхние 8 значений, вершина подсвечена
 - **Статистика** — такты, состояние (Остановлен / Выполняется / Готов)
 
-### 12.5. Нижняя панель управления
+### 13.5. Нижняя панель управления
 
 | Кнопка | Горячая клавиша | Назначение |
 |---|---|---|
@@ -698,7 +983,7 @@ Watch-окно для наблюдения за значениями памят�
 | ■ Stop | F8 | Остановка выполнения |
 | ☑ Трассировка | — | Включение записи трассировки |
 
-### 12.6. Условные точки останова
+### 13.6. Условные точки останова
 
 **Доступные переменные:**
 - Регистры: `A`, `B`, `C`, `D`, `E`, `H`, `L`, `BC`, `DE`, `HL`, `SP`, `PC`
@@ -719,9 +1004,9 @@ HL > 0x1000 and Z == 0       — комбинация условий
 
 ---
 
-## 13. Trace Log / Трассировка
+## 14. Trace Log / Трассировка
 
-### 13.1. Control Panel / Панель управления
+### 14.1. Control Panel / Панель управления
 
 **EN:**
 - **🔥 Enable Recording** — enable trace recording
@@ -737,7 +1022,7 @@ HL > 0x1000 and Z == 0       — комбинация условий
 - **Глубина** — максимальное количество записей (по умолчанию 10000)
 - **Записей: X / Y** — текущее / максимальное
 
-### 13.2. Search / Поиск
+### 14.2. Search / Поиск
 
 **EN:**
 
@@ -757,7 +1042,7 @@ Search field supports:
 
 **Операторы сравнения:** `=`, `==`, `!=`, `>`, `<`, `>=`, `<=`
 
-### 13.3. Trace Table / Таблица трассировки
+### 14.3. Trace Table / Таблица трассировки
 
 | Column / Колонка | Purpose / Назначение |
 |---|---|
@@ -772,13 +1057,13 @@ Search field supports:
 | SP | Stack pointer / Указатель стека |
 | Flags | Flags (S Z A P C) / Флаги |
 
-### 13.4. Export / Экспорт
+### 14.4. Export / Экспорт
 
 Supported formats: **TXT**, **CSV**, **JSON**
 
 ---
 
-## 14. Hotkeys / Горячие клавиши
+## 15. Hotkeys / Горячие клавиши
 
 ### General / Общие
 
@@ -808,9 +1093,15 @@ Supported formats: **TXT**, **CSV**, **JSON**
 | Ctrl+F2 | Reset / Сброс |
 | Ctrl+F10 | Run to Cursor |
 
+### Assembler / Ассемблер
+
+| Key / Клавиша | Purpose / Назначение |
+|---|---|
+| Ctrl + mouse wheel | Change editor font size / Изменить размер шрифта редактора |
+
 ---
 
-## 15. MCP Integration / MCP-интеграция
+## 16. MCP Integration / MCP-интеграция
 
 **EN:** The program includes a built-in MCP server for integration with AI assistants (Claude, Cursor, VS Code, etc.).
 
@@ -854,9 +1145,9 @@ Full description: **MCP_GUIDE.md**
 
 ---
 
-## 16. Typical Workflows / Типовые сценарии
+## 17. Typical Workflows / Типовые сценарии
 
-### 16.1. Load and Disassemble Firmware / Загрузка и дизассемблирование
+### 17.1. Load and Disassemble Firmware / Загрузка и дизассемблирование
 
 **EN:**
 1. "Control" tab → "Load Firmware" → select .hex/.bin file
@@ -868,7 +1159,7 @@ Full description: **MCP_GUIDE.md**
 2. Вкладка «Дизассемблер» → «Дизассемблировать»
 3. Изучите код, используя стрелки переходов и цветовую подсветку
 
-### 16.2. Debug in Emulator / Отладка в эмуляторе
+### 17.2. Debug in Emulator / Отладка в эмуляторе
 
 **EN:**
 1. Load firmware
@@ -886,7 +1177,7 @@ Full description: **MCP_GUIDE.md**
 5. Наблюдайте за регистрами, флагами и стеком
 6. Используйте Watch-окно для наблюдения за памятью
 
-### 16.3. Conditional Debugging / Условная отладка
+### 17.3. Conditional Debugging / Условная отладка
 
 **EN:**
 1. Set a breakpoint
@@ -898,7 +1189,7 @@ Full description: **MCP_GUIDE.md**
 2. Двойной клик по точке → введите условие
 3. Запустите — остановится только при выполнении условия
 
-### 16.4. Analysis with Trace / Анализ с трассировкой
+### 17.4. Analysis with Trace / Анализ с трассировкой
 
 **EN:**
 1. "Emulator" tab → enable "Trace" checkbox
@@ -914,7 +1205,7 @@ Full description: **MCP_GUIDE.md**
 4. Используйте поиск для фильтрации
 5. Экспортируйте трассировку для анализа
 
-### 16.5. Work with Real Device / Работа с реальным устройством
+### 17.5. Work with Real Device / Работа с реальным устройством
 
 **EN:**
 1. Connect to device (COM port)
@@ -928,7 +1219,7 @@ Full description: **MCP_GUIDE.md**
 3. Читайте/записывайте память и IO-порты
 4. Освободите шину (Ctrl+U)
 
-### 16.6. Device Memory Test / Тестирование памяти устройства
+### 17.6. Device Memory Test / Тестирование памяти устройства
 
 **EN:**
 1. Connect to device and hold bus
@@ -944,7 +1235,7 @@ Full description: **MCP_GUIDE.md**
 4. Запустите тест
 5. Изучите результаты в журнале
 
-### 16.7. Compare Images / Сравнение образов
+### 17.7. Compare Images / Сравнение образов
 
 **EN:**
 1. Load current image (or connect to device and read memory)
@@ -957,6 +1248,24 @@ Full description: **MCP_GUIDE.md**
 2. Вкладка «Сравнение» → «Загрузить файл для сравнения»
 3. Нажмите «Сравнить»
 4. Изучите различия в таблице
+
+---
+
+### 17.8. Write, Assemble & Debug a Program / Написание, сборка и отладка программы
+
+**EN:**
+1. "Assembler" tab → type or load the source
+2. Click **"Assemble"** — check the error panel and the label table
+3. Click **"Assemble & Load"** — the binary is written to memory at the `ORG` address and PC is set there
+4. "Emulator" tab → set breakpoints (double-click a code line)
+5. Press F5 to run or F11 to step; watch registers, flags, and stack
+
+**RU:**
+1. Вкладка «Ассемблер» → введите или загрузите исходный код
+2. Нажмите **«Ассемблировать»** — проверьте панель ошибок и таблицу меток
+3. Нажмите **«Ассемблировать и загрузить»** — бинарник записан в память по адресу `ORG`, PC установлен туда
+4. Вкладка «Эмулятор» → установите точки останова (двойной клик по строке кода)
+5. Нажмите F5 для запуска или F11 для пошагового выполнения; наблюдайте за регистрами, флагами и стеком
 
 ---
 
@@ -993,5 +1302,5 @@ Full description: **MCP_GUIDE.md**
 
 ---
 
-*Documentation generated for i8080-5 CI version 2.1.*
-*Документация сгенерирована для версии 2.1 программы i8080-5 CI.*
+*Documentation generated for i8080-5 CI version 2.2.*
+*Документация сгенерирована для версии 2.2 программы i8080-5 CI.*

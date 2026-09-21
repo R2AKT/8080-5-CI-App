@@ -1484,6 +1484,10 @@ class MainWindow(QMainWindow):
         if self.auto_disasm_check.isChecked() and self.mem_data:
             self.auto_disasm()
 
+        # Синхронизируем ассемблер с памятью
+        # (не перезаписывая редактируемый код)
+        self._on_memory_changed()
+
     # ==================== БЛОКИ, ТЕСТЫ, IO ====================
     def show_read_block_dialog(self):
         text1, ok1 = QInputDialog.getText(self, self.tr("addr_hex"), self.tr("fill_start_addr"))
@@ -3886,10 +3890,10 @@ class MainWindow(QMainWindow):
 
     def _on_memory_changed(self):
         """Вызывается при изменении памяти из любого источника."""
-        if hasattr(self, 'asm_widget'):
+        if hasattr(self, 'assembler_widget'):
             # Не перезаписываем, если пользователь редактирует
-            if not self.asm_widget.editor.document().isModified():
-                self.asm_widget.sync_from_memory()
+            if not self.assembler_widget.editor.document().isModified():
+                self.assembler_widget.sync_from_memory()
 
     # === Help / Справка ===
 

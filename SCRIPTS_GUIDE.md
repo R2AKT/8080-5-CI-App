@@ -1,7 +1,7 @@
 # SCRIPTS_GUIDE.md — Руководство по скриптам i8080-5 CI
 
-> **Версия:** 2.0  
-> **Дата:** 2026-08-16  
+> **Версия:** 2.1  
+> **Дата:** 2026-09-21  
 > **Вкладка:** «Скрипты» (Scripts)
 
 Скрипты позволяют автоматизировать работу с программой: читать/записывать память, управлять эмулятором, дизассемблировать код и управлять устройством через COM-порт.
@@ -121,6 +121,19 @@ log("Сообщение в журнал программы")
 | `log(msg)` | Вывод в журнал программы | `None` |
 | `status()` | Состояние программы | `dict` |
 | `goto(addr)` | Перейти к адресу в hex-редакторе | `None` |
+
+### 🎵 Ассемблер (asm_*)
+
+| Функция | Описание | Возвращает |
+|---|---|---|
+| `asm_get_source()` | Прочитать текущий исходный код ассемблера | `str` |
+| `asm_set_source(source)` | Установить исходный код ассемблера | `None` |
+| `asm_load_file(path)` | Загрузить `.asm` файл в редактор ассемблера | `bool` |
+| `asm_assemble(source=None, load_to_memory=False)` | Скомпилировать (опц. загрузить в память) | `AsmResult` |
+| `asm_get_binary()` | Прочитать последний скомпилированный бинарник | `bytes` |
+| `asm_get_symbols()` | Прочитать таблицу символов последнего компиля | `dict` |
+
+**Поле `AsmResult`:** `success` (bool), `binary` (bytes), `origin` (int), `symbols` (dict), `errors` (list), `warnings` (list), `listing` (str), `end_address` (int)
 
 ---
 
@@ -271,6 +284,55 @@ for val, count in counts.most_common(5):
 print("\nДизассемблирование:")
 for line in disassemble(0x0000, 32):
     print(line)
+```
+
+### Пример 11: Ассемблирование и загрузка в память
+
+```python
+# Установить исходный код
+src = (
+    'ORG 0x0100\n'
+    'start:\n'
+    '    LXI B, 0x0005\n'
+    '    MVI A, 0x41\n'
+    'loop:\n'
+    '    DCR B\n'
+    '    JNZ loop\n'
+    '    HLT\n'
+)
+asm_set_source(src)
+
+# Скомпилировать и загрузить в память
+result = asm_assemble(load_to_memory=True)
+if result.success:
+    print(f'Успех: {len(result.binary)} байт, ORG=0x{result.origin:04X}')
+    print(f'Символы: {result.symbols}')
+else:
+    print('Ошибки:')
+    for err in result.errors:
+        print(f'  {err}')
+
+# Прочитать бинарник
+binary = asm_get_binary()
+print(f'Бинарник: {binary.hex()}')
+```
+
+### Пример 12: Загрузка .asm файла и компиляция
+
+```python
+# Загрузить файл
+if asm_load_file('program.asm'):
+    result = asm_assemble(load_to_memory=True)
+    if result.success:
+        print(f'Загружено {len(result.binary)} байт в 0x{result.origin:04X}')
+        # Дизассемблировать для проверки
+        for line in disassemble(result.origin, len(result.binary)):
+            print(line)
+    else:
+        for err in result.errors:
+            print(f'Ошибка: {err}')
+else:
+    print('Не удалось загрузить файл')
 ```
 
 ---

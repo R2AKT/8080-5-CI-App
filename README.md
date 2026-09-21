@@ -41,6 +41,7 @@
 ### Emulation & Debugging / Эмуляция и отладка
 
 **EN:**
+- **Assembler** — built-in two-pass i8080 assembler with preprocessor (macros, includes, conditionals), syntax highlighting, and load-to-memory
 - **i8080 CPU Emulator** — full 256-instruction set including undocumented instructions
 - **Debugger** — breakpoints (regular & conditional), step / step-over, run-to, watch windows, trace log
 - **Disassembler** — real-time with jump arrows and instruction-type highlighting
@@ -49,6 +50,7 @@
 - **Comparison** — diff current memory image against a reference file
 
 **RU:**
+- **Ассемблер** — встроенный двухпроходный ассемблер i8080 с препроцессором (макросы, include, условия), подсветкой синтаксиса и загрузкой в память
 - **Эмулятор i8080 CPU** — полный набор из 256 инструкций, включая недокументированные
 - **Отладчик** — точки останова (обычные и условные), пошаговое выполнение, run-to, watch-окна, трассировка
 - **Дизассемблер** — в реальном времени со стрелками переходов и подсветкой типов команд
@@ -148,11 +150,18 @@ pyinstaller --onefile --hide-console minimize-late --optimize 2 i8080_CI.py
 i8080_CI.py                # Entry point / Точка входа (thin wrapper)
 i8080_emulator.py          # i8080 CPU emulator / Эмулятор i8080 (QObject, Qt Signals)
 mcp_server.py              # MCP Server / MCP-сервер (FastMCP, SSE)
+assemble8080/              # i8080 assembler / Ассемблер i8080 (two-pass, preprocessor)
+│   assembler.py           #   Assembler core / Ядро ассемблера
+│   preprocessor.py        #   Preprocessor / Препроцессор (macros, includes, #if)
+│   numbers.py             #   Number parser / Парсер чисел
+│   symbols.py             #   Symbol table / Таблица символов
+│   errors.py              #   Error types / Типы ошибок
 i8080_ci/                  # Application package / Пакет приложения
 │   i18n.py                #   Internationalization / Интернационализация (RU/EN, themes)
 │   slip.py                #   SLIP protocol / Протокол SLIP (constants, encode/decode)
 │   intelhex.py            #   Intel HEX parser/generator / Парсер/генератор Intel HEX
 │   disassembler.py        #   i8080 disassembler / Дизассемблер i8080
+│   assembler_widget.py    #   Assembler tab / Вкладка ассемблера
 │   bus_worker.py          #   Serial bus worker / Рабочий шину (QThread)
 │   automation.py          #   AutomationAPI / API автоматизации (script interface)
 │   main_window.py         #   MainWindow / Главное окно (QMainWindow)
