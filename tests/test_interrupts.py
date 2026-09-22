@@ -96,7 +96,7 @@ mem = {
 emu = I8080Emulator(mem)
 emu.reset()
 emu.sp = 0xFFFE
-emu.int_enabled = True  # EI выполнен
+emu.interrupts_enabled = True  # EI выполнен
 
 # Запрашиваем прерывание с вектором RST 7 (0xFF)
 emu.request_interrupt(0xFF)
@@ -106,7 +106,7 @@ check("Прерывание ожидает", emu.has_pending_interrupt(), True)
 result = emu._handle_interrupt()
 check("Прерывание обработано", result, True)
 check("PC = 0x0038 (RST 7)", emu.pc, 0x0038)
-check("Прерывания запрещены", emu.int_enabled, False)
+check("Прерывания запрещены", emu.interrupts_enabled, False)
 
 # =============================================
 # ТЕСТ 4: Прерывание запрещено (DI)
@@ -117,7 +117,7 @@ print("-" * 50)
 emu2 = I8080Emulator(mem)
 emu2.reset()
 emu2.sp = 0xFFFE
-emu2.int_enabled = False  # DI выполнен
+emu2.interrupts_enabled = False  # DI выполнен
 
 emu2.request_interrupt(0xFF)
 check("Прерывание ожидает", emu2.has_pending_interrupt(), True)

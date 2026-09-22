@@ -714,6 +714,9 @@ class MainWindow(QMainWindow):
         self.btn_export_disasm = QPushButton("Export")  # Будет переведено в retranslate_ui
         self.btn_export_disasm.clicked.connect(self.export_disasm)
         ctrl_layout.addWidget(self.btn_export_disasm)
+        self.btn_load_map = QPushButton("Load Map")  # Будет переведено в retranslate_ui
+        self.btn_load_map.clicked.connect(self.on_load_map)
+        ctrl_layout.addWidget(self.btn_load_map)
         layout.addLayout(ctrl_layout)
         
         self.disasm_view = DisasmView(self.mem_data)
@@ -903,6 +906,7 @@ class MainWindow(QMainWindow):
         self.btn_disasm.setText(self.tr("disasm"))
         self.auto_disasm_check.setText(self.tr("auto_disasm"))
         self.btn_export_disasm.setText(self.tr("export"))
+        self.btn_load_map.setText(self.tr("asm_load_map"))
         
         # ============================================================
         # ВКЛАДКА "ТЕСТ ПАМЯТИ"
@@ -1472,6 +1476,24 @@ class MainWindow(QMainWindow):
         
         lines = self.disassembler.disassemble(self.mem_data, start, length)
         self.disasm_view.set_lines(lines)
+
+    def on_load_map(self):
+        """Load a map file into the disassembler for symbol resolution."""
+        from assemble8080.mapfile import load_map_file
+        path, _ = QFileDialog.getOpenFileName(
+            self, self.tr("asm_load_map_title"), "", self.tr("asm_map_filter"))
+        if not path:
+            return
+        try:
+            map_file = load_map_file(path)
+            self.disassembler.set_map(map_file)
+            self.log(self.tr("asm_map_loaded").format(path=path, n=len(map_file.entries)))
+            # Re-run disassembly to show resolved symbols
+            if self.mem_data:
+                self.run_disasm()
+        except Exception as e:
+            QMessageBox.critical(self, self.tr("asm_err_title"),
+                                 self.tr("asm_map_err").format(e=e))
 
     def on_hex_data_changed(self):
         """Вызывается при изменении данных в hex-редакторе"""

@@ -1,0 +1,16 @@
+{
+  "format": "i8080-obj-v1",
+  "name": "helper",
+  "source": "helper.asm",
+  "org": 512,
+  "size": 2,
+  "data": "80c9",
+  "symbols": {
+    "HELPER": 0
+  },
+  "exports": [
+    "HELPER"
+  ],
+  "imports": [],
+  "relocations": []
+}

@@ -41,7 +41,7 @@
 ### Emulation & Debugging / Эмуляция и отладка
 
 **EN:**
-- **Assembler** — built-in two-pass i8080 assembler with preprocessor (macros, includes, conditionals), syntax highlighting, and load-to-memory
+- **Assembler** — built-in two-pass i8080 assembler with preprocessor (macros, includes, conditionals), syntax highlighting, load-to-memory, object files, and a linker (EXPORT/IMPORT, relocations, map files)
 - **i8080 CPU Emulator** — full 256-instruction set including undocumented instructions
 - **Debugger** — breakpoints (regular & conditional), step / step-over, run-to, watch windows, trace log
 - **Disassembler** — real-time with jump arrows and instruction-type highlighting
@@ -50,7 +50,7 @@
 - **Comparison** — diff current memory image against a reference file
 
 **RU:**
-- **Ассемблер** — встроенный двухпроходный ассемблер i8080 с препроцессором (макросы, include, условия), подсветкой синтаксиса и загрузкой в память
+- **Ассемблер** — встроенный двухпроходный ассемблер i8080 с препроцессором (макросы, include, условия), подсветкой синтаксиса, загрузкой в память, объектными файлами и линковщиком (EXPORT/IMPORT, переносы, map-файлы)
 - **Эмулятор i8080 CPU** — полный набор из 256 инструкций, включая недокументированные
 - **Отладчик** — точки останова (обычные и условные), пошаговое выполнение, run-to, watch-окна, трассировка
 - **Дизассемблер** — в реальном времени со стрелками переходов и подсветкой типов команд
@@ -150,12 +150,16 @@ pyinstaller --onefile --hide-console minimize-late --optimize 2 i8080_CI.py
 i8080_CI.py                # Entry point / Точка входа (thin wrapper)
 i8080_emulator.py          # i8080 CPU emulator / Эмулятор i8080 (QObject, Qt Signals)
 mcp_server.py              # MCP Server / MCP-сервер (FastMCP, SSE)
-assemble8080/              # i8080 assembler / Ассемблер i8080 (two-pass, preprocessor)
-│   assembler.py           #   Assembler core / Ядро ассемблера
-│   preprocessor.py        #   Preprocessor / Препроцессор (macros, includes, #if)
+assemble8080/              # i8080 assembler / Ассемблер i8080 (two-pass, preprocessor, linker)
+│   assembler.py           #   Assembler core / Ядро ассемблера (relocations)
+│   preprocessor.py        #   Preprocessor / Препроцессор (macros, includes, #if, #path)
 │   numbers.py             #   Number parser / Парсер чисел
 │   symbols.py             #   Symbol table / Таблица символов
 │   errors.py              #   Error types / Типы ошибок
+│   mapfile.py             #   Map file gen/parse / Генерация/парсинг map-файлов
+│   objfile.py             #   Object file format / Формат объектного файла (.obj)
+│   linker.py              #   Linker / Линковщик (.lnk scripts, relocations)
+assembler_example/         # Assembler examples / Примеры ассемблера (single & multi-file, build scripts)
 i8080_ci/                  # Application package / Пакет приложения
 │   i18n.py                #   Internationalization / Интернационализация (RU/EN, themes)
 │   slip.py                #   SLIP protocol / Протокол SLIP (constants, encode/decode)
@@ -281,6 +285,7 @@ python i8080_emulator.py
 | [USER_GUIDE.md](USER_GUIDE.md) | User guide / Пользовательское руководство |
 | [MCP_GUIDE.md](MCP_GUIDE.md) | MCP integration guide / Руководство по MCP-интеграции |
 | [SCRIPTS_GUIDE.md](SCRIPTS_GUIDE.md) | Automation scripts guide / Руководство по скриптам |
+| [ASSEMBLER_GUIDE.md](ASSEMBLER_GUIDE.md) | Assembler programmer's guide / Руководство программиста по ассемблеру |
 | [ANALYSIS.md](ANALYSIS.md) | Technical project analysis / Технический анализ проекта |
 | [CHANGES.md](CHANGES.md) | Changelog / Журнал изменений |
 | [I18N_AUDIT.md](I18N_AUDIT.md) | i18n audit report / Аудит интернационализации |

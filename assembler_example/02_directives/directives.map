@@ -1,0 +1,16 @@
+; i8080-5 CI map file v1
+; source: c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis\assembler_example\02_directives\directives.asm
+; date: 2026-09-22 16:51:26
+; org: 0x0100
+; size: 37
+; symbols: 8
+
+ADDRESS   SIZE  TYPE    NAME
+0000      0001  CODE    LED_OFF
+0001      000F  CODE    EXTRA_FLAG
+0010      00EF  CODE    BUF_SIZE
+00FF      0023  CODE    LED_ON
+0122      0001  CODE    LOCAL_LABEL
+0123      00DD  CODE    GLOBAL_LABEL
+0200      0010  CODE    BASE
+0210      0001  CODE    BUF_END

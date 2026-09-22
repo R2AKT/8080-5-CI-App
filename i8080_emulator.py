@@ -1154,14 +1154,14 @@ class I8080Emulator(QObject):
         if not self._pending_interrupts:
             return False
 
-        if not self.int_enabled:
+        if not self.interrupts_enabled:
             return False  # Прерывания запрещены (DI)
 
         # Извлекаем вектор
         vector = self._pending_interrupts.pop(0)
 
         # Запрещаем прерывания на время обработки
-        self.int_enabled = False
+        self.interrupts_enabled = False
 
         # Выполняем вектор как инструкцию
         if vector == 0x76:  # HLT — не обрабатываем

@@ -1,5 +1,130 @@
 # Changelog / Журнал изменений
 
+## 2026-09-22: Full Project Audit — Bug Fixes (Interrupts, Sections, Strings, Escapes)
+
+### EN
+
+A full-project audit was performed (all 160+ Python files reviewed, 871-test suite +
+assembler/linker/include/example suites re-run). Seven real defects were found and fixed.
+After the fixes the codebase reached a stable state: all test suites pass and a second
+analysis pass found no further defects.
+
+**Fixes applied:**
+
+1. **Interrupt handler used a non-existent attribute** (`i8080_emulator.py`).
+   `_handle_interrupt()` referenced `self.int_enabled`, but the emulator attribute is
+   `interrupts_enabled` (set by EI/DI). Any pending interrupt during a Run raised
+   `AttributeError`. Fixed to use `interrupts_enabled`. `tests/test_interrupts.py`
+   updated to set the correct attribute.
+
+2. **Source filename lost in error messages** (`assemble8080/assembler.py`).
+   `Assembler.assemble()` never assigned `self._filename = filename`, so every
+   `AsmError.source` was empty and error lines showed no file. Fixed by setting
+   `self._filename = filename` at the start of `assemble()`.
+
+3. **Last `#code` section never closed in pass 1** (`assemble8080/assembler.py`).
+   Only mid-stream sections were closed, so the final section's `_SIZE` and `_END`
+   symbols were missing. This broke `EQU X LAST_SEC_SIZE` (resolved to 0) and left
+   `LAST_SEC_END` undefined. Fixed by closing the last section after the pass-1 loop
+   (creates `_SIZE` + `_END` and advances `location` for fixed-size sections).
+
+4. **Inconsistent fill byte in final section close** (`assemble8080/assembler.py`).
+   The pass-2 final close padded with zero bytes while mid-loop closes used the target
+   fill byte (`_ds_fill`, 0xFF for ROM / 0x00 for RAM). Fixed to use `_ds_fill` and to
+   also emit the `_END` symbol.
+
+5. **Dot-directive normalization corrupted string literals** (`assemble8080/preprocessor.py`).
+   `_normalize_dot_directives()` replaced `.and`, `.or`, `.not`, etc. anywhere in the
+   line, including inside quotes: `DB "a.and.b"` became `aand.b`. Fixed to split the
+   line on quotes and normalize only the unquoted segments.
+
+6. **`DB` escape sequences not decoded** (`assemble8080/assembler.py`).
+   `DB '\n'` emitted two bytes (0x5C 0x6E) instead of one (0x0A). Added a
+   `_decode_string_escapes()` helper (supports `\n \t \r \0 \\ \' \" \xNN`)
+   and used it in both `_parse_db()` and the pass-1 byte count, so single- and
+   double-quoted strings decode consistently.
+
+7. **Map file not saved on the "Assemble → OBJ" path** (`i8080_ci/assembler_widget.py`).
+   The requirement is that a `.map` file is produced on *any* assembly. The OBJ path
+   (`on_assemble_obj`) assembled but did not save the map. Fixed to save the map next
+   to the source file, matching the plain Assemble path.
+
+**Verification (all green after fixes):**
+
+| Suite | Result |
+|---|---|
+| run_tests.py (33 files) | **871/871 PASS** |
+| assembler_test_full.py | **20/20 PASS** |
+| test_assembler_linker.py | **57/57 PASS** |
+| test_assembler_include.py | **11/11 PASS** |
+| build_all.py (4 examples) | **4/4 PASS** |
+| test_gui_smoke.py | **PASS** |
+| py_compile (all .py) | **0 errors** |
+
+### RU
+
+Выполнен полный аудит проекта (проанализировано 160+ Python-файлов, перезапущены
+набор из 871 теста + наборы ассемблера/линковщика/включений/примеров). Найдено и
+исправлено семь реальных дефектов. После исправлений кодовая база достигла стабильного
+состояния: все тестовые наборы проходят, повторный проход анализа новых дефектов не
+обнаружил.
+
+**Внесённые исправления:**
+
+1. **Обработчик прерываний использовал несуществующий атрибут** (`i8080_emulator.py`).
+   `_handle_interrupt()` обращался к `self.int_enabled`, тогда как атрибут эмулятора
+   называется `interrupts_enabled` (устанавливается EI/DI). Любое ожидающее
+   прерывание во время Run вызывало `AttributeError`. Исправлено на `interrupts_enabled`.
+   `tests/test_interrupts.py` обновлён на корректный атрибут.
+
+2. **Имя исходного файла терялось в сообщениях об ошибках** (`assemble8080/assembler.py`).
+   `Assembler.assemble()` никогда не присваивал `self._filename = filename`, поэтому
+   `AsmError.source` всегда был пустым и в строках ошибок не было имени файла.
+   Исправлено: `self._filename = filename` в начале `assemble()`.
+
+3. **Последняя секция `#code` не закрывалась в проходе 1** (`assemble8080/assembler.py`).
+   Закрывались только «промежуточные» секции, поэтому у финальной секции не создавались
+   символы `_SIZE` и `_END`. Это ломало `EQU X LAST_SEC_SIZE` (давало 0) и оставляло
+   `LAST_SEC_END` неопределённым. Исправлено: после цикла прохода 1 последняя секция
+   закрывается (создаются `_SIZE` + `_END`, для фиксированного размера `location`
+   сдвигается).
+
+4. **Несогласованный байт заполнения при финальном закрытии секции**
+   (`assemble8080/assembler.py`). Финальное закрытие в проходе 2 дополняло секцию
+   нулевыми байтами, тогда как промежуточные закрытия использовали целевой байт
+   заполнения (`_ds_fill`: 0xFF для ROM / 0x00 для RAM). Исправлено на `_ds_fill`,
+   добавлено создание символа `_END`.
+
+5. **Нормализация dot-директив повреждала строковые литералы**
+   (`assemble8080/preprocessor.py`). `_normalize_dot_directives()` заменял `.and`, `.or`,
+   `.not` и т.д. в любом месте строки, включая кавычки: `DB "a.and.b"` превращался в
+   `aand.b`. Исправлено: строка разбивается по кавычкам, нормализация применяется только
+   к некавычным сегментам.
+
+6. **Escape-последовательности в `DB` не декодировались** (`assemble8080/assembler.py`).
+   `DB '\n'` выдавал два байта (0x5C 0x6E) вместо одного (0x0A). Добавлен helper
+   `_decode_string_escapes()` (поддерживает `\n \t \r \0 \\ \' \" \xNN`),
+   используется в `_parse_db()` и в подсчёте байтов прохода 1 — одинарные и двойные
+   кавычки декодируются согласованно.
+
+7. **Map-файл не сохранялся на пути «Assemble → OBJ»** (`i8080_ci/assembler_widget.py`).
+   Требование: `.map`-файл создаётся при *любом* ассемблировании. Путь OBJ
+   (`on_assemble_obj`) ассемблировал, но map не сохранял. Исправлено: map сохраняется
+   рядом с исходным файлом, как и на обычном пути Assemble.
+
+**Верификация (всё зелёное после исправлений):**
+
+| Набор | Результат |
+|---|---|
+| run_tests.py (33 файла) | **871/871 PASS** |
+| assembler_test_full.py | **20/20 PASS** |
+| test_assembler_linker.py | **57/57 PASS** |
+| test_assembler_include.py | **11/11 PASS** |
+| build_all.py (4 примера) | **4/4 PASS** |
+| test_gui_smoke.py | **PASS** |
+| py_compile (все .py) | **0 ошибок** |
+
+
 ## 2026-09-19 (re-audit pass 7): Explicit Public API via `__all__` + Stability Verification
 
 ### EN

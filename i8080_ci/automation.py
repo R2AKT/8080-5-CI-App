@@ -615,10 +615,20 @@ class AutomationAPI:
             widget.editor.setPlainText(source)
         else:
             source = widget.editor.toPlainText()
-        result = widget.assembler.assemble(source)
+        result = widget.assembler.assemble(source, getattr(widget, '_current_file', None) or '')
         self._last_asm_result = result
         if result.errors:
             return result
+        # Сохранение map-файла рядом с исходным
+        cur_file = getattr(widget, '_current_file', None)
+        if result.map_text and cur_file:
+            import os as _os
+            map_path = _os.path.splitext(cur_file)[0] + '.map'
+            try:
+                from assemble8080.mapfile import save_map_file
+                save_map_file(map_path, result.map_text)
+            except Exception:
+                pass
         if load_to_memory and result.binary:
             widget._load_to_memory(result.binary, result.origin)
         return result
@@ -634,6 +644,76 @@ class AutomationAPI:
         if not hasattr(self, '_last_asm_result') or self._last_asm_result is None:
             raise RuntimeError("Сначала вызовите asm_assemble()")
         return dict(self._last_asm_result.symbols)
+
+    def asm_get_map(self):
+        """Вернуть текст map-файла последней сборки (str)."""
+        if not hasattr(self, '_last_asm_result') or self._last_asm_result is None:
+            raise RuntimeError("Сначала вызовите asm_assemble()")
+        return self._last_asm_result.map_text
+
+    def asm_save_map(self, path, source=None):
+        """Ассемблировать (если нужно) и сохранить map-файл.
+
+        Args:
+            path: путь к .map файлу
+            source: опциональный исходный код (иначе из редактора)
+        """
+        from assemble8080.mapfile import save_map_file
+        result = self.asm_assemble(source=source)
+        if result.errors:
+            raise RuntimeError("Assembly errors: " + "; ".join(e.message for e in result.errors))
+        save_map_file(path, result.map_text)
+        return result.map_text
+
+    def asm_assemble_obj(self, path, source=None):
+        """Ассемблировать код и сохранить объектный файл (.obj).
+
+        Args:
+            path: путь к .obj файлу
+            source: опциональный исходный код (иначе из редактора)
+
+        Возвращает ObjectFile.
+        """
+        from assemble8080.objfile import obj_from_asm_result, save_obj
+        result = self.asm_assemble(source=source)
+        if result.errors:
+            raise RuntimeError("Assembly errors: " + "; ".join(e.message for e in result.errors))
+        widget = self._check_assembler()
+        obj = obj_from_asm_result(result, getattr(widget, '_current_file', None) or '')
+        save_obj(path, obj)
+        return obj
+
+    def asm_link(self, script_path=None, obj_paths=None, origin=0, size=0x10000, fill=0xFF):
+        """Слинковать объектные файлы.
+
+        Args:
+            script_path: путь к .lnk скрипту линковщика (приоритет)
+            obj_paths: список путей к .obj файлам (если нет script_path)
+            origin, size, fill: параметры линковки (для obj_paths)
+
+        Возвращает LinkResult (binary, origin, size, symbols, errors, warnings, map_text).
+        """
+        from assemble8080.linker import link, link_from_script
+        from assemble8080.objfile import load_obj
+        if script_path:
+            return link_from_script(script_path)
+        if not obj_paths:
+            raise RuntimeError("Нужен script_path или obj_paths")
+        objects = [load_obj(p) for p in obj_paths]
+        return link(objects, origin=origin, size=size, fill=fill)
+
+    def asm_load_map(self, path):
+        """Загрузить map-файл в дизассемблер для резолва символов.
+
+        Args:
+            path: путь к .map файлу
+
+        Возвращает MapFile.
+        """
+        from assemble8080.mapfile import load_map_file
+        map_file = load_map_file(path)
+        self.mw.disassembler.set_map(map_file)
+        return map_file
 
 
 # ==================== РАБОЧИЙ ПОТОК ====================

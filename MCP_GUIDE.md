@@ -243,8 +243,9 @@ HL > 0x1000 and Z == 0
 | `refresh` | — | Обновить GUI |
 
 > **Ассемблер:** Функции `asm_get_source`, `asm_set_source`, `asm_load_file`,
-> `asm_assemble`, `asm_get_binary`, `asm_get_symbols` доступны через скрипты
-> (вкладка «Скрипты»), но не как MCP-tools. См. SCRIPTS_GUIDE.md, раздел 4.
+> `asm_assemble`, `asm_get_binary`, `asm_get_symbols`, `asm_assemble_obj`,
+> `asm_link`, `asm_load_map` доступны через скрипты (вкладка «Скрипты»),
+> но не как MCP-tools. См. SCRIPTS_GUIDE.md, раздел 4.
 
 ---
 

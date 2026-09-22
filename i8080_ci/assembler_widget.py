@@ -11,6 +11,7 @@ Features:
 - Jump arrows (like in disassembler)
 """
 
+import os
 import re
 import traceback
 from PySide6.QtWidgets import (
@@ -26,6 +27,9 @@ from PySide6.QtGui import (
 from PySide6.QtCore import Qt, QRegularExpression, QRect, QSize, QStringListModel
 
 from assemble8080.assembler import Assembler
+from assemble8080.objfile import obj_from_asm_result, save_obj, load_obj
+from assemble8080.linker import link, link_from_script
+from assemble8080.mapfile import load_map_file
 from common.i18n import LANGS, get_system_language
 from common.themes import (
     get_editor_style, get_syntax_colors, ARROW_COLORS,
@@ -386,6 +390,7 @@ class AssemblerWidget(QWidget):
         self.main_window = main_window
         self.is_dark = is_dark
         self.assembler = Assembler()
+        self._current_file = None  # Путь к загруженному .asm файлу
         self._init_ui()
 
     def _init_ui(self):
@@ -414,6 +419,14 @@ class AssemblerWidget(QWidget):
         self.btn_assemble_load = QPushButton(_tr("asm_assemble_load"))
         self.btn_assemble_load.clicked.connect(self.on_assemble_load)
         ctrl_layout.addWidget(self.btn_assemble_load)
+
+        self.btn_assemble_obj = QPushButton(_tr("asm_assemble_obj"))
+        self.btn_assemble_obj.clicked.connect(self.on_assemble_obj)
+        ctrl_layout.addWidget(self.btn_assemble_obj)
+
+        self.btn_link = QPushButton(_tr("asm_link"))
+        self.btn_link.clicked.connect(self.on_link)
+        ctrl_layout.addWidget(self.btn_link)
 
         ctrl_layout.addStretch()
         layout.addLayout(ctrl_layout)
@@ -586,6 +599,7 @@ class AssemblerWidget(QWidget):
     def on_new(self):
         """New program: clear editor and log."""
         self.editor.clear()
+        self._current_file = None
         self.editor.jumps = []
         self.editor.line_number_area.update()
         self.error_table.setRowCount(0)
@@ -597,6 +611,86 @@ class AssemblerWidget(QWidget):
     def on_assemble_load(self):
         self._do_assemble(load_to_memory=True)
 
+    def on_assemble_obj(self):
+        """Assemble and save object file (.obj)."""
+        source = self.editor.toPlainText()
+        if not source.strip():
+            if self.main_window is not None:
+                self.main_window.log(_tr("asm_no_code"))
+            return
+        try:
+            result = self.assembler.assemble(source, self._current_file or '')
+        except Exception:
+            if self.main_window is not None:
+                self.main_window.log(_tr("asm_exception").format(tb=traceback.format_exc()))
+            return
+        if result.errors:
+            if self.main_window is not None:
+                self.main_window.log(_tr("asm_errors_found").format(n=len(result.errors)))
+                for err in result.errors:
+                    self.main_window.log(_tr("asm_err_line").format(line=err.line, msg=err.message))
+            return
+        # Сохранение map-файла рядом с исходным (map создаётся при любом ассемблировании)
+        if result.map_text and self._current_file:
+            map_path = os.path.splitext(self._current_file)[0] + '.map'
+            try:
+                from assemble8080.mapfile import save_map_file
+                save_map_file(map_path, result.map_text)
+                if self.main_window is not None:
+                    self.main_window.log(_tr("asm_map_saved").format(path=map_path))
+            except Exception as e:
+                if self.main_window is not None:
+                    self.main_window.log(_tr("asm_map_save_err").format(e=e))
+        # Determine default obj path
+        if self._current_file:
+            default = os.path.splitext(self._current_file)[0] + '.obj'
+        else:
+            default = 'output.obj'
+        path, _ = QFileDialog.getSaveFileName(
+            self, _tr("asm_obj_title"), default, _tr("asm_obj_filter"))
+        if not path:
+            return
+        try:
+            obj = obj_from_asm_result(result, self._current_file or '')
+            save_obj(path, obj)
+            if self.main_window is not None:
+                self.main_window.log(_tr("asm_obj_saved").format(path=path))
+        except Exception as e:
+            QMessageBox.critical(self, _tr("asm_err_title"),
+                                 _tr("asm_obj_err").format(e=e))
+
+    def on_link(self):
+        """Link object files using a linker script (.lnk) or selected .obj files."""
+        # Try to open a linker script first
+        path, _ = QFileDialog.getOpenFileName(
+            self, _tr("asm_link_title"), "", _tr("asm_link_filter"))
+        if not path:
+            return
+        if self.main_window is not None:
+            self.main_window.log(_tr("asm_linking"))
+        try:
+            if path.lower().endswith('.lnk'):
+                result = link_from_script(path)
+            else:
+                # Single .obj file: link it alone
+                obj = load_obj(path)
+                result = link([obj])
+            if not result.success:
+                if self.main_window is not None:
+                    self.main_window.log(_tr("asm_link_errors").format(n=len(result.errors)))
+                    for err in result.errors:
+                        self.main_window.log(_tr("asm_link_err").format(msg=err.message))
+                return
+            if self.main_window is not None:
+                self.main_window.log(_tr("asm_link_success").format(n=len(result.binary), path=path))
+                if result.map_text:
+                    self.main_window.log(_tr("asm_link_map").format(path='(generated)'))
+                for w in result.warnings:
+                    self.main_window.log(_tr("asm_warning").format(w=w))
+        except Exception as e:
+            QMessageBox.critical(self, _tr("asm_link_err_title"),
+                                 _tr("asm_link_fail").format(e=e))
+
     def on_load_file(self):
         path, _ = QFileDialog.getOpenFileName(
             self, _tr("asm_load_title"), "",
@@ -605,6 +699,7 @@ class AssemblerWidget(QWidget):
             try:
                 with open(path, 'r', encoding='utf-8') as f:
                     self.editor.setPlainText(f.read())
+                self._current_file = path
                 if self.main_window is not None:
                     self.main_window.log(_tr("asm_loaded").format(path=path))
             except Exception as e:
@@ -638,7 +733,7 @@ class AssemblerWidget(QWidget):
             return
 
         try:
-            result = self.assembler.assemble(source)
+            result = self.assembler.assemble(source, self._current_file or '')
         except Exception:
             if self.main_window is not None:
                 self.main_window.log(_tr("asm_exception").format(tb=traceback.format_exc()))
@@ -676,6 +771,18 @@ class AssemblerWidget(QWidget):
                 self.main_window.log(f"    {name}: 0x{addr:04X}")
 
         self._update_labels_table(result.symbols)
+
+        # Сохранение map-файла рядом с исходным файлом
+        if result.map_text and self._current_file:
+            map_path = os.path.splitext(self._current_file)[0] + '.map'
+            try:
+                from assemble8080.mapfile import save_map_file
+                save_map_file(map_path, result.map_text)
+                if self.main_window is not None:
+                    self.main_window.log(_tr("asm_map_saved").format(path=map_path))
+            except Exception as e:
+                if self.main_window is not None:
+                    self.main_window.log(_tr("asm_map_save_err").format(e=e))
 
         # Load to memory
         if load_to_memory and result.binary:
@@ -719,6 +826,8 @@ class AssemblerWidget(QWidget):
             self.btn_save_file.setText(_tr("asm_save"))
             self.btn_assemble.setText(_tr("asm_assemble"))
             self.btn_assemble_load.setText(_tr("asm_assemble_load"))
+            self.btn_assemble_obj.setText(_tr("asm_assemble_obj"))
+            self.btn_link.setText(_tr("asm_link"))
             self.error_group.setTitle(_tr("asm_errors"))
             self.error_table.setHorizontalHeaderLabels([_tr("asm_col_line"), _tr("asm_col_msg")])
             self.label_group.setTitle(_tr("asm_labels"))

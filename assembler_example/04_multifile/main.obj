@@ -1,0 +1,24 @@
+{
+  "format": "i8080-obj-v1",
+  "name": "main",
+  "source": "main.asm",
+  "org": 256,
+  "size": 6,
+  "data": "3e42cd000076",
+  "symbols": {
+    "MAIN": 0
+  },
+  "exports": [
+    "MAIN"
+  ],
+  "imports": [
+    "HELPER"
+  ],
+  "relocations": [
+    {
+      "offset": 3,
+      "size": 2,
+      "symbol": "HELPER"
+    }
+  ]
+}

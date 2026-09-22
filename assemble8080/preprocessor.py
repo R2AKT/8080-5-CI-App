@@ -24,6 +24,7 @@ class Preprocessor:
 
     def __init__(self, include_dirs=None):
         self.include_dirs = include_dirs or ['.']
+        self.path_dirs = []        # Дополнительные каталоги из #path / .path
         self.defines = {}          # {имя: значение}
         self.macros = {}           # {имя: (параметры, тело)}
         self.included_files = set()
@@ -42,6 +43,7 @@ class Preprocessor:
         self._line_num = 0
         self.defines = {}  # ← Сбрасываем #define
         self.macros = {}   # ← Сбрасываем макросы
+        self.path_dirs = []  # ← Сбрасываем #path
         lines = source.split('\n')
         # Расширить REPT/ENDM блоки
         lines = self._expand_rept(lines, filename)
@@ -183,6 +185,20 @@ class Preprocessor:
             if stripped.startswith('#charset'):
                 i += 1
                 continue
+            # === Обработка #path / .path (дополнительные каталоги поиска) ===
+            m_path = re.match(r'^#?\.?path\s+["\']([^"\']+)["\']', stripped, re.IGNORECASE)
+            if m_path:
+                path_dir = m_path.group(1)
+                # Разрешить относительный путь от каталога текущего файла
+                if not os.path.isabs(path_dir) and filename != '<input>':
+                    base = os.path.dirname(os.path.abspath(filename))
+                    path_dir = os.path.normpath(os.path.join(base, path_dir))
+                else:
+                    path_dir = os.path.normpath(os.path.abspath(path_dir))
+                if path_dir not in self.path_dirs:
+                    self.path_dirs.append(path_dir)
+                i += 1
+                continue
             # .asm8080 / .8080 — указание целевого CPU (информационно)
             if re.match(r'^\.asm8080\b', stripped, re.IGNORECASE) or re.match(r'^\.8080\b', stripped, re.IGNORECASE):
                 i += 1
@@ -258,13 +274,28 @@ class Preprocessor:
         return None
 
     def _process_include(self, inc_file, result, depth, current_dir=None):
-        """Обработать включаемый файл"""
-        # Ищем файл в директориях
+        """Обработать включаемый файл.
+        
+        Порядок поиска:
+        1. Каталог текущего файла (current_dir) — для относительных путей
+        2. Каталоги из #path / .path (в порядке объявления)
+        3. include_dirs (каталог главного файла, CWD)
+        """
         full_path = None
-        search_dirs = list(self.include_dirs)
-        # Добавляем каталог текущего файла в начало поиска
-        if current_dir and current_dir not in search_dirs:
-            search_dirs.insert(0, current_dir)
+        # Строим список каталогов поиска в правильном порядке
+        search_dirs = []
+        # 1. Каталог текущего файла — всегда первым
+        if current_dir:
+            search_dirs.append(current_dir)
+        # 2. Каталоги из #path
+        for d in self.path_dirs:
+            if d not in search_dirs:
+                search_dirs.append(d)
+        # 3. Базовые include_dirs
+        for d in self.include_dirs:
+            if d not in search_dirs:
+                search_dirs.append(d)
+        
         for dir_path in search_dirs:
             candidate = os.path.join(dir_path, inc_file)
             if os.path.exists(candidate):
@@ -272,7 +303,9 @@ class Preprocessor:
                 break
 
         if full_path is None:
-            raise PreprocessorError(f"Файл не найден: {inc_file}", self._line_num)
+            searched = ', '.join(search_dirs) if search_dirs else '(none)'
+            raise PreprocessorError(
+                f"Файл не найден: {inc_file} (искали в: {searched})", self._line_num)
 
         if full_path in self.included_files:
             return  # Уже включён
@@ -508,19 +541,24 @@ class Preprocessor:
         return result
 
     def _normalize_dot_directives(self, line):
-        """Заменить .org, .db, .dw, .ds, .equ, .end на org, db, dw, ds, equ, end"""
+        """Заменить .org, .db, .dw, .ds, .equ, .end на org, db, dw, ds, equ, end.
+        Нормализация применяется только вне строковых литералов (кавычек)."""
         directives = ['org', 'db', 'dw', 'ds', 'equ', 'end', 'macro', 'endm',
                       'byte', 'word', 'space', 'ascii', 'text', 'title',
                       'include', 'define', 'if', 'else', 'endif',
                       'high', 'low', 'not', 'and', 'or', 'xor', 'mod', 'shl', 'shr']
 
-        result = line
-        for d in directives:
-            # Заменяем .directive на directive (только в начале слова)
-            pattern = r'\.' + d + r'\b'
-            result = re.sub(pattern, d, result, flags=re.IGNORECASE)
-
-        return result
+        # Разбиваем строку на части: некавычные и кавычные (строковые литералы)
+        # Кавычные части не трогаем, чтобы не повреждать строки вида "a.and.b"
+        _qpat = '("[^"]*"|' + chr(39) + '[^' + chr(39) + ']*' + chr(39) + ')'
+        parts = re.split(_qpat, line)
+        for pi in range(0, len(parts), 2):  # Чётные индексы = вне кавычек
+            seg = parts[pi]
+            for d in directives:
+                pattern = r'\.' + d + r'\b'
+                seg = re.sub(pattern, d, seg, flags=re.IGNORECASE)
+            parts[pi] = seg
+        return ''.join(parts)
 
     # =============================================
     # ВЫЧИСЛЕНИЕ УСЛОВИЙ #if

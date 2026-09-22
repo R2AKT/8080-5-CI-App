@@ -17,8 +17,12 @@ class I8080Disassembler:
     RP_PUSH = ['B', 'D', 'H', 'PSW']
     CC = ['NZ', 'Z', 'NC', 'C', 'PO', 'PE', 'P', 'M']
 
-    def __init__(self):
+    def __init__(self, map_file=None):
         self.table = self._generate_table()
+        self._map = map_file  # MapFile or None
+        self._map_dict = {}   # {address: name}
+        if map_file:
+            self._map_dict = map_file.to_dict()
         
     def _generate_table(self):
         t = {}
@@ -114,6 +118,19 @@ class I8080Disassembler:
                 return mnemonic
         return f"DB {byte_val:02X}h"
 
+    def set_map(self, map_file):
+        """Set map file for symbol resolution."""
+        self._map = map_file
+        self._map_dict = map_file.to_dict() if map_file else {}
+    
+    def _resolve_symbol(self, addr):
+        """Resolve address to symbol name from map file."""
+        if not self._map_dict:
+            return None
+        if addr in self._map_dict:
+            return self._map_dict[addr]
+        return None
+    
     def disassemble(self, mem_dict, start_addr, length):
         lines = []
         i = 0
@@ -123,7 +140,9 @@ class I8080Disassembler:
                 i += 1; continue
             op = mem_dict[addr]
             if op not in self.table:
-                lines.append((addr, 1, f"DB {op:02X}h", "*", None))
+                sym = self._resolve_symbol(addr)
+                prefix = f"{sym}: " if sym else ""
+                lines.append((addr, 1, f"{prefix}DB {op:02X}h", "*", None))
                 i += 1; continue
             
             size, fmt = self.table[op]
@@ -132,9 +151,23 @@ class I8080Disassembler:
                 asm = fmt.format(*args) if args else fmt
             except (ValueError, IndexError, KeyError):
                 asm = fmt
-                
-            undoc = "*" if "NOP*" in asm or "RET*" in asm or "CALL*" in asm else ""
+            
+            # Resolve symbol at current address
+            sym = self._resolve_symbol(addr)
+            if sym:
+                asm = f"{sym}: {asm}"
+            
+            # Resolve target address to symbol
             target = self.get_target(op, args)
+            if target is not None:
+                target_sym = self._resolve_symbol(target)
+                if target_sym:
+                    # Replace hex address with symbol name in the asm string
+                    hex_str = f"{target:04X}h"
+                    if hex_str in asm:
+                        asm = asm.replace(hex_str, target_sym)
+            
+            undoc = "*" if "NOP*" in asm or "RET*" in asm or "CALL*" in asm else ""
             
             lines.append((addr, size, asm, undoc, target))
             i += size

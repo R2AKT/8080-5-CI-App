@@ -1,0 +1,13 @@
+; i8080-5 CI map file v1
+; source: c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis\assembler_example\01_hello\hello.asm
+; date: 2026-09-22 16:51:26
+; org: 0x0100
+; size: 25
+; symbols: 5
+
+ADDRESS   SIZE  TYPE    NAME
+0100      0007  CODE    START
+0107      0000  CODE    PRINT_STR
+0107      000B  CODE    LOOP
+0112      0001  CODE    DONE
+0113      0006  CODE    MSG

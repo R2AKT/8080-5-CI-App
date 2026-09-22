@@ -132,8 +132,13 @@ log("Сообщение в журнал программы")
 | `asm_assemble(source=None, load_to_memory=False)` | Скомпилировать (опц. загрузить в память) | `AsmResult` |
 | `asm_get_binary()` | Прочитать последний скомпилированный бинарник | `bytes` |
 | `asm_get_symbols()` | Прочитать таблицу символов последнего компиля | `dict` |
+| `asm_assemble_obj(path, source=None)` | Скомпилировать и сохранить объектный файл (`.obj`) | `ObjectFile` |
+| `asm_link(script_path=None, obj_paths=None, origin=0, size=0x10000, fill=0xFF)` | Слинковать объектные файлы (по `.lnk` скрипту или списку `.obj`) | `LinkResult` |
+| `asm_load_map(path)` | Загрузить `.map` файл в дизассемблер для резолва символов | `MapFile` |
 
-**Поле `AsmResult`:** `success` (bool), `binary` (bytes), `origin` (int), `symbols` (dict), `errors` (list), `warnings` (list), `listing` (str), `end_address` (int)
+**Поле `AsmResult`:** `success` (bool), `binary` (bytes), `origin` (int), `symbols` (dict), `errors` (list), `warnings` (list), `listing` (str), `end_address` (int), `exports` (list), `imports` (list), `relocations` (list)
+
+**Поле `LinkResult`:** `success` (bool), `binary` (bytes), `origin` (int), `size` (int), `symbols` (dict), `errors` (list), `warnings` (list), `map_text` (str)
 
 ---
 
@@ -333,6 +338,49 @@ if asm_load_file('program.asm'):
             print(f'Ошибка: {err}')
 else:
     print('Не удалось загрузить файл')
+```
+
+### Пример 13: Объектные файлы и линковка
+
+```python
+# Модуль A: определяет и экспортирует HELPER
+srcA = (
+    'ORG 0x0200\n'
+    'EXPORT HELPER\n'
+    'HELPER:\n'
+    '    MVI A, 42\n'
+    '    RET\n'
+)
+asm_set_source(srcA)
+asm_assemble_obj('helper.obj')
+
+# Модуль B: импортирует HELPER и вызывает его
+srcB = (
+    'ORG 0x0100\n'
+    'IMPORT HELPER\n'
+    'START:\n'
+    '    CALL HELPER\n'
+    '    HLT\n'
+)
+asm_set_source(srcB)
+asm_assemble_obj('main.obj')
+
+# Линковка двух объектов
+result = asm_link(obj_paths=['main.obj', 'helper.obj'], origin=0, size=0x10000)
+if result.success:
+    print(f'Слинковано: {len(result.binary)} байт')
+    print(f'HELPER = 0x{result.symbols["HELPER"]:04X}')
+    # Сохранить бинарник и map
+    with open('app.bin', 'wb') as f:
+        f.write(result.binary)
+    if result.map_text:
+        with open('app.map', 'w', encoding='utf-8') as f:
+            f.write(result.map_text)
+        # Загрузить map в дизассемблер для резолва символов
+        asm_load_map('app.map')
+else:
+    for err in result.errors:
+        print(f'Ошибка: {err}')
 ```
 
 ---

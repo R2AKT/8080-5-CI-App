@@ -1,0 +1,8 @@
+; i8080-5 CI map file v1
+; source: c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis\assembler_example\03_macros\macros.asm
+; date: 2026-09-22 16:51:27
+; org: 0x0100
+; size: 29
+; symbols: 0
+
+ADDRESS   SIZE  TYPE    NAME

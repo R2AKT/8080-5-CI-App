@@ -57,6 +57,10 @@ class AsmResult:
     warnings: list = field(default_factory=list)
     listing: list = field(default_factory=list)       # [(addr, bytes, source)]
     end_address: int = 0x0000
+    exports: list = field(default_factory=list)       # [name] — exported symbols
+    imports: list = field(default_factory=list)       # [name] — imported symbols
+    relocations: list = field(default_factory=list)   # [(offset, size, symbol)]
+    map_text: str = ""                                 # текст map-файла (генерируется при успехе)
 
 
 # =============================================================
@@ -488,6 +492,9 @@ class Assembler:
         self._now = now if now is not None else datetime.datetime.now()
         self._write_pos = 0
         self.symbols: dict[str, int] = {}
+        self._exports: set = set()
+        self._imports: set = set()
+        self._relocations: list = []
         self.errors: list[AsmError] = []
         self.warnings: list[str] = []
         self.binary = bytearray()
@@ -563,7 +570,7 @@ class Assembler:
         if m:
             candidate = m.group(1).upper()
             # Проверяем, что это не мнемоника
-            if candidate not in MNEMONICS and candidate not in ('ORG', 'DB', 'DW', 'DS', 'EQU', 'END', 'DM', 'BYTE', 'WORD', 'DEFL', 'REPT', 'ENDM', 'XDEF', 'XREF', 'SECTION', 'IF', 'ENDIF', 'ELSE', 'LOCAL', 'ENDLOCAL', 'ERROR', 'MACRO', 'ENDM', 'CPU', 'ASEG', 'TITLE', 'DEF'):
+            if candidate not in MNEMONICS and candidate not in ('ORG', 'DB', 'DW', 'DS', 'EQU', 'END', 'DM', 'BYTE', 'WORD', 'DEFL', 'REPT', 'ENDM', 'XDEF', 'XREF', 'SECTION', 'IF', 'ENDIF', 'ELSE', 'LOCAL', 'ENDLOCAL', 'ERROR', 'MACRO', 'ENDM', 'CPU', 'ASEG', 'TITLE', 'DEF', 'EXPORT', 'IMPORT', 'EXTERN', 'PUBLIC'):
                 return m.group(1), False, m.group(2)
         # Метки нет
         return None, False, line
@@ -573,9 +580,10 @@ class Assembler:
     # ---------------------------------------------------------
     def assemble(self, source: str, filename: str = "") -> AsmResult:
         """Ассемблировать исходный код"""
+        self._filename = filename
         # 1. Препроцессор
         try:
-            preprocessor = Preprocessor(include_dirs=['.', os.path.dirname(filename) or '.'])
+            preprocessor = Preprocessor(include_dirs=[os.path.dirname(filename) or '.', '.'])
             processed_lines = preprocessor.process(source, filename)
         except PreprocessorError as e:
             return AsmResult(success=False, errors=[AsmError(e.line, str(e))])
@@ -584,6 +592,9 @@ class Assembler:
 
         # 2. Первый проход — сбор меток
         self.symbols = {}
+        self._exports = set()
+        self._imports = set()
+        self._relocations = []
         self.errors = []
         self.warnings = []
         self.listing = []
@@ -648,6 +659,27 @@ class Assembler:
                     self.origin = location & 0xFFFF
                     origin_set = True
                 self.pc = location
+                continue
+
+            # EXPORT / PUBLIC — mark symbols as exported
+            if mnemonic in ('EXPORT', 'PUBLIC', '.EXPORT', '.PUBLIC'):
+                if operand:
+                    for name in self._split_operands(operand):
+                        name = name.strip()
+                        if name:
+                            self._exports.add(name.upper())
+                continue
+
+            # IMPORT / EXTERN — declare external symbols
+            if mnemonic in ('IMPORT', 'EXTERN', '.IMPORT', '.EXTERN'):
+                if operand:
+                    for name in self._split_operands(operand):
+                        name = name.strip()
+                        if name:
+                            self._imports.add(name.upper())
+                            # Define as 0 for pass 1 (will be resolved by linker)
+                            if name.upper() not in self.symbols:
+                                self.symbols[name.upper()] = 0
                 continue
 
             # #code SECTION, ADDRESS, SIZE — секция (zasm)
@@ -769,10 +801,16 @@ class Assembler:
                             continue
                         if part.startswith("'"):
                             _eq = part.find("'", 1)
-                            total += (_eq - 1) if _eq > 0 else 1
+                            if _eq > 0:
+                                total += len(self._decode_string_escapes(part[1:_eq]))
+                            else:
+                                total += 1
                         elif part.startswith('"'):
                             _eq = part.find('"', 1)
-                            total += (_eq - 1) if _eq > 0 else 1
+                            if _eq > 0:
+                                total += len(self._decode_string_escapes(part[1:_eq]))
+                            else:
+                                total += 1
                         else:
                             total += 1
                     location += total
@@ -789,6 +827,33 @@ class Assembler:
                 self._error(line_num, f"Неизвестная мнемоника: {mnemonic}")
                 location += 1
                 self.pc = location
+
+        # Закрыть последнюю секцию (создать _SIZE и _END символы)
+        # Это нужно для forward-ссылок в EQU на размер последней секции
+        if self._current_section:
+            _prev_name, _prev_start, _prev_auto, _prev_size_expr = self._current_section
+            if _prev_auto:
+                _prev_size = location - _prev_start
+            elif _prev_size_expr:
+                try:
+                    _prev_size = self.expr_parser.parse(_prev_size_expr, 0)
+                except Exception:
+                    _prev_size = location - _prev_start
+            else:
+                _prev_size = location - _prev_start
+            self.symbols[_prev_name.upper() + '_SIZE'] = _prev_size
+            self.symbols[_prev_name.upper() + '_END'] = _prev_start + _prev_size
+            # Pad location to fixed section size (pass 1: only advance location)
+            if not _prev_auto and _prev_size_expr:
+                try:
+                    _fixed_size = self.expr_parser.parse(_prev_size_expr, 0)
+                    _actual_size = location - _prev_start
+                    if _actual_size < _fixed_size:
+                        location = _prev_start + _fixed_size
+                        self.pc = location
+                except Exception:
+                    pass
+            self._current_section = None
 
         # 3. Второй проход — генерация кода
         # Process pending EQU directives (forward references to section symbols)
@@ -881,6 +946,14 @@ class Assembler:
                     location = new_loc
                     self.pc = location
                     self._write_pos = location - self._base_offset
+                continue
+
+            # EXPORT / PUBLIC (pass 2: no-op)
+            if mnemonic in ('EXPORT', 'PUBLIC', '.EXPORT', '.PUBLIC'):
+                continue
+
+            # IMPORT / EXTERN (pass 2: no-op)
+            if mnemonic in ('IMPORT', 'EXTERN', '.IMPORT', '.EXTERN'):
                 continue
 
             # #code SECTION, ADDRESS, SIZE - section (zasm)
@@ -1037,20 +1110,21 @@ class Assembler:
             else:
                 prev_size = location - prev_start
             self.symbols[prev_name.upper() + '_SIZE'] = prev_size
+            self.symbols[prev_name.upper() + '_END'] = prev_start + prev_size
             # Pad to fixed section size (pass 2: add bytes)
             if not prev_auto and prev_size_expr:
                 try:
                     fixed_size = self.expr_parser.parse(prev_size_expr, line_num)
                     actual_size = location - prev_start
                     if actual_size < fixed_size:
-                        self._write(bytearray(fixed_size - actual_size))
+                        self._write(bytearray([self._ds_fill]) * (fixed_size - actual_size))
                         location = prev_start + fixed_size
                         self.pc = location
                 except Exception:
                     pass
             self._current_section = None
 
-        return AsmResult(
+        result = AsmResult(
             success=len(self.errors) == 0,
             binary=bytes(self.binary[:self._write_pos]) if self._write_pos < len(self.binary) else bytes(self.binary),
             symbols=dict(self.symbols),
@@ -1058,12 +1132,37 @@ class Assembler:
             errors=list(self.errors),
             warnings=list(self.warnings),
             listing=list(self.listing),
+            exports=list(self._exports),
+            imports=list(self._imports),
+            relocations=list(self._relocations),
             end_address=location
         )
+        # Генерация map-файла при успешной сборке
+        if result.success:
+            from .mapfile import generate_map
+            result.map_text = generate_map(result, source_name=filename)
+        return result
 
     # ---------------------------------------------------------
     # КОДИРОВАНИЕ ИНСТРУКЦИЙ
     # ---------------------------------------------------------
+
+    # ---------------------------------------------------------
+    # Отслеживание переносов (relocations)
+    # ---------------------------------------------------------
+
+    def _is_import_symbol(self, operand_str: str) -> str | None:
+        """Если операнд — чистая ссылка на импортированный символ, вернуть его имя (UPPER)."""
+        t = operand_str.strip()
+        if re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', t):
+            upper = t.upper()
+            if upper in self._imports:
+                return upper
+        return None
+
+    def _track_relocation(self, offset: int, size: int, symbol: str):
+        """Записать запись переноса (offset от начала бинарного буфера)."""
+        self._relocations.append((offset, size, symbol))
 
     def _encode_instruction(self, mnemonic: str, opcode: int, fmt: str,
                             operands: list[str], line_num: int) -> bytearray | None:
@@ -1129,6 +1228,9 @@ class Assembler:
             if val is None:
                 self._error(line_num, f"Невозможно вычислить: {operands[0]}")
                 val = 0
+            sym = self._is_import_symbol(operands[0])
+            if sym is not None:
+                self._track_relocation(self._write_pos + 1, 2, sym)
             return bytearray([opcode, val & 0xFF, (val >> 8) & 0xFF])
 
         if fmt == 'r,d8':
@@ -1159,6 +1261,9 @@ class Assembler:
             if val is None:
                 self._error(line_num, f"Невозможно вычислить: {operands[1]}")
                 val = 0
+            sym = self._is_import_symbol(operands[1])
+            if sym is not None:
+                self._track_relocation(self._write_pos + 1, 2, sym)
             return bytearray([opcode | (rp_code << 4), val & 0xFF, (val >> 8) & 0xFF])
 
         if fmt == 'rst':
@@ -1287,6 +1392,43 @@ class Assembler:
         self._error(line_num, f"Неопределённая метка или неверный операнд: {operand_str}")
         return None
 
+    @staticmethod
+    def _decode_string_escapes(s: str) -> bytes:
+        r"""Декодировать escape-последовательности в строковом литерале.
+        Поддерживает: \n, \t, \r, \0, \\, \\' , \\" , \xNN.
+        Остальные символы — как есть (ASCII)."""
+        result = bytearray()
+        i = 0
+        while i < len(s):
+            ch = s[i]
+            if ch == '\\' and i + 1 < len(s):
+                nxt = s[i + 1]
+                if nxt == 'n':
+                    result.append(0x0A); i += 2; continue
+                elif nxt == 't':
+                    result.append(0x09); i += 2; continue
+                elif nxt == 'r':
+                    result.append(0x0D); i += 2; continue
+                elif nxt == '0':
+                    result.append(0x00); i += 2; continue
+                elif nxt == '\\':
+                    result.append(0x5C); i += 2; continue
+                elif nxt == "'":
+                    result.append(0x27); i += 2; continue
+                elif nxt == '"':
+                    result.append(0x22); i += 2; continue
+                elif nxt == 'x' and i + 3 < len(s):
+                    try:
+                        result.append(int(s[i + 2:i + 4], 16)); i += 4; continue
+                    except ValueError:
+                        pass
+                else:
+                    # Неизвестный escape — оставляем как есть
+                    result.append(ord(ch)); i += 1; continue
+            else:
+                result.append(ord(ch) & 0xFF); i += 1
+        return bytes(result)
+
     def _parse_db(self, operand, line_num):
         """Разобрать DB/DM (байты)"""
         result = bytearray()
@@ -1326,13 +1468,13 @@ class Assembler:
                         value = self.expr_parser.parse(expr, line_num)
                         result.append(value & 0xFF)
                     else:
-                        result.extend(part[1:end_quote].encode('ascii'))
+                        result.extend(self._decode_string_escapes(part[1:end_quote]))
                     continue
             # Строковый литерал в двойных кавычках
             if part.startswith('"'):
                 end_quote = part.find('"', 1)
                 if end_quote > 0:
-                    result.extend(part[1:end_quote].encode('ascii'))
+                    result.extend(self._decode_string_escapes(part[1:end_quote]))
                     continue
             # Числовое выражение
             if part.upper() == 'CR':
@@ -1356,6 +1498,9 @@ class Assembler:
             value = self.expr_parser.parse(part.strip(), line_num)
             result.append(value & 0xFF)
             result.append((value >> 8) & 0xFF)
+            sym = self._is_import_symbol(part)
+            if sym is not None:
+                self._track_relocation(self._write_pos + len(result) - 2, 2, sym)
         return result
 
     # ---------------------------------------------------------
