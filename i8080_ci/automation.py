@@ -557,6 +557,9 @@ class AutomationAPI:
                 "HL": f"{rec['HL']:04X}",
                 "SP": f"{rec['SP']:04X}",
                 "flags": {"S": flags[0], "Z": flags[1], "AC": flags[2], "P": flags[3], "CY": flags[4]},
+                "IFF1": rec.get("IFF1", False),
+                "IFF2": rec.get("IFF2", False),
+                "I": rec.get("I", 0),
                 "cycles": rec['cycles'],
                 "cycles_total": rec['cycles_total']
             })
@@ -615,6 +618,9 @@ class AutomationAPI:
             widget.editor.setPlainText(source)
         else:
             source = widget.editor.toPlainText()
+        # Устанавливаем cpu_type из combo (как в GUI _do_assemble)
+        if hasattr(widget, 'cpu_combo'):
+            widget.assembler.cpu_type = widget.cpu_combo.currentText()
         result = widget.assembler.assemble(source, getattr(widget, '_current_file', None) or '')
         self._last_asm_result = result
         if result.errors:

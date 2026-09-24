@@ -5,7 +5,8 @@ JUMP_OPCODES = {
     0xC3, 0xCA, 0xC2, 0xDA, 0xD2, 0xF2, 0xFA, 0xEA, 0xE2,  # JMP, JZ, JNZ, JC, JNC, JP, JM, JPE, JPO
     0xCD, 0xCC, 0xC4, 0xDC, 0xD4, 0xF4, 0xFC, 0xEC, 0xE4,  # CALL, CZ, CNZ, CC, CNC, CP, CM, CPE, CPO
     0xC9, 0xC8, 0xC0, 0xD8, 0xD0, 0xF0, 0xF8, 0xE8, 0xE0,  # RET, RZ, RNZ, RC, RNC, RP, RM, RPE, RPO
-    0xC7, 0xCF, 0xD7, 0xDF, 0xE7, 0xEF, 0xF7, 0xFF         # RST 0-7
+    0xC7, 0xCF, 0xD7, 0xDF, 0xE7, 0xEF, 0xF7, 0xFF,        # RST 0-7
+    0xCB, 0xD9, 0xDD, 0xED, 0xFD,                          # Пересекающиеся: JMP*/RET*/CALL*/JNK/JK
 }
 
 
@@ -17,20 +18,22 @@ class I8080Disassembler:
     RP_PUSH = ['B', 'D', 'H', 'PSW']
     CC = ['NZ', 'Z', 'NC', 'C', 'PO', 'PE', 'P', 'M']
 
-    def __init__(self, map_file=None):
+    def __init__(self, map_file=None, cpu_type="i8080"):
+        self.cpu_type = cpu_type  # "i8080" или "i8085"
         self.table = self._generate_table()
         self._map = map_file  # MapFile or None
         self._map_dict = {}   # {address: name}
         if map_file:
             self._map_dict = map_file.to_dict()
         
+    def set_cpu_type(self, cpu_type: str) -> None:
+        """Установить тип процессора и перегенерировать таблицу опкодов."""
+        if cpu_type != self.cpu_type:
+            self.cpu_type = cpu_type
+            self.table = self._generate_table()
+        
     def _generate_table(self):
         t = {}
-        for op in [0x08, 0x10, 0x18, 0x20, 0x28, 0x30, 0x38, 0xDD, 0xED, 0xFD]:
-            t[op] = (1, "NOP*")
-        t[0xD9] = (1, "RET*")
-        t[0xCB] = (1, "CALL*")
-        
         t[0x00] = (1, "NOP"); t[0x76] = (1, "HLT")
         
         # LXI: 0x01, 0x11, 0x21, 0x31
@@ -92,6 +95,31 @@ class I8080Disassembler:
         t[0xC7] = (1, "RST 0"); t[0xCF] = (1, "RST 1"); t[0xD7] = (1, "RST 2")
         t[0xDF] = (1, "RST 3"); t[0xE7] = (1, "RST 4"); t[0xEF] = (1, "RST 5")
         t[0xF7] = (1, "RST 6"); t[0xFF] = (1, "RST 7")
+        
+        # === ПЕРЕСЕКАЮЩИЕСЯ ОПКОДЫ 8080/8085 ===
+        if self.cpu_type == "i8085":
+            # 8085: 2 задокументированные (SIM, RIM) + недокументированные
+            t[0x20] = (1, "RIM")
+            t[0x30] = (1, "SIM")
+            t[0x08] = (1, "DSUB")
+            t[0x10] = (1, "ARHL")
+            t[0x18] = (1, "RDEL")
+            t[0x28] = (2, "LDHI {0:02X}h")
+            t[0x38] = (2, "LDSI {0:02X}h")
+            t[0xCB] = (1, "RSTV")
+            t[0xD9] = (1, "SHLX")
+            t[0xDD] = (3, "JNK {1:02X}{0:02X}h")
+            t[0xED] = (1, "LHLX")
+            t[0xFD] = (3, "JK {1:02X}{0:02X}h")
+        else:
+            # 8080: недокументированные
+            for op in [0x08, 0x10, 0x18, 0x20, 0x28, 0x30, 0x38]:
+                t[op] = (1, "NOP*")
+            t[0xCB] = (3, "JMP* {1:02X}{0:02X}h")
+            t[0xD9] = (1, "RET*")
+            t[0xDD] = (3, "CALL* {1:02X}{0:02X}h")
+            t[0xED] = (3, "CALL* {1:02X}{0:02X}h")
+            t[0xFD] = (3, "CALL* {1:02X}{0:02X}h")
         return t
 
     def get_target(self, op, args):
@@ -102,6 +130,13 @@ class I8080Disassembler:
                 return (args[1] << 8) | args[0]
         elif op in [0xC7, 0xCF, 0xD7, 0xDF, 0xE7, 0xEF, 0xF7, 0xFF]:
             return ((op - 0xC7) // 8) * 8
+        # Пересекающиеся опкоды с целевым адресом
+        elif self.cpu_type == "i8080" and op in [0xCB, 0xDD, 0xED, 0xFD]:
+            if len(args) >= 2:
+                return (args[1] << 8) | args[0]
+        elif self.cpu_type == "i8085" and op in [0xDD, 0xFD]:
+            if len(args) >= 2:
+                return (args[1] << 8) | args[0]
         return None
 
     def get_mnemonic(self, byte_val):

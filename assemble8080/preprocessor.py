@@ -199,12 +199,10 @@ class Preprocessor:
                     self.path_dirs.append(path_dir)
                 i += 1
                 continue
-            # .asm8080 / .8080 — указание целевого CPU (информационно)
-            if re.match(r'^\.asm8080\b', stripped, re.IGNORECASE) or re.match(r'^\.8080\b', stripped, re.IGNORECASE):
-                i += 1
-                continue
             # === XDEF / XREF / SECTION — no-op (экспорт/импорт/секция) ===
-            if re.match(r'^(XDEF|XREF|SECTION|CPU|ASEG|TITLE|\.TITLE|PUBLIC|EXTERN|MODULE)\b', stripped, re.IGNORECASE):
+            # Примечание: CPU / .8080 / .8085 / .asm8080 / .asm8085 НЕ удаляются —
+            # их обрабатывает ассемблер (установка cpu_type).
+            if re.match(r'^(XDEF|XREF|SECTION|ASEG|TITLE|\.TITLE|PUBLIC|EXTERN|MODULE)\b', stripped, re.IGNORECASE):
                 i += 1
                 continue
             # === Обработка M80 include (без #) ===
@@ -253,7 +251,6 @@ class Preprocessor:
             proc_lines = processed.split('\n')
             for pl in proc_lines:
                 result.append((pl, self._line_num, filename))
-                self._line_num += 1
             i += 1
         if if_stack:
             raise PreprocessorError("Незакрытый #if", self._line_num)

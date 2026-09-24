@@ -117,8 +117,6 @@ MNEMONICS = {
     'RET':   (0xC9, '', 1),
     'XTHL':  (0xE3, '', 1),
     'PCHL':  (0xE9, '', 1),
-    'SIM':   (0xFB, '', 1),
-    'RIM':   (0xF9, '', 1),
     'XCHG':  (0xEB, '', 1),
     'SPHL':  (0xF9, '', 1),
     'EI':    (0xFB, '', 1),
@@ -144,7 +142,6 @@ MNEMONICS = {
     # INR / DCR
     'INR':   (0x04, 'r', 1),
     'DCR':   (0x05, 'r', 1),
-    'DC':    (0x05, 'r', 1),  # Z80 shorthand for DCR
 
     # INX / DCX
     'INX':   (0x03, 'rp', 1),
@@ -215,12 +212,47 @@ MNEMONICS = {
     # PUSH / POP
     'PUSH':  (0xC5, 'rpsw', 1),
     'POP':   (0xC1, 'rpsw', 1),
-
-    # Недокументированные (часто встречающиеся)
-    'NOP*':  (0x08, '', 1),
-    'RET*':  (0xD9, '', 1),
-    'CALL*': (0xCB, '', 1),
 }
+
+# =============================================================
+# НЕДОКУМЕНТИРОВАННЫЕ КОМАНДЫ 8080 (cpu_type == "i8080")
+# Опкоды, которые на 8085 имеют другое значение (пересекающиеся).
+# =============================================================
+MNEMONICS_8080 = {
+    # 0x08,0x10,0x18,0x20,0x28,0x30,0x38 — недокументированные NOP на 8080
+    'NOP*':  (0x08, '', 1),
+    # 0xCB — недокументированный JMP a16
+    'JMP*':  (0xCB, 'd16', 3),
+    # 0xD9 — недокументированный RET
+    'RET*':  (0xD9, '', 1),
+    # 0xDD,0xED,0xFD — недокументированные CALL a16
+    'CALL*': (0xDD, 'd16', 3),
+}
+
+# =============================================================
+# КОМАНДЫ 8085 (cpu_type == "i8085")
+# 2 задокументированные (SIM, RIM) + недокументированные.
+# Опкоды пересекаются с недокументированными 8080.
+# =============================================================
+MNEMONICS_8085 = {
+    # Задокументированные 8085
+    'SIM':   (0x20, '', 1),   # Set Interrupt Mask
+    'RIM':   (0x30, '', 1),   # Read Interrupt Mask
+    # Недокументированные 8085
+    'DSUB':  (0x08, '', 1),   # HL = HL - BC
+    'ARHL':  (0x10, '', 1),   # Арифметический сдвиг HL вправо
+    'RDEL':  (0x18, '', 1),   # (недокументированная)
+    'LDHI':  (0x28, 'd8', 2), # (недокументированная, d8)
+    'LDSI':  (0x38, 'd8', 2), # (недокументированная, d8)
+    'RSTV':  (0xCB, '', 1),   # (недокументированная)
+    'SHLX':  (0xD9, '', 1),   # (BC) = HL
+    'JNK':   (0xDD, 'd16', 3),# (недокументированная, a16)
+    'LHLX':  (0xED, '', 1),   # HL = (BC)
+    'JK':    (0xFD, 'd16', 3),# (недокументированная, a16)
+}
+
+# Все мнемоники (объединение) — для проверки «это не метка» в _parse_label
+ALL_MNEMONICS = set(MNEMONICS) | set(MNEMONICS_8080) | set(MNEMONICS_8085)
 
 
 # =============================================================
@@ -298,7 +330,9 @@ class ExpressionParser:
     def __init__(self, symbols, defines):
         self.symbols = symbols    # {имя: значение}
         self.defines = defines    # {имя: значение}
-        self.pc = 0  # Текущий адрес (для $)
+        self.pc = 0               # Текущий адрес (для $)
+        self.cpu_type = "i8080"   # "i8080" или "i8085"
+        self.cpu_set_by_directive = False  # True если CPU задан директивой в коде
 
     @staticmethod
     def _strip_comment(line: str) -> str:
@@ -505,6 +539,20 @@ class Assembler:
         self._filename = ""
         self.defines: dict = {}
         self.expr_parser = ExpressionParser(self.symbols, self.defines)
+        # Тип процессора: "i8080" (по умолчанию) или "i8085"
+        self.cpu_type = "i8080"
+
+    def _get_mnemonics(self) -> dict:
+        """Вернуть таблицу мнемоник с учётом типа процессора.
+        Базовая таблица (общие задокументированные команды) +
+        специфичные для 8080 или 8085 (пересекающиеся опкоды).
+        """
+        table = dict(MNEMONICS)
+        if self.cpu_type == "i8085":
+            table.update(MNEMONICS_8085)
+        else:
+            table.update(MNEMONICS_8080)
+        return table
 
     def _write(self, data):
         """Write bytes at _write_pos, overwriting existing bytes if needed."""
@@ -570,7 +618,7 @@ class Assembler:
         if m:
             candidate = m.group(1).upper()
             # Проверяем, что это не мнемоника
-            if candidate not in MNEMONICS and candidate not in ('ORG', 'DB', 'DW', 'DS', 'EQU', 'END', 'DM', 'BYTE', 'WORD', 'DEFL', 'REPT', 'ENDM', 'XDEF', 'XREF', 'SECTION', 'IF', 'ENDIF', 'ELSE', 'LOCAL', 'ENDLOCAL', 'ERROR', 'MACRO', 'ENDM', 'CPU', 'ASEG', 'TITLE', 'DEF', 'EXPORT', 'IMPORT', 'EXTERN', 'PUBLIC'):
+            if candidate not in ALL_MNEMONICS and candidate not in ('ORG', 'DB', 'DW', 'DS', 'EQU', 'END', 'DM', 'BYTE', 'WORD', 'DEFL', 'REPT', 'ENDM', 'XDEF', 'XREF', 'SECTION', 'IF', 'ENDIF', 'ELSE', 'LOCAL', 'ENDLOCAL', 'ERROR', 'MACRO', 'ENDM', 'CPU', 'ASEG', 'TITLE', 'DEF', 'EXPORT', 'IMPORT', 'EXTERN', 'PUBLIC', 'ASM8080', 'ASM8085'):
                 return m.group(1), False, m.group(2)
         # Метки нет
         return None, False, line
@@ -595,6 +643,7 @@ class Assembler:
         self._exports = set()
         self._imports = set()
         self._relocations = []
+        self.cpu_set_by_directive = False
         self.errors = []
         self.warnings = []
         self.listing = []
@@ -638,6 +687,20 @@ class Assembler:
                 mnemonic = mnemonic[1:]
             operand = parts[1] if len(parts) > 1 else ''
 
+            # Директивы типа процессора: .8080/.8085/.asm8080/.asm8085/CPU
+            if mnemonic in ('8080', 'ASM8080'):
+                self.cpu_type = "i8080"
+                self.cpu_set_by_directive = True
+                continue
+            if mnemonic in ('8085', 'ASM8085'):
+                self.cpu_type = "i8085"
+                self.cpu_set_by_directive = True
+                continue
+            if mnemonic == 'CPU':
+                _cpu_arg = operand.strip().lower().replace('i', '').replace('.', '')
+                self.cpu_type = "i8085" if _cpu_arg == '8085' else "i8080"
+                self.cpu_set_by_directive = True
+                continue
             # XDEF/XREF/SECTION/IF/ENDIF/ELSE/LOCAL/ENDLOCAL/ERROR — no-op
             if mnemonic in ('XDEF', 'XREF', 'SECTION', '.XDEF', '.XREF', '.SECTION',
                            'IF', 'ENDIF', 'ELSE', 'LOCAL', 'ENDLOCAL', 'ERROR',
@@ -818,8 +881,9 @@ class Assembler:
                 continue
 
             # Обычная инструкция — используем полную таблицу и кодирование
-            if mnemonic in MNEMONICS:
-                opcode, fmt, size = MNEMONICS[mnemonic]
+            _mnemonics = self._get_mnemonics()
+            if mnemonic in _mnemonics:
+                opcode, fmt, size = _mnemonics[mnemonic]
                 location += size
                 self.pc = location
             else:
@@ -1067,6 +1131,20 @@ class Assembler:
                 continue
 
             # XDEF/XREF/SECTION/IF/ENDIF/ELSE/LOCAL/ENDLOCAL/ERROR — no-op
+            # Директивы типа процессора: .8080/.8085/.asm8080/.asm8085/CPU
+            if mnemonic in ('8080', 'ASM8080'):
+                self.cpu_type = "i8080"
+                self.cpu_set_by_directive = True
+                continue
+            if mnemonic in ('8085', 'ASM8085'):
+                self.cpu_type = "i8085"
+                self.cpu_set_by_directive = True
+                continue
+            if mnemonic == 'CPU':
+                _cpu_arg = operand.strip().lower().replace('i', '').replace('.', '')
+                self.cpu_type = "i8085" if _cpu_arg == '8085' else "i8080"
+                self.cpu_set_by_directive = True
+                continue
             if mnemonic in ('XDEF', 'XREF', 'SECTION', '.XDEF', '.XREF', '.SECTION',
                            'IF', 'ENDIF', 'ELSE', 'LOCAL', 'ENDLOCAL', 'ERROR',
                            '.IF', '.ENDIF', '.ELSE', '.LOCAL', '.ENDLOCAL', '.ERROR',
@@ -1080,8 +1158,9 @@ class Assembler:
                 break
 
             # Обычная инструкция — полная кодировка через MNEMONICS
-            if mnemonic in MNEMONICS:
-                opcode, fmt, size = MNEMONICS[mnemonic]
+            _mnemonics = self._get_mnemonics()
+            if mnemonic in _mnemonics:
+                opcode, fmt, size = _mnemonics[mnemonic]
                 operands = self._split_operands(operand) if operand else []
                 code = self._encode_instruction(mnemonic, opcode, fmt, operands, line_num)
                 if code is not None:

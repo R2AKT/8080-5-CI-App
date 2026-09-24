@@ -48,6 +48,7 @@ class ComputerSystem:
         self.config = None                # текущая конфигурация
         self.profile_name = None          # имя профиля
         self.cpu = None                   # ссылка на CPU (устанавливается извне)
+        self.cpu_type = "i8080"           # "i8080" или "i8085"
         self._device_callbacks: dict = {} # name -> callbacks (on_irq, on_drq и т.д.)
 
     def validate_profile_files(self) -> list[str]:
@@ -132,6 +133,10 @@ class ComputerSystem:
         """Применить загруженную конфигурацию"""
         # Проверка конфигурации
         errors = self.config.validate()
+        
+        # Читаем тип процессора из конфигурации
+        self.cpu_type = self.config.cpu if hasattr(self.config, 'cpu') else "i8080"
+        
         if errors:
             raise ValueError("Ошибки конфигурации:\n" + "\n".join(errors))
 
@@ -340,6 +345,9 @@ class ComputerSystem:
     def connect_cpu(self, cpu: 'I8080Emulator') -> None:
         """Подключить CPU к системе"""
         self.cpu = cpu
+        # Передаём тип процессора в эмулятор
+        if hasattr(cpu, 'cpu_type'):
+            cpu.cpu_type = self.cpu_type
         # Подключаем шину памяти к CPU
         if hasattr(cpu, 'memory_bus'):
             cpu.memory_bus = self.bus

@@ -359,7 +359,27 @@ class MainWindow(QMainWindow):
                 self.flag_labels[flag].setStyleSheet("color: red; font-weight: bold;")
             else:
                 self.flag_labels[flag].setStyleSheet("color: black;")
-        
+
+        # 8085: IFF1, IFF2, I-регистр
+        is_8085 = state.get('cpu_type', 'i8080') == 'i8085'
+        self.iff1_label.setVisible(is_8085)
+        self.iff2_label.setVisible(is_8085)
+        self.i_reg_label.setVisible(is_8085)
+        if is_8085:
+            iff1_val = 1 if state['flags'].get('IFF1', False) else 0
+            iff2_val = 1 if state['flags'].get('IFF2', False) else 0
+            self.iff1_label.setText(f"IFF1: {iff1_val}")
+            self.iff2_label.setText(f"IFF2: {iff2_val}")
+            self.i_reg_label.setText(f"I: {state.get('I', 0):02X}")
+            if iff1_val:
+                self.iff1_label.setStyleSheet("color: red; font-weight: bold;")
+            else:
+                self.iff1_label.setStyleSheet("color: black;")
+            if iff2_val:
+                self.iff2_label.setStyleSheet("color: red; font-weight: bold;")
+            else:
+                self.iff2_label.setStyleSheet("color: black;")
+
         # === СТЕК ===
         self.update_stack_view()
         
@@ -375,6 +395,16 @@ class MainWindow(QMainWindow):
         # === ДИЗАССЕМБЛЕР ===
         self.update_emu_disasm_cursor()  # ← ЧАСТИЧНОЕ обновление (быстро)
         
+    def _on_emu_cpu_changed(self, cpu_type: str):
+        """Переключение типа процессора в эмуляторе""" 
+        if self.emulator:
+            self.emulator.cpu_type = cpu_type
+            self.emulator.reset()
+        if hasattr(self, 'disassembler') and self.disassembler:
+            self.disassembler.set_cpu_type(cpu_type)
+        self.current_cpu = cpu_type
+        self.update_emulator_ui()
+
     def update_stack_view(self):
         """Обновляет панель стека БЕЗ пересоздания элементов"""
         sp = self.emulator.sp
@@ -2562,6 +2592,17 @@ class MainWindow(QMainWindow):
         
         self.prev_reg_values = {}
         
+        # === Выбор типа процессора (эмулятор) ===
+        cpu_sel_layout = QHBoxLayout()
+        cpu_sel_layout.addWidget(QLabel("Процессор:"))
+        self.emu_cpu_combo = QComboBox()
+        self.emu_cpu_combo.addItems(["i8080", "i8085"])
+        self.emu_cpu_combo.setCurrentText("i8080")
+        self.emu_cpu_combo.currentTextChanged.connect(self._on_emu_cpu_changed)
+        cpu_sel_layout.addWidget(self.emu_cpu_combo)
+        cpu_sel_layout.addStretch()
+        right_layout.addLayout(cpu_sel_layout)
+
         # Флаги
         self.flags_group = QGroupBox("Флаги")
         flags_layout = QHBoxLayout()
@@ -2575,8 +2616,25 @@ class MainWindow(QMainWindow):
             flags_layout.addWidget(lbl)
             self.flag_labels[flag] = lbl
             
+        # 8085: IFF1, IFF2, I-регистр (скрыты по умолчанию)
+        self.iff1_label = QLabel("IFF1: 0")
+        self.iff1_label.setFont(QFont("Consolas", 8))
+        self.iff1_label.setVisible(False)
+        flags_layout.addWidget(self.iff1_label)
+
+        self.iff2_label = QLabel("IFF2: 0")
+        self.iff2_label.setFont(QFont("Consolas", 8))
+        self.iff2_label.setVisible(False)
+        flags_layout.addWidget(self.iff2_label)
+
+        self.i_reg_label = QLabel("I: 00")
+        self.i_reg_label.setFont(QFont("Consolas", 8))
+        self.i_reg_label.setVisible(False)
+        flags_layout.addWidget(self.i_reg_label)
+
         self.flags_group.setLayout(flags_layout)
         right_layout.addWidget(self.flags_group)
+
         
         # Стек
         self.stack_group = QGroupBox("Стек")
@@ -3606,7 +3664,13 @@ class MainWindow(QMainWindow):
         emu.flag_ac = bool(flags[2])
         emu.flag_p = bool(flags[3])
         emu.flag_cy = bool(flags[4])
-        
+        # 8085: восстановить IFF1/IFF2/I (если есть в записи)
+        if "IFF1" in rec:
+            emu.iff1 = bool(rec["IFF1"])
+        if "IFF2" in rec:
+            emu.iff2 = bool(rec["IFF2"])
+        if "I" in rec:
+            emu.i_reg = rec["I"]
         self.update_emulator_ui()
         self.update_emu_disasm_view()
         self.log(f"{self.tr('status_state_restored')}{rec['pc']:04X}")
@@ -3756,7 +3820,7 @@ class MainWindow(QMainWindow):
         with open(path, 'w', encoding='utf-8') as f:
             f.write("# i8080 Trace Export\n")
             f.write(f"# Records: {len(records)}\n")
-            f.write(f"{'#':>6}  {'PC':>4}  {'Bytes':<12}  {'Mnemonic':<20}  {'A':>2}  {'BC':>4}  {'DE':>4}  {'HL':>4}  {'SP':>4}  {'Flags':<5}  {'Cyc':>5}\n")
+            f.write(f"{'#':>6}  {'PC':>4}  {'Bytes':<12}  {'Mnemonic':<20}  {'A':>2}  {'BC':>4}  {'DE':>4}  {'HL':>4}  {'SP':>4}  {'Flags':<5}  {'IFF1':>4}  {'IFF2':>4}  {'I':>2}  {'Cyc':>5}\n")
             f.write("-" * 110 + "\n")
             for rec in records:
                 mnemonic = self._get_trace_mnemonic(rec)
@@ -3765,14 +3829,14 @@ class MainWindow(QMainWindow):
                 flags_str = f"{'S' if flags[0] else '-'}{'Z' if flags[1] else '-'}{'A' if flags[2] else '-'}{'P' if flags[3] else '-'}{'C' if flags[4] else '-'}"
                 f.write(f"{rec['seq']:>6}  {rec['pc']:04X}  {bytes_str:<12}  {mnemonic:<20}  "
                         f"{rec['A']:>2}  {rec['BC']:04X}  {rec['DE']:04X}  {rec['HL']:04X}  "
-                        f"{rec['SP']:04X}  {flags_str:<5}  {rec['cycles']:>5}\n")
+                        f"{rec['SP']:04X}  {flags_str:<5}  {int(rec.get('IFF1', False)):>4}  {int(rec.get('IFF2', False)):>4}  {rec.get('I', 0):02X}  {rec['cycles']:>5}\n")
 
     def _export_trace_csv(self, path, records):
         """Экспорт в CSV"""
         import csv
         with open(path, 'w', encoding='utf-8', newline='') as f:
             writer = csv.writer(f)
-            writer.writerow(['seq', 'pc', 'bytes', 'mnemonic', 'A', 'BC', 'DE', 'HL', 'SP', 'flags', 'cycles', 'cycles_total'])
+            writer.writerow(['seq', 'pc', 'bytes', 'mnemonic', 'A', 'BC', 'DE', 'HL', 'SP', 'flags', 'IFF1', 'IFF2', 'I', 'cycles', 'cycles_total'])
             for rec in records:
                 mnemonic = self._get_trace_mnemonic(rec)
                 bytes_str = " ".join(f"{b:02X}" for b in rec["bytes"])
@@ -3782,7 +3846,8 @@ class MainWindow(QMainWindow):
                     rec['seq'], f"{rec['pc']:04X}", bytes_str, mnemonic,
                     f"{rec['A']:02X}", f"{rec['BC']:04X}", f"{rec['DE']:04X}",
                     f"{rec['HL']:04X}", f"{rec['SP']:04X}", flags_str,
-                    rec['cycles'], rec['cycles_total']
+                    int(rec.get('IFF1', False)), int(rec.get('IFF2', False)),
+                    f"{rec.get('I', 0):02X}", rec['cycles'], rec['cycles_total']
                 ])
 
     def _export_trace_json(self, path, records):
@@ -3803,6 +3868,9 @@ class MainWindow(QMainWindow):
                 "A": rec['A'], "BC": rec['BC'], "DE": rec['DE'],
                 "HL": rec['HL'], "SP": rec['SP'],
                 "flags": {"S": flags[0], "Z": flags[1], "AC": flags[2], "P": flags[3], "CY": flags[4]},
+                "IFF1": rec.get("IFF1", False),
+                "IFF2": rec.get("IFF2", False),
+                "I": rec.get("I", 0),
                 "cycles": rec['cycles'],
                 "cycles_total": rec['cycles_total']
             })
@@ -3842,6 +3910,23 @@ class MainWindow(QMainWindow):
             errors = self.system.validate_profile_files()
             if errors:
                 raise ValueError("Ошибки загрузки профиля:\n" + "\n".join(errors))
+
+            # Читаем тип процессора из профиля (по умолчанию 8080)
+            self.current_cpu = self.system.config.cpu if self.system.config.cpu else "i8080"
+            
+            # Обновляем эмулятор
+            if hasattr(self, 'emulator') and self.emulator:
+                self.emulator.cpu_type = self.current_cpu
+                # Обновляем combo в GUI
+                if hasattr(self, 'emu_cpu_combo'):
+                    self.emu_cpu_combo.blockSignals(True)
+                    self.emu_cpu_combo.setCurrentText(self.current_cpu)
+                    self.emu_cpu_combo.blockSignals(False)
+                self.emulator.reset()
+            
+            # Обновляем дизассемблер (таблица опкодов зависит от типа CPU)
+            if hasattr(self, 'disassembler') and self.disassembler:
+                self.disassembler.set_cpu_type(self.current_cpu)
 
             # Переподключаем CPU к НОВОЙ шине
             self.system.connect_cpu(self.emulator)

@@ -25,6 +25,8 @@ class I8080Emulator(QObject):
         super().__init__(parent)
         self.memory = memory
         
+        self.cpu_type = "i8080"  # "i8080" по умолчанию
+        
         # === IO-порты (виртуальные) ===
         self.io_ports = {}  # {port: value}
         
@@ -45,7 +47,19 @@ class I8080Emulator(QObject):
         self.flag_ac = False
         self.flag_p = False
         self.flag_cy = False
+        self.flag_ui = True    # UI — underflow/overflow indicator (недокум., всегда 1)
+        self.flag_v = True     # V — overflow flag (недокум., всегда 1)
         
+        # === Поля для 8085 ===
+        self.irq_mask = 0x00       # Маска прерываний (биты 7.5, 6.5, 5.5)
+        self.irq_pending = 0x00    # Ожидающие прерывания
+        self.sod = 0               # Serial Output Data
+        self.sid = 0               # Serial Input Data
+        self.irq_enabled_85 = False  # Глобальное разрешение прерываний (8085)
+        self.iff1 = False          # IFF1 - flip-flop 1 (8085)
+        self.iff2 = False          # IFF2 - flip-flop 2 (8085)
+        self.i_reg = 0x00          # I register (interrupt vector, 8085)
+                
         # Состояние
         self.running = False
         self.halted = False
@@ -81,6 +95,8 @@ class I8080Emulator(QObject):
         self.sp = 0xFFFF
         self.pc = 0x0000
         self.flag_s = self.flag_z = self.flag_ac = self.flag_p = self.flag_cy = False
+        self.flag_ui = True
+        self.flag_v = True
         self.running = False
         self.halted = False
         self.interrupts_enabled = False
@@ -89,6 +105,17 @@ class I8080Emulator(QObject):
         self.state_changed.emit()
         # === WAIT-сигнал (итерация 10.3) ===
         self.wait_signal = False
+        # Сбрасываем поля 8085
+        if hasattr(self, 'cpu_type') and self.cpu_type == "i8085":
+            self.iff1 = False
+            self.iff2 = False
+            self.i_reg = 0x00
+            self.irq_mask = 0x00
+            self.irq_enabled_85 = False
+            self.irq_pending = 0x00
+            self.sod = 0
+            self.sid = 0
+            self._pending_interrupts.clear()
         
     def set_wait(self, active: bool) -> None:
         """Установить сигнал WAIT (от устройства).
@@ -322,12 +349,18 @@ class I8080Emulator(QObject):
     def _execute_opcode(self, opcode) -> int:
         """Выполнить опкод"""
         
-        # NOP и недокументированные NOP*
-        if opcode in [0x00, 0x08, 0x10, 0x18, 0x20, 0x28, 0x30, 0x38, 0xDD, 0xED, 0xFD]:
+        # NOP (задокументированный)
+        if opcode == 0x00:
             return
-            
+        
+        # === ПЕРЕСЕКАЮЩИЕСЯ ОПКОДЫ 8080/8085 ===
+        # Эти опкоды имеют разное значение на 8080 и 8085.
+        if opcode in (0x08, 0x10, 0x18, 0x20, 0x28, 0x30, 0x38, 0xCB, 0xD9, 0xDD, 0xED, 0xFD):
+            self._execute_overlapping(opcode)
+            return
+        
         # HLT
-        elif opcode == 0x76:
+        if opcode == 0x76:
             self.halted = True
             self.log_message.emit("CPU halted")
             return
@@ -651,8 +684,9 @@ class I8080Emulator(QObject):
             # Порядок PUSH: BC, DE, HL, PSW (не SP!)
             if rp_idx == 3:
                 # PSW: A и флаги
-                flags = (self.flag_s << 7) | (self.flag_z << 6) | (self.flag_ac << 4) | \
-                        (self.flag_p << 2) | (1 << 1) | (self.flag_cy)
+                flags = (self.flag_s << 7) | (self.flag_z << 6) | (self.flag_ui << 5) | \
+                        (self.flag_ac << 4) | (0 << 3) | (self.flag_p << 2) | \
+                        (self.flag_v << 1) | (self.flag_cy)
                 value = (self.a << 8) | flags
             else:
                 pairs = ['BC', 'DE', 'HL']
@@ -669,8 +703,11 @@ class I8080Emulator(QObject):
                 flags = value & 0xFF
                 self.flag_s = bool(flags & 0x80)
                 self.flag_z = bool(flags & 0x40)
+                self.flag_ui = bool(flags & 0x20)
                 self.flag_ac = bool(flags & 0x10)
+                # Бит 3 всегда 0 — игнорируем
                 self.flag_p = bool(flags & 0x04)
+                self.flag_v = bool(flags & 0x02)
                 self.flag_cy = bool(flags & 0x01)
             else:
                 pairs = ['BC', 'DE', 'HL']
@@ -683,19 +720,8 @@ class I8080Emulator(QObject):
             self.push(ret_addr)
             self.pc = addr
             
-        # CALL* (0xCB) — недокументированная
-        elif opcode == 0xCB:
-            addr = self.read_word(self.pc)
-            ret_addr = (self.pc + 2) & 0xFFFF
-            self.push(ret_addr)
-            self.pc = addr
-            
         # RET (0xC9)
         elif opcode == 0xC9:
-            self.pc = self.pop()
-            
-        # RET* (0xD9) — недокументированная
-        elif opcode == 0xD9:
             self.pc = self.pop()
             
         # CALL cc, addr (0xC4, 0xCC, 0xD4, 0xDC, 0xE4, 0xEC, 0xF4, 0xFC)
@@ -744,10 +770,15 @@ class I8080Emulator(QObject):
         # DI (0xF3) - Запрет прерываний
         elif opcode == 0xF3:
             self.interrupts_enabled = False
-            
+            if self.cpu_type == "i8085":
+                self.iff1 = False
+                self.iff2 = False
+                
         # EI (0xFB) - Разрешение прерываний
         elif opcode == 0xFB:
             self.interrupts_enabled = True
+            if self.cpu_type == "i8085":
+                self.iff1 = self.iff2  # IFF1 получает значение IFF2
             
         # Неизвестный опкод
         else:
@@ -756,6 +787,15 @@ class I8080Emulator(QObject):
             
     def _get_cycles(self, opcode) -> int:
         """Получить количество тактов для опкода"""
+        
+        # === ПЕРЕСЕКАЮЩИЕСЯ ОПКОДЫ 8080/8085 ===
+        if opcode in (0x08, 0x10, 0x18, 0x20, 0x28, 0x30, 0x38, 0xCB, 0xD9, 0xDD, 0xED, 0xFD):
+            if self.cpu_type == "i8085":
+                return {0x08: 10, 0x10: 7, 0x18: 10, 0x20: 4, 0x28: 10, 0x30: 4,
+                        0x38: 10, 0xCB: 12, 0xD9: 10, 0xDD: 10, 0xED: 10, 0xFD: 10}.get(opcode, 4)
+            else:
+                return {0x08: 4, 0x10: 4, 0x18: 4, 0x20: 4, 0x28: 4, 0x30: 4,
+                        0x38: 4, 0xCB: 10, 0xD9: 10, 0xDD: 17, 0xED: 17, 0xFD: 17}.get(opcode, 4)
         
         # NOP, HLT
         if opcode in [0x00, 0x76]: return 4
@@ -852,7 +892,151 @@ class I8080Emulator(QObject):
         
         # По умолчанию
         return 4
-        
+
+    def _execute_sim(self):
+        """SIM — Set Interrupt Mask (только 8085).
+        Аккумулятор содержит:
+          Бит 7: SOD (Serial Output Data)
+          Бит 6: SOD Enable
+          Бит 5: IFF2 (установка flip-flop 2)
+          Бит 4: IFF1 (установка flip-flop 1)
+          Бит 3: MSE (маска прерываний включена)
+          Бит 2: M7.5 (маска прерывания 7.5)
+          Бит 1: M6.5 (маска прерывания 6.5)
+          Бит 0: M5.5 (маска прерывания 5.5)
+        """
+        acc = self.a
+        # SOD
+        if acc & 0x40:  # Бит 6: SOD Enable
+            self.sod = (acc >> 7) & 0x01
+        # IFF2 (бит 5)
+        if acc & 0x20:
+            self.iff2 = True
+        # IFF1 (бит 4)
+        if acc & 0x10:
+            self.iff1 = True
+        # Маска прерываний
+        if acc & 0x08:  # Бит 3: MSE
+            self.irq_enabled_85 = True
+            self.irq_mask = acc & 0x07  # Биты 2,1,0 → маски 7.5, 6.5, 5.5
+        else:
+            self.irq_enabled_85 = False
+
+    def _execute_rim(self):
+        """RIM — Read Interrupt Mask (только 8085).
+        Результат в аккумуляторе:
+          Бит 7: SID (Serial Input Data)
+          Бит 6: IFF2 (flip-flop 2)
+          Бит 5: IFF1 (flip-flop 1)
+          Бит 4: ожидающее прерывание 7.5
+          Бит 3: MSE (маска прерываний включена)
+          Биты 2,1,0: маски прерываний 7.5, 6.5, 5.5
+        """
+        acc = 0
+        acc |= (self.sid << 7)           # Бит 7: SID
+        acc |= (int(self.iff2) << 6)     # Бит 6: IFF2
+        acc |= (int(self.iff1) << 5)     # Бит 5: IFF1
+        if self.irq_pending & 0x80:      # Бит 4: ожидающее прерывание 7.5
+            acc |= 0x10
+        if self.irq_enabled_85:
+            acc |= 0x08                  # Бит 3: MSE
+        acc |= self.irq_mask & 0x07      # Биты 2,1,0: маски
+        self.a = acc
+
+    # =============================================
+    # ПЕРЕСЕКАЮЩИЕСЯ ОПКОДЫ 8080/8085
+    # =============================================
+    def _execute_overlapping(self, opcode) -> None:
+        """Выполнить пересекающийся опкод 8080/8085.
+        Эти опкоды имеют разное значение на 8080 и 8085."""
+        if self.cpu_type == "i8085":
+            self._execute_overlapping_8085(opcode)
+        else:
+            self._execute_overlapping_8080(opcode)
+
+    def _execute_overlapping_8080(self, opcode) -> None:
+        """Пересекающиеся опкоды на 8080 (недокументированные)."""
+        # 0x08,0x10,0x18,0x20,0x28,0x30,0x38 — недокументированные NOP
+        if opcode in (0x08, 0x10, 0x18, 0x20, 0x28, 0x30, 0x38):
+            return
+        # 0xCB — недокументированный JMP a16 (без push)
+        if opcode == 0xCB:
+            addr = self.read_word(self.pc)
+            self.pc = (self.pc + 2) & 0xFFFF
+            self.pc = addr
+            return
+        # 0xD9 — недокументированный RET
+        if opcode == 0xD9:
+            self.pc = self.pop()
+            return
+        # 0xDD,0xED,0xFD — недокументированные CALL a16
+        if opcode in (0xDD, 0xED, 0xFD):
+            addr = self.read_word(self.pc)
+            ret_addr = (self.pc + 2) & 0xFFFF
+            self.push(ret_addr)
+            self.pc = addr
+            return
+
+    def _execute_overlapping_8085(self, opcode) -> None:
+        """Пересекающиеся опкоды на 8085 (2 задокументированные + недокументированные)."""
+        # 0x20 — RIM (Read Interrupt Mask)
+        if opcode == 0x20:
+            self._execute_rim()
+            return
+        # 0x30 — SIM (Set Interrupt Mask)
+        if opcode == 0x30:
+            self._execute_sim()
+            return
+        # 0x08 — DSUB: HL = HL - BC
+        if opcode == 0x08:
+            hl = self.get_reg_pair('HL')
+            bc = self.get_reg_pair('BC')
+            self.flag_cy = hl < bc
+            self.set_reg_pair('HL', (hl - bc) & 0xFFFF)
+            return
+        # 0x10 — ARHL: арифметический сдвиг HL вправо (со знаком)
+        if opcode == 0x10:
+            hl = self.get_reg_pair('HL')
+            self.flag_cy = bool(hl & 0x0001)
+            hl = (hl >> 1) | (hl & 0x8000)  # сдвиг вправо + сохранение знакового бита
+            self.set_reg_pair('HL', hl)
+            return
+        # 0xD9 — SHLX: (BC) = HL
+        if opcode == 0xD9:
+            bc = self.get_reg_pair('BC')
+            hl = self.get_reg_pair('HL')
+            self.write_byte(bc, hl & 0xFF)
+            self.write_byte((bc + 1) & 0xFFFF, (hl >> 8) & 0xFF)
+            return
+        # 0xED — LHLX: HL = (BC)
+        if opcode == 0xED:
+            bc = self.get_reg_pair('BC')
+            self.l = self.read_byte(bc)
+            self.h = self.read_byte((bc + 1) & 0xFFFF)
+            return
+        # 0x18 — RDEL (недокументированная, семантика неясна) — NOP
+        if opcode == 0x18:
+            return
+        # 0x28 — LDHI d8 (недокументированная) — пропускаем операнд
+        if opcode == 0x28:
+            self.pc = (self.pc + 1) & 0xFFFF
+            return
+        # 0x38 — LDSI d8 (недокументированная) — пропускаем операнд
+        if opcode == 0x38:
+            self.pc = (self.pc + 1) & 0xFFFF
+            return
+        # 0xCB — RSTV (недокументированная) — NOP
+        if opcode == 0xCB:
+            return
+        # 0xDD — JNK a16 (недокументированная) — пропускаем операнд
+        if opcode == 0xDD:
+            self.pc = (self.pc + 2) & 0xFFFF
+            return
+        # 0xFD — JK a16 (недокументированная) — пропускаем операнд
+        if opcode == 0xFD:
+            self.pc = (self.pc + 2) & 0xFFFF
+            return
+
     def step(self) -> None:
         """Выполнить одну инструкцию"""
         if not self.halted:
@@ -906,7 +1090,8 @@ class I8080Emulator(QObject):
                 'HL': self.get_reg_pair('HL'),
                 'SP': self.sp, 'PC': self.pc,
                 'S': int(self.flag_s), 'Z': int(self.flag_z),
-                'AC': int(self.flag_ac), 'P': int(self.flag_p),
+                'UI': int(self.flag_ui), 'AC': int(self.flag_ac),
+                'P': int(self.flag_p), 'V': int(self.flag_v),
                 'CY': int(self.flag_cy),
                 'cycles': self.cycles,
                 'mem': _SafeAccessor(lambda a: self.read_byte(a)),
@@ -985,13 +1170,14 @@ class I8080Emulator(QObject):
         return (
             self.a, self.b, self.c, self.d, self.e, self.h, self.l,
             self.sp,
-            int(self.flag_s), int(self.flag_z), int(self.flag_ac),
-            int(self.flag_p), int(self.flag_cy)
+            int(self.flag_s), int(self.flag_z), int(self.flag_ui),
+            int(self.flag_ac), int(self.flag_p), int(self.flag_v),
+            int(self.flag_cy)
         )
     
     def _add_trace_record(self, pc_start, opcode, instr_bytes, cycles) -> None:
         """Добавить запись в буфер трассировки"""
-        a, b, c, d, e, h, l, sp, fs, fz, fac, fp, fcy = self._get_trace_snapshot()
+        a, b, c, d, e, h, l, sp, fs, fz, fui, fac, fp, fv, fcy = self._get_trace_snapshot()
         record = {
             "seq": self.trace_seq,
             "pc": pc_start,
@@ -1002,7 +1188,10 @@ class I8080Emulator(QObject):
             "DE": (d << 8) | e,
             "HL": (h << 8) | l,
             "SP": sp,
-            "flags": (fs, fz, fac, fp, fcy),
+            "flags": (fs, fz, fui, fac, fp, fv, fcy),
+            "IFF1": self.iff1,
+            "IFF2": self.iff2,
+            "I": self.i_reg,
             "cycles": cycles,
             "cycles_total": self.cycles,
         }
@@ -1011,7 +1200,7 @@ class I8080Emulator(QObject):
         
     def get_state(self) -> dict:
         """Получить текущее состояние для UI"""
-        return {
+        state = {
             'A': self.a, 'B': self.b, 'C': self.c,
             'D': self.d, 'E': self.e, 'H': self.h, 'L': self.l,
             'SP': self.sp, 'PC': self.pc,
@@ -1020,14 +1209,22 @@ class I8080Emulator(QObject):
             'HL': self.get_reg_pair('HL'),
             'flags': {
                 'S': self.flag_s, 'Z': self.flag_z,
-                'AC': self.flag_ac, 'P': self.flag_p, 'CY': self.flag_cy
+                'UI': self.flag_ui, 'AC': self.flag_ac,
+                'P': self.flag_p, 'V': self.flag_v, 'CY': self.flag_cy
             },
             'cycles': self.cycles,
             'halted': self.halted,
             'running': self.running,
-            'interrupts': self.interrupts_enabled
+            'interrupts': self.interrupts_enabled,
+            'cpu_type': self.cpu_type
         }
-		
+        # 8085: дополнительные флаги и I-регистр
+        if self.cpu_type == "i8085":
+            state['flags']['IFF1'] = self.iff1
+            state['flags']['IFF2'] = self.iff2
+            state['I'] = self.i_reg
+        return state
+
     def is_call_instruction(self, addr: int) -> bool:
         """Проверяет, является ли инструкция по адресу CALL"""
         opcode = self.read_byte(addr)
@@ -1139,9 +1336,32 @@ class I8080Emulator(QObject):
     # ВНЕШНИЕ ПРЕРЫВАНИЯ (итерация 10.1)
     # =============================================
     def request_interrupt(self, vector: int) -> None:
-        """Запросить внешнее прерывание.
-        vector — опкод инструкции (0xC7-0xFF для RST, или 0xCD для CALL).
-        Вызывается из ComputerSystem."""
+        """Запрос прерывания.
+        8080: один вектор (обычно 0x38).
+        8085: векторы 0x24 (TRAP), 0x3C (RST 7.5), 0x34 (RST 6.5), 0x2C (RST 5.5), 0x38 (INTR).
+        Приоритет: TRAP > RST 7.5 > RST 6.5 > RST 5.5 > INTR.
+        """
+        if self.cpu_type == "i8085":
+            if vector == 0x24:  # TRAP — не маскируется
+                self.irq_pending |= 0x80
+            elif vector == 0x38:  # INTR — маскируется IFF1
+                if not self.iff1:
+                    return
+            elif not self.irq_enabled_85:
+                return  # MSE выключен — все маскируемые прерывания заблокированы
+            else:
+                if vector == 0x3C:  # RST 7.5
+                    if self.irq_mask & 0x04:
+                        return
+                    self.irq_pending |= 0x80
+                elif vector == 0x34:  # RST 6.5
+                    if self.irq_mask & 0x02:
+                        return
+                    self.irq_pending |= 0x40
+                elif vector == 0x2C:  # RST 5.5
+                    if self.irq_mask & 0x01:
+                        return
+                    self.irq_pending |= 0x20
         self._pending_interrupts.append(vector)
 
     def has_pending_interrupt(self) -> bool:
@@ -1154,7 +1374,10 @@ class I8080Emulator(QObject):
         if not self._pending_interrupts:
             return False
 
-        if not self.interrupts_enabled:
+        # 8085: TRAP (0x24) не маскируется — обрабатывается даже при IFF1=0
+        is_trap = (self.cpu_type == "i8085" and
+                   self._pending_interrupts and self._pending_interrupts[0] == 0x24)
+        if not self.interrupts_enabled and not is_trap:
             return False  # Прерывания запрещены (DI)
 
         # Извлекаем вектор
@@ -1179,6 +1402,22 @@ class I8080Emulator(QObject):
             rst_num = (vector - 0xC7) // 8
             self.pc = rst_num * 8
             self.cycles += 12  # RST: 12 тактов
+        elif vector == 0x24:  # 8085 TRAP → RST 3 (адрес 0x18)
+            self.pc = 0x18
+            self.cycles += 12
+        elif vector == 0x2C:  # 8085 RST 5.5 → RST 5 (адрес 0x28)
+            self.pc = 0x28
+            self.cycles += 12
+        elif vector == 0x34:  # 8085 RST 6.5 → RST 6 (адрес 0x30)
+            self.pc = 0x30
+            self.cycles += 12
+        elif vector == 0x3C:  # 8085 RST 7.5 → RST 7 (адрес 0x38)
+            self.pc = 0x38
+            self.cycles += 12
+        elif vector == 0x38:  # 8085 INTR → вектор из I-регистра
+            # Старший байт из I-регистра, младший — с шины (упрощённо: 0x00)
+            self.pc = (self.i_reg << 8) | 0x00
+            self.cycles += 12
         elif vector == 0xCD:
             # CALL addr: следующий байт — адрес (нужно получить из шины)
             # В упрощённой реализации адрес должен быть передан заранее

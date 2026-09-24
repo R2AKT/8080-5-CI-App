@@ -307,11 +307,3 @@ GitHub: https://github.com/R2AKT/8080-5-CI
 [MIT](LICENSE)
 
 License addendum / Дополнение к лицензии: [Addendum.txt](Addendum.txt)
-
----
-
-## Chip Theme / Тема чипа
-
-**EN:** The logo features the **КР580ВМ80А** — the Soviet-era clone of Intel 8080 CPU (DIP-40 package). The "КР" prefix denotes the Soviet manufacturer, "ВМ" — "Высоко-Микроминиатюрный" (highly miniaturized).
-
-**RU:** Логотип основан на **КР580ВМ80А** — советском клоне процессора Intel 8080 (корпус DIP-40). Префикс "КР" обозначает советского производителя, "ВМ" — "Высоко-Микроминиатюрный".

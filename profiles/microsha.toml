@@ -10,7 +10,7 @@ description = "Микроша (1988) — учебный микрокомпьют
 
 [profiles.microsha.system]
 name = "Микроша"
-cpu = "i8080"
+cpu = "i8080"  # или "i8085" для систем на 8085
 clock_mhz = 1.78
 
 # ОЗУ 16 КБ

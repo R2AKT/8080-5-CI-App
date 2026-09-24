@@ -5,7 +5,7 @@ description = "Тест дисплеев: LCD1602, LCD2004, TFT8080, 8275, 8276"
 
 [profiles.display_test.system]
 name = "Display Test System"
-cpu = "i8080"
+cpu = "i8080"  # или "i8085" для систем на 8085
 clock_mhz = 2
 
 [[profiles.display_test.memory.regions]]

@@ -25,9 +25,9 @@ for profile_name in get_profile_names():
     system.load_profile(profile_name)
     check(f"Профиль {profile_name} загружен",
           system.profile_name, profile_name)
-    # "empty" профиль — без устройств
-    if profile_name == "empty":
-        check("Профиль empty: нет устройств", len(system.devices), 0)
+    # "empty*" профили — без устройств
+    if profile_name.startswith("empty"):
+        check(f"Профиль {profile_name}: нет устройств", len(system.devices), 0)
     else:
         check(f"Профиль {profile_name}: устройства созданы",
               len(system.devices) > 0, True)

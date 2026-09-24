@@ -18,7 +18,7 @@ from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QPushButton,
     QFileDialog, QMessageBox, QGroupBox,
     QSplitter, QPlainTextEdit, QTableWidget, QTableWidgetItem,
-    QHeaderView, QCompleter, QAbstractItemView
+    QHeaderView, QCompleter, QAbstractItemView, QLabel, QComboBox
 )
 from PySide6.QtGui import (
     QFont, QSyntaxHighlighter, QTextCharFormat, QColor, QPainter,
@@ -51,7 +51,7 @@ MNEMONICS = [
     "CALL", "CNZ", "CZ", "CNC", "CC", "CPO", "CPE", "CP", "CM",
     "RET", "RNZ", "RZ", "RNC", "RC", "RPO", "RPE", "RP", "RM",
     "RST", "PUSH", "POP", "IN", "OUT", "EI", "DI", "HLT", "NOP",
-    "PCHL", "SPHL", "XTHL",
+    "PCHL", "SPHL", "XTHL", "SIM", "RIM",
 ]
 
 REGISTERS = ["A", "B", "C", "D", "E", "H", "L", "M", "PSW", "SP", "BC", "DE", "HL"]
@@ -389,6 +389,7 @@ class AssemblerWidget(QWidget):
         super().__init__(parent)
         self.main_window = main_window
         self.is_dark = is_dark
+        
         self.assembler = Assembler()
         self._current_file = None  # Путь к загруженному .asm файлу
         self._init_ui()
@@ -427,6 +428,14 @@ class AssemblerWidget(QWidget):
         self.btn_link = QPushButton(_tr("asm_link"))
         self.btn_link.clicked.connect(self.on_link)
         ctrl_layout.addWidget(self.btn_link)
+
+        # === Выбор типа процессора ===
+        ctrl_layout.addSpacing(20)
+        ctrl_layout.addWidget(QLabel("Процессор:"))
+        self.cpu_combo = QComboBox()
+        self.cpu_combo.addItems(["i8080", "i8085"])
+        self.cpu_combo.setCurrentText("i8080")
+        ctrl_layout.addWidget(self.cpu_combo)
 
         ctrl_layout.addStretch()
         layout.addLayout(ctrl_layout)
@@ -613,6 +622,8 @@ class AssemblerWidget(QWidget):
 
     def on_assemble_obj(self):
         """Assemble and save object file (.obj)."""
+        # Передаём тип процессора в ассемблер
+        self.assembler.cpu_type = self.cpu_combo.currentText()
         source = self.editor.toPlainText()
         if not source.strip():
             if self.main_window is not None:
@@ -631,6 +642,9 @@ class AssemblerWidget(QWidget):
                     self.main_window.log(_tr("asm_err_line").format(line=err.line, msg=err.message))
             return
         # Сохранение map-файла рядом с исходным (map создаётся при любом ассемблировании)
+        # === Автоопределение CPU из директивы ===
+        self._apply_cpu_from_source()
+
         if result.map_text and self._current_file:
             map_path = os.path.splitext(self._current_file)[0] + '.map'
             try:
@@ -723,6 +737,9 @@ class AssemblerWidget(QWidget):
     # --- Assembly ---
 
     def _do_assemble(self, load_to_memory=False):
+        # Передаём тип процессора в ассемблер
+        self.assembler.cpu_type = self.cpu_combo.currentText()
+        
         if self.main_window is not None:
             self.main_window.log(_tr("asm_assembling"))
 
@@ -755,6 +772,10 @@ class AssemblerWidget(QWidget):
 
         # Success
         self._update_errors([])
+
+        # === Автоопределение CPU из директивы ===
+        self._apply_cpu_from_source()
+
 
         if result.warnings:
             if self.main_window is not None:
@@ -811,6 +832,38 @@ class AssemblerWidget(QWidget):
         except Exception:
             if self.main_window is not None:
                 self.main_window.log(_tr("asm_load_mem_err").format(tb=traceback.format_exc()))
+
+    def _apply_cpu_from_source(self):
+        """Автоопределение типа CPU из директивы в исходном коде.
+        Если директива найдена — блокируем combo и синхронизируем эмулятор.
+        Если нет — разблокируем combo (пользователь выбирает вручную)."""
+        cpu_from_source = self.assembler.cpu_set_by_directive
+        cpu_type = self.assembler.cpu_type
+
+        if cpu_from_source:
+            # Директива найдена — блокируем combo и синхронизируем
+            self.cpu_combo.blockSignals(True)
+            self.cpu_combo.setCurrentText(cpu_type)
+            self.cpu_combo.blockSignals(False)
+            self.cpu_combo.setEnabled(False)
+            # Синхронизируем эмулятор и дизассемблер
+            if self.main_window is not None:
+                if hasattr(self.main_window, 'emulator') and self.main_window.emulator:
+                    self.main_window.emulator.cpu_type = cpu_type
+                if hasattr(self.main_window, 'emu_cpu_combo'):
+                    self.main_window.emu_cpu_combo.blockSignals(True)
+                    self.main_window.emu_cpu_combo.setCurrentText(cpu_type)
+                    self.main_window.emu_cpu_combo.blockSignals(False)
+                    self.main_window.emu_cpu_combo.setEnabled(False)
+                if hasattr(self.main_window, 'disassembler') and self.main_window.disassembler:
+                    self.main_window.disassembler.set_cpu_type(cpu_type)
+                self.main_window.current_cpu = cpu_type
+        else:
+            # Директивы нет — разблокируем combo
+            self.cpu_combo.setEnabled(True)
+            if self.main_window is not None:
+                if hasattr(self.main_window, 'emu_cpu_combo'):
+                    self.main_window.emu_cpu_combo.setEnabled(True)
 
     def set_theme(self, is_dark: bool):
         """Update assembler widget theme."""

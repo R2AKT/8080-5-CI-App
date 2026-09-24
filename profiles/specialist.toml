@@ -10,7 +10,7 @@ description = "Специалист (1987) — графический одноп
 
 [profiles.specialist.system]
 name = "Специалист"
-cpu = "i8080"
+cpu = "i8080"  # или "i8085" для систем на 8085
 clock_mhz = 1.78
 
 # ОЗУ

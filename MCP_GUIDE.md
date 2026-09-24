@@ -1,7 +1,7 @@
 # MCP_GUIDE.md — Руководство по MCP-интеграции i8080-5 CI
 
-> **Версия:** 2.1  
-> **Дата:** 2026-09-21  
+> **Версия:** 2.3  
+> **Дата:** 2026-09-24  
 > **Протокол:** MCP (Model Context Protocol), транспорт SSE  
 > **Адрес сервера:** `http://127.0.0.1:8000/sse`  
 > **Зависимости:** `pip install mcp uvicorn starlette pydantic pydantic-settings`

@@ -1,5 +1,209 @@
 # Changelog / Журнал изменений
 
+## 2026-09-24: PSW флаги 8085 (UI/V), SIM/RIM IFF1/IFF2, EI/DI 8085, INTR I-регистр
+
+### Эмулятор (i8080_emulator.py)
+
+**PSW (Program Status Word):**
+- Добавлены флаги `flag_ui` (бит 5) и `flag_v` (бит 1) — недокументированные, всегда 1
+- PUSH PSW: бит 5 теперь `flag_ui` (было 0), бит 1 теперь `flag_v` (было захардкожено 1)
+- POP PSW: извлечение `flag_ui` из бита 5, `flag_v` из бита 1
+- `get_state()`: добавлены UI и V в словарь флагов
+- Контекст BP: добавлены UI и V
+- Трассировка: `_get_trace_snapshot` и `_add_trace_record` включают UI и V
+
+**SIM (Set Interrupt Mask, 0x30):**
+- Бит 5: теперь устанавливает IFF2 (было "не используется")
+- Бит 4: теперь устанавливает IFF1 (было "сброс прерывания 7.5")
+- Убрана некорректная логика сброса `irq_pending`
+
+**RIM (Read Interrupt Mask, 0x20):**
+- Бит 4: исправлено вычисление — теперь `if irq_pending & 0x80: acc |= 0x10` (было `irq_pending >> 4`)
+
+**EI/DI (8085):**
+- DI (0xF3): сбрасывает IFF1 и IFF2 для 8085
+- EI (0xFB): копирует IFF2 в IFF1 для 8085
+
+**request_interrupt:**
+- TRAP (0x24): устанавливает `irq_pending |= 0x80`
+- RST 7.5 (0x3C): устанавливает `irq_pending |= 0x80`
+- RST 6.5 (0x34): устанавливает `irq_pending |= 0x40`
+- RST 5.5 (0x2C): устанавливает `irq_pending |= 0x20`
+- INTR (0x38): проверяет IFF1, блокирует если IFF1=0
+
+**_handle_interrupt:**
+- INTR (0x38): теперь использует I-регистр как старший байт вектора: `pc = (i_reg << 8) | 0x00`
+
+### Тесты (tests/assembler_test.py)
+- Тест 6: добавлена директива `.8085` (8085-команды требуют указания CPU)
+- Тест 6: `ldei` → `ldsi 0x10` (корректная мнемоника 8085)
+
+### Тестирование
+- 3 подряд полных цикла тестирования без ошибок и без правок кода
+- Все 1009+ тестов пройдены: 921 main, 43 8085, 11 include, 57 linker, 20 full assembler, GUI smoke
+
+
+## 2026-09-23: Циклы 4-5: Трассировка 8085 (IFF1/IFF2/I), прерывания 8085, reset
+
+### EN
+
+Deep analysis cycles 4-5: 9 bug fixes across trace system, 8085 interrupts, and reset.
+
+**Cycle 4 — Trace system 8085 support:**
+
+1. **Trace records now capture IFF1/IFF2/I**: `_add_trace_record()` in the emulator now stores `IFF1`, `IFF2`, and `I` register values in every trace record. This allows full 8085 interrupt state to be inspected in the trace buffer.
+
+2. **State restoration from trace**: `_restore_trace_state()` in the GUI now restores IFF1, IFF2, and I register when restoring CPU state from a trace record (using `.get()` with defaults for backward compatibility with old records).
+
+3. **Trace export includes 8085 fields**: TXT, CSV, and JSON trace exports now include IFF1, IFF2, and I columns/fields.
+
+4. **Automation API trace**: `emu_trace_get()` in the automation API now returns IFF1, IFF2, and I in each record.
+
+**Cycle 5 — 8085 interrupt handling and reset:**
+
+5. **RST→8085 vector mapping in `request_interrupt()`**: The system generates interrupts with RST opcodes (0xFF, 0xF7, 0xEF, 0xDF). For 8085, these are now mapped to the correct 8085 interrupt vectors (0x3C=RST 7.5, 0x34=RST 6.5, 0x2C=RST 5.5, 0x24=TRAP) so that the MSE and individual mask bits are checked correctly.
+
+6. **TRAP is non-maskable**: `_handle_interrupt()` now processes TRAP (0x24) even when IFF1=0, per the Intel 8085 datasheet. All other maskable interrupts still require IFF1=1.
+
+7. **8085 interrupt vector dispatch**: `_handle_interrupt()` now correctly maps 8085-specific vectors to RST addresses: 0x24→0x18 (RST 3), 0x2C→0x28 (RST 5), 0x34→0x30 (RST 6), 0x3C→0x38 (RST 7), 0x38→0x28 (INTR, simplified).
+
+8. **Complete 8085 reset**: `reset()` now clears all 8085-specific state: `irq_enabled_85` (MSE), `irq_pending`, `sod`, `sid`, and `_pending_interrupts` buffer. Previously only IFF1, IFF2, I, and irq_mask were reset.
+
+### RU
+
+Глубокий анализ циклов 4-5: 9 исправлений в системе трассировки, прерываниях 8085 и reset.
+
+**Цикл 4 — поддержка 8085 в трассировке:**
+
+1. **Записи трассировки захватывают IFF1/IFF2/I**: `_add_trace_record()` теперь сохраняет значения IFF1, IFF2 и I-регистра в каждой записи.
+
+2. **Восстановление состояния из трассировки**: `_restore_trace_state()` восстанавливает IFF1, IFF2, I при возврате к записи трассировки.
+
+3. **Экспорт трассировки**: TXT, CSV, JSON экспорт теперь включает IFF1, IFF2, I.
+
+4. **API автоматизации**: `emu_trace_get()` возвращает IFF1, IFF2, I.
+
+**Цикл 5 — прерывания 8085 и reset:**
+
+5. **Маппинг RST→векторы 8085**: `request_interrupt()` теперь мапит RST-опкоды на векторы 8085 для корректной проверки MSE и масок.
+
+6. **TRAP не маскируется**: `_handle_interrupt()` обрабатывает TRAP (0x24) даже при IFF1=0.
+
+7. **Диспетчеризация векторов 8085**: 0x24→0x18, 0x2C→0x28, 0x34→0x30, 0x3C→0x38, 0x38→0x28.
+
+8. **Полный reset 8085**: `reset()` сбрасывает irq_enabled_85, irq_pending, sod, sid, _pending_interrupts.
+
+### Тесты
+
+- 921/921 main suite (34 файла)
+- 44/44 test_8085.py
+- 11/11 include, 57/57 linker, 20/20 full assembler
+- GUI smoke tests PASSED
+
+## 2026-09-23: Глубокий анализ и исправление (номера строк, CPU switch, IFF, автоопределение)
+
+## 2026-09-23: Глубокий анализ и исправление (номера строк, CPU switch, IFF, автоопределение)
+
+### EN
+
+Deep code analysis and 4 bug fixes:
+
+1. **Assembler line numbers**: Fixed off-by-N error in preprocessor. Removed extra `_line_num += 1` inside the macro expansion loop — all expanded lines from a single source line now share the correct line number.
+
+2. **Emulator CPU type switching**: Added `QComboBox` (i8080/i8085) to the emulator panel. Switching updates `emulator.cpu_type`, resets the CPU, and regenerates the disassembler table.
+
+3. **8085 flags (IFF1, IFF2, I register)**: Added `iff1`, `iff2`, `i_reg` fields to the emulator. `get_state()` returns them for 8085 mode. GUI shows IFF1/IFF2/I labels (visible only in 8085 mode). Fixed RIM to include IFF1 (bit 5) and IFF2 (bit 6) in the result.
+
+4. **Auto-detect CPU from source**: Assembler tracks `cpu_set_by_directive`. After assembly, if a CPU directive (`.8085`, `.asm8085`, `CPU i8085`, etc.) was found in the source, the GUI locks both CPU combo boxes and syncs the emulator/disassembler. Without a directive, the combos remain active for manual selection.
+
+### RU
+
+Глубокий анализ кода и 4 исправления:
+
+1. **Номера строк в ассемблере**: Убран лишний `_line_num += 1` в цикле развёртывания макросов препроцессора. Все развёрнутые строки из одного исходного рядака теперь имеют корректный номер.
+
+2. **Переключение CPU в эмуляторе**: Добавлен `QComboBox` (i8080/i8085) в панель эмулятора. При переключении обновляется `emulator.cpu_type`, сбрасывается CPU, регенерируется таблица дизассемблера.
+
+3. **Флаги 8085 (IFF1, IFF2, I-регистр)**: Добавлены поля `iff1`, `iff2`, `i_reg` в эмулятор. `get_state()` возвращает их для 8085. GUI показывает лейблы IFF1/IFF2/I (видны только в режиме 8085). Исправлен RIM: теперь включает IFF1 (бит 5) и IFF2 (бит 6).
+
+4. **Автоопределение CPU из исходного кода**: Ассемблер отслеживает `cpu_set_by_directive`. После сборки, если в коде найдена директива CPU, GUI блокирует оба combo и синхронизирует эмулятор/дизассемблер. Без директивы combo активны для ручного выбора.
+
+### Тесты
+
+- 921/921 main suite (34 файла)
+- 46/46 глубоких тестов (номера строк, CPU switch, IFF, автоопределение)
+- 11/11 include, 57/57 linker, 20/20 full assembler
+- GUI smoke tests PASSED
+
+## 2026-09-23: Поддержка Intel 8085 (CPU type, пересекающиеся опкоды)
+
+### EN
+
+Added Intel 8085 support. The processor type can now be selected in the system
+profile (`cpu = "i8080"` / `cpu = "i8085"`, default `i8080`) and in the assembler
+via the new directives `.8080` / `.8085` / `.asm8080` / `.asm8085` / `CPU 8085`.
+The 8085 adds two documented instructions (SIM, RIM) and several undocumented
+instructions whose opcodes overlap with the 8080 undocumented opcodes. The
+emulator, assembler and disassembler now split these overlapping opcodes by
+processor type.
+
+**Overlapping opcodes (8080 vs 8085):**
+
+| Opcode | 8080 | 8085 |
+|---|---|---|
+| 0x08 | *NOP | *DSUB (HL = HL - BC) |
+| 0x10 | *NOP | *ARHL (arith. right shift HL) |
+| 0x18 | *NOP | *RDEL |
+| 0x20 | *NOP | RIM (Read Interrupt Mask) |
+| 0x28 | *NOP | *LDHI d8 |
+| 0x30 | *NOP | SIM (Set Interrupt Mask) |
+| 0x38 | *NOP | *LDSI d8 |
+| 0xCB | *JMP a16 | *RSTV |
+| 0xD9 | *RET | *SHLX ((BC) = HL) |
+| 0xDD | *CALL a16 | *JNK a16 |
+| 0xED | *CALL a16 | *LHLX (HL = (BC)) |
+| 0xFD | *CALL a16 | *JK a16 |
+
+**Changes:**
+
+1. **Assembler** (`assemble8080/assembler.py`): split `MNEMONICS` into a common
+   table plus `MNEMONICS_8080` and `MNEMONICS_8085`. Added `cpu_type` attribute
+   and `_get_mnemonics()` which returns the cpu-specific table. Added the
+   `.8080`/`.8085`/`.asm8080`/`.asm8085`/`CPU` directives. Fixed the SIM/RIM
+   opcodes (SIM=0x20, RIM=0x30) and removed dead code in `_encode_instruction`.
+   `_parse_label` now checks `ALL_MNEMONICS` so 8085 mnemonics are not treated
+   as labels.
+
+2. **Preprocessor** (`assemble8080/preprocessor.py`): no longer strips the
+   `.8080`/`.asm8080`/`CPU` lines — they are passed through to the assembler.
+
+3. **Emulator** (`i8080_emulator.py`): all 12 overlapping opcodes are now split
+   by `cpu_type` via `_execute_overlapping()`. Implemented the 8085 instructions
+   (SIM, RIM, DSUB, ARHL, SHLX, LHLX); the uncertain ones (RDEL, LDHI, LDSI,
+   RSTV, JNK, JK) are NOP/skip-operand. On 8080, 0xCB=JMP a16, 0xD9=RET,
+   0xDD/0xED/0xFD=CALL a16. `_get_cycles` returns cpu-specific cycle counts.
+
+4. **Disassembler** (`i8080_ci/disassembler.py`): the opcode table is now
+   cpu_type-aware. Added `cpu_type` attribute and `set_cpu_type()`. Fixed the
+   overwriting bug where 8085 mnemonics clobbered the 8080 ones.
+
+5. **GUI** (`i8080_ci/assembler_widget.py`, `i8080_ci/main_window.py`): fixed the
+   `ctrl_layout` NameError (cpu_combo moved into `_init_ui`), fixed the
+   `_do_assemble` premature `assemble(source)` call, added `cpu_type` to
+   `on_assemble_obj`, and the disassembler now follows the profile's cpu type.
+
+**Verification (all green):**
+
+| Suite | Result |
+|---|---|
+| run_tests.py (34 files) | **915/915 PASS** |
+| test_8085.py (new) | **44/44 PASS** |
+| assembler_test_full.py | **20/20 PASS** |
+| test_assembler_linker.py | **57/57 PASS** |
+| test_assembler_include.py | **11/11 PASS** |
+| build_all.py (4 examples) | **4/4 PASS** |
+| test_gui_smoke.py | **PASS** |
+
 ## 2026-09-22: Full Project Audit — Bug Fixes (Interrupts, Sections, Strings, Escapes)
 
 ### EN
