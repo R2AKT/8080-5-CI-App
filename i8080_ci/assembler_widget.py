@@ -841,29 +841,28 @@ class AssemblerWidget(QWidget):
         cpu_type = self.assembler.cpu_type
 
         if cpu_from_source:
-            # Директива найдена — блокируем combo и синхронизируем
+            # Директива найдена — синхронизируем через централизованный метод
+            # (сброс эмулятора, дизассемблер, combo, UI) — единая точка смены CPU
+            if self.main_window is not None and hasattr(self.main_window, '_set_cpu_type'):
+                self.main_window._set_cpu_type(cpu_type, source='assembler')
+            # Блокируем combo (директива принудительно задаёт CPU)
             self.cpu_combo.blockSignals(True)
             self.cpu_combo.setCurrentText(cpu_type)
             self.cpu_combo.blockSignals(False)
             self.cpu_combo.setEnabled(False)
-            # Синхронизируем эмулятор и дизассемблер
             if self.main_window is not None:
-                if hasattr(self.main_window, 'emulator') and self.main_window.emulator:
-                    self.main_window.emulator.cpu_type = cpu_type
                 if hasattr(self.main_window, 'emu_cpu_combo'):
-                    self.main_window.emu_cpu_combo.blockSignals(True)
-                    self.main_window.emu_cpu_combo.setCurrentText(cpu_type)
-                    self.main_window.emu_cpu_combo.blockSignals(False)
                     self.main_window.emu_cpu_combo.setEnabled(False)
-                if hasattr(self.main_window, 'disassembler') and self.main_window.disassembler:
-                    self.main_window.disassembler.set_cpu_type(cpu_type)
-                self.main_window.current_cpu = cpu_type
+                if hasattr(self.main_window, 'disasm_cpu_combo'):
+                    self.main_window.disasm_cpu_combo.setEnabled(False)
         else:
             # Директивы нет — разблокируем combo
             self.cpu_combo.setEnabled(True)
             if self.main_window is not None:
                 if hasattr(self.main_window, 'emu_cpu_combo'):
                     self.main_window.emu_cpu_combo.setEnabled(True)
+                if hasattr(self.main_window, 'disasm_cpu_combo'):
+                    self.main_window.disasm_cpu_combo.setEnabled(True)
 
     def set_theme(self, is_dark: bool):
         """Update assembler widget theme."""

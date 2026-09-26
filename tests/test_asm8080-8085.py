@@ -1,5 +1,6 @@
-"""’ест опкодов 0x20 и 0x30 на 8080 и 8085"""
+"""РўРµСЃС‚ РѕРїРєРѕРґРѕРІ 0x20 Рё 0x30 РЅР° 8080 Рё 8085"""
 import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 sys.path.insert(0, '.')
 from i8080_emulator import I8080Emulator
 
@@ -9,14 +10,14 @@ failed = 0
 def check(name, actual, expected):
     global passed, failed
     if actual == expected:
-        print(f"  ? {name}")
+        print(f"  вњ… {name}")
         passed += 1
     else:
-        print(f"  ? {name}: ожидалось {expected}, получено {actual}")
+        print(f"  вќЊ {name}: РѕР¶РёРґР°Р»РѕСЃСЊ {expected}, РїРѕР»СѓС‡РµРЅРѕ {actual}")
         failed += 1
 
-# === ’ест 1: 8080 С опкод 0x20 как NOP ===
-print("\n’ест 1: 8080 С опкод 0x20 как NOP")
+# === РўРµСЃС‚ 1: 8080 вЂ” РѕРїРєРѕРґ 0x20 РєР°Рє NOP ===
+print("\nРўРµСЃС‚ 1: 8080 вЂ” РѕРїРєРѕРґ 0x20 РєР°Рє NOP")
 print("-" * 50)
 mem = {0x0000: 0x20, 0x0001: 0x76}  # 0x20 (NOP), HLT
 emu = I8080Emulator(mem)
@@ -25,10 +26,10 @@ emu.sp = 0xFFFE
 emu.int_enabled = False
 emu.reset()
 emu.step()
-check("8080: опкод 0x20 как NOP (PC=0x0001)", emu.pc, 0x0001)
+check("8080: РѕРїРєРѕРґ 0x20 РєР°Рє NOP (PC=0x0001)", emu.pc, 0x0001)
 
-# === ’ест 2: 8085 С опкод 0x20 как SIM ===
-print("\n’ест 2: 8085 С опкод 0x20 как SIM")
+# === РўРµСЃС‚ 2: 8085 вЂ” РѕРїРєРѕРґ 0x20 РєР°Рє SIM ===
+print("\nРўРµСЃС‚ 2: 8085 вЂ” РѕРїРєРѕРґ 0x20 РєР°Рє SIM")
 print("-" * 50)
 mem = {0x0000: 0x3E, 0x0001: 0x0B, 0x0002: 0x20, 0x0003: 0x76}  # MVI A,0x0B; SIM; HLT
 emu2 = I8080Emulator(mem)
@@ -38,11 +39,11 @@ emu2.int_enabled = False
 emu2.reset()
 emu2.step()  # MVI A, 0x0B
 emu2.step()  # SIM
-check("8085: SIM выполнен", emu2.irq_enabled_85, True)
-check("8085: маска прерываний = 0x03", emu2.irq_mask, 0x03)
+check("8085: SIM РІС‹РїРѕР»РЅРµРЅ", emu2.irq_enabled_85, True)
+check("8085: РјР°СЃРєР° РїСЂРµСЂС‹РІР°РЅРёР№ = 0x03", emu2.irq_mask, 0x03)
 
-# === ’ест 3: 8080 С опкод 0x30 как NOP ===
-print("\n’ест 3: 8080 С опкод 0x30 как NOP")
+# === РўРµСЃС‚ 3: 8080 вЂ” РѕРїРєРѕРґ 0x30 РєР°Рє NOP ===
+print("\nРўРµСЃС‚ 3: 8080 вЂ” РѕРїРєРѕРґ 0x30 РєР°Рє NOP")
 print("-" * 50)
 mem = {0x0000: 0x30, 0x0001: 0x76}  # 0x30 (NOP), HLT
 emu3 = I8080Emulator(mem)
@@ -51,10 +52,10 @@ emu3.sp = 0xFFFE
 emu3.int_enabled = False
 emu3.reset()
 emu3.step()
-check("8080: опкод 0x30 как NOP (PC=0x0001)", emu3.pc, 0x0001)
+check("8080: РѕРїРєРѕРґ 0x30 РєР°Рє NOP (PC=0x0001)", emu3.pc, 0x0001)
 
-# === ’ест 4: 8085 С опкод 0x30 как RIM ===
-print("\n’ест 4: 8085 С опкод 0x30 как RIM")
+# === РўРµСЃС‚ 4: 8085 вЂ” РѕРїРєРѕРґ 0x30 РєР°Рє RIM ===
+print("\nРўРµСЃС‚ 4: 8085 вЂ” РѕРїРєРѕРґ 0x30 РєР°Рє RIM")
 print("-" * 50)
 mem = {0x0000: 0x30, 0x0001: 0x76}  # RIM; HLT
 emu4 = I8080Emulator(mem)
@@ -62,14 +63,14 @@ emu4.cpu_type = "i8085"
 emu4.sp = 0xFFFE
 emu4.int_enabled = False
 emu4.reset()
-emu4.sid = 1  # “станавливаем SID
-emu4.irq_mask = 0x05  # Њаска: 7.5 и 5.5
+emu4.sid = 1  # РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј SID
+emu4.irq_mask = 0x05  # РњР°СЃРєР°: 7.5 Рё 5.5
 emu4.irq_enabled_85 = True
 emu4.step()  # RIM
-check("8085: RIM выполнен (A содержит маску)", emu4.a & 0x08, 0x08)  # Ѓит 3: MSE
-check("8085: A содержит SID", emu4.a & 0x80, 0x80)  # Ѓит 7: SID
+check("8085: RIM РІС‹РїРѕР»РЅРµРЅ (A СЃРѕРґРµСЂР¶РёС‚ РјР°СЃРєСѓ)", emu4.a & 0x08, 0x08)  # Р‘РёС‚ 3: MSE
+check("8085: A СЃРѕРґРµСЂР¶РёС‚ SID", emu4.a & 0x80, 0x80)  # Р‘РёС‚ 7: SID
 
-# === €тог ===
+# === РС‚РѕРі ===
 print("\n" + "=" * 50)
-print(f" ђ…‡“‹њ’Ђ’: {passed} пройдено, {failed} провалено")
+print(f" Р Р•Р—РЈР›Р¬РўРђРў: {passed} РїСЂРѕР№РґРµРЅРѕ, {failed} РїСЂРѕРІР°Р»РµРЅРѕ")
 print("=" * 50)

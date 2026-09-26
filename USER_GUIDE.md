@@ -1,12 +1,20 @@
 # i8080-5 CI — User Guide / Пользовательское руководство
 
-> **Version / Версия:** 2.2
-> **Date / Дата:** 2026-09-21
+> **Version / Версия:** 2.6
+> **Date / Дата:** 2026-09-26
 > **Platform / Платформа:** Windows / Linux
 > **UI Languages / Языки интерфейса:** Русский, English
 
 ---
 
+> **Note (v2.6):** Fixed the execution-trace jump highlighting to be CPU-type aware — on the 8085, the undocumented opcodes RSTV/SHLX/LHLX (0xCB/0xD9/0xED) are no longer highlighted as jumps (only JNK/JK are).
+> **Примечание (v2.6):** Исправлена подсветка переходов в трассировке с учётом типа процессора — на 8085 недокументированные опкоды RSTV/SHLX/LHLX (0xCB/0xD9/0xED) больше не подсвечиваются как переходы (переходами являются только JNK/JK).
+> **Note (v2.5):** Fixed the Emulator status bar "Running..." message to translate properly (i18n). Fixed CPU-type change via `.8085`/`.8080` directive to properly reset the emulator (consistent with manual CPU change). Cleared the Run-to-Cursor target on CPU change.
+> **Примечание (v2.5):** Исправлен перевод сообщения статус-бара «Выполнение...» во вкладке «Эмулятор» (i18n). Исправлена смена типа CPU через директиву `.8085`/`.8080` — теперь эмулятор корректно сбрасывается (как при ручной смене через combo). Очищена цель Run to Cursor при смене CPU.
+> **Note (v2.4):** Fixed **SIM/RIM** opcodes (8085) to match the Intel 8085 standard (0x20=SIM, 0x30=RIM) — previously swapped in the emulator and disassembler. Fixed the Emulator 'CPU:' label to translate properly (i18n).
+> **Примечание (v2.4):** Исправлены опкоды **SIM/RIM** (8085) — теперь соответствуют стандарту Intel 8085 (0x20=SIM, 0x30=RIM); ранее были перепутаны в эмуляторе и дизассемблере. Исправлен перевод метки «Процессор:» во вкладке «Эмулятор» (i18n).
+> **Note (v2.3):** Added **CPU type selection** to the Disassembler tab (section 7.2) — synced across Disassembler, Emulator, and Assembler tabs; blocked when the source has a `.8085`/`.8080` directive. Added **Max Speed** checkbox to the Emulator (section 13.5) — runs at maximum speed with no window updates until stop or breakpoint.
+> **Примечание (v2.3):** Добавлен **выбор типа процессора** во вкладку «Дизассемблер» (раздел 7.2) — синхронизирован между вкладками «Дизассемблер», «Эмулятор» и «Ассемблер»; блокируется при наличии директивы `.8085`/`.8080` в исходном коде. Добавлен чек-бокс **«Макс. скорость»** во вкладку «Эмулятор» (раздел 13.5) — выполнение на максимальной скорости без обновления окон до остановки или точки останова.
 > **Note (v2.2):** Added the **Assembler** tab (section 8) — write, assemble, and load i8080 source. Fixed auto-sync of the assembler view from memory.
 > **Примечание (v2.2):** Добавлена вкладка **«Ассемблер»** (раздел 8) — написание, сборка и загрузка i8080-кода. Исправлена автосинхронизация вида ассемблера с памятью.
 
@@ -308,6 +316,7 @@ python i8080_CI.py
 - **Auto on read/load** — auto-disassemble on device read or file load
 - **"Export"** — export disassembly listing to file (.asm / .txt)
 - **"Load Map"** — load a `.map` file so the disassembler shows label names and resolves jump targets by symbol
+- **CPU** — select processor type (i8080/i8085). Synced with the Emulator and Assembler tabs. Blocked when the source has a `.8085`/`.8080` directive.
 
 **RU:**
 - **Start** — начальный адрес дизассемблирования
@@ -316,6 +325,7 @@ python i8080_CI.py
 - **Авто при чтении/загрузке** — автоматическое дизассемблирование
 - **«Экспорт»** — экспорт листинга в файл (.asm / .txt)
 - **«Загрузить Map»** — загрузить `.map` файл, чтобы дизассемблер показывал имена меток и резолвил цели переходов по символу
+- **Процессор** — выбор типа процессора (i8080/i8085). Синхронизирован с вкладками «Эмулятор» и «Ассемблер». Блокируется при наличии директивы `.8085`/`.8080` в исходном коде.
 
 ### 7.3. Font Size / Размер шрифта
 
@@ -1001,6 +1011,7 @@ Watch window for observing memory and register values.
 | ▶ Run | F5 | Start execution |
 | ■ Stop | F8 | Stop execution |
 | ☑ Trace | — | Enable trace recording |
+| ☑ Max Speed | — | Run at maximum speed (no window updates until stop or breakpoint) |
 
 ### 13.6. Conditional Breakpoints
 
@@ -1090,6 +1101,7 @@ Watch-окно для наблюдения за значениями памят�
 | ▶ Run | F5 | Запуск выполнения |
 | ■ Stop | F8 | Остановка выполнения |
 | ☑ Трассировка | — | Включение записи трассировки |
+| ☑ Макс. скорость | — | Выполнение на максимальной скорости (без обновления окон до остановки/точки останова) |
 
 ### 13.6. Условные точки останова
 

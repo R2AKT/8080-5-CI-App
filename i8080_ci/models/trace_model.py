@@ -2,7 +2,7 @@
 from PySide6.QtCore import Qt, QAbstractTableModel
 from PySide6.QtGui import QColor
 from ..i18n import LANGS
-from ..disassembler import JUMP_OPCODES
+from ..disassembler import JUMP_OPCODES, JUMP_OPCODES_8085
 
 class TraceModel(QAbstractTableModel):
     """Виртуальная модель трассировки с поддержкой фильтра"""
@@ -155,7 +155,8 @@ class TraceModel(QAbstractTableModel):
                 return Qt.AlignCenter
         elif role == Qt.BackgroundRole:
             # === Подсветка переходов (JMP/CALL/RET/RST) ===
-            if rec["opcode"] in JUMP_OPCODES:
+            _jump_set = JUMP_OPCODES_8085 if getattr(self.emulator, 'cpu_type', 'i8080') == 'i8085' else JUMP_OPCODES
+            if rec["opcode"] in _jump_set:
                 return QColor("#FFE0B2")  # Оранжевый фон для переходов
             # === Подсветка изменённых регистров ===
             prev_rec = self._get_record(index.row() - 1)

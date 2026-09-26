@@ -396,14 +396,60 @@ class MainWindow(QMainWindow):
         self.update_emu_disasm_cursor()  # ← ЧАСТИЧНОЕ обновление (быстро)
         
     def _on_emu_cpu_changed(self, cpu_type: str):
-        """Переключение типа процессора в эмуляторе""" 
-        if self.emulator:
+        """Переключение типа процессора в эмуляторе"""
+        self._set_cpu_type(cpu_type, source="emu")
+
+    def _on_disasm_cpu_changed(self, cpu_type: str):
+        """Переключение типа процессора в дизассемблере"""
+        self._set_cpu_type(cpu_type, source="disasm")
+
+    def _on_asm_cpu_changed(self, cpu_type: str):
+        """Переключение типа процессора в ассемблере"""
+        self._set_cpu_type(cpu_type, source="asm")
+
+    def _set_cpu_type(self, cpu_type: str, source: str = None):
+        """Централизованная смена типа процессора.
+        Синхронизирует эмулятор, дизассемблер и все combo-выборы."""
+        if cpu_type not in ("i8080", "i8085"):
+            return
+        # 1. Эмулятор
+        if hasattr(self, 'emulator') and self.emulator:
             self.emulator.cpu_type = cpu_type
             self.emulator.reset()
+            # Останавливаем выполнение (эмулятор сброшен)
+            if hasattr(self, 'run_timer') and self.run_timer.isActive():
+                self.run_timer.stop()
+            # Очищаем цель Run to Cursor (эмулятор сброшен, PC=0)
+            self.run_target_addr = None
+        # 2. Дизассемблер
         if hasattr(self, 'disassembler') and self.disassembler:
             self.disassembler.set_cpu_type(cpu_type)
         self.current_cpu = cpu_type
-        self.update_emulator_ui()
+        # 3. Синхронизация всех combo-выборов
+        for combo in self._cpu_combos():
+            combo.blockSignals(True)
+            combo.setCurrentText(cpu_type)
+            combo.blockSignals(False)
+        # 4. Обновление UI
+        if hasattr(self, 'update_emulator_ui'):
+            self.update_emulator_ui()
+        # 5. Пере-дизассемблирование текущих представлений
+        if hasattr(self, 'disasm_view') and self.disasm_view.lines:
+            self.run_disasm()
+        if hasattr(self, 'update_emu_disasm_view'):
+            self.update_emu_disasm_view()
+
+    def _cpu_combos(self):
+        """Все combo-выборы типа процессора (эмулятор, дизассемблер, ассемблер)."""
+        combos = []
+        if hasattr(self, 'emu_cpu_combo'):
+            combos.append(self.emu_cpu_combo)
+        if hasattr(self, 'disasm_cpu_combo'):
+            combos.append(self.disasm_cpu_combo)
+        if hasattr(self, 'assembler_widget') and self.assembler_widget is not None:
+            if hasattr(self.assembler_widget, 'cpu_combo'):
+                combos.append(self.assembler_widget.cpu_combo)
+        return combos
 
     def update_stack_view(self):
         """Обновляет панель стека БЕЗ пересоздания элементов"""
@@ -523,8 +569,8 @@ class MainWindow(QMainWindow):
         if not hasattr(self, 'run_timer'):
             self.run_timer = QTimer()
             self.run_timer.timeout.connect(self._run_tick)
-        self.run_timer.start(20)
-        self.statusBar.showMessage("Running...", 0)
+        self.run_timer.start(self._run_timer_interval())
+        self.statusBar.showMessage(self.tr("status_running"), 0)
         
     def set_pc_dialog(self):
         """Диалог установки PC"""
@@ -719,6 +765,8 @@ class MainWindow(QMainWindow):
         """Создать вкладку Ассемблер"""
         is_dark = (self.current_theme == "Dark")
         self.assembler_widget = AssemblerWidget(main_window=self, is_dark=is_dark)
+        # Синхронизация выбора типа процессора с эмулятором и дизассемблером
+        self.assembler_widget.cpu_combo.currentTextChanged.connect(self._on_asm_cpu_changed)
         self.tabs.addTab(self.assembler_widget, "")
         self.tab_assembler = self.assembler_widget
         
@@ -741,6 +789,14 @@ class MainWindow(QMainWindow):
         ctrl_layout.addWidget(self.disasm_len)
         ctrl_layout.addWidget(self.btn_disasm)
         ctrl_layout.addWidget(self.auto_disasm_check)
+        # === ВЫБОР ТИПА ПРОЦЕССОРА (ДИЗАССЕМБЛЕР) ===
+        self.lbl_disasm_cpu = QLabel()
+        self.disasm_cpu_combo = QComboBox()
+        self.disasm_cpu_combo.addItems(["i8080", "i8085"])
+        self.disasm_cpu_combo.setCurrentText("i8080")
+        self.disasm_cpu_combo.currentTextChanged.connect(self._on_disasm_cpu_changed)
+        ctrl_layout.addWidget(self.lbl_disasm_cpu)
+        ctrl_layout.addWidget(self.disasm_cpu_combo)
         self.btn_export_disasm = QPushButton("Export")  # Будет переведено в retranslate_ui
         self.btn_export_disasm.clicked.connect(self.export_disasm)
         ctrl_layout.addWidget(self.btn_export_disasm)
@@ -935,6 +991,7 @@ class MainWindow(QMainWindow):
         self.lbl_disasm_len.setText(self.tr("len"))
         self.btn_disasm.setText(self.tr("disasm"))
         self.auto_disasm_check.setText(self.tr("auto_disasm"))
+        self.lbl_disasm_cpu.setText(self.tr("cpu_type_label"))
         self.btn_export_disasm.setText(self.tr("export"))
         self.btn_load_map.setText(self.tr("asm_load_map"))
         
@@ -2594,7 +2651,8 @@ class MainWindow(QMainWindow):
         
         # === Выбор типа процессора (эмулятор) ===
         cpu_sel_layout = QHBoxLayout()
-        cpu_sel_layout.addWidget(QLabel("Процессор:"))
+        self.lbl_emu_cpu = QLabel()
+        cpu_sel_layout.addWidget(self.lbl_emu_cpu)
         self.emu_cpu_combo = QComboBox()
         self.emu_cpu_combo.addItems(["i8080", "i8085"])
         self.emu_cpu_combo.setCurrentText("i8080")
@@ -2713,6 +2771,13 @@ class MainWindow(QMainWindow):
         self.chk_trace_enable.toggled.connect(self.on_trace_checkbox_toggled)
         ctrl_layout.addWidget(self.chk_trace_enable)
         
+        # === Чек-бокс максимальной скорости ===
+        self.chk_max_speed = QCheckBox("Макс. скорость")
+        self.chk_max_speed.setToolTip("Выполнение на максимальной скорости (без обновления окон до остановки или точки останова)")
+        self.chk_max_speed.setChecked(False)
+        self.chk_max_speed.toggled.connect(self.on_max_speed_toggled)
+        ctrl_layout.addWidget(self.chk_max_speed)
+        
         ctrl_layout.addStretch()
         
         main_layout.addWidget(ctrl_panel)
@@ -2756,9 +2821,16 @@ class MainWindow(QMainWindow):
 
     def _run_tick(self):
         """Один тик выполнения — оптимизирован для скорости"""
+        MAX_SPEED_INSTRUCTIONS_PER_TICK = 10000
+        max_speed = hasattr(self, 'chk_max_speed') and self.chk_max_speed.isChecked()
+        
         # === Такты для tick-устройств (512ВИ1, 8253, AM9511, CF IDE, CH376S) ===
         if hasattr(self, 'system') and self.emulator.running:
-            self.system.tick(cycles=1)
+            if max_speed:
+                # Сохраняем соотношение 1 такт устройства на 300 инструкций
+                self.system.tick(cycles=max(1, MAX_SPEED_INSTRUCTIONS_PER_TICK // 300))
+            else:
+                self.system.tick(cycles=1)
         
         # === ПРОВЕРКА DMA (итерация 10.2) ===
         if hasattr(self, 'system') and self.system.check_dma():
@@ -2814,19 +2886,24 @@ class MainWindow(QMainWindow):
         self._save_reg_prev_values()
 
         # === ВЫПОЛНЯЕМ ПАКЕТ ИНСТРУКЦИЙ ===
-        INSTRUCTIONS_PER_TICK = 300
+        INSTRUCTIONS_PER_TICK = MAX_SPEED_INSTRUCTIONS_PER_TICK if max_speed else 300
         executed = 0
+        stopped = False
         for _ in range(INSTRUCTIONS_PER_TICK):
             # Проверка цели Run to Cursor
             if self.run_target_addr is not None and self.emulator.pc == self.run_target_addr:
+                stopped = True
                 break
             # Проверка BP с учётом условий и enabled
             if self.emulator.should_stop_at_bp(self.emulator.pc):
+                stopped = True
                 break
             # Проверка DMA и WAIT перед каждой инструкцией
             if getattr(self.emulator, 'wait_signal', False):
+                stopped = True
                 break
             if hasattr(self, 'system') and self.system.check_dma():
+                stopped = True
                 break
 
             # === Обработка прерывания перед инструкцией ===
@@ -2835,13 +2912,33 @@ class MainWindow(QMainWindow):
 
             # Выполняем БЕЗ emit сигнала
             if not self.emulator.execute_instruction(silent=True):
+                stopped = True
                 break
             executed += 1
+            # В режиме макс. скорости: периодическая проверка прерываний
+            if max_speed and executed % 1000 == 0:
+                if hasattr(self, 'system'):
+                    self.system.check_interrupts()
 
-        # === ОДНО обновление UI за весь тик ===
+        # === Обновление UI ===
+        if max_speed and not stopped:
+            # Макс. скорость: не обновляем окна во время выполнения
+            return
         self.update_emulator_ui()
         self.refresh_trace_table()
         self.update_emu_disasm_cursor()
+
+    def _run_timer_interval(self):
+        """Интервал таймера выполнения (0 в режиме макс. скорости)."""
+        if hasattr(self, 'chk_max_speed') and self.chk_max_speed.isChecked():
+            return 0
+        return 20
+
+    def on_max_speed_toggled(self, checked):
+        """Переключение режима максимальной скорости."""
+        if hasattr(self, 'run_timer') and self.run_timer.isActive():
+            # Перезапускаем таймер с новым интервалом
+            self.run_timer.start(self._run_timer_interval())
 
     def on_emu_cursor_changed(self, addr):
         """Курсор изменён (одинарный клик в дизассемблере эмулятора)"""
@@ -2873,7 +2970,7 @@ class MainWindow(QMainWindow):
         if not hasattr(self, 'run_timer'):
             self.run_timer = QTimer()
             self.run_timer.timeout.connect(self._run_tick)
-        self.run_timer.start(20)
+        self.run_timer.start(self._run_timer_interval())
         self.statusBar.showMessage(f"{self.tr('status_running_to')}{addr:04X}...", 0)
         self.log(f"{self.tr('status_running_from')}{addr:04X}")
         
@@ -2896,7 +2993,7 @@ class MainWindow(QMainWindow):
             self.run_timer = QTimer()
             self.run_timer.timeout.connect(self._run_tick)
         
-        self.run_timer.start(20)
+        self.run_timer.start(self._run_timer_interval())
         self.statusBar.showMessage(f"{self.tr('status_running_from')}{addr:04X}...", 0)
         self.log(f"{self.tr('status_running_from')}{addr:04X}")
         
@@ -2976,6 +3073,13 @@ class MainWindow(QMainWindow):
         # Чек-бокс трассировки
         if hasattr(self, 'chk_trace_enable'):
             self.chk_trace_enable.setText(self.tr("emulator_trace"))
+        # Чек-бокс максимальной скорости
+        if hasattr(self, 'chk_max_speed'):
+            self.chk_max_speed.setText(self.tr("max_speed"))
+            self.chk_max_speed.setToolTip(self.tr("max_speed_tip"))
+        # Метка "Процессор:"
+        if hasattr(self, 'lbl_emu_cpu'):
+            self.lbl_emu_cpu.setText(self.tr("cpu_type_label"))
             
         # ← ДОБАВЛЕНО: метка "Код"
         if hasattr(self, 'lbl_emu_code'):
@@ -3917,11 +4021,11 @@ class MainWindow(QMainWindow):
             # Обновляем эмулятор
             if hasattr(self, 'emulator') and self.emulator:
                 self.emulator.cpu_type = self.current_cpu
-                # Обновляем combo в GUI
-                if hasattr(self, 'emu_cpu_combo'):
-                    self.emu_cpu_combo.blockSignals(True)
-                    self.emu_cpu_combo.setCurrentText(self.current_cpu)
-                    self.emu_cpu_combo.blockSignals(False)
+                # Обновляем все combo-выборы (эмулятор, дизассемблер, ассемблер)
+                for combo in self._cpu_combos():
+                    combo.blockSignals(True)
+                    combo.setCurrentText(self.current_cpu)
+                    combo.blockSignals(False)
                 self.emulator.reset()
             
             # Обновляем дизассемблер (таблица опкодов зависит от типа CPU)

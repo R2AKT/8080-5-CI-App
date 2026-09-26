@@ -1,13 +1,17 @@
 """I8080 CPU disassembler."""
 
 # === Опкоды переходов для подсветки в трассировке ===
-JUMP_OPCODES = {
+# Базовые переходы (одинаковы для 8080 и 8085)
+_JUMP_BASE = {
     0xC3, 0xCA, 0xC2, 0xDA, 0xD2, 0xF2, 0xFA, 0xEA, 0xE2,  # JMP, JZ, JNZ, JC, JNC, JP, JM, JPE, JPO
     0xCD, 0xCC, 0xC4, 0xDC, 0xD4, 0xF4, 0xFC, 0xEC, 0xE4,  # CALL, CZ, CNZ, CC, CNC, CP, CM, CPE, CPO
     0xC9, 0xC8, 0xC0, 0xD8, 0xD0, 0xF0, 0xF8, 0xE8, 0xE0,  # RET, RZ, RNZ, RC, RNC, RP, RM, RPE, RPO
     0xC7, 0xCF, 0xD7, 0xDF, 0xE7, 0xEF, 0xF7, 0xFF,        # RST 0-7
-    0xCB, 0xD9, 0xDD, 0xED, 0xFD,                          # Пересекающиеся: JMP*/RET*/CALL*/JNK/JK
 }
+# 8080: все пересекающиеся опкоды — переходы (JMP*/RET*/CALL*)
+JUMP_OPCODES = _JUMP_BASE | {0xCB, 0xD9, 0xDD, 0xED, 0xFD}
+# 8085: только JNK (0xDD) и JK (0xFD) — переходы; RSTV/SHLX/LHLX — нет
+JUMP_OPCODES_8085 = _JUMP_BASE | {0xDD, 0xFD}
 
 
 
@@ -99,8 +103,8 @@ class I8080Disassembler:
         # === ПЕРЕСЕКАЮЩИЕСЯ ОПКОДЫ 8080/8085 ===
         if self.cpu_type == "i8085":
             # 8085: 2 задокументированные (SIM, RIM) + недокументированные
-            t[0x20] = (1, "RIM")
-            t[0x30] = (1, "SIM")
+            t[0x20] = (1, "SIM")
+            t[0x30] = (1, "RIM")
             t[0x08] = (1, "DSUB")
             t[0x10] = (1, "ARHL")
             t[0x18] = (1, "RDEL")

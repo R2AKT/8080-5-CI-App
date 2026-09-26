@@ -12,6 +12,7 @@
 import sys
 import os
 
+os.environ['QT_QPA_PLATFORM'] = 'offscreen'
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from assemble8080.assembler import Assembler
@@ -142,14 +143,14 @@ def make_emu(program, cpu_type="i8080", extra_mem=None):
     return emu
 
 
-# 8085: SIM
-emu = make_emu([0x3E, 0x0F, 0x30], "i8085")
+# 8085: SIM (0x20)
+emu = make_emu([0x3E, 0x0F, 0x20], "i8085")
 emu.run(10)
 check("8085: SIM: irq_enabled_85", emu.irq_enabled_85, True)
 check("8085: SIM: irq_mask", emu.irq_mask, 0x07)
 
-# 8085: RIM
-emu = make_emu([0x3E, 0x0F, 0x30, 0x20], "i8085")
+# 8085: RIM (0x30)
+emu = make_emu([0x3E, 0x0F, 0x20, 0x30], "i8085")
 emu.run(10)
 check("8085: RIM: MSE bit", emu.a & 0x08, 0x08)
 check("8085: RIM: mask bits", emu.a & 0x07, 0x07)
@@ -216,8 +217,8 @@ check("8080 disasm: 0x20 = NOP*", d80.table[0x20][1], "NOP*")
 check("8080 disasm: 0xD9 = RET*", d80.table[0xD9][1], "RET*")
 
 d85 = I8080Disassembler(cpu_type="i8085")
-check("8085 disasm: 0x20 = RIM", d85.table[0x20][1], "RIM")
-check("8085 disasm: 0x30 = SIM", d85.table[0x30][1], "SIM")
+check("8085 disasm: 0x20 = SIM", d85.table[0x20][1], "SIM")
+check("8085 disasm: 0x30 = RIM", d85.table[0x30][1], "RIM")
 check("8085 disasm: 0x08 = DSUB", d85.table[0x08][1], "DSUB")
 check("8085 disasm: 0xD9 = SHLX", d85.table[0xD9][1], "SHLX")
 check("8085 disasm: 0xED = LHLX", d85.table[0xED][1], "LHLX")
@@ -225,7 +226,7 @@ check("8085 disasm: 0xED = LHLX", d85.table[0xED][1], "LHLX")
 # set_cpu_type
 d = I8080Disassembler(cpu_type="i8080")
 d.set_cpu_type("i8085")
-check("disasm set_cpu_type: 0x20 = RIM", d.table[0x20][1], "RIM")
+check("disasm set_cpu_type: 0x20 = SIM", d.table[0x20][1], "SIM")
 d.set_cpu_type("i8080")
 check("disasm set_cpu_type back: 0x20 = NOP*", d.table[0x20][1], "NOP*")
 

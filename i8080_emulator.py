@@ -979,13 +979,13 @@ class I8080Emulator(QObject):
 
     def _execute_overlapping_8085(self, opcode) -> None:
         """Пересекающиеся опкоды на 8085 (2 задокументированные + недокументированные)."""
-        # 0x20 — RIM (Read Interrupt Mask)
+        # 0x20 — SIM (Set Interrupt Mask)
         if opcode == 0x20:
-            self._execute_rim()
-            return
-        # 0x30 — SIM (Set Interrupt Mask)
-        if opcode == 0x30:
             self._execute_sim()
+            return
+        # 0x30 — RIM (Read Interrupt Mask)
+        if opcode == 0x30:
+            self._execute_rim()
             return
         # 0x08 — DSUB: HL = HL - BC
         if opcode == 0x08:

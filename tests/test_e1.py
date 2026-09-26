@@ -1,8 +1,7 @@
 """Тест E1: шина памяти"""
 import sys
-from PySide6.QtWidgets import QApplication
 
-app = QApplication.instance() or QApplication(sys.argv)
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 from modules.memory.memory_bus import MemoryBus, RAMRegion, ROMRegion
 

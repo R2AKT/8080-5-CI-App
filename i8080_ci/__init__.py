@@ -3,7 +3,7 @@ from common.i18n import LANGS, get_system_language
 from common.themes import THEMES
 from .slip import SlipProtocol
 from .intelhex import IntelHex
-from .disassembler import I8080Disassembler, JUMP_OPCODES
+from .disassembler import I8080Disassembler, JUMP_OPCODES, JUMP_OPCODES_8085
 from .bus_worker import BusWorker
 from .automation import AutomationAPI
 from .models import HexModel, WatchModel, BreakpointModel, TraceModel
@@ -12,7 +12,7 @@ from .main_window import MainWindow
 
 __all__ = [
     "LANGS", "THEMES", "get_system_language",
-    "SlipProtocol", "IntelHex", "I8080Disassembler", "JUMP_OPCODES",
+    "SlipProtocol", "IntelHex", "I8080Disassembler", "JUMP_OPCODES", "JUMP_OPCODES_8085",
     "BusWorker", "AutomationAPI",
     "HexModel", "WatchModel", "BreakpointModel", "TraceModel",
     "DisasmView", "HexTableView", "SearchDialog",
