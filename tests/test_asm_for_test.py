@@ -27,6 +27,7 @@ EXCLUDE = {
     '8080exer.asm',
     '8085exer.mac', 'tinybas85.asm', 'mon85-v12-ncb85.asm', 'mon85-v13.asm',
     'term85.asm', 'dop.asm', 'monnoice.asm', 'monrk.asm', 'monrk80.asm',
+    'load.asm',
     'dd28.asm', 'dd29.asm',
     'basic disassembly-source.mac',
     'z_zappleasm.asm', 'z_zappleasm.original.asm',

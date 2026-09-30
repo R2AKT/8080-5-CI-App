@@ -254,15 +254,20 @@ Profile files / Файлы профилей: `profiles/` (TOML format / TOML-ф�
 
 ## Testing / Тестирование
 
-**EN:** 33 unit-test files (871 checks) via `run_tests.py`, plus zasm reference
-comparison (15/15 byte-identical), the 69-file ASM_FOR_TEST suite, and GUI smoke
-tests. 100% pass rate.
+**EN:** 55 standalone test files plus 17 interactive `api` snippets (run via
+`tests/run_api_snippets.py`), the zasm reference comparison (byte-identical), the
+68-file ASM_FOR_TEST suite, and GUI smoke tests. Full cycle: `python _run_all_tests.py`
+(56/56 groups pass, 0 failures).
 
-**RU:** 33 файла юнит-тестов (871 проверок) через `run_tests.py`, плюс сравнение с
-эталонами zasm (15/15 побайтово), набор ASM_FOR_TEST (69 файлов) и GUI smoke-тесты.
-100% прохождение.
+**RU:** 55 автономных тест-файлов плюс 17 интерактивных `api`-сниппетов (запуск
+через `tests/run_api_snippets.py`), сравнение с эталонами zasm (побайтово), набор
+ASM_FOR_TEST (68 файлов) и GUI smoke-тесты. Полный цикл: `python _run_all_tests.py`
+(56/56 групп пройдено, 0 провалов).
 
 ```bash
+# Run the full test cycle (standalone + api snippets) / Полный цикл тестов
+python _run_all_tests.py
+
 # Run all unit tests / Запустить все юнит-тесты
 python run_tests.py
 

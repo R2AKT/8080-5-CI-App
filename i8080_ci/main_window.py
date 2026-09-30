@@ -83,6 +83,9 @@ class MainWindow(QMainWindow):
         self.serial_port = None
         self.rx_buffer = bytearray()
         self.mem_data = {}
+
+        self.map_file = None  # MapFile for symbol display
+        self.equ_dict = {}    # {value: name} EQU constants for disassembler
         self.disassembler = I8080Disassembler()
         self.hex_model = HexModel(self.mem_data)
         
@@ -500,6 +503,9 @@ class MainWindow(QMainWindow):
         lines = self.disassembler.disassemble(self.mem_data, min_addr, length)
         self.emu_disasm_view.set_lines(lines)
         self.emu_disasm_view.set_highlight(pc)
+        # Ensure symbols are set for paintEvent display
+        if self.map_file is not None and hasattr(self.emu_disasm_view, 'set_symbols'):
+            self.emu_disasm_view.set_symbols(self.map_file)
         
         if hasattr(self.emu_disasm_view, 'set_breakpoints'):
             self.emu_disasm_view.set_breakpoints(self.emulator.breakpoints)
@@ -1563,6 +1569,8 @@ class MainWindow(QMainWindow):
         
         lines = self.disassembler.disassemble(self.mem_data, start, length)
         self.disasm_view.set_lines(lines)
+        if self.map_file is not None and hasattr(self.disasm_view, "set_symbols"):
+            self.disasm_view.set_symbols(self.map_file)
 
     def on_load_map(self):
         """Load a map file into the disassembler for symbol resolution."""
@@ -1574,10 +1582,18 @@ class MainWindow(QMainWindow):
         try:
             map_file = load_map_file(path)
             self.disassembler.set_map(map_file)
+            self.disassembler.set_equ(self.equ_dict)
+            self.map_file = map_file
+            if hasattr(self.disasm_view, "set_symbols"):
+                self.disasm_view.set_symbols(map_file)
+            if hasattr(self, 'emu_disasm_view') and hasattr(self.emu_disasm_view, "set_symbols"):
+                self.emu_disasm_view.set_symbols(map_file)
             self.log(self.tr("asm_map_loaded").format(path=path, n=len(map_file.entries)))
             # Re-run disassembly to show resolved symbols
             if self.mem_data:
                 self.run_disasm()
+                if hasattr(self, 'update_emu_disasm_view'):
+                    self.update_emu_disasm_view()
         except Exception as e:
             QMessageBox.critical(self, self.tr("asm_err_title"),
                                  self.tr("asm_map_err").format(e=e))

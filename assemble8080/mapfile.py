@@ -14,7 +14,6 @@ ADDRESS   SIZE  TYPE    NAME
 0008      0003  CODE    rst1_handler
 0100      0002  DATA    my_var
 """
-import os
 import re
 from dataclasses import dataclass, field
 from typing import Optional
@@ -87,7 +86,10 @@ def generate_map(result, source_name: str = "", date_str: str = "") -> str:
     
     # Build entries from symbols, sorted by address
     # Try to determine size from listing or consecutive symbols
-    sorted_syms = sorted(result.symbols.items(), key=lambda x: x[1])
+    # Filter out EQU constants (they are not code addresses)
+    equ_syms = getattr(result, 'equ_symbols', set())
+    filtered_syms = {k: v for k, v in result.symbols.items() if k not in equ_syms}
+    sorted_syms = sorted(filtered_syms.items(), key=lambda x: x[1])
     
     for i, (name, addr) in enumerate(sorted_syms):
         # Determine size: distance to next symbol, or 1 if last

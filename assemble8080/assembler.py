@@ -61,6 +61,8 @@ class AsmResult:
     imports: list = field(default_factory=list)       # [name] — imported symbols
     relocations: list = field(default_factory=list)   # [(offset, size, symbol)]
     map_text: str = ""                                 # текст map-файла (генерируется при успехе)
+    global_labels: set = field(default_factory=set)    # метки с :: (глобальные/экспортные)
+    equ_symbols: set = field(default_factory=set)      # имена EQU/DEF констант (не адреса)
 
 
 # =============================================================
@@ -564,26 +566,6 @@ class Assembler:
         self._write_pos = end
 
 
-    def _count_db_bytes(self, operand: str) -> int:
-        """Count total bytes in a DB directive operand."""
-        count = 0
-        for part in self._split_operands(operand):
-            part = part.strip()
-            if not part:
-                continue
-            if part.startswith('"') and part.endswith('"'):
-                count += len(part) - 2
-            elif part.startswith("'") and part.endswith("'"):
-                count += 1
-            else:
-                count += len([x for x in part.split(',') if x.strip()])
-        return max(count, 1)
-
-    def _count_dw_words(self, operand: str) -> int:
-        """Count total words in a DW directive operand."""
-        parts = [p for p in self._split_operands(operand) if p.strip()]
-        return max(len(parts), 1)
-
     @staticmethod
     def _strip_comment(line: str) -> str:
         """Убрать комментарий (; или * в начале строки)."""
@@ -640,8 +622,11 @@ class Assembler:
 
         # 2. Первый проход — сбор меток
         self.symbols = {}
+        self.equ_symbols = set()
         self._exports = set()
         self._imports = set()
+        self._global_labels = set()
+
         self._relocations = []
         self.cpu_set_by_directive = False
         self.errors = []
@@ -671,6 +656,12 @@ class Assembler:
                 label_upper = label.upper()
                 # Разрешаем переопределение (последнее значение побеждает)
                 self.symbols[label_upper] = location
+                if is_global:
+
+                    self._global_labels.add(label_upper)
+
+                    self._exports.add(label_upper)
+
                 # Track which section this label belongs to
                 if self._current_section:
                     _sn, _ss, _sa, _se = self._current_section
@@ -812,6 +803,7 @@ class Assembler:
                     if _all_defined:
                         value = self.expr_parser.parse(operand, line_num)
                         self.symbols[label.upper()] = value
+                        self.equ_symbols.add(label.upper())
                     else:
                         self._pending_equ.append((label.upper(), operand))
                 continue
@@ -826,6 +818,7 @@ class Assembler:
                 if _all_defined:
                     value = self.expr_parser.parse(eq_operand, line_num)
                     self.symbols[eq_label.upper()] = value
+                    self.equ_symbols.add(eq_label.upper())
                 else:
                     self._pending_equ.append((eq_label.upper(), eq_operand))
                 continue
@@ -931,6 +924,7 @@ class Assembler:
                     try:
                         _val = self.expr_parser.parse(_eq_operand, 0)
                         self.symbols[_eq_label] = _val
+                        self.equ_symbols.add(_eq_label)
                         _resolved = True
                     except Exception:
                         _remaining.append((_eq_label, _eq_operand))
@@ -1080,6 +1074,7 @@ class Assembler:
                     self.expr_parser.pc = location
                     value = self.expr_parser.parse(operand, line_num)
                     self.symbols[label.upper()] = value
+                    self.equ_symbols.add(label.upper())
                 continue
             # EQU/DEF без извлечённой метки
             m_eq = re.match(r'^([A-Za-z_][A-Za-z0-9_]*)\s+(?:EQU|DEF|DEFL)\s+(.*)', stripped, re.IGNORECASE)
@@ -1092,6 +1087,7 @@ class Assembler:
                 if _all_defined:
                     value = self.expr_parser.parse(eq_operand, line_num)
                     self.symbols[eq_label.upper()] = value
+                    self.equ_symbols.add(eq_label.upper())
                 else:
                     self._pending_equ.append((eq_label.upper(), eq_operand))
                 continue
@@ -1213,12 +1209,16 @@ class Assembler:
             listing=list(self.listing),
             exports=list(self._exports),
             imports=list(self._imports),
+            global_labels=set(self._global_labels),
+
             relocations=list(self._relocations),
             end_address=location
         )
         # Генерация map-файла при успешной сборке
         if result.success:
             from .mapfile import generate_map
+            # Track EQU symbols for map filtering
+            result.equ_symbols = self.equ_symbols
             result.map_text = generate_map(result, source_name=filename)
         return result
 
@@ -1254,8 +1254,22 @@ class Assembler:
             if len(operands) < 1:
                 self._error(line_num, f"{mnemonic}: ожидается регистр")
                 return bytearray([opcode])
+            # Check if operand is a valid register; if not, try immediate (ALU ops)
+            op_upper = operands[0].strip().upper()
+            if op_upper in REGISTERS or op_upper in ('BC', 'DE', 'HL', 'PSW'):
+                reg_code = self._get_reg_code(operands[0], line_num)
+                if mnemonic in ('INR', 'DCR'):
+                    return bytearray([opcode + reg_code * 8])
+                return bytearray([opcode | reg_code])
+            # Not a register — try as immediate value (ALU d8 forms)
+            ALU_IMM_OPCODES = {'ADD': 0xC6, 'ADC': 0xCE, 'SUB': 0xD6, 'SBB': 0xDE,
+                               'ANA': 0xE6, 'XRA': 0xEE, 'ORI': 0xF6, 'CPI': 0xFE}
+            if mnemonic in ALU_IMM_OPCODES:
+                val = self._parse_operand(operands[0], line_num, allow_current=True)
+                if val is not None:
+                    return bytearray([ALU_IMM_OPCODES[mnemonic], val & 0xFF])
+            # Fall through to error
             reg_code = self._get_reg_code(operands[0], line_num)
-            # INR/DCR используют другой паттерн: opcode + reg_code * 8
             if mnemonic in ('INR', 'DCR'):
                 return bytearray([opcode + reg_code * 8])
             return bytearray([opcode | reg_code])

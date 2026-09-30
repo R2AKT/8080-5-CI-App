@@ -594,11 +594,11 @@ class AutomationAPI:
 
     def asm_get_source(self):
         """Вернуть исходный код из редактора ассемблера."""
-        return self._check_assembler().editor.toPlainText()
+        return self._check_assembler()._current_editor().toPlainText()
 
     def asm_set_source(self, source):
         """Установить исходный код в редактор ассемблера."""
-        self._check_assembler().editor.setPlainText(source)
+        self._check_assembler()._current_editor().setPlainText(source)
 
     def asm_load_file(self, path):
         """Загрузить .asm файл в редактор ассемблера. Возвращает текст."""
@@ -615,9 +615,9 @@ class AutomationAPI:
         """
         widget = self._check_assembler()
         if source is not None:
-            widget.editor.setPlainText(source)
+            widget._current_editor().setPlainText(source)
         else:
-            source = widget.editor.toPlainText()
+            source = widget._current_editor().toPlainText()
         # Устанавливаем cpu_type из combo (как в GUI _do_assemble)
         if hasattr(widget, 'cpu_combo'):
             widget.assembler.cpu_type = widget.cpu_combo.currentText()
@@ -636,7 +636,17 @@ class AutomationAPI:
             except Exception:
                 pass
         if load_to_memory and result.binary:
+            # Extract EQU constants for disassembler substitution
+            mw = widget.main_window
+            if mw is not None and hasattr(result, 'equ_symbols'):
+                mw.equ_dict = {
+                    result.symbols[n]: n for n in result.equ_symbols
+                    if n in result.symbols
+                }
             widget._load_to_memory(result.binary, result.origin)
+            # Auto-load map into disassembler (same as GUI button)
+            if hasattr(widget, '_auto_load_map'):
+                widget._auto_load_map(result)
         return result
 
     def asm_get_binary(self):

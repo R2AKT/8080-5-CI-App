@@ -1,6 +1,7 @@
 """Internationalization strings and system language detection."""
 from PySide6.QtCore import QLocale
 
+
 LANGS = {
     "en": {
         "app_title": "i8080-5 CI",
@@ -96,11 +97,17 @@ LANGS = {
         "bp_cond_title":  "Breakpoint Condition ",
         "bp_cond_clear":  "Clear Condition ",  "bp_cond_ok":  "OK ",  "bp_cond_cancel":  "Cancel ",
         "bp_cond_hint":  "Available variables:\n"
+
                          "  Registers: A, B, C, D, E, H, L, BC, DE, HL, SP, PC\n"
+
                          "  Flags: S, Z, AC, P, CY\n"
+
                          "  Memory: mem[0x0100]   Ports: io[0x01]\n"
+
                          "  Cycles: cycles\n"
+
                          "  Operators: ==, !=, <, >, <=, >=, and, or, not ",
+
         "err_addr_mem":  "Enter memory address! ",  "err_syntax":  "Invalid syntax! ",
         "dlg_cancel": "Cancel ", "dlg_ok": "OK ",
         # Статистика эмулятора
@@ -122,6 +129,7 @@ LANGS = {
         "trace_no_data": "No data to export",
         "trace_exported": "Trace exported: ",
         "trace_export_err": "Failed to export trace:\n",
+
         # Watch: статусы и пресеты
         "watch_select_del": "Select an item to delete",
         "watch_confirm": "Confirmation",
@@ -136,6 +144,8 @@ LANGS = {
         "watch_err_addr": "Enter memory address!",
         "watch_err_fmt_title": "Format Error",
         "watch_err_add": "Failed to add Watch:\n",
+
+
         # BP: статусы и пресеты
         "bp_select": "Select a breakpoint",
         "bp_add_title": "Add Breakpoint",
@@ -146,7 +156,11 @@ LANGS = {
         "bp_preset_saved": "BP preset saved: ",
         "bp_preset_loaded": "BP preset loaded: ",
         "bp_preset_save_err": "Failed to save BP preset:\n",
+
+
         "bp_preset_load_err": "Failed to load BP preset:\n",
+
+
         "bp_cond_err": "Invalid condition syntax!",
         "bp_cond_example": "Example: A == 0x55",
         # Диалоги
@@ -260,7 +274,7 @@ LANGS = {
         "dw_no": "no",
         # === Assembler ===
         "asm_tab": "Assembler",
-        "asm_new": "\U0001F4C4 New Program",
+        #"asm_new": "\U0001F4C4 New Program",
         "asm_load": "\U0001F4C2 Load .asm",
         "asm_save": "\U0001F4BE Save .asm",
         "asm_assemble": "\U0001F528 Assemble",
@@ -316,6 +330,43 @@ LANGS = {
         "asm_loaded_mem": "\U0001F680 Loaded {n} bytes at 0x{addr:04X}",
         "asm_load_mem_err": "\u274C Load error:\n{tb}",
         "asm_placeholder": "; Assembler 8080-5 CI\n; Number formats: 0x1A, 1AH, 26, 11010B, 32q\n; Ctrl+wheel \u2014 font size\n\n        ORG 0100H\nSTART:  MVI A, 0x55\n        OUT 01H\n        JMP START\n",
+
+
+        "asm_open_ws": "📂 Open Workspace",
+
+        "asm_save_ws": "💾 Save Workspace",
+
+        "asm_open_ws_title": "Open Workspace File",
+
+        "asm_save_ws_title": "Save Workspace File",
+
+        "asm_ws_filter": "Workspace (*.ws);;All files (*)",
+
+        "asm_ws_filter_save": "Workspace (*.ws);;All files (*)",
+
+        "asm_ws_loaded": "📂 Workspace loaded: {path} ({n} files)",
+
+        "asm_ws_err": "❌ Failed to load workspace:\n{e}",
+
+        "asm_ws_saved": "💾 Workspace saved: {path}",
+
+        "asm_ws_save_err": "❌ Failed to save workspace:\n{e}",
+
+        "asm_new_tab": "\U0001F4C4 New file",
+
+        "asm_untitled": "untitled",
+
+        "asm_unsaved_title": "Unsaved Changes",
+
+        "asm_unsaved_msg": "File '{file}' has unsaved changes. Save?",
+        "btn_save": "Save",
+        "btn_discard": "Discard",
+        "btn_cancel": "Cancel",
+
+        "asm_map_auto_loaded": "  Map auto-loaded: {n} symbols",
+
+        "asm_map_auto_err": "  Map auto-load error: {e}",
+
         # === Help ===
         "menu_help": "Help",
         "help_user_guide": "User Guide",
@@ -420,12 +471,18 @@ LANGS = {
         "watch_addr_hint":  "Адрес HEX, например: 0100 ",
         "bp_cond_title":  "Условие точки останова ",
         "bp_cond_clear":  "Очистить условие ",  "bp_cond_ok":  "OK ",  "bp_cond_cancel":  "Отмена ",
-        "bp_cond_hint":  "Доступные переменные:\n"
-                         "  Регистры: A, B, C, D, E, H, L, BC, DE, HL, SP, PC\n"
-                         "  Флаги: S, Z, AC, P, CY\n"
-                         "  Память: mem[0x0100]   Порты: io[0x01]\n"
-                         "  Такты: cycles\n"
-                         "  Операторы: ==, !=, <, >, <=, >=, and, or, not ",
+        "bp_cond_hint":  "Available variables:\n"
+
+                         "  Registers: A, B, C, D, E, H, L, BC, DE, HL, SP, PC\n"
+
+                         "  Flags: S, Z, AC, P, CY\n"
+
+                         "  Memory: mem[0x0100]   Ports: io[0x01]\n"
+
+                         "  Cycles: cycles\n"
+
+                         "  Operators: ==, !=, <, >, <=, >=, and, or, not ",
+
         "err_addr_mem":  "Введите адрес памяти! ",  "err_syntax":  "Неверный синтаксис! ",
         "dlg_cancel": "Отмена ", "dlg_ok": "OK ",
         # Статистика эмулятора
@@ -446,7 +503,8 @@ LANGS = {
         "trace_export_title": "Экспорт трассировки",
         "trace_no_data": "Нет данных для экспорта",
         "trace_exported": "Трассировка экспортирована: ",
-        "trace_export_err": "Не удалось экспортировать трассировку:\n",
+        "trace_export_err": "Failed to export trace:\n",
+
         # Watch: статусы и пресеты
         "watch_select_del": "Выберите элемент для удаления",
         "watch_confirm": "Подтверждение",
@@ -461,6 +519,8 @@ LANGS = {
         "watch_err_addr": "Введите адрес памяти!",
         "watch_err_fmt_title": "Ошибка формата",
         "watch_err_add": "Не удалось добавить Watch:\n",
+
+
         # BP: статусы и пресеты
         "bp_select": "Выберите точку останова",
         "bp_add_title": "Добавить точку останова",
@@ -471,7 +531,11 @@ LANGS = {
         "bp_preset_saved": "Пресет BP сохранён: ",
         "bp_preset_loaded": "Пресет BP загружен: ",
         "bp_preset_save_err": "Не удалось сохранить пресет BP:\n",
+
+
         "bp_preset_load_err": "Не удалось загрузить пресет BP:\n",
+
+
         "bp_cond_err": "Неверный синтаксис условия!",
         "bp_cond_example": "Например: A == 0x55",
         # Диалоги
@@ -585,7 +649,7 @@ LANGS = {
         "dw_no": "нет",
         # === Ассемблер ===
         "asm_tab": "Ассемблер",
-        "asm_new": "\U0001F4C4 Новая программа",
+        #"asm_new": "\U0001F4C4 Новая программа",
         "asm_load": "\U0001F4C2 Загрузить .asm",
         "asm_save": "\U0001F4BE Сохранить .asm",
         "asm_assemble": "\U0001F528 Ассемблировать",
@@ -641,6 +705,43 @@ LANGS = {
         "asm_loaded_mem": "\U0001F680 Загружено {n} байт по адресу 0x{addr:04X}",
         "asm_load_mem_err": "\u274C Ошибка загрузки:\n{tb}",
         "asm_placeholder": "; Ассемблер 8080-5 CI\n; Форматы чисел: 0x1A, 1AH, 26, 11010B, 32q\n; Ctrl+колесо мыши — размер шрифта\n\n        ORG 0100H\nSTART:  MVI A, 0x55\n        OUT 01H\n        JMP START\n",
+
+
+        "asm_open_ws": "📂 Открыть Workspace",
+
+        "asm_save_ws": "💾 Сохранить Workspace",
+
+        "asm_open_ws_title": "Открыть файл Workspace",
+
+        "asm_save_ws_title": "Сохранить файл Workspace",
+
+        "asm_ws_filter": "Workspace (*.ws);;Все файлы (*)",
+
+        "asm_ws_filter_save": "Workspace (*.ws);;Все файлы (*)",
+
+        "asm_ws_loaded": "📂 Workspace загружен: {path} ({n} файлов)",
+
+        "asm_ws_err": "❌ Ошибка загрузки workspace:\n{e}",
+
+        "asm_ws_saved": "💾 Workspace сохранён: {path}",
+
+        "asm_ws_save_err": "❌ Ошибка сохранения workspace:\n{e}",
+
+        "asm_new_tab": "\U0001F4C4 Новый файл",
+
+        "asm_untitled": "без имени",
+
+        "asm_unsaved_title": "Несохранённые изменения",
+
+        "asm_unsaved_msg": "Файл '{file}' имеет несохранённые изменения. Сохранить?",
+        "btn_save": "Сохранить",
+        "btn_discard": "Отменить",
+        "btn_cancel": "Отмена",
+
+        "asm_map_auto_loaded": "  Map автозагружен: {n} символов",
+
+        "asm_map_auto_err": "  Ошибка автозагрузки map: {e}",
+
         # === Справка ===
         "menu_help": "Справка",
         "help_user_guide": "Руководство пользователя",
@@ -663,20 +764,24 @@ _current_lang = None  # Язык, выбранный пользователем 
 def set_language(lang: str) -> None:
     """Устанавливает язык, выбранный пользователем. Вызывается при переключении языка."""
     global _current_lang
+
     _current_lang = lang
 
 
 def get_system_language() -> str:
     """Возвращает текущий язык. Сначала проверяет выбранный пользователем, затем системный."""
     if _current_lang is not None:
+
         return _current_lang
     try:
         lang = QLocale.system().name()
         if lang.startswith('ru'):
             return "ru"
         elif lang.startswith('en'):
+
             return "en"
     except Exception:
+
         pass
     return "en"
 

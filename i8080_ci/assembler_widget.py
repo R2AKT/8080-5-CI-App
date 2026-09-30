@@ -3,22 +3,28 @@ Assembler tab — editor, assembly, load to memory.
 Uses assemble8080 and number parser with 0x... and ...H support.
 
 Features:
-- Syntax highlighting
+- Syntax highlighting (global labels :: in extra bold)
 - Line numbering
 - Autocomplete (mnemonics, registers, directives, labels)
 - Error panel (double-click — goto line)
 - Label address list (double-click — goto line)
 - Jump arrows (like in disassembler)
+- Ctrl+Click on label — goto label definition
+- Multi-file tabs (Notepad++ style)
+- Workspace support (.ws JSON)
+- Auto-load map file after assembly
 """
 
 import os
 import re
+import json
 import traceback
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QPushButton,
     QFileDialog, QMessageBox, QGroupBox,
     QSplitter, QPlainTextEdit, QTableWidget, QTableWidgetItem,
-    QHeaderView, QCompleter, QAbstractItemView, QLabel, QComboBox
+    QHeaderView, QCompleter, QAbstractItemView, QLabel, QComboBox,
+    QTabWidget, QToolButton
 )
 from PySide6.QtGui import (
     QFont, QSyntaxHighlighter, QTextCharFormat, QColor, QPainter,
@@ -29,7 +35,7 @@ from PySide6.QtCore import Qt, QRegularExpression, QRect, QSize, QStringListMode
 from assemble8080.assembler import Assembler
 from assemble8080.objfile import obj_from_asm_result, save_obj, load_obj
 from assemble8080.linker import link, link_from_script
-from assemble8080.mapfile import load_map_file
+from assemble8080.mapfile import parse_map
 from common.i18n import LANGS, get_system_language
 from common.themes import (
     get_editor_style, get_syntax_colors, ARROW_COLORS,
@@ -94,17 +100,18 @@ class LineNumberArea(QWidget):
 
 
 # =============================================
-# CODE EDITOR WITH LINE NUMBERS, ARROWS, AUTOCOMPLETE
+# CODE EDITOR WITH LINE NUMBERS, ARROWS, AUTOCOMPLETE, CTRL+CLICK
 # =============================================
 
 class CodeEditor(QPlainTextEdit):
-    """Assembler editor: line numbers, jump arrows, autocomplete."""
+    """Assembler editor: line numbers, jump arrows, autocomplete, Ctrl+Click."""
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.line_number_area = LineNumberArea(self)
         self.jumps = []  # [(src_line, dst_line), ...]
         self._is_dark = True
+        self._label_lines = {}  # {LABEL: line_number} for Ctrl+Click
 
         self.blockCountChanged.connect(self._updateLineNumberAreaWidth)
         self.updateRequest.connect(self._updateLineNumberArea)
@@ -125,6 +132,10 @@ class CodeEditor(QPlainTextEdit):
         """Update editor colors for theme."""
         self._is_dark = is_dark
         self.line_number_area.update()
+
+    def set_label_lines(self, label_lines: dict):
+        """Set label lines for Ctrl+Click navigation."""
+        self._label_lines = label_lines
 
     # --- Line numbering ---
 
@@ -311,11 +322,30 @@ class CodeEditor(QPlainTextEdit):
         else:
             self._completer.popup().hide()
 
+    # --- Ctrl+Click: goto label ---
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton and (event.modifiers() & Qt.ControlModifier):
+            # Get the word under the cursor
+            cursor = self.cursorForPosition(event.position().toPoint())
+            cursor.select(QTextCursor.WordUnderCursor)
+            word = cursor.selectedText().strip()
+            if word and word.upper() in self._label_lines:
+                target_line = self._label_lines[word.upper()]
+                block = self.document().findBlockByNumber(target_line)
+                if block.isValid():
+                    new_cursor = QTextCursor(block)
+                    self.setTextCursor(new_cursor)
+                    self.ensureCursorVisible()
+                    event.accept()
+                    return
+        super().mousePressEvent(event)
+
 
 # =============================================
 # SYNTAX HIGHLIGHTING
 # =============================================
 class AsmHighlighter(QSyntaxHighlighter):
+
 
     def __init__(self, document, is_dark=True):
         super().__init__(document)
@@ -336,20 +366,29 @@ class AsmHighlighter(QSyntaxHighlighter):
         )
         directives = r'\b(ORG|DB|DW|DS|EQU|END|INCLUDE)\b'
         numbers = r'\b(0[xX][0-9A-Fa-f]+|[0-9][0-9A-Fa-f]*[hH]|[0-9]+[dD]?|[01]+[bB]|[0-7]+[qoQo])\b'
-        labels = r'^[A-Za-z_][A-Za-z0-9_]*:'
+        # Global labels (::) — checked FIRST so they take priority
+        global_labels = r'^([A-Za-z_][A-Za-z0-9_$]*)::'
+        # Local labels (:) — single colon
+        local_labels = r'^([A-Za-z_][A-Za-z0-9_$]*)\s*:(?!:)'
         registers = r'\b(A|B|C|D|E|H|L|M|PSW|SP|BC|DE|HL)\b'
         comments = r';.*$'
 
         colors = get_syntax_colors(self._is_dark)
 
-        def fmt(color, bold=False, italic=False):
+        def fmt(color, bold=False, italic=False, extra_bold=False):
             f = QTextCharFormat()
             f.setForeground(QColor(color))
-            if bold:
+            if bold or extra_bold:
                 f.setFontWeight(QFont.Bold)
+            if extra_bold:
+                # Extra bold: use heavier weight
+                f.setFontWeight(QFont.Black)
             if italic:
                 f.setFontItalic(True)
             return f
+
+        # Global label color: bright orange/yellow for dark theme, dark orange for light
+        global_label_color = "#FFD700" if self._is_dark else "#CC6600"
 
         self._rules = [
             (QRegularExpression(comments), fmt(colors["comment"], italic=True)),
@@ -358,7 +397,11 @@ class AsmHighlighter(QSyntaxHighlighter):
             (QRegularExpression(directives, QRegularExpression.CaseInsensitiveOption),
              fmt(colors["directive"])),
             (QRegularExpression(numbers), fmt(colors["number"])),
-            (QRegularExpression(labels, QRegularExpression.MultilineOption),
+            # Global labels (::) — extra bold + special color
+            (QRegularExpression(global_labels, QRegularExpression.MultilineOption),
+             fmt(global_label_color, extra_bold=True)),
+            # Local labels (:) — normal bold
+            (QRegularExpression(local_labels, QRegularExpression.MultilineOption),
              fmt(colors["label"], bold=True)),
             (QRegularExpression(registers, QRegularExpression.CaseInsensitiveOption),
              fmt(colors["register"])),
@@ -380,10 +423,10 @@ class AsmHighlighter(QSyntaxHighlighter):
 
 
 # =============================================
-# MAIN ASSEMBLER WIDGET
+# MAIN ASSEMBLER WIDGET (Notepad++ style with tabs)
 # =============================================
 class AssemblerWidget(QWidget):
-    """Assembler tab: editor, errors, labels."""
+    """Assembler tab: multi-file editor with tabs, errors, labels."""
 
     def __init__(self, main_window=None, is_dark=True, parent=None):
         super().__init__(parent)
@@ -391,7 +434,7 @@ class AssemblerWidget(QWidget):
         self.is_dark = is_dark
         
         self.assembler = Assembler()
-        self._current_file = None  # Путь к загруженному .asm файлу
+        self._workspace_path = None  # Path to .ws workspace file
         self._init_ui()
 
     def _init_ui(self):
@@ -401,9 +444,9 @@ class AssemblerWidget(QWidget):
         # --- Button panel ---
         ctrl_layout = QHBoxLayout()
 
-        self.btn_new = QPushButton(_tr("asm_new"))
-        self.btn_new.clicked.connect(self.on_new)
-        ctrl_layout.addWidget(self.btn_new)
+        #self.btn_new = QPushButton(_tr("asm_new"))
+        #self.btn_new.clicked.connect(self.on_new)
+        #ctrl_layout.addWidget(self.btn_new)
 
         self.btn_load_file = QPushButton(_tr("asm_load"))
         self.btn_load_file.clicked.connect(self.on_load_file)
@@ -412,6 +455,15 @@ class AssemblerWidget(QWidget):
         self.btn_save_file = QPushButton(_tr("asm_save"))
         self.btn_save_file.clicked.connect(self.on_save_file)
         ctrl_layout.addWidget(self.btn_save_file)
+
+        # Workspace buttons
+        self.btn_open_ws = QPushButton(_tr("asm_open_ws"))
+        self.btn_open_ws.clicked.connect(self.on_open_workspace)
+        ctrl_layout.addWidget(self.btn_open_ws)
+
+        self.btn_save_ws = QPushButton(_tr("asm_save_ws"))
+        self.btn_save_ws.clicked.connect(self.on_save_workspace)
+        ctrl_layout.addWidget(self.btn_save_ws)
 
         self.btn_assemble = QPushButton(_tr("asm_assemble"))
         self.btn_assemble.clicked.connect(self.on_assemble)
@@ -429,7 +481,7 @@ class AssemblerWidget(QWidget):
         self.btn_link.clicked.connect(self.on_link)
         ctrl_layout.addWidget(self.btn_link)
 
-        # === Выбор типа процессора ===
+        # === CPU type selector ===
         ctrl_layout.addSpacing(20)
         ctrl_layout.addWidget(QLabel("Процессор:"))
         self.cpu_combo = QComboBox()
@@ -443,17 +495,24 @@ class AssemblerWidget(QWidget):
         # --- Horizontal splitter: editor+errors | labels ---
         h_splitter = QSplitter(Qt.Horizontal)
 
-        # Left: editor + error panel
+        # Left: tab widget + error panel
         v_splitter = QSplitter(Qt.Vertical)
 
-        # Code editor
-        self.editor = CodeEditor(self)
-        self.editor.setFont(QFont("Consolas", 11))
-        self.editor.setPlaceholderText(_tr("asm_placeholder"))
-        self.editor.set_dark(self.is_dark)
-        self.highlighter = AsmHighlighter(self.editor.document(), self.is_dark)
-        self.editor.textChanged.connect(self._on_text_changed)
-        v_splitter.addWidget(self.editor)
+        # Tab widget for multiple files
+        self.tab_widget = QTabWidget()
+        self.tab_widget.setTabsClosable(True)
+        self.tab_widget.setMovable(True)
+        self.tab_widget.tabCloseRequested.connect(self._on_tab_close)
+        self.tab_widget.currentChanged.connect(self._on_tab_changed)
+        
+        # "+" button for new tab
+        self.btn_add_tab = QToolButton()
+        self.btn_add_tab.setText("+")
+        self.btn_add_tab.setToolTip(_tr("asm_new_tab"))
+        self.btn_add_tab.clicked.connect(self._add_tab)
+        self.tab_widget.setCornerWidget(self.btn_add_tab, Qt.TopRightCorner)
+        
+        v_splitter.addWidget(self.tab_widget)
 
         # Error panel
         self.error_group = QGroupBox(_tr("asm_errors"))
@@ -495,16 +554,264 @@ class AssemblerWidget(QWidget):
         h_splitter.setSizes([600, 200])
         layout.addWidget(h_splitter, 1)
 
-    # --- Navigation ---
+        # Create initial tab
+        self._add_tab()
+
+    # =============================================
+    # TAB MANAGEMENT
+    # =============================================
+
+    def _add_tab(self, file_path=None, content=None):
+        """Add a new tab with optional file path and content."""
+        editor = CodeEditor(self)
+        editor.setFont(QFont("Consolas", 11))
+        editor.setPlaceholderText(_tr("asm_placeholder"))
+        editor.set_dark(self.is_dark)
+        editor.setStyleSheet(get_editor_style(self.is_dark))
+        highlighter = AsmHighlighter(editor.document(), self.is_dark)
+        editor.textChanged.connect(lambda: self._on_text_changed(editor))
+        
+        if content is not None:
+            editor.setPlainText(content)
+        
+        # Track tab state
+        tab_info = {
+            'editor': editor,
+            'highlighter': highlighter,
+            'file_path': file_path,
+            'modified': False,
+        }
+        
+        # Connect modified tracking
+        editor.document().modificationChanged.connect(
+            lambda m, ti=tab_info: self._on_tab_modified(ti, m))
+        
+        # Add to tab widget
+        tab_index = self.tab_widget.addTab(editor, self._tab_title(file_path))
+        self.tab_widget.setCurrentIndex(tab_index)
+        
+        # Store tab info
+        self._tab_infos = getattr(self, '_tab_infos', [])
+        self._tab_infos.append(tab_info)
+        
+        # Update label lines and jumps
+        self._update_tab_labels(editor)
+        
+        return tab_index
+
+    def _on_tab_close(self, index):
+        """Close a tab."""
+        if not hasattr(self, '_tab_infos') or index >= len(self._tab_infos):
+            return
+        
+        tab_info = self._tab_infos[index]
+        editor = tab_info['editor']
+        
+        # Check for unsaved changes
+        if editor.document().isModified():
+            title = self._tab_title(tab_info['file_path'])
+            msg_box = QMessageBox(self)
+            msg_box.setWindowTitle(_tr("asm_unsaved_title"))
+            msg_box.setText(_tr("asm_unsaved_msg").format(file=title))
+            btn_save = msg_box.addButton(_tr("btn_save"), QMessageBox.AcceptRole)
+            btn_discard = msg_box.addButton(_tr("btn_discard"), QMessageBox.DestructiveRole)
+            btn_cancel = msg_box.addButton(_tr("btn_cancel"), QMessageBox.RejectRole)
+            msg_box.exec()
+            reply = msg_box.clickedButton()
+            if reply == btn_save:
+                reply = QMessageBox.Save
+            elif reply == btn_cancel:
+                reply = QMessageBox.Cancel
+            else:
+                reply = QMessageBox.Discard
+            if reply == QMessageBox.Save:
+                self._save_tab(index)
+            elif reply == QMessageBox.Cancel:
+                return
+        
+        # Remove from tab widget
+        self.tab_widget.removeTab(index)
+        editor.deleteLater()
+        
+        # Remove from tab infos
+        self._tab_infos.pop(index)
+        
+        # If no tabs left, add a new one
+        if self.tab_widget.count() == 0:
+            self._add_tab()
+
+    def _on_tab_changed(self, index):
+        """Handle tab change."""
+        if not hasattr(self, '_tab_infos') or index < 0 or index >= len(self._tab_infos):
+            return
+        tab_info = self._tab_infos[index]
+        editor = tab_info['editor']
+        # Update label lines and jumps for the new current tab
+        self._update_tab_labels(editor)
+
+    def _on_tab_modified(self, tab_info, modified):
+        """Handle tab modification."""
+        tab_info['modified'] = modified
+        # Update tab title
+        for i, ti in enumerate(self._tab_infos):
+            if ti is tab_info:
+                self.tab_widget.setTabText(i, self._tab_title(ti['file_path'], ti['modified']))
+                break
+
+    def _tab_title(self, file_path, modified=False):
+        """Generate tab title from file path."""
+        if file_path:
+            name = os.path.basename(file_path)
+        else:
+            name = _tr("asm_untitled")
+        if modified:
+            name += " ●"
+        return name
+
+    def _current_editor(self):
+        """Get the current tab's editor."""
+        index = self.tab_widget.currentIndex()
+        if 0 <= index < len(self._tab_infos):
+            return self._tab_infos[index]['editor']
+        return None
+
+    def _current_tab_info(self):
+        """Get the current tab's info dict."""
+        index = self.tab_widget.currentIndex()
+        if 0 <= index < len(self._tab_infos):
+            return self._tab_infos[index]
+        return None
+
+    def _save_tab(self, index):
+        """Save a specific tab."""
+        if index < 0 or index >= len(self._tab_infos):
+            return
+        tab_info = self._tab_infos[index]
+        editor = tab_info['editor']
+        file_path = tab_info['file_path']
+        
+        if not file_path:
+            file_path, _ = QFileDialog.getSaveFileName(
+                self, _tr("asm_save_title"), "",
+                _tr("asm_file_filter_save"))
+            if not file_path:
+                return
+            tab_info['file_path'] = file_path
+        
+        try:
+            with open(file_path, 'w', encoding='utf-8') as f:
+                f.write(editor.toPlainText())
+            editor.document().setModified(False)
+            self.tab_widget.setTabText(index, self._tab_title(file_path, False))
+            if self.main_window is not None:
+                self.main_window.log(_tr("asm_saved").format(path=file_path))
+        except Exception as e:
+            QMessageBox.critical(self, _tr("asm_err_title"),
+                                 _tr("asm_save_err").format(e=e))
+
+    # =============================================
+    # WORKSPACE SUPPORT
+    # =============================================
+
+    def on_open_workspace(self):
+        """Open a workspace file (.ws)."""
+        path, _ = QFileDialog.getOpenFileName(
+            self, _tr("asm_open_ws_title"), "",
+            _tr("asm_ws_filter"))
+        if not path:
+            return
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                ws = json.load(f)
+            self._workspace_path = path
+            ws_dir = os.path.dirname(path)
+            
+            # Close all existing tabs except the first
+            while self.tab_widget.count() > 1:
+                self._on_tab_close(self.tab_widget.count() - 1)
+            
+            # Open files from workspace
+            files = ws.get('files', [])
+            for i, fpath in enumerate(files):
+                full_path = os.path.join(ws_dir, fpath) if not os.path.isabs(fpath) else fpath
+                if os.path.exists(full_path):
+                    try:
+                        with open(full_path, 'r', encoding='utf-8') as f:
+                            content = f.read()
+                        self._add_tab(full_path, content)
+                    except Exception:
+                        pass
+                else:
+                    # File doesn't exist, create empty tab
+                    self._add_tab(full_path, "")
+            
+            # Set active tab
+            active = ws.get('active', 0)
+            if 0 <= active < self.tab_widget.count():
+                self.tab_widget.setCurrentIndex(active)
+            
+            if self.main_window is not None:
+                self.main_window.log(_tr("asm_ws_loaded").format(path=path, n=len(files)))
+        except Exception as e:
+            QMessageBox.critical(self, _tr("asm_err_title"),
+                                 _tr("asm_ws_err").format(e=e))
+
+    def on_save_workspace(self):
+        """Save workspace file (.ws)."""
+        if self._workspace_path:
+            path = self._workspace_path
+        else:
+            path, _ = QFileDialog.getSaveFileName(
+                self, _tr("asm_save_ws_title"), "",
+                _tr("asm_ws_filter_save"))
+            if not path:
+                return
+        
+        # Collect file paths from tabs
+        files = []
+        for ti in self._tab_infos:
+            if ti['file_path']:
+                # Store relative path if possible
+                if self._workspace_path:
+                    ws_dir = os.path.dirname(self._workspace_path)
+                    try:
+                        rel = os.path.relpath(ti['file_path'], ws_dir)
+                        files.append(rel)
+                    except ValueError:
+                        files.append(ti['file_path'])
+                else:
+                    files.append(ti['file_path'])
+        
+        ws = {
+            'version': 1,
+            'files': files,
+            'active': self.tab_widget.currentIndex(),
+        }
+        
+        try:
+            with open(path, 'w', encoding='utf-8') as f:
+                json.dump(ws, f, indent=2)
+            self._workspace_path = path
+            if self.main_window is not None:
+                self.main_window.log(_tr("asm_ws_saved").format(path=path))
+        except Exception as e:
+            QMessageBox.critical(self, _tr("asm_err_title"),
+                                 _tr("asm_ws_save_err").format(e=e))
+
+    # =============================================
+    # NAVIGATION
+    # =============================================
 
     def _goto_line(self, line_num):
-        """Goto line (0-based) in editor."""
-        block = self.editor.document().findBlockByNumber(line_num)
-        if block.isValid():
-            cursor = QTextCursor(block)
-            self.editor.setTextCursor(cursor)
-            self.editor.ensureCursorVisible()
-            self.editor.setFocus()
+        """Goto line (0-based) in current editor."""
+        editor = self._current_editor()
+        if editor:
+            block = editor.document().findBlockByNumber(line_num)
+            if block.isValid():
+                cursor = QTextCursor(block)
+                editor.setTextCursor(cursor)
+                editor.ensureCursorVisible()
+                editor.setFocus()
 
     def _on_error_double_clicked(self, row, column):
         item = self.error_table.item(row, 0)
@@ -518,22 +825,39 @@ class AssemblerWidget(QWidget):
             if txt.isdigit():
                 self._goto_line(int(txt) - 1)
 
-    # --- Label and jump collection ---
-    def _collect_label_lines(self):
+    # =============================================
+    # LABEL AND JUMP COLLECTION
+    # =============================================
+
+    def _collect_label_lines(self, editor=None):
         """Collect {LABEL: line_number} from editor text."""
-        lines = self.editor.toPlainText().split('\n')
+        if editor is None:
+            editor = self._current_editor()
+        if editor is None:
+            return {}
+        lines = editor.toPlainText().split('\n')
         label_lines = {}
         for i, line in enumerate(lines):
             stripped = line.strip()
-            m = re.match(r'^([A-Za-z_][A-Za-z0-9_]*)\s*:', stripped)
+            # Global label (::)
+            m = re.match(r'^([A-Za-z_][A-Za-z0-9_$]*)::', stripped)
+            if m:
+                label_lines[m.group(1).upper()] = i
+                continue
+            # Local label (:)
+            m = re.match(r'^([A-Za-z_][A-Za-z0-9_$]*)\s*:(?!:)', stripped)
             if m:
                 label_lines[m.group(1).upper()] = i
         return label_lines
 
-    def _compute_jumps(self):
+    def _compute_jumps(self, editor=None):
         """Compute jumps [(src_line, dst_line), ...]."""
-        lines = self.editor.toPlainText().split('\n')
-        label_lines = self._collect_label_lines()
+        if editor is None:
+            editor = self._current_editor()
+        if editor is None:
+            return
+        lines = editor.toPlainText().split('\n')
+        label_lines = self._collect_label_lines(editor)
         jumps = []
 
         for i, line in enumerate(lines):
@@ -566,15 +890,23 @@ class AssemblerWidget(QWidget):
             if operand in label_lines:
                 jumps.append((i, label_lines[operand]))
 
-        self.editor.set_jumps(jumps)
+        editor.set_jumps(jumps)
 
-    def _on_text_changed(self):
+    def _update_tab_labels(self, editor):
+        """Update label lines and jumps for a specific editor."""
+        label_lines = self._collect_label_lines(editor)
+        editor.set_label_lines(label_lines)
+        self._compute_jumps(editor)
+        labels = list(label_lines.keys())
+        editor.set_completions(KEYWORDS + labels)
+
+    def _on_text_changed(self, editor):
         """On text change — recompute jumps and update autocomplete."""
-        self._compute_jumps()
-        labels = list(self._collect_label_lines().keys())
-        self.editor.set_completions(KEYWORDS + labels)
+        self._update_tab_labels(editor)
 
-    # --- Error panel update ---
+    # =============================================
+    # ERROR PANEL UPDATE
+    # =============================================
 
     def _update_errors(self, errors):
         """Fill error panel. errors: [(line, message), ...]"""
@@ -586,33 +918,42 @@ class AssemblerWidget(QWidget):
             self.error_table.setItem(row, 0, QTableWidgetItem(str(line)))
             self.error_table.setItem(row, 1, QTableWidgetItem(msg))
             error_lines.append(line - 1)
-        self.editor.highlight_error_lines(error_lines)
+        editor = self._current_editor()
+        if editor:
+            editor.highlight_error_lines(error_lines)
 
-    # --- Label table update ---
+    # =============================================
+    # LABEL TABLE UPDATE
+    # =============================================
 
-    def _update_labels_table(self, symbols):
-        """Fill label table. symbols: {label: address}"""
+    def _update_labels_table(self, symbols, global_labels=None):
+        """Fill label table. symbols: {label: address}, global_labels: set of global label names"""
         self.label_table.setRowCount(0)
-        label_lines = self._collect_label_lines()
+        editor = self._current_editor()
+        label_lines = self._collect_label_lines(editor) if editor else {}
         sorted_symbols = sorted(symbols.items(), key=lambda x: x[1])
         for label, addr in sorted_symbols:
             row = self.label_table.rowCount()
             self.label_table.insertRow(row)
-            self.label_table.setItem(row, 0, QTableWidgetItem(label))
+            
+            # Label name — bold if global
+            label_item = QTableWidgetItem(label)
+            if global_labels and label in global_labels:
+                label_item.setFont(QFont("Consolas", 10, QFont.Bold))
+            self.label_table.setItem(row, 0, label_item)
+            
             self.label_table.setItem(row, 1, QTableWidgetItem(f"0x{addr:04X}"))
             ln = label_lines.get(label, -1)
             self.label_table.setItem(row, 2,
                                      QTableWidgetItem(str(ln + 1) if ln >= 0 else "-"))
 
-    # --- Button handlers ---
+    # =============================================
+    # BUTTON HANDLERS
+    # =============================================
+
     def on_new(self):
-        """New program: clear editor and log."""
-        self.editor.clear()
-        self._current_file = None
-        self.editor.jumps = []
-        self.editor.line_number_area.update()
-        self.error_table.setRowCount(0)
-        self.label_table.setRowCount(0)
+        """New program: add a new empty tab."""
+        self._add_tab()
 
     def on_assemble(self):
         self._do_assemble(load_to_memory=False)
@@ -622,15 +963,18 @@ class AssemblerWidget(QWidget):
 
     def on_assemble_obj(self):
         """Assemble and save object file (.obj)."""
-        # Передаём тип процессора в ассемблер
         self.assembler.cpu_type = self.cpu_combo.currentText()
-        source = self.editor.toPlainText()
+        editor = self._current_editor()
+        if not editor:
+            return
+        source = editor.toPlainText()
         if not source.strip():
             if self.main_window is not None:
                 self.main_window.log(_tr("asm_no_code"))
             return
         try:
-            result = self.assembler.assemble(source, self._current_file or '')
+            file_path = self._current_tab_info()['file_path'] if self._current_tab_info() else None
+            result = self.assembler.assemble(source, file_path or '')
         except Exception:
             if self.main_window is not None:
                 self.main_window.log(_tr("asm_exception").format(tb=traceback.format_exc()))
@@ -641,12 +985,12 @@ class AssemblerWidget(QWidget):
                 for err in result.errors:
                     self.main_window.log(_tr("asm_err_line").format(line=err.line, msg=err.message))
             return
-        # Сохранение map-файла рядом с исходным (map создаётся при любом ассемблировании)
-        # === Автоопределение CPU из директивы ===
         self._apply_cpu_from_source()
 
-        if result.map_text and self._current_file:
-            map_path = os.path.splitext(self._current_file)[0] + '.map'
+        # Save map file
+        file_path = self._current_tab_info()['file_path'] if self._current_tab_info() else None
+        if result.map_text and file_path:
+            map_path = os.path.splitext(file_path)[0] + '.map'
             try:
                 from assemble8080.mapfile import save_map_file
                 save_map_file(map_path, result.map_text)
@@ -655,9 +999,10 @@ class AssemblerWidget(QWidget):
             except Exception as e:
                 if self.main_window is not None:
                     self.main_window.log(_tr("asm_map_save_err").format(e=e))
+        
         # Determine default obj path
-        if self._current_file:
-            default = os.path.splitext(self._current_file)[0] + '.obj'
+        if file_path:
+            default = os.path.splitext(file_path)[0] + '.obj'
         else:
             default = 'output.obj'
         path, _ = QFileDialog.getSaveFileName(
@@ -665,7 +1010,7 @@ class AssemblerWidget(QWidget):
         if not path:
             return
         try:
-            obj = obj_from_asm_result(result, self._current_file or '')
+            obj = obj_from_asm_result(result, file_path or '')
             save_obj(path, obj)
             if self.main_window is not None:
                 self.main_window.log(_tr("asm_obj_saved").format(path=path))
@@ -675,7 +1020,6 @@ class AssemblerWidget(QWidget):
 
     def on_link(self):
         """Link object files using a linker script (.lnk) or selected .obj files."""
-        # Try to open a linker script first
         path, _ = QFileDialog.getOpenFileName(
             self, _tr("asm_link_title"), "", _tr("asm_link_filter"))
         if not path:
@@ -686,7 +1030,6 @@ class AssemblerWidget(QWidget):
             if path.lower().endswith('.lnk'):
                 result = link_from_script(path)
             else:
-                # Single .obj file: link it alone
                 obj = load_obj(path)
                 result = link([obj])
             if not result.success:
@@ -706,14 +1049,15 @@ class AssemblerWidget(QWidget):
                                  _tr("asm_link_fail").format(e=e))
 
     def on_load_file(self):
+        """Load a file into a new tab."""
         path, _ = QFileDialog.getOpenFileName(
             self, _tr("asm_load_title"), "",
             _tr("asm_file_filter"))
         if path:
             try:
                 with open(path, 'r', encoding='utf-8') as f:
-                    self.editor.setPlainText(f.read())
-                self._current_file = path
+                    content = f.read()
+                self._add_tab(path, content)
                 if self.main_window is not None:
                     self.main_window.log(_tr("asm_loaded").format(path=path))
             except Exception as e:
@@ -721,42 +1065,38 @@ class AssemblerWidget(QWidget):
                                      _tr("asm_load_err").format(e=e))
 
     def on_save_file(self):
-        path, _ = QFileDialog.getSaveFileName(
-            self, _tr("asm_save_title"), "",
-            _tr("asm_file_filter_save"))
-        if path:
-            try:
-                with open(path, 'w', encoding='utf-8') as f:
-                    f.write(self.editor.toPlainText())
-                if self.main_window is not None:
-                    self.main_window.log(_tr("asm_saved").format(path=path))
-            except Exception as e:
-                QMessageBox.critical(self, _tr("asm_err_title"),
-                                     _tr("asm_save_err").format(e=e))
+        """Save the current tab's file."""
+        self._save_tab(self.tab_widget.currentIndex())
 
-    # --- Assembly ---
+    # =============================================
+    # ASSEMBLY
+    # =============================================
 
     def _do_assemble(self, load_to_memory=False):
-        # Передаём тип процессора в ассемблер
+        """Assemble the current tab's source code."""
         self.assembler.cpu_type = self.cpu_combo.currentText()
         
         if self.main_window is not None:
             self.main_window.log(_tr("asm_assembling"))
 
-        source = self.editor.toPlainText()
+        editor = self._current_editor()
+        if not editor:
+            return
+        source = editor.toPlainText()
         if not source.strip():
             if self.main_window is not None:
                 self.main_window.log(_tr("asm_no_code"))
             return
 
+        file_path = self._current_tab_info()['file_path'] if self._current_tab_info() else None
         try:
-            result = self.assembler.assemble(source, self._current_file or '')
+            result = self.assembler.assemble(source, file_path or '')
         except Exception:
             if self.main_window is not None:
                 self.main_window.log(_tr("asm_exception").format(tb=traceback.format_exc()))
             return
 
-        self._compute_jumps()
+        self._compute_jumps(editor)
 
         if result.errors:
             if self.main_window is not None:
@@ -772,10 +1112,7 @@ class AssemblerWidget(QWidget):
 
         # Success
         self._update_errors([])
-
-        # === Автоопределение CPU из директивы ===
         self._apply_cpu_from_source()
-
 
         if result.warnings:
             if self.main_window is not None:
@@ -791,11 +1128,12 @@ class AssemblerWidget(QWidget):
             for name, addr in sorted(result.symbols.items(), key=lambda x: x[1]):
                 self.main_window.log(f"    {name}: 0x{addr:04X}")
 
-        self._update_labels_table(result.symbols)
+        # Update labels table with global label info
+        self._update_labels_table(result.symbols, result.global_labels)
 
-        # Сохранение map-файла рядом с исходным файлом
-        if result.map_text and self._current_file:
-            map_path = os.path.splitext(self._current_file)[0] + '.map'
+        # Save map file
+        if result.map_text and file_path:
+            map_path = os.path.splitext(file_path)[0] + '.map'
             try:
                 from assemble8080.mapfile import save_map_file
                 save_map_file(map_path, result.map_text)
@@ -808,6 +1146,53 @@ class AssemblerWidget(QWidget):
         # Load to memory
         if load_to_memory and result.binary:
             self._load_to_memory(result.binary, result.origin)
+            # Auto-load map into disassembler (only on assemble+load)
+            # Extract EQU constants for disassembler substitution
+            if self.main_window is not None and hasattr(result, 'equ_symbols'):
+                self.main_window.equ_dict = {
+                    result.symbols[n]: n for n in result.equ_symbols
+                    if n in result.symbols
+                }
+            self._auto_load_map(result)
+
+    def _auto_load_map(self, result):
+        """Auto-load map file into disassembler and emulator."""
+        if not result.map_text or self.main_window is None:
+            return
+        try:
+            mf = parse_map(result.map_text)
+            self.main_window.map_file = mf
+            # Set map on disassembler (same as manual load)
+            self.main_window.disassembler.set_map(mf)
+            # Set EQU constants for value substitution
+            if hasattr(self.main_window, 'equ_dict') and self.main_window.equ_dict:
+                self.main_window.disassembler.set_equ(self.main_window.equ_dict)
+            # Update main disassembler view with symbols
+            if hasattr(self.main_window, 'disasm_view') and hasattr(self.main_window.disasm_view, 'set_symbols'):
+                self.main_window.disasm_view.set_symbols(mf)
+            # Update emulator disasm view with symbols
+            if hasattr(self.main_window, 'emu_disasm_view') and hasattr(self.main_window.emu_disasm_view, 'set_symbols'):
+                self.main_window.emu_disasm_view.set_symbols(mf)
+            # Update disasm range to match actual binary size (like emulator does)
+            if result.binary:
+                origin = result.origin
+                size = len(result.binary)
+                mw = self.main_window
+                if hasattr(mw, 'disasm_start'):
+                    mw.disasm_start.setText(f"{origin:04X}")
+                if hasattr(mw, 'disasm_len'):
+                    mw.disasm_len.setText(f"{size:04X}")
+            # Re-run main disassembly to show resolved symbols in text
+            if hasattr(self.main_window, 'run_disasm'):
+                self.main_window.run_disasm()
+            # Re-run emulator disassembly to show resolved symbols in text
+            if hasattr(self.main_window, 'update_emu_disasm_view'):
+                self.main_window.update_emu_disasm_view()
+            if self.main_window is not None:
+                self.main_window.log(_tr("asm_map_auto_loaded").format(n=len(mf.entries)))
+        except Exception as e:
+            if self.main_window is not None:
+                self.main_window.log(_tr("asm_map_auto_err").format(e=e))
 
     def _load_to_memory(self, binary, origin):
         """Load assembled binary into emulator memory."""
@@ -834,18 +1219,13 @@ class AssemblerWidget(QWidget):
                 self.main_window.log(_tr("asm_load_mem_err").format(tb=traceback.format_exc()))
 
     def _apply_cpu_from_source(self):
-        """Автоопределение типа CPU из директивы в исходном коде.
-        Если директива найдена — блокируем combo и синхронизируем эмулятор.
-        Если нет — разблокируем combo (пользователь выбирает вручную)."""
+        """Auto-detect CPU type from source directives."""
         cpu_from_source = self.assembler.cpu_set_by_directive
         cpu_type = self.assembler.cpu_type
 
         if cpu_from_source:
-            # Директива найдена — синхронизируем через централизованный метод
-            # (сброс эмулятора, дизассемблер, combo, UI) — единая точка смены CPU
             if self.main_window is not None and hasattr(self.main_window, '_set_cpu_type'):
                 self.main_window._set_cpu_type(cpu_type, source='assembler')
-            # Блокируем combo (директива принудительно задаёт CPU)
             self.cpu_combo.blockSignals(True)
             self.cpu_combo.setCurrentText(cpu_type)
             self.cpu_combo.blockSignals(False)
@@ -856,7 +1236,6 @@ class AssemblerWidget(QWidget):
                 if hasattr(self.main_window, 'disasm_cpu_combo'):
                     self.main_window.disasm_cpu_combo.setEnabled(False)
         else:
-            # Директивы нет — разблокируем combo
             self.cpu_combo.setEnabled(True)
             if self.main_window is not None:
                 if hasattr(self.main_window, 'emu_cpu_combo'):
@@ -864,28 +1243,34 @@ class AssemblerWidget(QWidget):
                 if hasattr(self.main_window, 'disasm_cpu_combo'):
                     self.main_window.disasm_cpu_combo.setEnabled(True)
 
+    # =============================================
+    # THEME
+    # =============================================
+
     def set_theme(self, is_dark: bool):
         """Update assembler widget theme."""
         self.is_dark = is_dark
-        if hasattr(self, 'highlighter') and self.highlighter is not None:
-            self.highlighter.set_theme(is_dark)
-        if hasattr(self, 'editor') and self.editor is not None:
-            self.editor.set_dark(is_dark)
-            self.editor.setStyleSheet(get_editor_style(is_dark))
-            # Update button labels for new language
-            self.btn_new.setText(_tr("asm_new"))
-            self.btn_load_file.setText(_tr("asm_load"))
-            self.btn_save_file.setText(_tr("asm_save"))
-            self.btn_assemble.setText(_tr("asm_assemble"))
-            self.btn_assemble_load.setText(_tr("asm_assemble_load"))
-            self.btn_assemble_obj.setText(_tr("asm_assemble_obj"))
-            self.btn_link.setText(_tr("asm_link"))
-            self.error_group.setTitle(_tr("asm_errors"))
-            self.error_table.setHorizontalHeaderLabels([_tr("asm_col_line"), _tr("asm_col_msg")])
-            self.label_group.setTitle(_tr("asm_labels"))
-            self.label_table.setHorizontalHeaderLabels(
-                [_tr("asm_col_label"), _tr("asm_col_addr"), _tr("asm_col_line2")])
-            self.editor.setPlaceholderText(_tr("asm_placeholder"))
+        for ti in self._tab_infos:
+            ti['highlighter'].set_theme(is_dark)
+            ti['editor'].set_dark(is_dark)
+            ti['editor'].setStyleSheet(get_editor_style(is_dark))
+        # Update button labels for new language
+        #self.btn_new.setText(_tr("asm_new"))
+        self.btn_load_file.setText(_tr("asm_load"))
+        self.btn_save_file.setText(_tr("asm_save"))
+        self.btn_open_ws.setText(_tr("asm_open_ws"))
+        self.btn_save_ws.setText(_tr("asm_save_ws"))
+        self.btn_assemble.setText(_tr("asm_assemble"))
+        self.btn_assemble_load.setText(_tr("asm_assemble_load"))
+        self.btn_assemble_obj.setText(_tr("asm_assemble_obj"))
+        self.btn_link.setText(_tr("asm_link"))
+        self.error_group.setTitle(_tr("asm_errors"))
+        self.error_table.setHorizontalHeaderLabels([_tr("asm_col_line"), _tr("asm_col_msg")])
+        self.label_group.setTitle(_tr("asm_labels"))
+        self.label_table.setHorizontalHeaderLabels(
+            [_tr("asm_col_label"), _tr("asm_col_addr"), _tr("asm_col_line2")])
+        for ti in self._tab_infos:
+            ti['editor'].setPlaceholderText(_tr("asm_placeholder"))
 
     def sync_from_memory(self):
         """Sync from emulator memory (disassembly)."""
@@ -901,4 +1286,6 @@ class AssemblerWidget(QWidget):
         text_lines = [f"        ORG {mn:04X}H"]
         for addr, size, asm, undoc, target in lines:
             text_lines.append(f"{asm}")
-        self.editor.setPlainText('\n'.join(text_lines))
+        editor = self._current_editor()
+        if editor:
+            editor.setPlainText('\n'.join(text_lines))

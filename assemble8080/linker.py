@@ -13,12 +13,10 @@ Linker script format (.lnk):
     FILL 0xFF
 """
 import os
-import re
 from dataclasses import dataclass, field
-from typing import Optional
 
-from .objfile import ObjectFile, load_obj, save_obj
-from .mapfile import MapFile, MapEntry, generate_map
+from .objfile import load_obj
+from .mapfile import MapEntry, generate_map
 
 
 @dataclass

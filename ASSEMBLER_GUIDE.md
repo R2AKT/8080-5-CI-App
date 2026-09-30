@@ -949,13 +949,13 @@ assembler_example/
 | Группа | Примеры |
 |--------|---------|
 | Передача данных | `MOV`, `MVI`, `LDA`, `STA`, `LHLD`, `SHLD`, `LDAX`, `STAX`, `XTHL`, `XCHG` |
-| Арифметика | `ADD`, `ADI`, `SUB`, `SUI`, `INR`, `DCR`, `DAD`, `DAA`, `INC`, `DEC` |
+| Арифметика | `ADD`, `ADC`, `ADI`, `ACI`, `SUB`, `SBB`, `SUI`, `SBI`, `INR`, `DCR`, `DAD`, `DAA` |
 | Логика | `ANA`, `XRA`, `ORA`, `ANI`, `XRI`, `ORI`, `CMA`, `CMP`, `CPI` |
-| Сдвиги | `RLC`, `RRC`, `RAL`, `RAR`, `RL`, `RR`, `SLA`, `SRA`, `RCA`, `RCA` |
+| Сдвиги | `RLC`, `RRC`, `RAL`, `RAR`, `RL`, `RR`, `SLA`, `SRA`, `RCA`, `RCR` |
 | Переходы | `JMP`, `JZ`, `JNZ`, `JC`, `JNC`, `JP`, `JM`, `JPE`, `JPO`, `CALL`, `RET`, `RST` |
 | Условные вызовы | `CZ`, `CNZ`, `CC`, `CNC`, `CP`, `CM`, `CPE`, `CPO` |
 | Условные возвраты | `RZ`, `RNZ`, `RC`, `RNC`, `RP`, `RM`, `RPE`, `RPO` |
-| Стacks | `PUSH`, `POP` |
+| Стек | `PUSH`, `POP` |
 | Ввод-вывод | `IN`, `OUT` |
 | Прочее | `NOP`, `HLT`, `PCHL`, `STC`, `CMC` |
 

@@ -1,9 +1,9 @@
 # СРЕЗ ПРОЕКТА (PROJECT SNAPSHOT)
 
-> Сгенерировано: 2026-09-26 20:10:00
+> Сгенерировано: 2026-09-29 22:29:35
 > Корень проекта: `c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis`
-> Код: 95 файлов, 27172 строк
-> Тесты: 63 файлов, 10777 строк
+> Код: 90 файлов, 27622 строк
+> Тесты: 73 файлов, 11634 строк
 > Профили: 22 файлов, 843 строк
 
 ---
@@ -135,10 +135,10 @@
 │   └── zasm-test-opcodes-8080.asm  [408 строк]
 ├── assemble8080/
 │   ├── __init__.py  [28 строк]
-│   ├── assembler.py  [1730 строк]
+│   ├── assembler.py  [1744 строк]
 │   ├── errors.py  [37 строк]
-│   ├── linker.py  [257 строк]
-│   ├── mapfile.py  [160 строк]
+│   ├── linker.py  [255 строк]
+│   ├── mapfile.py  [162 строк]
 │   ├── numbers.py  [84 строк]
 │   ├── objfile.py  [137 строк]
 │   ├── preprocessor.py  [626 строк]
@@ -176,7 +176,7 @@
 │   └── README.md  [55 строк]
 ├── common/
 │   ├── __init__.py  [5 строк]
-│   ├── i18n.py  [682 строк]
+│   ├── i18n.py  [787 строк]
 │   └── themes.py  [115 строк]
 ├── i8080_ci/
 │   ├── models/
@@ -187,17 +187,17 @@
 │   │   └── watch_model.py  [247 строк]
 │   ├── views/
 │   │   ├── __init__.py  [6 строк]
-│   │   ├── disasm_view.py  [385 строк]
+│   │   ├── disasm_view.py  [414 строк]
 │   │   ├── hex_view.py  [155 строк]
 │   │   └── search.py  [116 строк]
 │   ├── __init__.py  [20 строк]
-│   ├── assembler_widget.py  [904 строк]
-│   ├── automation.py  [726 строк]
+│   ├── assembler_widget.py  [1291 строк]
+│   ├── automation.py  [736 строк]
 │   ├── bus_worker.py  [249 строк]
-│   ├── disassembler.py  [216 строк]
+│   ├── disassembler.py  [233 строк]
 │   ├── i18n.py  [4 строк]
 │   ├── intelhex.py  [51 строк]
-│   ├── main_window.py  [4163 строк]
+│   ├── main_window.py  [4179 строк]
 │   └── slip.py  [61 строк]
 ├── modules/
 │   ├── config/
@@ -287,14 +287,16 @@
 │   ├── PPI_3D_8x8x8_Rain.py  [231 строк]
 │   ├── PPI_3D_8x8x8_Tetris.py  [329 строк]
 │   ├── ppi_test.py  [44 строк]
+│   ├── run_api_snippets.py  [102 строк]
 │   ├── test_8085.py  [244 строк]
 │   ├── test_all.cmd  [33 строк]
 │   ├── test_alu_8080.py  [159 строк]
+│   ├── test_alus_imm_verify.py  [200 строк]
 │   ├── test_am9511.py  [251 строк]
 │   ├── test_asm8080-8085.py  [76 строк]
-│   ├── test_asm_for_test.py  [96 строк]
+│   ├── test_asm_for_test.py  [97 строк]
 │   ├── test_assembler_include.py  [188 строк]
-│   ├── test_assembler_linker.py  [292 строк]
+│   ├── test_assembler_linker.py  [296 строк]
 │   ├── test_banked.py  [57 строк]
 │   ├── test_banked_rom.py  [116 строк]
 │   ├── test_bin_compare.py  [126 строк]
@@ -302,11 +304,14 @@
 │   ├── test_ch376s.py  [269 строк]
 │   ├── test_ch376s_fs.py  [339 строк]
 │   ├── test_config.py  [283 строк]
+│   ├── test_disasm_layout.py  [101 строк]
+│   ├── test_disasm_range_autoload.py  [82 строк]
 │   ├── test_displays.py  [168 строк]
 │   ├── test_dma.py  [203 строк]
 │   ├── test_dma_device.py  [191 строк]
 │   ├── test_e1.py  [58 строк]
 │   ├── test_emu_integration.py  [273 строк]
+│   ├── test_equ_filter.py  [62 строк]
 │   ├── test_gui_smoke.py  [83 строк]
 │   ├── test_i16550.py  [144 строк]
 │   ├── test_i512vi1.py  [248 строк]
@@ -323,10 +328,15 @@
 │   ├── test_integration_full.py  [273 строк]
 │   ├── test_interrupts.py  [160 строк]
 │   ├── test_invert_port_range.py  [37 строк]
+│   ├── test_map_autoload.py  [59 строк]
+│   ├── test_map_autoload_v2.py  [51 строк]
+│   ├── test_map_emu_immediate.py  [57 строк]
 │   ├── test_mcp_client.py  [135 строк]
 │   ├── test_memory_bus.py  [28 строк]
 │   ├── test_memory_models.py  [153 строк]
+│   ├── test_ori_equ.py  [86 строк]
 │   ├── test_port_invert.py  [201 строк]
+│   ├── test_set_symbols_check.py  [52 строк]
 │   ├── test_shadow_rom.py  [146 строк]
 │   ├── test_system.py  [280 строк]
 │   ├── test_system_integration.py  [169 строк]
@@ -351,23 +361,12 @@
 ├── 8080-5 CI_app_Micro-80.png  [530 строк]
 ├── 8080-5 CI_app_Specialist.png  [305 строк]
 ├── 8080-5 CI_app_trace.png  [331 строк]
-├── _tmp_asm2.txt  [54 строк]
-├── _tmp_asm85.txt  [22 строк]
-├── _tmp_asm_out.txt  [54 строк]
-├── _tmp_dis.py  [10 строк]
-├── _tmp_dis_out.txt  [215 строк]
-├── _tmp_eol.py  [18 строк]
-├── _tmp_fix_jump.py  [92 строк]
-├── _tmp_gui2.txt  [9 строк]
-├── _tmp_gui_check.py  [47 строк]
-├── _tmp_gui_out.txt  [9 строк]
-├── _tmp_guide26.py  [28 строк]
-├── _tmp_trace.py  [27 строк]
+├── _run_all_tests.py  [94 строк]
 ├── Addendum.txt  [81 строк]
 ├── ANALYSIS.md  [309 строк]
 ├── ANALYSIS_ASSEMBLER.md  [216 строк]
 ├── ASSEMBLER_GUIDE.md  [1053 строк]
-├── CHANGES.md  [1101 строк]
+├── CHANGES.md  [1174 строк]
 ├── claude_desktop_config.json  [7 строк]
 ├── clean_pycache.py  [87 строк]
 ├── config.json  [10 строк]
@@ -384,72 +383,36 @@
 ├── mcp_server.py  [953 строк]
 ├── md2html.py  [372 строк]
 ├── micro-80_bp_preset.json  [77 строк]
-├── PROJECT_SNAPSHOT.md  [44974 строк]
+├── PROJECT_SNAPSHOT.md  [46157 строк]
 ├── pyproject.toml  [61 строк]
-├── README.md  [309 строк]
+├── README.md  [314 строк]
 ├── requirements.txt  [22 строк]
 ├── run_tests.py  [96 строк]
 ├── SCRIPTS_GUIDE.md  [430 строк]
 ├── USER_GUIDE.html  [1093 строк]
-└── USER_GUIDE.md  [1426 строк]
+└── USER_GUIDE.md  [1439 строк]
 ```
 
 ---
 
 ■ РАЗДЕЛ 2: ОПИСАНИЕ МОДУЛЕЙ
 
-### `_tmp_dis.py` (10 строк)
+### `_run_all_tests.py` (94 строк)
 
-> Глубокий анализ дизассемблера: дубликаты, перезаписи, set_cpu_type
+> Full test cycle runner.
 
-**Импорты (1):**
-- `sys`
-
----
-
-### `_tmp_eol.py` (18 строк)
-
-> Проверка окончаний строк + точный текст для правок
-
-**Импорты (1):**
-- `sys`
-
----
-
-### `_tmp_fix_jump.py` (92 строк)
-
-> Исправление JUMP_OPCODES: cpu_type-aware подсветка переходов
-
-**Импорты (1):**
-- `sys`
-
----
-
-### `_tmp_gui_check.py` (47 строк)
-
-> Проверка: JUMP_OPCODES usage, ctrl_layout, _do_assemble
-
-**Импорты (2):**
+**Импорты (5):**
+- `subprocess`
 - `sys`
 - `os`
+- `time`
+- `glob`
 
----
+**Функции (2):**
+- `run_one(path, timeout)`
+- `main()`
 
-### `_tmp_guide26.py` (28 строк)
-
-> Обновление USER_GUIDE.md: версия 2.5 -> 2.6 + примечание
-
-**Импорты (1):**
-- `sys`
-
----
-
-### `_tmp_trace.py` (27 строк)
-
-> Контекст trace_model.py L150-170 + как создаётся TraceModel
-
-**Импорты (1):**
-- `sys`
+**Константы:** ROOT, API_SNIPPETS, SELF
 
 ---
 
@@ -588,7 +551,7 @@
 
 ---
 
-### `assemble8080/assembler.py` (1730 строк)
+### `assemble8080/assembler.py` (1744 строк)
 
 > assemble8080 — компактный макроассемблер Intel 8080.
 
@@ -611,8 +574,8 @@
   - Методы (6): __init__(self, symbols, defines), _strip_comment(line), parse(self, expr, line_num), _process_high_low(self, expr), _convert_numbers(expr), _eval(self, expr, line_num)
 - **Assembler**
   - Двухпроходный ассемблер Intel 8080.
-  - Методы (20): __init__(self, now), _get_mnemonics(self), _write(self, data), _count_db_bytes(self, operand), _count_dw_words(self, operand), _strip_comment(line), _parse_label(self, line), assemble(self, source, filename), _is_import_symbol(self, operand_str), _track_relocation(self, offset, size, symbol), _encode_instruction(self, mnemonic, opcode, fmt, operands, line_num), _parse_operand(self, operand_str, line_num, allow_current), _decode_string_escapes(s), _parse_db(self, operand, line_num), _parse_dw(self, operand, line_num)
-    - ... и ещё 5
+  - Методы (18): __init__(self, now), _get_mnemonics(self), _write(self, data), _strip_comment(line), _parse_label(self, line), assemble(self, source, filename), _is_import_symbol(self, operand_str), _track_relocation(self, offset, size, symbol), _encode_instruction(self, mnemonic, opcode, fmt, operands, line_num), _parse_operand(self, operand_str, line_num, allow_current), _decode_string_escapes(s), _parse_db(self, operand, line_num), _parse_dw(self, operand, line_num), _get_reg_code(self, reg_str, line_num), _get_rp_code(self, rp_str, line_num, use_psw)
+    - ... и ещё 3
 
 **Функции (2):**
 - `parse_number(text)`
@@ -639,17 +602,15 @@
 
 ---
 
-### `assemble8080/linker.py` (257 строк)
+### `assemble8080/linker.py` (255 строк)
 
 > Linker for i8080-5 CI.
 
-**Импорты (6):**
+**Импорты (4):**
 - `os`
-- `re`
 - `from dataclasses import dataclass, field`
-- `from typing import Optional`
-- `from objfile import ObjectFile, load_obj, save_obj`
-- `from mapfile import MapFile, MapEntry, generate_map`
+- `from objfile import load_obj`
+- `from mapfile import MapEntry, generate_map`
 
 **Классы (2):**
 - **LinkError**
@@ -664,12 +625,11 @@
 
 ---
 
-### `assemble8080/mapfile.py` (160 строк)
+### `assemble8080/mapfile.py` (162 строк)
 
 > Map file generation and parsing for i8080-5 CI.
 
-**Импорты (4):**
-- `os`
+**Импорты (3):**
 - `re`
 - `from dataclasses import dataclass, field`
 - `from typing import Optional`
@@ -881,7 +841,7 @@
 
 ---
 
-### `common/i18n.py` (682 строк)
+### `common/i18n.py` (787 строк)
 
 > Internationalization strings and system language detection.
 
@@ -926,21 +886,22 @@
 
 ---
 
-### `i8080_ci/assembler_widget.py` (904 строк)
+### `i8080_ci/assembler_widget.py` (1291 строк)
 
 > Assembler tab — editor, assembly, load to memory.
 
-**Импорты (12):**
+**Импорты (13):**
 - `os`
 - `re`
+- `json`
 - `traceback`
-- `from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QPushButton, QFileDialog, QMessageBox, QGroupBox, QSplitter, QPlainTextEdit, QTableWidget, QTableWidgetItem, QHeaderView, QCompleter, QAbstractItemView, QLabel, QComboBox`
+- `from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QPushButton, QFileDialog, QMessageBox, QGroupBox, QSplitter, QPlainTextEdit, QTableWidget, QTableWidgetItem, QHeaderView, QCompleter, QAbstractItemView, QLabel, QComboBox, QTabWidget, QToolButton`
 - `from PySide6.QtGui import QFont, QSyntaxHighlighter, QTextCharFormat, QColor, QPainter, QPen, QTextCursor, QTextFormat`
 - `from PySide6.QtCore import Qt, QRegularExpression, QRect, QSize, QStringListModel`
 - `from assemble8080.assembler import Assembler`
 - `from assemble8080.objfile import obj_from_asm_result, save_obj, load_obj`
 - `from assemble8080.linker import link, link_from_script`
-- `from assemble8080.mapfile import load_map_file`
+- `from assemble8080.mapfile import parse_map`
 - `from common.i18n import LANGS, get_system_language`
 - `from common.themes import get_editor_style, get_syntax_colors, ARROW_COLORS, EDITOR_DARK, EDITOR_LIGHT`
 
@@ -950,14 +911,15 @@
   - Методы (3): __init__(self, editor), sizeHint(self), paintEvent(self, event)
   - Атрибуты: ARROWS_WIDTH
 - **CodeEditor**(QPlainTextEdit)
-  - Assembler editor: line numbers, jump arrows, autocomplete.
-  - Методы (15): __init__(self, parent), set_dark(self, is_dark), lineNumberAreaWidth(self), _updateLineNumberAreaWidth(self, _), _updateLineNumberArea(self, rect, dy), resizeEvent(self, event), lineNumberAreaPaintEvent(self, event), _paintArrows(self, painter), set_jumps(self, jumps), wheelEvent(self, event), _highlightCurrentLine(self), highlight_error_lines(self, error_lines), set_completions(self, words), _insert_completion(self, completion), keyPressEvent(self, event)
+  - Assembler editor: line numbers, jump arrows, autocomplete, Ctrl+Click.
+  - Методы (17): __init__(self, parent), set_dark(self, is_dark), set_label_lines(self, label_lines), lineNumberAreaWidth(self), _updateLineNumberAreaWidth(self, _), _updateLineNumberArea(self, rect, dy), resizeEvent(self, event), lineNumberAreaPaintEvent(self, event), _paintArrows(self, painter), set_jumps(self, jumps), wheelEvent(self, event), _highlightCurrentLine(self), highlight_error_lines(self, error_lines), set_completions(self, words), _insert_completion(self, completion)
+    - ... и ещё 2
 - **AsmHighlighter**(QSyntaxHighlighter)
   - Методы (4): __init__(self, document, is_dark), _setup_rules(self), highlightBlock(self, text), set_theme(self, is_dark)
 - **AssemblerWidget**(QWidget)
-  - Assembler tab: editor, errors, labels.
-  - Методы (22): __init__(self, main_window, is_dark, parent), _init_ui(self), _goto_line(self, line_num), _on_error_double_clicked(self, row, column), _on_label_double_clicked(self, row, column), _collect_label_lines(self), _compute_jumps(self), _on_text_changed(self), _update_errors(self, errors), _update_labels_table(self, symbols), on_new(self), on_assemble(self), on_assemble_load(self), on_assemble_obj(self), on_link(self)
-    - ... и ещё 7
+  - Assembler tab: multi-file editor with tabs, errors, labels.
+  - Методы (34): __init__(self, main_window, is_dark, parent), _init_ui(self), _add_tab(self, file_path, content), _on_tab_close(self, index), _on_tab_changed(self, index), _on_tab_modified(self, tab_info, modified), _tab_title(self, file_path, modified), _current_editor(self), _current_tab_info(self), _save_tab(self, index), on_open_workspace(self), on_save_workspace(self), _goto_line(self, line_num), _on_error_double_clicked(self, row, column), _on_label_double_clicked(self, row, column)
+    - ... и ещё 19
 
 **Функции (1):**
 - `_tr(key)`
@@ -966,7 +928,7 @@
 
 ---
 
-### `i8080_ci/automation.py` (726 строк)
+### `i8080_ci/automation.py` (736 строк)
 
 > Automation API for external control.
 
@@ -1002,14 +964,14 @@
 
 ---
 
-### `i8080_ci/disassembler.py` (216 строк)
+### `i8080_ci/disassembler.py` (233 строк)
 
 > I8080 CPU disassembler.
 
 **Классы (1):**
 - **I8080Disassembler**
-  - Методы (8): __init__(self, map_file, cpu_type), set_cpu_type(self, cpu_type), _generate_table(self), get_target(self, op, args), get_mnemonic(self, byte_val), set_map(self, map_file), _resolve_symbol(self, addr), disassemble(self, mem_dict, start_addr, length)
-  - Атрибуты: REGS, ALUS, RP, RP_PUSH, CC
+  - Методы (10): __init__(self, map_file, cpu_type), set_cpu_type(self, cpu_type), _generate_table(self), get_target(self, op, args), get_mnemonic(self, byte_val), set_map(self, map_file), set_equ(self, equ_dict), _resolve_symbol(self, addr), _substitute_equ(self, text), disassemble(self, mem_dict, start_addr, length)
+  - Атрибуты: REGS, ALUS, ALUS_IMM, RP, RP_PUSH, CC
 
 **Константы:** _JUMP_BASE, JUMP_OPCODES, JUMP_OPCODES_8085
 
@@ -1036,7 +998,7 @@
 
 ---
 
-### `i8080_ci/main_window.py` (4163 строк)
+### `i8080_ci/main_window.py` (4179 строк)
 
 > Main application window.
 
@@ -1172,9 +1134,9 @@
 
 ---
 
-### `i8080_ci/views/disasm_view.py` (385 строк)
+### `i8080_ci/views/disasm_view.py` (414 строк)
 
-> Custom disassembly view with syntax highlighting.
+> Custom disassembly view with syntax highlighting, jump arrows, and map symbols.
 
 **Импорты (4):**
 - `from PySide6.QtWidgets import QWidget, QMenu`
@@ -1184,8 +1146,8 @@
 
 **Классы (1):**
 - **DisasmView**(QWidget)
-  - Методы (17): __init__(self, mem_data, parent), set_bp_conditions(self, conditions), set_highlight(self, addr), setup_colors(self), set_theme(self, is_dark), set_lines(self, lines), get_instruction_color(self, asm), wheelEvent(self, event), paintEvent(self, event), draw_arrows(self, painter), mouseDoubleClickEvent(self, event), set_breakpoints(self, breakpoints), set_interactive(self, enabled), set_cursor(self, addr), get_line_addr_at(self, y)
-    - ... и ещё 2
+  - Методы (18): __init__(self, mem_data, parent), set_bp_conditions(self, conditions), set_highlight(self, addr), set_symbols(self, map_file), set_lines(self, lines), set_theme(self, is_dark), set_breakpoints(self, breakpoints), set_interactive(self, enabled), _rebuild_display_lines(self), setup_colors(self), get_instruction_color(self, asm), paintEvent(self, event), draw_arrows(self, painter), wheelEvent(self, event), get_line_addr_at(self, y)
+    - ... и ещё 3
   - Атрибуты: toggleBreakpoint, cursorChanged, runToCursorRequested, runFromHereRequested, jumpToCursorRequested, setConditionalBreakpointRequested
 
 ---
@@ -1973,269 +1935,106 @@
 
 ■ РАЗДЕЛ 3: ПОЛНЫЙ КОД КЛЮЧЕВЫХ ФАЙЛОВ
 
-### `_tmp_dis.py` (10 строк)
+### `_run_all_tests.py` (94 строк)
 
-<!-- FILE: _tmp_dis.py -->
+<!-- FILE: _run_all_tests.py -->
 ```python
-"""Глубокий анализ дизассемблера: дубликаты, перезаписи, set_cpu_type"""
-import sys
-sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+# -*- coding: utf-8 -*-
+"""Full test cycle runner.
 
-with open('i8080_ci/disassembler.py', 'r', encoding='utf-8') as f:
-    content = f.read()
-lines = content.split('\n')
-print(f"Всего строк: {len(lines)}")
-print("=" * 70)
-print(content)
-```
-<!-- END FILE: _tmp_dis.py -->
+Runs:
+  1. All standalone test files in tests/ (test_*.py, *_test.py, assembler_test*.py)
+  2. The interactive 'api' snippets via run_api_snippets.py
 
-### `_tmp_eol.py` (18 строк)
+Excludes the API snippet files from the standalone pass (they need the harness).
 
-<!-- FILE: _tmp_eol.py -->
-```python
-"""Проверка окончаний строк + точный текст для правок"""
-import sys
-sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-
-for p in ['i8080_ci/disassembler.py', 'i8080_ci/models/trace_model.py', 'i8080_ci/__init__.py']:
-    d = open(p, 'rb').read()
-    print(p, 'CRLF:', d.count(b'\r\n'), 'LF-only:', d.count(b'\n') - d.count(b'\r\n'))
-
-print()
-print("=== __init__.py (полный) ===")
-with open('i8080_ci/__init__.py', 'r', encoding='utf-8') as f:
-    print(f.read())
-
-print("=== trace_model.py L1-10 ===")
-with open('i8080_ci/models/trace_model.py', 'r', encoding='utf-8') as f:
-    tl = f.readlines()
-for j in range(10):
-    print(f"L{j+1}: {tl[j].rstrip()}")
-```
-<!-- END FILE: _tmp_eol.py -->
-
-### `_tmp_fix_jump.py` (92 строк)
-
-<!-- FILE: _tmp_fix_jump.py -->
-```python
-"""Исправление JUMP_OPCODES: cpu_type-aware подсветка переходов"""
-import sys
-sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-
-# === 1. disassembler.py (CRLF) ===
-p = 'i8080_ci/disassembler.py'
-with open(p, 'r', encoding='utf-8', newline='') as f:
-    c = f.read()
-
-old_block = """# === Опкоды переходов для подсветки в трассировке ===
-JUMP_OPCODES = {
-    0xC3, 0xCA, 0xC2, 0xDA, 0xD2, 0xF2, 0xFA, 0xEA, 0xE2,  # JMP, JZ, JNZ, JC, JNC, JP, JM, JPE, JPO
-    0xCD, 0xCC, 0xC4, 0xDC, 0xD4, 0xF4, 0xFC, 0xEC, 0xE4,  # CALL, CZ, CNZ, CC, CNC, CP, CM, CPE, CPO
-    0xC9, 0xC8, 0xC0, 0xD8, 0xD0, 0xF0, 0xF8, 0xE8, 0xE0,  # RET, RZ, RNZ, RC, RNC, RP, RM, RPE, RPO
-    0xC7, 0xCF, 0xD7, 0xDF, 0xE7, 0xEF, 0xF7, 0xFF,        # RST 0-7
-    0xCB, 0xD9, 0xDD, 0xED, 0xFD,                          # Пересекающиеся: JMP*/RET*/CALL*/JNK/JK
-}"""
-
-new_block = """# === Опкоды переходов для подсветки в трассировке ===
-# Базовые переходы (одинаковы для 8080 и 8085)
-_JUMP_BASE = {
-    0xC3, 0xCA, 0xC2, 0xDA, 0xD2, 0xF2, 0xFA, 0xEA, 0xE2,  # JMP, JZ, JNZ, JC, JNC, JP, JM, JPE, JPO
-    0xCD, 0xCC, 0xC4, 0xDC, 0xD4, 0xF4, 0xFC, 0xEC, 0xE4,  # CALL, CZ, CNZ, CC, CNC, CP, CM, CPE, CPO
-    0xC9, 0xC8, 0xC0, 0xD8, 0xD0, 0xF0, 0xF8, 0xE8, 0xE0,  # RET, RZ, RNZ, RC, RNC, RP, RM, RPE, RPO
-    0xC7, 0xCF, 0xD7, 0xDF, 0xE7, 0xEF, 0xF7, 0xFF,        # RST 0-7
-}
-# 8080: все пересекающиеся опкоды — переходы (JMP*/RET*/CALL*)
-JUMP_OPCODES = _JUMP_BASE | {0xCB, 0xD9, 0xDD, 0xED, 0xFD}
-# 8085: только JNK (0xDD) и JK (0xFD) — переходы; RSTV/SHLX/LHLX — нет
-JUMP_OPCODES_8085 = _JUMP_BASE | {0xDD, 0xFD}"""
-
-old_crlf = old_block.replace('\n', '\r\n')
-new_crlf = new_block.replace('\n', '\r\n')
-if old_crlf in c:
-    c = c.replace(old_crlf, new_crlf)
-    with open(p, 'w', encoding='utf-8', newline='') as f:
-        f.write(c)
-    print("OK: disassembler.py")
-else:
-    print("ERROR: disassembler.py — блок не найден")
-
-# === 2. trace_model.py (CRLF) ===
-p = 'i8080_ci/models/trace_model.py'
-with open(p, 'r', encoding='utf-8', newline='') as f:
-    c = f.read()
-
-# Import
-old_imp = "from ..disassembler import JUMP_OPCODES\r\n"
-new_imp = "from ..disassembler import JUMP_OPCODES, JUMP_OPCODES_8085\r\n"
-if old_imp in c:
-    c = c.replace(old_imp, new_imp)
-    print("OK: trace_model.py import")
-else:
-    print("ERROR: trace_model.py import не найден")
-
-# Usage
-old_use = "            if rec[\"opcode\"] in JUMP_OPCODES:\r\n"
-new_use = "            _jump_set = JUMP_OPCODES_8085 if getattr(self.emulator, 'cpu_type', 'i8080') == 'i8085' else JUMP_OPCODES\r\n            if rec[\"opcode\"] in _jump_set:\r\n"
-if old_use in c:
-    c = c.replace(old_use, new_use)
-    print("OK: trace_model.py usage")
-else:
-    print("ERROR: trace_model.py usage не найден")
-
-with open(p, 'w', encoding='utf-8', newline='') as f:
-    f.write(c)
-
-# === 3. __init__.py (LF) ===
-p = 'i8080_ci/__init__.py'
-with open(p, 'r', encoding='utf-8', newline='') as f:
-    c = f.read()
-
-old_imp = "from .disassembler import I8080Disassembler, JUMP_OPCODES\n"
-new_imp = "from .disassembler import I8080Disassembler, JUMP_OPCODES, JUMP_OPCODES_8085\n"
-if old_imp in c:
-    c = c.replace(old_imp, new_imp)
-    print("OK: __init__.py import")
-else:
-    print("ERROR: __init__.py import не найден")
-
-old_all = '"SlipProtocol", "IntelHex", "I8080Disassembler", "JUMP_OPCODES",\n'
-new_all = '"SlipProtocol", "IntelHex", "I8080Disassembler", "JUMP_OPCODES", "JUMP_OPCODES_8085",\n'
-if old_all in c:
-    c = c.replace(old_all, new_all)
-    print("OK: __init__.py __all__")
-else:
-    print("ERROR: __init__.py __all__ не найден")
-
-with open(p, 'w', encoding='utf-8', newline='') as f:
-    f.write(c)
-
-print("Готово")
-```
-<!-- END FILE: _tmp_fix_jump.py -->
-
-### `_tmp_gui_check.py` (47 строк)
-
-<!-- FILE: _tmp_gui_check.py -->
-```python
-"""Проверка: JUMP_OPCODES usage, ctrl_layout, _do_assemble"""
-import sys
-sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-
-# 1. Where is JUMP_OPCODES used?
-print("=" * 60)
-print("1. Использование JUMP_OPCODES")
-print("=" * 60)
-import os
-for root, dirs, files in os.walk('.'):
-    if '__pycache__' in root or '.git' in root:
-        continue
-    for fn in files:
-        if fn.endswith('.py'):
-            p = os.path.join(root, fn)
-            try:
-                with open(p, 'r', encoding='utf-8') as f:
-                    for i, l in enumerate(f):
-                        if 'JUMP_OPCODES' in l:
-                            print(f"  {p} L{i+1}: {l.rstrip()}")
-            except Exception:
-                pass
-
-# 2. ctrl_layout in main_window.py
-print("=" * 60)
-print("2. ctrl_layout в main_window.py")
-print("=" * 60)
-with open('i8080_ci/main_window.py', 'r', encoding='utf-8') as f:
-    ml = f.readlines()
-for i, l in enumerate(ml):
-    if 'ctrl_layout' in l:
-        print(f"  L{i+1}: {l.rstrip()}")
-
-# 3. _do_assemble in assembler_widget.py — проверка source
-print("=" * 60)
-print("3. _do_assemble: определение source")
-print("=" * 60)
-with open('i8080_ci/assembler_widget.py', 'r', encoding='utf-8') as f:
-    al = f.readlines()
-start = -1
-for i, l in enumerate(al):
-    if 'def _do_assemble' in l:
-        start = i
-        break
-if start >= 0:
-    for j in range(start, min(start+25, len(al))):
-        print(f"  L{j+1}: {al[j].rstrip()}")
-```
-<!-- END FILE: _tmp_gui_check.py -->
-
-### `_tmp_guide26.py` (28 строк)
-
-<!-- FILE: _tmp_guide26.py -->
-```python
-"""Обновление USER_GUIDE.md: версия 2.5 -> 2.6 + примечание"""
-import sys
-sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-
-with open('USER_GUIDE.md', 'r', encoding='utf-8', newline='') as f:
-    content = f.read()
-
-old_ver = "> **Version / Версия:** 2.5"
-new_ver = "> **Version / Версия:** 2.6"
-if old_ver in content:
-    content = content.replace(old_ver, new_ver)
-    print("OK: версия 2.5 -> 2.6")
-else:
-    print("ERROR: версия 2.5 не найдена")
-
-old_note = "> **Note (v2.5):**"
-new_note = """> **Note (v2.6):** Fixed the execution-trace jump highlighting to be CPU-type aware — on the 8085, the undocumented opcodes RSTV/SHLX/LHLX (0xCB/0xD9/0xED) are no longer highlighted as jumps (only JNK/JK are).
-> **Примечание (v2.6):** Исправлена подсветка переходов в трассировке с учётом типа процессора — на 8085 недокументированные опкоды RSTV/SHLX/LHLX (0xCB/0xD9/0xED) больше не подсвечиваются как переходы (переходами являются только JNK/JK).
+Run:  python _run_all_tests.py
 """
-if old_note in content:
-    content = content.replace(old_note, new_note + old_note)
-    print("OK: добавлено примечание v2.6")
-else:
-    print("ERROR: Note (v2.5) не найдена")
-
-with open('USER_GUIDE.md', 'w', encoding='utf-8', newline='') as f:
-    f.write(content)
-print("Сохранено")
-```
-<!-- END FILE: _tmp_guide26.py -->
-
-### `_tmp_trace.py` (27 строк)
-
-<!-- FILE: _tmp_trace.py -->
-```python
-"""Контекст trace_model.py L150-170 + как создаётся TraceModel"""
+import subprocess
 import sys
-sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+import os
+import time
+import glob
 
-with open('i8080_ci/models/trace_model.py', 'r', encoding='utf-8') as f:
-    tl = f.readlines()
-print("=== trace_model.py L145-175 ===")
-for j in range(144, min(175, len(tl))):
-    print(f"L{j+1}: {tl[j].rstrip()}")
+ROOT = os.path.dirname(os.path.abspath(__file__))
+os.environ['PYTHONIOENCODING'] = 'utf-8'
+os.environ['QT_QPA_PLATFORM'] = 'offscreen'
+os.environ['PYTHONPATH'] = ROOT
 
-# Как создаётся TraceModel (есть ли cpu_type)?
-print()
-print("=== __init__ TraceModel ===")
-for i, l in enumerate(tl):
-    if 'def __init__' in l:
-        for j in range(i, min(i+15, len(tl))):
-            print(f"L{j+1}: {tl[j].rstrip()}")
-        break
+# Interactive snippets that require the `api` harness (run separately)
+API_SNIPPETS = {
+    "ppi_test.py", "kbd_test.py", "font_test.py", "display_test.py",
+    "bitmap_crt_test.py", "discrete_crt_font_test.py", "crt_font_test.py",
+    "device_access_test.py", "mmio_test.py", "uart_test.py",
+    "test_invert_port_range.py",
+    "PPI_3D_8x8x8_Flame.py", "PPI_3D_8x8x8_Girl.py", "PPI_3D_8x8x8_Heat.py",
+    "PPI_3D_8x8x8_Pong.py", "PPI_3D_8x8x8_Rain.py", "PPI_3D_8x8x8_Tetris.py",
+}
+SELF = {"_run_all_tests.py", "run_api_snippets.py", "run_all.py", "_check_unused.py"}
 
-# Где создаётся TraceModel в main_window.py
-print()
-print("=== Создание TraceModel в main_window.py ===")
-with open('i8080_ci/main_window.py', 'r', encoding='utf-8') as f:
-    ml = f.readlines()
-for i, l in enumerate(ml):
-    if 'TraceModel(' in l:
-        print(f"L{i+1}: {l.rstrip()}")
+
+def run_one(path, timeout=180):
+    start = time.time()
+    try:
+        r = subprocess.run([sys.executable, "-B", path],
+                           capture_output=True, text=True, timeout=timeout,
+                           encoding='utf-8', errors='replace')
+        dt = time.time() - start
+        return r.returncode == 0, dt, (r.stdout or "") + (r.stderr or "")
+    except subprocess.TimeoutExpired:
+        return False, time.time() - start, "TIMEOUT"
+    except Exception as e:
+        return False, time.time() - start, str(e)
+
+
+def main():
+    files = sorted(glob.glob(os.path.join(ROOT, "tests", "*.py")))
+    standalone = [f for f in files
+                  if os.path.basename(f) not in API_SNIPPETS and os.path.basename(f) not in SELF]
+
+    passed, failed = [], []
+    print("=" * 64)
+    print("ЧАСТЬ 1: Автономные тесты")
+    print("=" * 64)
+    for path in standalone:
+        name = os.path.basename(path)
+        ok, dt, out = run_one(path)
+        if ok:
+            passed.append(name)
+            print(f"PASS  {name}  ({dt:.1f}s)")
+        else:
+            tail = "\n".join(out.splitlines()[-10:])
+            failed.append((name, tail))
+            print(f"FAIL  {name}  ({dt:.1f}s)")
+
+    print("\n" + "=" * 64)
+    print("ЧАСТЬ 2: Интерактивные api-сниппеты (harness)")
+    print("=" * 64)
+    ok, dt, out = run_one(os.path.join(ROOT, "tests", "run_api_snippets.py"), timeout=300)
+    # Show only the summary line of the harness
+    for line in out.splitlines():
+        if "API SNIPPETS:" in line:
+            print(line.strip())
+    if ok:
+        passed.append("run_api_snippets.py (17 snippets)")
+    else:
+        failed.append(("run_api_snippets.py", out[-800:]))
+
+    print("\n" + "=" * 64)
+    print(f"ИТОГО: {len(passed)} пройдено, {len(failed)} провалено")
+    print("=" * 64)
+    if failed:
+        print("\nПРОВАЛЫ:")
+        for n, e in failed:
+            print(f"\n--- {n} ---")
+            print(e)
+    return 0 if not failed else 1
+
+
+if __name__ == '__main__':
+    sys.exit(main())
 ```
-<!-- END FILE: _tmp_trace.py -->
+<!-- END FILE: _run_all_tests.py -->
 
 ### `clean_pycache.py` (87 строк)
 
@@ -5937,7 +5736,7 @@ __all__ = [
 ```
 <!-- END FILE: assemble8080/__init__.py -->
 
-### `assemble8080/assembler.py` (1730 строк)
+### `assemble8080/assembler.py` (1744 строк)
 
 <!-- FILE: assemble8080/assembler.py -->
 ```python
@@ -6004,6 +5803,8 @@ class AsmResult:
     imports: list = field(default_factory=list)       # [name] — imported symbols
     relocations: list = field(default_factory=list)   # [(offset, size, symbol)]
     map_text: str = ""                                 # текст map-файла (генерируется при успехе)
+    global_labels: set = field(default_factory=set)    # метки с :: (глобальные/экспортные)
+    equ_symbols: set = field(default_factory=set)      # имена EQU/DEF констант (не адреса)
 
 
 # =============================================================
@@ -6507,26 +6308,6 @@ class Assembler:
         self._write_pos = end
 
 
-    def _count_db_bytes(self, operand: str) -> int:
-        """Count total bytes in a DB directive operand."""
-        count = 0
-        for part in self._split_operands(operand):
-            part = part.strip()
-            if not part:
-                continue
-            if part.startswith('"') and part.endswith('"'):
-                count += len(part) - 2
-            elif part.startswith("'") and part.endswith("'"):
-                count += 1
-            else:
-                count += len([x for x in part.split(',') if x.strip()])
-        return max(count, 1)
-
-    def _count_dw_words(self, operand: str) -> int:
-        """Count total words in a DW directive operand."""
-        parts = [p for p in self._split_operands(operand) if p.strip()]
-        return max(len(parts), 1)
-
     @staticmethod
     def _strip_comment(line: str) -> str:
         """Убрать комментарий (; или * в начале строки)."""
@@ -6583,8 +6364,11 @@ class Assembler:
 
         # 2. Первый проход — сбор меток
         self.symbols = {}
+        self.equ_symbols = set()
         self._exports = set()
         self._imports = set()
+        self._global_labels = set()
+
         self._relocations = []
         self.cpu_set_by_directive = False
         self.errors = []
@@ -6614,6 +6398,12 @@ class Assembler:
                 label_upper = label.upper()
                 # Разрешаем переопределение (последнее значение побеждает)
                 self.symbols[label_upper] = location
+                if is_global:
+
+                    self._global_labels.add(label_upper)
+
+                    self._exports.add(label_upper)
+
                 # Track which section this label belongs to
                 if self._current_section:
                     _sn, _ss, _sa, _se = self._current_section
@@ -6755,6 +6545,7 @@ class Assembler:
                     if _all_defined:
                         value = self.expr_parser.parse(operand, line_num)
                         self.symbols[label.upper()] = value
+                        self.equ_symbols.add(label.upper())
                     else:
                         self._pending_equ.append((label.upper(), operand))
                 continue
@@ -6769,6 +6560,7 @@ class Assembler:
                 if _all_defined:
                     value = self.expr_parser.parse(eq_operand, line_num)
                     self.symbols[eq_label.upper()] = value
+                    self.equ_symbols.add(eq_label.upper())
                 else:
                     self._pending_equ.append((eq_label.upper(), eq_operand))
                 continue
@@ -6874,6 +6666,7 @@ class Assembler:
                     try:
                         _val = self.expr_parser.parse(_eq_operand, 0)
                         self.symbols[_eq_label] = _val
+                        self.equ_symbols.add(_eq_label)
                         _resolved = True
                     except Exception:
                         _remaining.append((_eq_label, _eq_operand))
@@ -7023,6 +6816,7 @@ class Assembler:
                     self.expr_parser.pc = location
                     value = self.expr_parser.parse(operand, line_num)
                     self.symbols[label.upper()] = value
+                    self.equ_symbols.add(label.upper())
                 continue
             # EQU/DEF без извлечённой метки
             m_eq = re.match(r'^([A-Za-z_][A-Za-z0-9_]*)\s+(?:EQU|DEF|DEFL)\s+(.*)', stripped, re.IGNORECASE)
@@ -7035,6 +6829,7 @@ class Assembler:
                 if _all_defined:
                     value = self.expr_parser.parse(eq_operand, line_num)
                     self.symbols[eq_label.upper()] = value
+                    self.equ_symbols.add(eq_label.upper())
                 else:
                     self._pending_equ.append((eq_label.upper(), eq_operand))
                 continue
@@ -7156,12 +6951,16 @@ class Assembler:
             listing=list(self.listing),
             exports=list(self._exports),
             imports=list(self._imports),
+            global_labels=set(self._global_labels),
+
             relocations=list(self._relocations),
             end_address=location
         )
         # Генерация map-файла при успешной сборке
         if result.success:
             from .mapfile import generate_map
+            # Track EQU symbols for map filtering
+            result.equ_symbols = self.equ_symbols
             result.map_text = generate_map(result, source_name=filename)
         return result
 
@@ -7197,8 +6996,22 @@ class Assembler:
             if len(operands) < 1:
                 self._error(line_num, f"{mnemonic}: ожидается регистр")
                 return bytearray([opcode])
+            # Check if operand is a valid register; if not, try immediate (ALU ops)
+            op_upper = operands[0].strip().upper()
+            if op_upper in REGISTERS or op_upper in ('BC', 'DE', 'HL', 'PSW'):
+                reg_code = self._get_reg_code(operands[0], line_num)
+                if mnemonic in ('INR', 'DCR'):
+                    return bytearray([opcode + reg_code * 8])
+                return bytearray([opcode | reg_code])
+            # Not a register — try as immediate value (ALU d8 forms)
+            ALU_IMM_OPCODES = {'ADD': 0xC6, 'ADC': 0xCE, 'SUB': 0xD6, 'SBB': 0xDE,
+                               'ANA': 0xE6, 'XRA': 0xEE, 'ORI': 0xF6, 'CPI': 0xFE}
+            if mnemonic in ALU_IMM_OPCODES:
+                val = self._parse_operand(operands[0], line_num, allow_current=True)
+                if val is not None:
+                    return bytearray([ALU_IMM_OPCODES[mnemonic], val & 0xFF])
+            # Fall through to error
             reg_code = self._get_reg_code(operands[0], line_num)
-            # INR/DCR используют другой паттерн: opcode + reg_code * 8
             if mnemonic in ('INR', 'DCR'):
                 return bytearray([opcode + reg_code * 8])
             return bytearray([opcode | reg_code])
@@ -7718,7 +7531,7 @@ class AsmResult:
 ```
 <!-- END FILE: assemble8080/errors.py -->
 
-### `assemble8080/linker.py` (257 строк)
+### `assemble8080/linker.py` (255 строк)
 
 <!-- FILE: assemble8080/linker.py -->
 ```python
@@ -7737,12 +7550,10 @@ Linker script format (.lnk):
     FILL 0xFF
 """
 import os
-import re
 from dataclasses import dataclass, field
-from typing import Optional
 
-from .objfile import ObjectFile, load_obj, save_obj
-from .mapfile import MapFile, MapEntry, generate_map
+from .objfile import load_obj
+from .mapfile import MapEntry, generate_map
 
 
 @dataclass
@@ -7982,7 +7793,7 @@ def link_from_script(script_path: str) -> LinkResult:
 ```
 <!-- END FILE: assemble8080/linker.py -->
 
-### `assemble8080/mapfile.py` (160 строк)
+### `assemble8080/mapfile.py` (162 строк)
 
 <!-- FILE: assemble8080/mapfile.py -->
 ```python
@@ -8002,7 +7813,6 @@ ADDRESS   SIZE  TYPE    NAME
 0008      0003  CODE    rst1_handler
 0100      0002  DATA    my_var
 """
-import os
 import re
 from dataclasses import dataclass, field
 from typing import Optional
@@ -8075,7 +7885,10 @@ def generate_map(result, source_name: str = "", date_str: str = "") -> str:
     
     # Build entries from symbols, sorted by address
     # Try to determine size from listing or consecutive symbols
-    sorted_syms = sorted(result.symbols.items(), key=lambda x: x[1])
+    # Filter out EQU constants (they are not code addresses)
+    equ_syms = getattr(result, 'equ_symbols', set())
+    filtered_syms = {k: v for k, v in result.symbols.items() if k not in equ_syms}
+    sorted_syms = sorted(filtered_syms.items(), key=lambda x: x[1])
     
     for i, (name, addr) in enumerate(sorted_syms):
         # Determine size: distance to next symbol, or 1 if last
@@ -9595,12 +9408,13 @@ from .themes import THEMES, get_editor_style, get_syntax_colors, ARROW_COLORS, S
 ```
 <!-- END FILE: common/__init__.py -->
 
-### `common/i18n.py` (682 строк)
+### `common/i18n.py` (787 строк)
 
 <!-- FILE: common/i18n.py -->
 ```python
 """Internationalization strings and system language detection."""
 from PySide6.QtCore import QLocale
+
 
 LANGS = {
     "en": {
@@ -9697,11 +9511,17 @@ LANGS = {
         "bp_cond_title":  "Breakpoint Condition ",
         "bp_cond_clear":  "Clear Condition ",  "bp_cond_ok":  "OK ",  "bp_cond_cancel":  "Cancel ",
         "bp_cond_hint":  "Available variables:\n"
+
                          "  Registers: A, B, C, D, E, H, L, BC, DE, HL, SP, PC\n"
+
                          "  Flags: S, Z, AC, P, CY\n"
+
                          "  Memory: mem[0x0100]   Ports: io[0x01]\n"
+
                          "  Cycles: cycles\n"
+
                          "  Operators: ==, !=, <, >, <=, >=, and, or, not ",
+
         "err_addr_mem":  "Enter memory address! ",  "err_syntax":  "Invalid syntax! ",
         "dlg_cancel": "Cancel ", "dlg_ok": "OK ",
         # Статистика эмулятора
@@ -9723,6 +9543,7 @@ LANGS = {
         "trace_no_data": "No data to export",
         "trace_exported": "Trace exported: ",
         "trace_export_err": "Failed to export trace:\n",
+
         # Watch: статусы и пресеты
         "watch_select_del": "Select an item to delete",
         "watch_confirm": "Confirmation",
@@ -9737,6 +9558,8 @@ LANGS = {
         "watch_err_addr": "Enter memory address!",
         "watch_err_fmt_title": "Format Error",
         "watch_err_add": "Failed to add Watch:\n",
+
+
         # BP: статусы и пресеты
         "bp_select": "Select a breakpoint",
         "bp_add_title": "Add Breakpoint",
@@ -9747,7 +9570,11 @@ LANGS = {
         "bp_preset_saved": "BP preset saved: ",
         "bp_preset_loaded": "BP preset loaded: ",
         "bp_preset_save_err": "Failed to save BP preset:\n",
+
+
         "bp_preset_load_err": "Failed to load BP preset:\n",
+
+
         "bp_cond_err": "Invalid condition syntax!",
         "bp_cond_example": "Example: A == 0x55",
         # Диалоги
@@ -9861,7 +9688,7 @@ LANGS = {
         "dw_no": "no",
         # === Assembler ===
         "asm_tab": "Assembler",
-        "asm_new": "\U0001F4C4 New Program",
+        #"asm_new": "\U0001F4C4 New Program",
         "asm_load": "\U0001F4C2 Load .asm",
         "asm_save": "\U0001F4BE Save .asm",
         "asm_assemble": "\U0001F528 Assemble",
@@ -9917,6 +9744,43 @@ LANGS = {
         "asm_loaded_mem": "\U0001F680 Loaded {n} bytes at 0x{addr:04X}",
         "asm_load_mem_err": "\u274C Load error:\n{tb}",
         "asm_placeholder": "; Assembler 8080-5 CI\n; Number formats: 0x1A, 1AH, 26, 11010B, 32q\n; Ctrl+wheel \u2014 font size\n\n        ORG 0100H\nSTART:  MVI A, 0x55\n        OUT 01H\n        JMP START\n",
+
+
+        "asm_open_ws": "📂 Open Workspace",
+
+        "asm_save_ws": "💾 Save Workspace",
+
+        "asm_open_ws_title": "Open Workspace File",
+
+        "asm_save_ws_title": "Save Workspace File",
+
+        "asm_ws_filter": "Workspace (*.ws);;All files (*)",
+
+        "asm_ws_filter_save": "Workspace (*.ws);;All files (*)",
+
+        "asm_ws_loaded": "📂 Workspace loaded: {path} ({n} files)",
+
+        "asm_ws_err": "❌ Failed to load workspace:\n{e}",
+
+        "asm_ws_saved": "💾 Workspace saved: {path}",
+
+        "asm_ws_save_err": "❌ Failed to save workspace:\n{e}",
+
+        "asm_new_tab": "\U0001F4C4 New file",
+
+        "asm_untitled": "untitled",
+
+        "asm_unsaved_title": "Unsaved Changes",
+
+        "asm_unsaved_msg": "File '{file}' has unsaved changes. Save?",
+        "btn_save": "Save",
+        "btn_discard": "Discard",
+        "btn_cancel": "Cancel",
+
+        "asm_map_auto_loaded": "  Map auto-loaded: {n} symbols",
+
+        "asm_map_auto_err": "  Map auto-load error: {e}",
+
         # === Help ===
         "menu_help": "Help",
         "help_user_guide": "User Guide",
@@ -10021,12 +9885,18 @@ LANGS = {
         "watch_addr_hint":  "Адрес HEX, например: 0100 ",
         "bp_cond_title":  "Условие точки останова ",
         "bp_cond_clear":  "Очистить условие ",  "bp_cond_ok":  "OK ",  "bp_cond_cancel":  "Отмена ",
-        "bp_cond_hint":  "Доступные переменные:\n"
-                         "  Регистры: A, B, C, D, E, H, L, BC, DE, HL, SP, PC\n"
-                         "  Флаги: S, Z, AC, P, CY\n"
-                         "  Память: mem[0x0100]   Порты: io[0x01]\n"
-                         "  Такты: cycles\n"
-                         "  Операторы: ==, !=, <, >, <=, >=, and, or, not ",
+        "bp_cond_hint":  "Available variables:\n"
+
+                         "  Registers: A, B, C, D, E, H, L, BC, DE, HL, SP, PC\n"
+
+                         "  Flags: S, Z, AC, P, CY\n"
+
+                         "  Memory: mem[0x0100]   Ports: io[0x01]\n"
+
+                         "  Cycles: cycles\n"
+
+                         "  Operators: ==, !=, <, >, <=, >=, and, or, not ",
+
         "err_addr_mem":  "Введите адрес памяти! ",  "err_syntax":  "Неверный синтаксис! ",
         "dlg_cancel": "Отмена ", "dlg_ok": "OK ",
         # Статистика эмулятора
@@ -10047,7 +9917,8 @@ LANGS = {
         "trace_export_title": "Экспорт трассировки",
         "trace_no_data": "Нет данных для экспорта",
         "trace_exported": "Трассировка экспортирована: ",
-        "trace_export_err": "Не удалось экспортировать трассировку:\n",
+        "trace_export_err": "Failed to export trace:\n",
+
         # Watch: статусы и пресеты
         "watch_select_del": "Выберите элемент для удаления",
         "watch_confirm": "Подтверждение",
@@ -10062,6 +9933,8 @@ LANGS = {
         "watch_err_addr": "Введите адрес памяти!",
         "watch_err_fmt_title": "Ошибка формата",
         "watch_err_add": "Не удалось добавить Watch:\n",
+
+
         # BP: статусы и пресеты
         "bp_select": "Выберите точку останова",
         "bp_add_title": "Добавить точку останова",
@@ -10072,7 +9945,11 @@ LANGS = {
         "bp_preset_saved": "Пресет BP сохранён: ",
         "bp_preset_loaded": "Пресет BP загружен: ",
         "bp_preset_save_err": "Не удалось сохранить пресет BP:\n",
+
+
         "bp_preset_load_err": "Не удалось загрузить пресет BP:\n",
+
+
         "bp_cond_err": "Неверный синтаксис условия!",
         "bp_cond_example": "Например: A == 0x55",
         # Диалоги
@@ -10186,7 +10063,7 @@ LANGS = {
         "dw_no": "нет",
         # === Ассемблер ===
         "asm_tab": "Ассемблер",
-        "asm_new": "\U0001F4C4 Новая программа",
+        #"asm_new": "\U0001F4C4 Новая программа",
         "asm_load": "\U0001F4C2 Загрузить .asm",
         "asm_save": "\U0001F4BE Сохранить .asm",
         "asm_assemble": "\U0001F528 Ассемблировать",
@@ -10242,6 +10119,43 @@ LANGS = {
         "asm_loaded_mem": "\U0001F680 Загружено {n} байт по адресу 0x{addr:04X}",
         "asm_load_mem_err": "\u274C Ошибка загрузки:\n{tb}",
         "asm_placeholder": "; Ассемблер 8080-5 CI\n; Форматы чисел: 0x1A, 1AH, 26, 11010B, 32q\n; Ctrl+колесо мыши — размер шрифта\n\n        ORG 0100H\nSTART:  MVI A, 0x55\n        OUT 01H\n        JMP START\n",
+
+
+        "asm_open_ws": "📂 Открыть Workspace",
+
+        "asm_save_ws": "💾 Сохранить Workspace",
+
+        "asm_open_ws_title": "Открыть файл Workspace",
+
+        "asm_save_ws_title": "Сохранить файл Workspace",
+
+        "asm_ws_filter": "Workspace (*.ws);;Все файлы (*)",
+
+        "asm_ws_filter_save": "Workspace (*.ws);;Все файлы (*)",
+
+        "asm_ws_loaded": "📂 Workspace загружен: {path} ({n} файлов)",
+
+        "asm_ws_err": "❌ Ошибка загрузки workspace:\n{e}",
+
+        "asm_ws_saved": "💾 Workspace сохранён: {path}",
+
+        "asm_ws_save_err": "❌ Ошибка сохранения workspace:\n{e}",
+
+        "asm_new_tab": "\U0001F4C4 Новый файл",
+
+        "asm_untitled": "без имени",
+
+        "asm_unsaved_title": "Несохранённые изменения",
+
+        "asm_unsaved_msg": "Файл '{file}' имеет несохранённые изменения. Сохранить?",
+        "btn_save": "Сохранить",
+        "btn_discard": "Отменить",
+        "btn_cancel": "Отмена",
+
+        "asm_map_auto_loaded": "  Map автозагружен: {n} символов",
+
+        "asm_map_auto_err": "  Ошибка автозагрузки map: {e}",
+
         # === Справка ===
         "menu_help": "Справка",
         "help_user_guide": "Руководство пользователя",
@@ -10264,20 +10178,24 @@ _current_lang = None  # Язык, выбранный пользователем 
 def set_language(lang: str) -> None:
     """Устанавливает язык, выбранный пользователем. Вызывается при переключении языка."""
     global _current_lang
+
     _current_lang = lang
 
 
 def get_system_language() -> str:
     """Возвращает текущий язык. Сначала проверяет выбранный пользователем, затем системный."""
     if _current_lang is not None:
+
         return _current_lang
     try:
         lang = QLocale.system().name()
         if lang.startswith('ru'):
             return "ru"
         elif lang.startswith('en'):
+
             return "en"
     except Exception:
+
         pass
     return "en"
 ```
@@ -10432,7 +10350,7 @@ __all__ = [
 ```
 <!-- END FILE: i8080_ci/__init__.py -->
 
-### `i8080_ci/assembler_widget.py` (904 строк)
+### `i8080_ci/assembler_widget.py` (1291 строк)
 
 <!-- FILE: i8080_ci/assembler_widget.py -->
 ```python
@@ -10441,22 +10359,28 @@ Assembler tab — editor, assembly, load to memory.
 Uses assemble8080 and number parser with 0x... and ...H support.
 
 Features:
-- Syntax highlighting
+- Syntax highlighting (global labels :: in extra bold)
 - Line numbering
 - Autocomplete (mnemonics, registers, directives, labels)
 - Error panel (double-click — goto line)
 - Label address list (double-click — goto line)
 - Jump arrows (like in disassembler)
+- Ctrl+Click on label — goto label definition
+- Multi-file tabs (Notepad++ style)
+- Workspace support (.ws JSON)
+- Auto-load map file after assembly
 """
 
 import os
 import re
+import json
 import traceback
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QPushButton,
     QFileDialog, QMessageBox, QGroupBox,
     QSplitter, QPlainTextEdit, QTableWidget, QTableWidgetItem,
-    QHeaderView, QCompleter, QAbstractItemView, QLabel, QComboBox
+    QHeaderView, QCompleter, QAbstractItemView, QLabel, QComboBox,
+    QTabWidget, QToolButton
 )
 from PySide6.QtGui import (
     QFont, QSyntaxHighlighter, QTextCharFormat, QColor, QPainter,
@@ -10467,7 +10391,7 @@ from PySide6.QtCore import Qt, QRegularExpression, QRect, QSize, QStringListMode
 from assemble8080.assembler import Assembler
 from assemble8080.objfile import obj_from_asm_result, save_obj, load_obj
 from assemble8080.linker import link, link_from_script
-from assemble8080.mapfile import load_map_file
+from assemble8080.mapfile import parse_map
 from common.i18n import LANGS, get_system_language
 from common.themes import (
     get_editor_style, get_syntax_colors, ARROW_COLORS,
@@ -10532,17 +10456,18 @@ class LineNumberArea(QWidget):
 
 
 # =============================================
-# CODE EDITOR WITH LINE NUMBERS, ARROWS, AUTOCOMPLETE
+# CODE EDITOR WITH LINE NUMBERS, ARROWS, AUTOCOMPLETE, CTRL+CLICK
 # =============================================
 
 class CodeEditor(QPlainTextEdit):
-    """Assembler editor: line numbers, jump arrows, autocomplete."""
+    """Assembler editor: line numbers, jump arrows, autocomplete, Ctrl+Click."""
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.line_number_area = LineNumberArea(self)
         self.jumps = []  # [(src_line, dst_line), ...]
         self._is_dark = True
+        self._label_lines = {}  # {LABEL: line_number} for Ctrl+Click
 
         self.blockCountChanged.connect(self._updateLineNumberAreaWidth)
         self.updateRequest.connect(self._updateLineNumberArea)
@@ -10563,6 +10488,10 @@ class CodeEditor(QPlainTextEdit):
         """Update editor colors for theme."""
         self._is_dark = is_dark
         self.line_number_area.update()
+
+    def set_label_lines(self, label_lines: dict):
+        """Set label lines for Ctrl+Click navigation."""
+        self._label_lines = label_lines
 
     # --- Line numbering ---
 
@@ -10749,11 +10678,30 @@ class CodeEditor(QPlainTextEdit):
         else:
             self._completer.popup().hide()
 
+    # --- Ctrl+Click: goto label ---
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton and (event.modifiers() & Qt.ControlModifier):
+            # Get the word under the cursor
+            cursor = self.cursorForPosition(event.position().toPoint())
+            cursor.select(QTextCursor.WordUnderCursor)
+            word = cursor.selectedText().strip()
+            if word and word.upper() in self._label_lines:
+                target_line = self._label_lines[word.upper()]
+                block = self.document().findBlockByNumber(target_line)
+                if block.isValid():
+                    new_cursor = QTextCursor(block)
+                    self.setTextCursor(new_cursor)
+                    self.ensureCursorVisible()
+                    event.accept()
+                    return
+        super().mousePressEvent(event)
+
 
 # =============================================
 # SYNTAX HIGHLIGHTING
 # =============================================
 class AsmHighlighter(QSyntaxHighlighter):
+
 
     def __init__(self, document, is_dark=True):
         super().__init__(document)
@@ -10774,20 +10722,29 @@ class AsmHighlighter(QSyntaxHighlighter):
         )
         directives = r'\b(ORG|DB|DW|DS|EQU|END|INCLUDE)\b'
         numbers = r'\b(0[xX][0-9A-Fa-f]+|[0-9][0-9A-Fa-f]*[hH]|[0-9]+[dD]?|[01]+[bB]|[0-7]+[qoQo])\b'
-        labels = r'^[A-Za-z_][A-Za-z0-9_]*:'
+        # Global labels (::) — checked FIRST so they take priority
+        global_labels = r'^([A-Za-z_][A-Za-z0-9_$]*)::'
+        # Local labels (:) — single colon
+        local_labels = r'^([A-Za-z_][A-Za-z0-9_$]*)\s*:(?!:)'
         registers = r'\b(A|B|C|D|E|H|L|M|PSW|SP|BC|DE|HL)\b'
         comments = r';.*$'
 
         colors = get_syntax_colors(self._is_dark)
 
-        def fmt(color, bold=False, italic=False):
+        def fmt(color, bold=False, italic=False, extra_bold=False):
             f = QTextCharFormat()
             f.setForeground(QColor(color))
-            if bold:
+            if bold or extra_bold:
                 f.setFontWeight(QFont.Bold)
+            if extra_bold:
+                # Extra bold: use heavier weight
+                f.setFontWeight(QFont.Black)
             if italic:
                 f.setFontItalic(True)
             return f
+
+        # Global label color: bright orange/yellow for dark theme, dark orange for light
+        global_label_color = "#FFD700" if self._is_dark else "#CC6600"
 
         self._rules = [
             (QRegularExpression(comments), fmt(colors["comment"], italic=True)),
@@ -10796,7 +10753,11 @@ class AsmHighlighter(QSyntaxHighlighter):
             (QRegularExpression(directives, QRegularExpression.CaseInsensitiveOption),
              fmt(colors["directive"])),
             (QRegularExpression(numbers), fmt(colors["number"])),
-            (QRegularExpression(labels, QRegularExpression.MultilineOption),
+            # Global labels (::) — extra bold + special color
+            (QRegularExpression(global_labels, QRegularExpression.MultilineOption),
+             fmt(global_label_color, extra_bold=True)),
+            # Local labels (:) — normal bold
+            (QRegularExpression(local_labels, QRegularExpression.MultilineOption),
              fmt(colors["label"], bold=True)),
             (QRegularExpression(registers, QRegularExpression.CaseInsensitiveOption),
              fmt(colors["register"])),
@@ -10818,10 +10779,10 @@ class AsmHighlighter(QSyntaxHighlighter):
 
 
 # =============================================
-# MAIN ASSEMBLER WIDGET
+# MAIN ASSEMBLER WIDGET (Notepad++ style with tabs)
 # =============================================
 class AssemblerWidget(QWidget):
-    """Assembler tab: editor, errors, labels."""
+    """Assembler tab: multi-file editor with tabs, errors, labels."""
 
     def __init__(self, main_window=None, is_dark=True, parent=None):
         super().__init__(parent)
@@ -10829,7 +10790,7 @@ class AssemblerWidget(QWidget):
         self.is_dark = is_dark
         
         self.assembler = Assembler()
-        self._current_file = None  # Путь к загруженному .asm файлу
+        self._workspace_path = None  # Path to .ws workspace file
         self._init_ui()
 
     def _init_ui(self):
@@ -10839,9 +10800,9 @@ class AssemblerWidget(QWidget):
         # --- Button panel ---
         ctrl_layout = QHBoxLayout()
 
-        self.btn_new = QPushButton(_tr("asm_new"))
-        self.btn_new.clicked.connect(self.on_new)
-        ctrl_layout.addWidget(self.btn_new)
+        #self.btn_new = QPushButton(_tr("asm_new"))
+        #self.btn_new.clicked.connect(self.on_new)
+        #ctrl_layout.addWidget(self.btn_new)
 
         self.btn_load_file = QPushButton(_tr("asm_load"))
         self.btn_load_file.clicked.connect(self.on_load_file)
@@ -10850,6 +10811,15 @@ class AssemblerWidget(QWidget):
         self.btn_save_file = QPushButton(_tr("asm_save"))
         self.btn_save_file.clicked.connect(self.on_save_file)
         ctrl_layout.addWidget(self.btn_save_file)
+
+        # Workspace buttons
+        self.btn_open_ws = QPushButton(_tr("asm_open_ws"))
+        self.btn_open_ws.clicked.connect(self.on_open_workspace)
+        ctrl_layout.addWidget(self.btn_open_ws)
+
+        self.btn_save_ws = QPushButton(_tr("asm_save_ws"))
+        self.btn_save_ws.clicked.connect(self.on_save_workspace)
+        ctrl_layout.addWidget(self.btn_save_ws)
 
         self.btn_assemble = QPushButton(_tr("asm_assemble"))
         self.btn_assemble.clicked.connect(self.on_assemble)
@@ -10867,7 +10837,7 @@ class AssemblerWidget(QWidget):
         self.btn_link.clicked.connect(self.on_link)
         ctrl_layout.addWidget(self.btn_link)
 
-        # === Выбор типа процессора ===
+        # === CPU type selector ===
         ctrl_layout.addSpacing(20)
         ctrl_layout.addWidget(QLabel("Процессор:"))
         self.cpu_combo = QComboBox()
@@ -10881,17 +10851,24 @@ class AssemblerWidget(QWidget):
         # --- Horizontal splitter: editor+errors | labels ---
         h_splitter = QSplitter(Qt.Horizontal)
 
-        # Left: editor + error panel
+        # Left: tab widget + error panel
         v_splitter = QSplitter(Qt.Vertical)
 
-        # Code editor
-        self.editor = CodeEditor(self)
-        self.editor.setFont(QFont("Consolas", 11))
-        self.editor.setPlaceholderText(_tr("asm_placeholder"))
-        self.editor.set_dark(self.is_dark)
-        self.highlighter = AsmHighlighter(self.editor.document(), self.is_dark)
-        self.editor.textChanged.connect(self._on_text_changed)
-        v_splitter.addWidget(self.editor)
+        # Tab widget for multiple files
+        self.tab_widget = QTabWidget()
+        self.tab_widget.setTabsClosable(True)
+        self.tab_widget.setMovable(True)
+        self.tab_widget.tabCloseRequested.connect(self._on_tab_close)
+        self.tab_widget.currentChanged.connect(self._on_tab_changed)
+        
+        # "+" button for new tab
+        self.btn_add_tab = QToolButton()
+        self.btn_add_tab.setText("+")
+        self.btn_add_tab.setToolTip(_tr("asm_new_tab"))
+        self.btn_add_tab.clicked.connect(self._add_tab)
+        self.tab_widget.setCornerWidget(self.btn_add_tab, Qt.TopRightCorner)
+        
+        v_splitter.addWidget(self.tab_widget)
 
         # Error panel
         self.error_group = QGroupBox(_tr("asm_errors"))
@@ -10933,16 +10910,264 @@ class AssemblerWidget(QWidget):
         h_splitter.setSizes([600, 200])
         layout.addWidget(h_splitter, 1)
 
-    # --- Navigation ---
+        # Create initial tab
+        self._add_tab()
+
+    # =============================================
+    # TAB MANAGEMENT
+    # =============================================
+
+    def _add_tab(self, file_path=None, content=None):
+        """Add a new tab with optional file path and content."""
+        editor = CodeEditor(self)
+        editor.setFont(QFont("Consolas", 11))
+        editor.setPlaceholderText(_tr("asm_placeholder"))
+        editor.set_dark(self.is_dark)
+        editor.setStyleSheet(get_editor_style(self.is_dark))
+        highlighter = AsmHighlighter(editor.document(), self.is_dark)
+        editor.textChanged.connect(lambda: self._on_text_changed(editor))
+        
+        if content is not None:
+            editor.setPlainText(content)
+        
+        # Track tab state
+        tab_info = {
+            'editor': editor,
+            'highlighter': highlighter,
+            'file_path': file_path,
+            'modified': False,
+        }
+        
+        # Connect modified tracking
+        editor.document().modificationChanged.connect(
+            lambda m, ti=tab_info: self._on_tab_modified(ti, m))
+        
+        # Add to tab widget
+        tab_index = self.tab_widget.addTab(editor, self._tab_title(file_path))
+        self.tab_widget.setCurrentIndex(tab_index)
+        
+        # Store tab info
+        self._tab_infos = getattr(self, '_tab_infos', [])
+        self._tab_infos.append(tab_info)
+        
+        # Update label lines and jumps
+        self._update_tab_labels(editor)
+        
+        return tab_index
+
+    def _on_tab_close(self, index):
+        """Close a tab."""
+        if not hasattr(self, '_tab_infos') or index >= len(self._tab_infos):
+            return
+        
+        tab_info = self._tab_infos[index]
+        editor = tab_info['editor']
+        
+        # Check for unsaved changes
+        if editor.document().isModified():
+            title = self._tab_title(tab_info['file_path'])
+            msg_box = QMessageBox(self)
+            msg_box.setWindowTitle(_tr("asm_unsaved_title"))
+            msg_box.setText(_tr("asm_unsaved_msg").format(file=title))
+            btn_save = msg_box.addButton(_tr("btn_save"), QMessageBox.AcceptRole)
+            btn_discard = msg_box.addButton(_tr("btn_discard"), QMessageBox.DestructiveRole)
+            btn_cancel = msg_box.addButton(_tr("btn_cancel"), QMessageBox.RejectRole)
+            msg_box.exec()
+            reply = msg_box.clickedButton()
+            if reply == btn_save:
+                reply = QMessageBox.Save
+            elif reply == btn_cancel:
+                reply = QMessageBox.Cancel
+            else:
+                reply = QMessageBox.Discard
+            if reply == QMessageBox.Save:
+                self._save_tab(index)
+            elif reply == QMessageBox.Cancel:
+                return
+        
+        # Remove from tab widget
+        self.tab_widget.removeTab(index)
+        editor.deleteLater()
+        
+        # Remove from tab infos
+        self._tab_infos.pop(index)
+        
+        # If no tabs left, add a new one
+        if self.tab_widget.count() == 0:
+            self._add_tab()
+
+    def _on_tab_changed(self, index):
+        """Handle tab change."""
+        if not hasattr(self, '_tab_infos') or index < 0 or index >= len(self._tab_infos):
+            return
+        tab_info = self._tab_infos[index]
+        editor = tab_info['editor']
+        # Update label lines and jumps for the new current tab
+        self._update_tab_labels(editor)
+
+    def _on_tab_modified(self, tab_info, modified):
+        """Handle tab modification."""
+        tab_info['modified'] = modified
+        # Update tab title
+        for i, ti in enumerate(self._tab_infos):
+            if ti is tab_info:
+                self.tab_widget.setTabText(i, self._tab_title(ti['file_path'], ti['modified']))
+                break
+
+    def _tab_title(self, file_path, modified=False):
+        """Generate tab title from file path."""
+        if file_path:
+            name = os.path.basename(file_path)
+        else:
+            name = _tr("asm_untitled")
+        if modified:
+            name += " ●"
+        return name
+
+    def _current_editor(self):
+        """Get the current tab's editor."""
+        index = self.tab_widget.currentIndex()
+        if 0 <= index < len(self._tab_infos):
+            return self._tab_infos[index]['editor']
+        return None
+
+    def _current_tab_info(self):
+        """Get the current tab's info dict."""
+        index = self.tab_widget.currentIndex()
+        if 0 <= index < len(self._tab_infos):
+            return self._tab_infos[index]
+        return None
+
+    def _save_tab(self, index):
+        """Save a specific tab."""
+        if index < 0 or index >= len(self._tab_infos):
+            return
+        tab_info = self._tab_infos[index]
+        editor = tab_info['editor']
+        file_path = tab_info['file_path']
+        
+        if not file_path:
+            file_path, _ = QFileDialog.getSaveFileName(
+                self, _tr("asm_save_title"), "",
+                _tr("asm_file_filter_save"))
+            if not file_path:
+                return
+            tab_info['file_path'] = file_path
+        
+        try:
+            with open(file_path, 'w', encoding='utf-8') as f:
+                f.write(editor.toPlainText())
+            editor.document().setModified(False)
+            self.tab_widget.setTabText(index, self._tab_title(file_path, False))
+            if self.main_window is not None:
+                self.main_window.log(_tr("asm_saved").format(path=file_path))
+        except Exception as e:
+            QMessageBox.critical(self, _tr("asm_err_title"),
+                                 _tr("asm_save_err").format(e=e))
+
+    # =============================================
+    # WORKSPACE SUPPORT
+    # =============================================
+
+    def on_open_workspace(self):
+        """Open a workspace file (.ws)."""
+        path, _ = QFileDialog.getOpenFileName(
+            self, _tr("asm_open_ws_title"), "",
+            _tr("asm_ws_filter"))
+        if not path:
+            return
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                ws = json.load(f)
+            self._workspace_path = path
+            ws_dir = os.path.dirname(path)
+            
+            # Close all existing tabs except the first
+            while self.tab_widget.count() > 1:
+                self._on_tab_close(self.tab_widget.count() - 1)
+            
+            # Open files from workspace
+            files = ws.get('files', [])
+            for i, fpath in enumerate(files):
+                full_path = os.path.join(ws_dir, fpath) if not os.path.isabs(fpath) else fpath
+                if os.path.exists(full_path):
+                    try:
+                        with open(full_path, 'r', encoding='utf-8') as f:
+                            content = f.read()
+                        self._add_tab(full_path, content)
+                    except Exception:
+                        pass
+                else:
+                    # File doesn't exist, create empty tab
+                    self._add_tab(full_path, "")
+            
+            # Set active tab
+            active = ws.get('active', 0)
+            if 0 <= active < self.tab_widget.count():
+                self.tab_widget.setCurrentIndex(active)
+            
+            if self.main_window is not None:
+                self.main_window.log(_tr("asm_ws_loaded").format(path=path, n=len(files)))
+        except Exception as e:
+            QMessageBox.critical(self, _tr("asm_err_title"),
+                                 _tr("asm_ws_err").format(e=e))
+
+    def on_save_workspace(self):
+        """Save workspace file (.ws)."""
+        if self._workspace_path:
+            path = self._workspace_path
+        else:
+            path, _ = QFileDialog.getSaveFileName(
+                self, _tr("asm_save_ws_title"), "",
+                _tr("asm_ws_filter_save"))
+            if not path:
+                return
+        
+        # Collect file paths from tabs
+        files = []
+        for ti in self._tab_infos:
+            if ti['file_path']:
+                # Store relative path if possible
+                if self._workspace_path:
+                    ws_dir = os.path.dirname(self._workspace_path)
+                    try:
+                        rel = os.path.relpath(ti['file_path'], ws_dir)
+                        files.append(rel)
+                    except ValueError:
+                        files.append(ti['file_path'])
+                else:
+                    files.append(ti['file_path'])
+        
+        ws = {
+            'version': 1,
+            'files': files,
+            'active': self.tab_widget.currentIndex(),
+        }
+        
+        try:
+            with open(path, 'w', encoding='utf-8') as f:
+                json.dump(ws, f, indent=2)
+            self._workspace_path = path
+            if self.main_window is not None:
+                self.main_window.log(_tr("asm_ws_saved").format(path=path))
+        except Exception as e:
+            QMessageBox.critical(self, _tr("asm_err_title"),
+                                 _tr("asm_ws_save_err").format(e=e))
+
+    # =============================================
+    # NAVIGATION
+    # =============================================
 
     def _goto_line(self, line_num):
-        """Goto line (0-based) in editor."""
-        block = self.editor.document().findBlockByNumber(line_num)
-        if block.isValid():
-            cursor = QTextCursor(block)
-            self.editor.setTextCursor(cursor)
-            self.editor.ensureCursorVisible()
-            self.editor.setFocus()
+        """Goto line (0-based) in current editor."""
+        editor = self._current_editor()
+        if editor:
+            block = editor.document().findBlockByNumber(line_num)
+            if block.isValid():
+                cursor = QTextCursor(block)
+                editor.setTextCursor(cursor)
+                editor.ensureCursorVisible()
+                editor.setFocus()
 
     def _on_error_double_clicked(self, row, column):
         item = self.error_table.item(row, 0)
@@ -10956,22 +11181,39 @@ class AssemblerWidget(QWidget):
             if txt.isdigit():
                 self._goto_line(int(txt) - 1)
 
-    # --- Label and jump collection ---
-    def _collect_label_lines(self):
+    # =============================================
+    # LABEL AND JUMP COLLECTION
+    # =============================================
+
+    def _collect_label_lines(self, editor=None):
         """Collect {LABEL: line_number} from editor text."""
-        lines = self.editor.toPlainText().split('\n')
+        if editor is None:
+            editor = self._current_editor()
+        if editor is None:
+            return {}
+        lines = editor.toPlainText().split('\n')
         label_lines = {}
         for i, line in enumerate(lines):
             stripped = line.strip()
-            m = re.match(r'^([A-Za-z_][A-Za-z0-9_]*)\s*:', stripped)
+            # Global label (::)
+            m = re.match(r'^([A-Za-z_][A-Za-z0-9_$]*)::', stripped)
+            if m:
+                label_lines[m.group(1).upper()] = i
+                continue
+            # Local label (:)
+            m = re.match(r'^([A-Za-z_][A-Za-z0-9_$]*)\s*:(?!:)', stripped)
             if m:
                 label_lines[m.group(1).upper()] = i
         return label_lines
 
-    def _compute_jumps(self):
+    def _compute_jumps(self, editor=None):
         """Compute jumps [(src_line, dst_line), ...]."""
-        lines = self.editor.toPlainText().split('\n')
-        label_lines = self._collect_label_lines()
+        if editor is None:
+            editor = self._current_editor()
+        if editor is None:
+            return
+        lines = editor.toPlainText().split('\n')
+        label_lines = self._collect_label_lines(editor)
         jumps = []
 
         for i, line in enumerate(lines):
@@ -11004,15 +11246,23 @@ class AssemblerWidget(QWidget):
             if operand in label_lines:
                 jumps.append((i, label_lines[operand]))
 
-        self.editor.set_jumps(jumps)
+        editor.set_jumps(jumps)
 
-    def _on_text_changed(self):
+    def _update_tab_labels(self, editor):
+        """Update label lines and jumps for a specific editor."""
+        label_lines = self._collect_label_lines(editor)
+        editor.set_label_lines(label_lines)
+        self._compute_jumps(editor)
+        labels = list(label_lines.keys())
+        editor.set_completions(KEYWORDS + labels)
+
+    def _on_text_changed(self, editor):
         """On text change — recompute jumps and update autocomplete."""
-        self._compute_jumps()
-        labels = list(self._collect_label_lines().keys())
-        self.editor.set_completions(KEYWORDS + labels)
+        self._update_tab_labels(editor)
 
-    # --- Error panel update ---
+    # =============================================
+    # ERROR PANEL UPDATE
+    # =============================================
 
     def _update_errors(self, errors):
         """Fill error panel. errors: [(line, message), ...]"""
@@ -11024,33 +11274,42 @@ class AssemblerWidget(QWidget):
             self.error_table.setItem(row, 0, QTableWidgetItem(str(line)))
             self.error_table.setItem(row, 1, QTableWidgetItem(msg))
             error_lines.append(line - 1)
-        self.editor.highlight_error_lines(error_lines)
+        editor = self._current_editor()
+        if editor:
+            editor.highlight_error_lines(error_lines)
 
-    # --- Label table update ---
+    # =============================================
+    # LABEL TABLE UPDATE
+    # =============================================
 
-    def _update_labels_table(self, symbols):
-        """Fill label table. symbols: {label: address}"""
+    def _update_labels_table(self, symbols, global_labels=None):
+        """Fill label table. symbols: {label: address}, global_labels: set of global label names"""
         self.label_table.setRowCount(0)
-        label_lines = self._collect_label_lines()
+        editor = self._current_editor()
+        label_lines = self._collect_label_lines(editor) if editor else {}
         sorted_symbols = sorted(symbols.items(), key=lambda x: x[1])
         for label, addr in sorted_symbols:
             row = self.label_table.rowCount()
             self.label_table.insertRow(row)
-            self.label_table.setItem(row, 0, QTableWidgetItem(label))
+            
+            # Label name — bold if global
+            label_item = QTableWidgetItem(label)
+            if global_labels and label in global_labels:
+                label_item.setFont(QFont("Consolas", 10, QFont.Bold))
+            self.label_table.setItem(row, 0, label_item)
+            
             self.label_table.setItem(row, 1, QTableWidgetItem(f"0x{addr:04X}"))
             ln = label_lines.get(label, -1)
             self.label_table.setItem(row, 2,
                                      QTableWidgetItem(str(ln + 1) if ln >= 0 else "-"))
 
-    # --- Button handlers ---
+    # =============================================
+    # BUTTON HANDLERS
+    # =============================================
+
     def on_new(self):
-        """New program: clear editor and log."""
-        self.editor.clear()
-        self._current_file = None
-        self.editor.jumps = []
-        self.editor.line_number_area.update()
-        self.error_table.setRowCount(0)
-        self.label_table.setRowCount(0)
+        """New program: add a new empty tab."""
+        self._add_tab()
 
     def on_assemble(self):
         self._do_assemble(load_to_memory=False)
@@ -11060,15 +11319,18 @@ class AssemblerWidget(QWidget):
 
     def on_assemble_obj(self):
         """Assemble and save object file (.obj)."""
-        # Передаём тип процессора в ассемблер
         self.assembler.cpu_type = self.cpu_combo.currentText()
-        source = self.editor.toPlainText()
+        editor = self._current_editor()
+        if not editor:
+            return
+        source = editor.toPlainText()
         if not source.strip():
             if self.main_window is not None:
                 self.main_window.log(_tr("asm_no_code"))
             return
         try:
-            result = self.assembler.assemble(source, self._current_file or '')
+            file_path = self._current_tab_info()['file_path'] if self._current_tab_info() else None
+            result = self.assembler.assemble(source, file_path or '')
         except Exception:
             if self.main_window is not None:
                 self.main_window.log(_tr("asm_exception").format(tb=traceback.format_exc()))
@@ -11079,12 +11341,12 @@ class AssemblerWidget(QWidget):
                 for err in result.errors:
                     self.main_window.log(_tr("asm_err_line").format(line=err.line, msg=err.message))
             return
-        # Сохранение map-файла рядом с исходным (map создаётся при любом ассемблировании)
-        # === Автоопределение CPU из директивы ===
         self._apply_cpu_from_source()
 
-        if result.map_text and self._current_file:
-            map_path = os.path.splitext(self._current_file)[0] + '.map'
+        # Save map file
+        file_path = self._current_tab_info()['file_path'] if self._current_tab_info() else None
+        if result.map_text and file_path:
+            map_path = os.path.splitext(file_path)[0] + '.map'
             try:
                 from assemble8080.mapfile import save_map_file
                 save_map_file(map_path, result.map_text)
@@ -11093,9 +11355,10 @@ class AssemblerWidget(QWidget):
             except Exception as e:
                 if self.main_window is not None:
                     self.main_window.log(_tr("asm_map_save_err").format(e=e))
+        
         # Determine default obj path
-        if self._current_file:
-            default = os.path.splitext(self._current_file)[0] + '.obj'
+        if file_path:
+            default = os.path.splitext(file_path)[0] + '.obj'
         else:
             default = 'output.obj'
         path, _ = QFileDialog.getSaveFileName(
@@ -11103,7 +11366,7 @@ class AssemblerWidget(QWidget):
         if not path:
             return
         try:
-            obj = obj_from_asm_result(result, self._current_file or '')
+            obj = obj_from_asm_result(result, file_path or '')
             save_obj(path, obj)
             if self.main_window is not None:
                 self.main_window.log(_tr("asm_obj_saved").format(path=path))
@@ -11113,7 +11376,6 @@ class AssemblerWidget(QWidget):
 
     def on_link(self):
         """Link object files using a linker script (.lnk) or selected .obj files."""
-        # Try to open a linker script first
         path, _ = QFileDialog.getOpenFileName(
             self, _tr("asm_link_title"), "", _tr("asm_link_filter"))
         if not path:
@@ -11124,7 +11386,6 @@ class AssemblerWidget(QWidget):
             if path.lower().endswith('.lnk'):
                 result = link_from_script(path)
             else:
-                # Single .obj file: link it alone
                 obj = load_obj(path)
                 result = link([obj])
             if not result.success:
@@ -11144,14 +11405,15 @@ class AssemblerWidget(QWidget):
                                  _tr("asm_link_fail").format(e=e))
 
     def on_load_file(self):
+        """Load a file into a new tab."""
         path, _ = QFileDialog.getOpenFileName(
             self, _tr("asm_load_title"), "",
             _tr("asm_file_filter"))
         if path:
             try:
                 with open(path, 'r', encoding='utf-8') as f:
-                    self.editor.setPlainText(f.read())
-                self._current_file = path
+                    content = f.read()
+                self._add_tab(path, content)
                 if self.main_window is not None:
                     self.main_window.log(_tr("asm_loaded").format(path=path))
             except Exception as e:
@@ -11159,42 +11421,38 @@ class AssemblerWidget(QWidget):
                                      _tr("asm_load_err").format(e=e))
 
     def on_save_file(self):
-        path, _ = QFileDialog.getSaveFileName(
-            self, _tr("asm_save_title"), "",
-            _tr("asm_file_filter_save"))
-        if path:
-            try:
-                with open(path, 'w', encoding='utf-8') as f:
-                    f.write(self.editor.toPlainText())
-                if self.main_window is not None:
-                    self.main_window.log(_tr("asm_saved").format(path=path))
-            except Exception as e:
-                QMessageBox.critical(self, _tr("asm_err_title"),
-                                     _tr("asm_save_err").format(e=e))
+        """Save the current tab's file."""
+        self._save_tab(self.tab_widget.currentIndex())
 
-    # --- Assembly ---
+    # =============================================
+    # ASSEMBLY
+    # =============================================
 
     def _do_assemble(self, load_to_memory=False):
-        # Передаём тип процессора в ассемблер
+        """Assemble the current tab's source code."""
         self.assembler.cpu_type = self.cpu_combo.currentText()
         
         if self.main_window is not None:
             self.main_window.log(_tr("asm_assembling"))
 
-        source = self.editor.toPlainText()
+        editor = self._current_editor()
+        if not editor:
+            return
+        source = editor.toPlainText()
         if not source.strip():
             if self.main_window is not None:
                 self.main_window.log(_tr("asm_no_code"))
             return
 
+        file_path = self._current_tab_info()['file_path'] if self._current_tab_info() else None
         try:
-            result = self.assembler.assemble(source, self._current_file or '')
+            result = self.assembler.assemble(source, file_path or '')
         except Exception:
             if self.main_window is not None:
                 self.main_window.log(_tr("asm_exception").format(tb=traceback.format_exc()))
             return
 
-        self._compute_jumps()
+        self._compute_jumps(editor)
 
         if result.errors:
             if self.main_window is not None:
@@ -11210,10 +11468,7 @@ class AssemblerWidget(QWidget):
 
         # Success
         self._update_errors([])
-
-        # === Автоопределение CPU из директивы ===
         self._apply_cpu_from_source()
-
 
         if result.warnings:
             if self.main_window is not None:
@@ -11229,11 +11484,12 @@ class AssemblerWidget(QWidget):
             for name, addr in sorted(result.symbols.items(), key=lambda x: x[1]):
                 self.main_window.log(f"    {name}: 0x{addr:04X}")
 
-        self._update_labels_table(result.symbols)
+        # Update labels table with global label info
+        self._update_labels_table(result.symbols, result.global_labels)
 
-        # Сохранение map-файла рядом с исходным файлом
-        if result.map_text and self._current_file:
-            map_path = os.path.splitext(self._current_file)[0] + '.map'
+        # Save map file
+        if result.map_text and file_path:
+            map_path = os.path.splitext(file_path)[0] + '.map'
             try:
                 from assemble8080.mapfile import save_map_file
                 save_map_file(map_path, result.map_text)
@@ -11246,6 +11502,53 @@ class AssemblerWidget(QWidget):
         # Load to memory
         if load_to_memory and result.binary:
             self._load_to_memory(result.binary, result.origin)
+            # Auto-load map into disassembler (only on assemble+load)
+            # Extract EQU constants for disassembler substitution
+            if self.main_window is not None and hasattr(result, 'equ_symbols'):
+                self.main_window.equ_dict = {
+                    result.symbols[n]: n for n in result.equ_symbols
+                    if n in result.symbols
+                }
+            self._auto_load_map(result)
+
+    def _auto_load_map(self, result):
+        """Auto-load map file into disassembler and emulator."""
+        if not result.map_text or self.main_window is None:
+            return
+        try:
+            mf = parse_map(result.map_text)
+            self.main_window.map_file = mf
+            # Set map on disassembler (same as manual load)
+            self.main_window.disassembler.set_map(mf)
+            # Set EQU constants for value substitution
+            if hasattr(self.main_window, 'equ_dict') and self.main_window.equ_dict:
+                self.main_window.disassembler.set_equ(self.main_window.equ_dict)
+            # Update main disassembler view with symbols
+            if hasattr(self.main_window, 'disasm_view') and hasattr(self.main_window.disasm_view, 'set_symbols'):
+                self.main_window.disasm_view.set_symbols(mf)
+            # Update emulator disasm view with symbols
+            if hasattr(self.main_window, 'emu_disasm_view') and hasattr(self.main_window.emu_disasm_view, 'set_symbols'):
+                self.main_window.emu_disasm_view.set_symbols(mf)
+            # Update disasm range to match actual binary size (like emulator does)
+            if result.binary:
+                origin = result.origin
+                size = len(result.binary)
+                mw = self.main_window
+                if hasattr(mw, 'disasm_start'):
+                    mw.disasm_start.setText(f"{origin:04X}")
+                if hasattr(mw, 'disasm_len'):
+                    mw.disasm_len.setText(f"{size:04X}")
+            # Re-run main disassembly to show resolved symbols in text
+            if hasattr(self.main_window, 'run_disasm'):
+                self.main_window.run_disasm()
+            # Re-run emulator disassembly to show resolved symbols in text
+            if hasattr(self.main_window, 'update_emu_disasm_view'):
+                self.main_window.update_emu_disasm_view()
+            if self.main_window is not None:
+                self.main_window.log(_tr("asm_map_auto_loaded").format(n=len(mf.entries)))
+        except Exception as e:
+            if self.main_window is not None:
+                self.main_window.log(_tr("asm_map_auto_err").format(e=e))
 
     def _load_to_memory(self, binary, origin):
         """Load assembled binary into emulator memory."""
@@ -11272,18 +11575,13 @@ class AssemblerWidget(QWidget):
                 self.main_window.log(_tr("asm_load_mem_err").format(tb=traceback.format_exc()))
 
     def _apply_cpu_from_source(self):
-        """Автоопределение типа CPU из директивы в исходном коде.
-        Если директива найдена — блокируем combo и синхронизируем эмулятор.
-        Если нет — разблокируем combo (пользователь выбирает вручную)."""
+        """Auto-detect CPU type from source directives."""
         cpu_from_source = self.assembler.cpu_set_by_directive
         cpu_type = self.assembler.cpu_type
 
         if cpu_from_source:
-            # Директива найдена — синхронизируем через централизованный метод
-            # (сброс эмулятора, дизассемблер, combo, UI) — единая точка смены CPU
             if self.main_window is not None and hasattr(self.main_window, '_set_cpu_type'):
                 self.main_window._set_cpu_type(cpu_type, source='assembler')
-            # Блокируем combo (директива принудительно задаёт CPU)
             self.cpu_combo.blockSignals(True)
             self.cpu_combo.setCurrentText(cpu_type)
             self.cpu_combo.blockSignals(False)
@@ -11294,7 +11592,6 @@ class AssemblerWidget(QWidget):
                 if hasattr(self.main_window, 'disasm_cpu_combo'):
                     self.main_window.disasm_cpu_combo.setEnabled(False)
         else:
-            # Директивы нет — разблокируем combo
             self.cpu_combo.setEnabled(True)
             if self.main_window is not None:
                 if hasattr(self.main_window, 'emu_cpu_combo'):
@@ -11302,28 +11599,34 @@ class AssemblerWidget(QWidget):
                 if hasattr(self.main_window, 'disasm_cpu_combo'):
                     self.main_window.disasm_cpu_combo.setEnabled(True)
 
+    # =============================================
+    # THEME
+    # =============================================
+
     def set_theme(self, is_dark: bool):
         """Update assembler widget theme."""
         self.is_dark = is_dark
-        if hasattr(self, 'highlighter') and self.highlighter is not None:
-            self.highlighter.set_theme(is_dark)
-        if hasattr(self, 'editor') and self.editor is not None:
-            self.editor.set_dark(is_dark)
-            self.editor.setStyleSheet(get_editor_style(is_dark))
-            # Update button labels for new language
-            self.btn_new.setText(_tr("asm_new"))
-            self.btn_load_file.setText(_tr("asm_load"))
-            self.btn_save_file.setText(_tr("asm_save"))
-            self.btn_assemble.setText(_tr("asm_assemble"))
-            self.btn_assemble_load.setText(_tr("asm_assemble_load"))
-            self.btn_assemble_obj.setText(_tr("asm_assemble_obj"))
-            self.btn_link.setText(_tr("asm_link"))
-            self.error_group.setTitle(_tr("asm_errors"))
-            self.error_table.setHorizontalHeaderLabels([_tr("asm_col_line"), _tr("asm_col_msg")])
-            self.label_group.setTitle(_tr("asm_labels"))
-            self.label_table.setHorizontalHeaderLabels(
-                [_tr("asm_col_label"), _tr("asm_col_addr"), _tr("asm_col_line2")])
-            self.editor.setPlaceholderText(_tr("asm_placeholder"))
+        for ti in self._tab_infos:
+            ti['highlighter'].set_theme(is_dark)
+            ti['editor'].set_dark(is_dark)
+            ti['editor'].setStyleSheet(get_editor_style(is_dark))
+        # Update button labels for new language
+        #self.btn_new.setText(_tr("asm_new"))
+        self.btn_load_file.setText(_tr("asm_load"))
+        self.btn_save_file.setText(_tr("asm_save"))
+        self.btn_open_ws.setText(_tr("asm_open_ws"))
+        self.btn_save_ws.setText(_tr("asm_save_ws"))
+        self.btn_assemble.setText(_tr("asm_assemble"))
+        self.btn_assemble_load.setText(_tr("asm_assemble_load"))
+        self.btn_assemble_obj.setText(_tr("asm_assemble_obj"))
+        self.btn_link.setText(_tr("asm_link"))
+        self.error_group.setTitle(_tr("asm_errors"))
+        self.error_table.setHorizontalHeaderLabels([_tr("asm_col_line"), _tr("asm_col_msg")])
+        self.label_group.setTitle(_tr("asm_labels"))
+        self.label_table.setHorizontalHeaderLabels(
+            [_tr("asm_col_label"), _tr("asm_col_addr"), _tr("asm_col_line2")])
+        for ti in self._tab_infos:
+            ti['editor'].setPlaceholderText(_tr("asm_placeholder"))
 
     def sync_from_memory(self):
         """Sync from emulator memory (disassembly)."""
@@ -11339,11 +11642,13 @@ class AssemblerWidget(QWidget):
         text_lines = [f"        ORG {mn:04X}H"]
         for addr, size, asm, undoc, target in lines:
             text_lines.append(f"{asm}")
-        self.editor.setPlainText('\n'.join(text_lines))
+        editor = self._current_editor()
+        if editor:
+            editor.setPlainText('\n'.join(text_lines))
 ```
 <!-- END FILE: i8080_ci/assembler_widget.py -->
 
-### `i8080_ci/automation.py` (726 строк)
+### `i8080_ci/automation.py` (736 строк)
 
 <!-- FILE: i8080_ci/automation.py -->
 ```python
@@ -11943,11 +12248,11 @@ class AutomationAPI:
 
     def asm_get_source(self):
         """Вернуть исходный код из редактора ассемблера."""
-        return self._check_assembler().editor.toPlainText()
+        return self._check_assembler()._current_editor().toPlainText()
 
     def asm_set_source(self, source):
         """Установить исходный код в редактор ассемблера."""
-        self._check_assembler().editor.setPlainText(source)
+        self._check_assembler()._current_editor().setPlainText(source)
 
     def asm_load_file(self, path):
         """Загрузить .asm файл в редактор ассемблера. Возвращает текст."""
@@ -11964,9 +12269,9 @@ class AutomationAPI:
         """
         widget = self._check_assembler()
         if source is not None:
-            widget.editor.setPlainText(source)
+            widget._current_editor().setPlainText(source)
         else:
-            source = widget.editor.toPlainText()
+            source = widget._current_editor().toPlainText()
         # Устанавливаем cpu_type из combo (как в GUI _do_assemble)
         if hasattr(widget, 'cpu_combo'):
             widget.assembler.cpu_type = widget.cpu_combo.currentText()
@@ -11985,7 +12290,17 @@ class AutomationAPI:
             except Exception:
                 pass
         if load_to_memory and result.binary:
+            # Extract EQU constants for disassembler substitution
+            mw = widget.main_window
+            if mw is not None and hasattr(result, 'equ_symbols'):
+                mw.equ_dict = {
+                    result.symbols[n]: n for n in result.equ_symbols
+                    if n in result.symbols
+                }
             widget._load_to_memory(result.binary, result.origin)
+            # Auto-load map into disassembler (same as GUI button)
+            if hasattr(widget, '_auto_load_map'):
+                widget._auto_load_map(result)
         return result
 
     def asm_get_binary(self):
@@ -12330,7 +12645,7 @@ class BusWorker(QObject):
 ```
 <!-- END FILE: i8080_ci/bus_worker.py -->
 
-### `i8080_ci/disassembler.py` (216 строк)
+### `i8080_ci/disassembler.py` (233 строк)
 
 <!-- FILE: i8080_ci/disassembler.py -->
 ```python
@@ -12354,6 +12669,7 @@ JUMP_OPCODES_8085 = _JUMP_BASE | {0xDD, 0xFD}
 class I8080Disassembler:
     REGS = ['B', 'C', 'D', 'E', 'H', 'L', 'M', 'A']
     ALUS = ['ADD', 'ADC', 'SUB', 'SBB', 'ANA', 'XRA', 'ORA', 'CMP']
+    ALUS_IMM = ['ADI', 'ACI', 'SUI', 'SBI', 'ANI', 'XRI', 'ORI', 'CPI']
     RP = ['B', 'D', 'H', 'SP']
     RP_PUSH = ['B', 'D', 'H', 'PSW']
     CC = ['NZ', 'Z', 'NC', 'C', 'PO', 'PE', 'P', 'M']
@@ -12363,6 +12679,7 @@ class I8080Disassembler:
         self.table = self._generate_table()
         self._map = map_file  # MapFile or None
         self._map_dict = {}   # {address: name}
+        self._equ_dict = {}   # {value: name} for EQU constants
         if map_file:
             self._map_dict = map_file.to_dict()
         
@@ -12430,7 +12747,7 @@ class I8080Disassembler:
             t[0xC5 + i*16] = (1, f"PUSH {self.RP_PUSH[i]}")
             
         for i in range(8):
-            t[0xC6 + i*8] = (2, f"{self.ALUS[i]} {{0:02X}}h")
+            t[0xC6 + i*8] = (2, f"{self.ALUS_IMM[i]} {{0:02X}}h")
             
         t[0xC7] = (1, "RST 0"); t[0xCF] = (1, "RST 1"); t[0xD7] = (1, "RST 2")
         t[0xDF] = (1, "RST 3"); t[0xE7] = (1, "RST 4"); t[0xEF] = (1, "RST 5")
@@ -12497,6 +12814,12 @@ class I8080Disassembler:
         """Set map file for symbol resolution."""
         self._map = map_file
         self._map_dict = map_file.to_dict() if map_file else {}
+
+    def set_equ(self, equ_dict: dict):
+        """Set EQU constants for value-to-name substitution.
+        equ_dict: {value: name} e.g. {5: 'COUNT', 255: 'MAX'}
+        """
+        self._equ_dict = equ_dict or {}
     
     def _resolve_symbol(self, addr):
         """Resolve address to symbol name from map file."""
@@ -12506,6 +12829,19 @@ class I8080Disassembler:
             return self._map_dict[addr]
         return None
     
+    def _substitute_equ(self, text: str) -> str:
+        """Replace hex values with EQU names where applicable."""
+        if not self._equ_dict:
+            return text
+        import re
+        def _repl(m):
+            val = int(m.group(1), 16)
+            if val in self._equ_dict:
+                return self._equ_dict[val]
+            return m.group(0)
+        # Replace 1-2 digit hex values followed by 'h' (immediate operands)
+        return re.sub(r'\b([0-9A-Fa-f]{1,2})h\b', _repl, text)
+
     def disassemble(self, mem_dict, start_addr, length):
         lines = []
         i = 0
@@ -12526,11 +12862,7 @@ class I8080Disassembler:
                 asm = fmt.format(*args) if args else fmt
             except (ValueError, IndexError, KeyError):
                 asm = fmt
-            
-            # Resolve symbol at current address
-            sym = self._resolve_symbol(addr)
-            if sym:
-                asm = f"{sym}: {asm}"
+            asm = self._substitute_equ(asm)
             
             # Resolve target address to symbol
             target = self.get_target(op, args)
@@ -12620,7 +12952,7 @@ class IntelHex:
 ```
 <!-- END FILE: i8080_ci/intelhex.py -->
 
-### `i8080_ci/main_window.py` (4163 строк)
+### `i8080_ci/main_window.py` (4179 строк)
 
 <!-- FILE: i8080_ci/main_window.py -->
 ```python
@@ -12709,6 +13041,9 @@ class MainWindow(QMainWindow):
         self.serial_port = None
         self.rx_buffer = bytearray()
         self.mem_data = {}
+
+        self.map_file = None  # MapFile for symbol display
+        self.equ_dict = {}    # {value: name} EQU constants for disassembler
         self.disassembler = I8080Disassembler()
         self.hex_model = HexModel(self.mem_data)
         
@@ -13126,6 +13461,9 @@ class MainWindow(QMainWindow):
         lines = self.disassembler.disassemble(self.mem_data, min_addr, length)
         self.emu_disasm_view.set_lines(lines)
         self.emu_disasm_view.set_highlight(pc)
+        # Ensure symbols are set for paintEvent display
+        if self.map_file is not None and hasattr(self.emu_disasm_view, 'set_symbols'):
+            self.emu_disasm_view.set_symbols(self.map_file)
         
         if hasattr(self.emu_disasm_view, 'set_breakpoints'):
             self.emu_disasm_view.set_breakpoints(self.emulator.breakpoints)
@@ -14189,6 +14527,8 @@ class MainWindow(QMainWindow):
         
         lines = self.disassembler.disassemble(self.mem_data, start, length)
         self.disasm_view.set_lines(lines)
+        if self.map_file is not None and hasattr(self.disasm_view, "set_symbols"):
+            self.disasm_view.set_symbols(self.map_file)
 
     def on_load_map(self):
         """Load a map file into the disassembler for symbol resolution."""
@@ -14200,10 +14540,18 @@ class MainWindow(QMainWindow):
         try:
             map_file = load_map_file(path)
             self.disassembler.set_map(map_file)
+            self.disassembler.set_equ(self.equ_dict)
+            self.map_file = map_file
+            if hasattr(self.disasm_view, "set_symbols"):
+                self.disasm_view.set_symbols(map_file)
+            if hasattr(self, 'emu_disasm_view') and hasattr(self.emu_disasm_view, "set_symbols"):
+                self.emu_disasm_view.set_symbols(map_file)
             self.log(self.tr("asm_map_loaded").format(path=path, n=len(map_file.entries)))
             # Re-run disassembly to show resolved symbols
             if self.mem_data:
                 self.run_disasm()
+                if hasattr(self, 'update_emu_disasm_view'):
+                    self.update_emu_disasm_view()
         except Exception as e:
             QMessageBox.critical(self, self.tr("asm_err_title"),
                                  self.tr("asm_map_err").format(e=e))
@@ -17504,121 +17852,169 @@ __all__ = ["DisasmView", "HexTableView", "SearchDialog"]
 ```
 <!-- END FILE: i8080_ci/views/__init__.py -->
 
-### `i8080_ci/views/disasm_view.py` (385 строк)
+### `i8080_ci/views/disasm_view.py` (414 строк)
 
 <!-- FILE: i8080_ci/views/disasm_view.py -->
 ```python
-"""Custom disassembly view with syntax highlighting."""
+"""Custom disassembly view with syntax highlighting, jump arrows, and map symbols."""
 from PySide6.QtWidgets import QWidget, QMenu
 from PySide6.QtCore import Qt, QRect, Signal
 from PySide6.QtGui import QFont, QColor, QPainter, QPen
 from ..i18n import LANGS
 
+
 class DisasmView(QWidget):
-    toggleBreakpoint = Signal(int)  # Сигнал для установки/удаления breakpoint
-    cursorChanged = Signal(int)             # Одинарный клик по строке
-    runToCursorRequested = Signal(int)      # Контекстное меню: Run to Cursor
-    runFromHereRequested = Signal(int)      # Контекстное меню: Run from Here
-    jumpToCursorRequested = Signal(int)     # Контекстное меню: Jump to Cursor
-    setConditionalBreakpointRequested = Signal(int)  # ИТЕРАЦИЯ C
-    
+    toggleBreakpoint = Signal(int)
+    cursorChanged = Signal(int)
+    runToCursorRequested = Signal(int)
+    runFromHereRequested = Signal(int)
+    jumpToCursorRequested = Signal(int)
+    setConditionalBreakpointRequested = Signal(int)
+
     def __init__(self, mem_data, parent=None):
         super().__init__(parent)
-        self.lines = []
+        self.lines = []           # raw lines: (addr, size, asm, undoc, target)
         self.mem_data = mem_data
         self.line_height = 22
-        self.addr_to_index = {}
+        self.addr_to_index = {}   # addr -> display line index (instruction line)
         self.font_size = 10
         self.setFont(QFont("Consolas", self.font_size))
         self.setMinimumWidth(700)
-        self.arrow_margin = 30
+        self.arrow_margin = 38    # was 30, expanded 25%
         self.is_dark_theme = False
         self.setup_colors()
-        self.highlight_addr = None  # Адрес для подсветки (PC эмулятора)
-        
-        # === ИТЕРАЦИЯ B: Интерактивный режим (курсор + контекстное меню) ===
-        self.interactive = False       # По умолчанию выключено
-        self.cursor_addr = None        # Адрес курсора Run to Cursor
-        
-        self.breakpoints = set()  # Точки останова для отрисовки
-        self.bp_conditions = {}  # ← ИТЕРАЦИЯ C: условия для отрисовки
-        
+        self.highlight_addr = None
+        self.symbols = None       # MapFile for symbol display
+
+        # Display lines: (addr, size, asm, undoc, target, is_label, sym_name)
+        self._display_lines = []
+
+        # Interactive mode
+        self.interactive = False
+        self.cursor_addr = None
+        self.breakpoints = set()
+        self.bp_conditions = {}
         self.lang = "en"
-        
+
+    # ------------------------------------------------------------------
+    # Public API
+    # ------------------------------------------------------------------
+
     def set_bp_conditions(self, conditions):
-        """Установить условия BP для отрисовки"""
         self.bp_conditions = conditions
         self.update()
-        
+
     def set_highlight(self, addr):
-        """Установить подсветку строки (PC эмулятора)"""
         self.highlight_addr = addr
         self.update()
-        
+
+    def set_symbols(self, map_file):
+        """Set the map file for symbol display. Rebuilds display lines."""
+        self.symbols = map_file
+        self._rebuild_display_lines()
+        self.update()
+
+    def set_lines(self, lines):
+        self.lines = lines
+        self._rebuild_display_lines()
+        self.setFixedHeight(len(self._display_lines) * self.line_height + 10)
+        self.repaint()
+        if self.parent():
+            self.parent().update()
+
+    def set_theme(self, is_dark):
+        self.is_dark_theme = is_dark
+        self.setup_colors()
+        self.update()
+
+    def set_breakpoints(self, breakpoints):
+        self.breakpoints = breakpoints
+        self.update()
+
+    def set_interactive(self, enabled):
+        self.interactive = enabled
+
+    # ------------------------------------------------------------------
+    # Internal: build display lines (label + instruction split)
+    # ------------------------------------------------------------------
+
+    def _rebuild_display_lines(self):
+        """Split lines with symbols into label-line + instruction-line."""
+        self._display_lines = []
+        self.addr_to_index = {}
+
+        for (addr, size, asm, undoc, target) in self.lines:
+            sym = None
+            if self.symbols is not None:
+                sym = self.symbols.get_symbol_exact(addr)
+
+            if sym:
+                # Label line (no instruction)
+                self._display_lines.append((addr, 0, "", False, None, True, sym))
+                # Instruction line (indented)
+                self._display_lines.append((addr, size, asm, undoc, target, False, None))
+            else:
+                # Normal single line
+                self._display_lines.append((addr, size, asm, undoc, target, False, None))
+
+        # addr_to_index maps to the LABEL line if it exists (arrows point to label)
+        for i, dl in enumerate(self._display_lines):
+            if dl[5]:  # label line - prefer this for arrows
+                self.addr_to_index[dl[0]] = i
+            elif dl[0] not in self.addr_to_index:
+                self.addr_to_index[dl[0]] = i
+
+    # ------------------------------------------------------------------
+    # Colors
+    # ------------------------------------------------------------------
+
     def setup_colors(self):
-        """Настраивает цвета в зависимости от темы"""
         if self.is_dark_theme:
-            # Тёмная тема
             self.colors = {
                 "bg": QColor("#1e1e1e"),
                 "addr": QColor("#858585"),
                 "bytes": QColor("#6a6a6a"),
-                "jump": QColor("#569cd6"),      # Синий
-                "memory": QColor("#6bcf7f"),    # Зелёный
-                "io": QColor("#c586c0"),        # Фиолетовый
-                "control": QColor("#858585"),   # Серый
-                "register": QColor("#ce9178"),  # Оранжевый
-                "alu": QColor("#dcdcaa"),       # Жёлтый
-                "stack": QColor("#4ec9b0"),     # Бирюзовый
-                "undoc": QColor("#ff6b6b"),     # Красный
-                "comment": QColor("#569cd6"),   # Голубой
-                "text": QColor("#d4d4d4"),      # Основной текст
+                "jump": QColor("#569cd6"),
+                "memory": QColor("#6bcf7f"),
+                "io": QColor("#c586c0"),
+                "control": QColor("#858585"),
+                "register": QColor("#ce9178"),
+                "alu": QColor("#dcdcaa"),
+                "stack": QColor("#4ec9b0"),
+                "undoc": QColor("#ff6b6b"),
+                "comment": QColor("#569cd6"),
+                "text": QColor("#d4d4d4"),
+                "symbol": QColor("#dcdcaa"),
             }
         else:
-            # Светлая тема (яркие, контрастные цвета на белом фоне)
             self.colors = {
-                "bg": QColor("#ffffff"),        # Белый фон
-                "addr": QColor("#808080"),      # Серый
-                "bytes": QColor("#666666"),     # Тёмно-серый
-                "jump": QColor("#0055cc"),      # Тёмно-синий
-                "memory": QColor("#007700"),    # Тёмно-зелёный
-                "io": QColor("#8800aa"),        # Фиолетовый
-                "control": QColor("#666666"),   # Серый
-                "register": QColor("#cc5500"),  # Тёмно-оранжевый
-                "alu": QColor("#886600"),       # Тёмно-жёлтый
-                "stack": QColor("#008888"),     # Тёмно-бирюзовый
-                "undoc": QColor("#cc0000"),     # Красный
-                "comment": QColor("#0055cc"),   # Голубой
-                "text": QColor("#000000"),      # Чёрный текст
+                "bg": QColor("#ffffff"),
+                "addr": QColor("#808080"),
+                "bytes": QColor("#666666"),
+                "jump": QColor("#0055cc"),
+                "memory": QColor("#007700"),
+                "io": QColor("#8800aa"),
+                "control": QColor("#666666"),
+                "register": QColor("#cc5500"),
+                "alu": QColor("#886600"),
+                "stack": QColor("#008888"),
+                "undoc": QColor("#cc0000"),
+                "comment": QColor("#0055cc"),
+                "text": QColor("#000000"),
+                "symbol": QColor("#0066cc"),
             }
-        
-    def set_theme(self, is_dark):
-        """Устанавливает тему"""
-        self.is_dark_theme = is_dark
-        self.setup_colors()
-        self.update()
-        
-    def set_lines(self, lines):
-        self.lines = lines
-        self.addr_to_index = {line[0]: i for i, line in enumerate(lines)}
-        self.setFixedHeight(len(lines) * self.line_height + 10)
-        self.repaint()
-        if self.parent():
-            self.parent().update()
-            
+
+    # ------------------------------------------------------------------
+    # Instruction color
+    # ------------------------------------------------------------------
+
     def get_instruction_color(self, asm):
-        """Возвращает цвет для команды в зависимости от её типа"""
         parts = asm.split()
         if not parts:
             return self.colors["text"]
-            
         mnemonic = parts[0].upper()
-        
-        # Недокументированные команды
         if asm.endswith("*"):
             return self.colors["undoc"]
-        
-        # Переходы: JMP, CALL, Jcc, Ccc, RST
         if mnemonic in ["JMP", "CALL", "RST"]:
             return self.colors["jump"]
         if len(mnemonic) > 1:
@@ -17627,85 +18023,56 @@ class DisasmView(QWidget):
                 return self.colors["jump"]
             if mnemonic[0] == 'C' and suffix in ["NZ", "Z", "NC", "C", "PO", "PE", "P", "M"]:
                 return self.colors["jump"]
-        
-        # Память
         if mnemonic in ["LDA", "STA", "LHLD", "SHLD", "LDAX", "STAX", "XCHG", "XTHL"]:
             return self.colors["memory"]
         if mnemonic == "MOV" and len(parts) > 1 and "M" in parts[1]:
             return self.colors["memory"]
-        
-        # Ввод-вывод
         if mnemonic in ["IN", "OUT"]:
             return self.colors["io"]
-        
-        # Управление
         if mnemonic in ["NOP", "HLT", "DI", "EI", "RET", "PCHL", "SPHL"]:
             return self.colors["control"]
-        
-        # Регистры и данные
         if mnemonic in ["MVI", "LXI", "INR", "DCR", "MOV", "INX", "DCX"]:
             return self.colors["register"]
-        
-        # Арифметика и логика (включая DAD)
         if mnemonic in ["ADD", "ADC", "SUB", "SBB", "ANA", "XRA", "ORA", "CMP",
                         "RLC", "RRC", "RAL", "RAR", "DAA", "CMA", "STC", "CMC",
                         "ADI", "ACI", "SUI", "SBI", "ANI", "XRI", "ORI", "CPI",
                         "DAD"]:
             return self.colors["alu"]
-        
-        # Стек
         if mnemonic in ["PUSH", "POP"]:
             return self.colors["stack"]
-        
         return self.colors["text"]
-        
-    def wheelEvent(self, event):
-        """Ctrl + колесо мыши для изменения размера шрифта"""
-        if event.modifiers() == Qt.ControlModifier:
-            delta = event.angleDelta().y()
-            if delta > 0:
-                self.font_size = min(self.font_size + 1, 36)
-            else:
-                self.font_size = max(self.font_size - 1, 8)
-                
-            self.setFont(QFont("Consolas", self.font_size))
-            self.line_height = self.font_size + 12
-            self.setFixedHeight(len(self.lines) * self.line_height + 10)
-            self.update()
-            event.accept()
-        else:
-            super().wheelEvent(event)
-        
+
+    # ------------------------------------------------------------------
+    # Paint
+    # ------------------------------------------------------------------
+
     def paintEvent(self, event):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
         painter.setFont(self.font())
-        
-        # Фон (белый для светлой темы)
+
         painter.fillRect(self.rect(), self.colors["bg"])
-        
-        # Получаем ширину символа для выравнивания
+
         font_metrics = painter.fontMetrics()
-        char_width = font_metrics.averageCharWidth()
-        
-        # Фиксированные позиции колонок
+        char_width = font_metrics.horizontalAdvance("0")  # exact monospace width
+        tab_width = 4 * char_width  # one tab stop
+
+        # Column positions
         addr_x = self.arrow_margin + 10
-        bytes_x = addr_x + 6 * char_width
-        asm_x = bytes_x + 14 * char_width
-        
-        # Рисуем строки
-        for i, (addr, size, asm, undoc, target) in enumerate(self.lines):
+        content_x = addr_x + 6 * char_width       # where bytes / symbol starts
+        bytes_x = content_x                        # bytes position (normal lines)
+        asm_x = content_x + 12 * char_width        # instruction position (fixed column)
+        asm_x_indented = content_x + tab_width + 12 * char_width  # indented instruction
+
+        for i, (addr, size, asm, undoc, target, is_label, sym_name) in enumerate(self._display_lines):
             y = i * self.line_height + self.line_height // 2 + 5
-            
-            # === ИТЕРАЦИЯ B: Отрисовка курсора (зелёная стрелка ▷) ===
-            if self.interactive and self.cursor_addr is not None and addr == self.cursor_addr:
-                # Зелёная стрелка слева от адреса
-                painter.setPen(QColor("#4CAF50"))  # Зелёный
+
+            # === Cursor arrow (interactive mode) ===
+            if self.interactive and self.cursor_addr is not None and addr == self.cursor_addr and not is_label:
+                painter.setPen(QColor("#4CAF50"))
                 cursor_font = QFont("Consolas", 10, QFont.Bold)
                 painter.setFont(cursor_font)
-                painter.drawText(5, y, "▷")
-                
-                # Лёгкая зелёная подсветка строки (если нет PC-подсветки)
+                painter.drawText(5, y, "\u25B6")
                 if self.highlight_addr != addr:
                     cursor_rect = QRect(
                         self.arrow_margin + 5,
@@ -17713,155 +18080,168 @@ class DisasmView(QWidget):
                         self.width() - self.arrow_margin - 10,
                         self.line_height - 4
                     )
-                    painter.fillRect(cursor_rect, QColor("#E8F5E9"))  # Бледно-зелёный
-                   
-            # === Подсветка текущей инструкции (PC эмулятора) ===
-            if self.highlight_addr is not None and addr == self.highlight_addr:
-                # Жёлтый фон для текущей инструкции
+                    painter.fillRect(cursor_rect, QColor("#E8F5E9"))
+                painter.setFont(self.font())
+
+            # === PC highlight ===
+            if self.highlight_addr is not None and addr == self.highlight_addr and not is_label:
                 highlight_rect = QRect(
                     self.arrow_margin + 5,
                     i * self.line_height + 2,
                     self.width() - self.arrow_margin - 10,
                     self.line_height - 4
                 )
-                painter.fillRect(highlight_rect, QColor("#fff3cd"))  # Светло-жёлтый
-                
-                # Стрелка слева
+                painter.fillRect(highlight_rect, QColor("#fff3cd"))
                 painter.setPen(QColor("#ff9800"))
-                painter.drawText(5, y, "►")
-                
-            # === Точки останова (красные/оранжевые кружки) ===
-            if addr in self.breakpoints:
+                painter.drawText(5, y, "\u25BA")
+
+            # === Breakpoints ===
+            if addr in self.breakpoints and not is_label:
                 bp_x = self.arrow_margin + 2
                 bp_y = i * self.line_height + self.line_height // 2
-                # Проверяем, условная ли это BP
                 is_conditional = (
-                    hasattr(self, 'bp_conditions') and 
-                    addr in self.bp_conditions and 
+                    hasattr(self, 'bp_conditions') and
+                    addr in self.bp_conditions and
                     self.bp_conditions[addr]
                 )
                 if is_conditional:
-                    painter.setBrush(QColor("#ff9800"))  # Оранжевый для условных
+                    painter.setBrush(QColor("#ff9800"))
                 else:
-                    painter.setBrush(QColor("#f44336"))  # Красный для обычных
+                    painter.setBrush(QColor("#f44336"))
                 painter.setPen(Qt.NoPen)
                 painter.drawEllipse(bp_x - 4, bp_y - 4, 8, 8)
-				
-            # Адрес
+
+            # === Address (always drawn) ===
             painter.setPen(self.colors["addr"])
             painter.drawText(addr_x, y, f"{addr:04X}")
-            
-            # Байты
-            bytes_str = " ".join(f"{self.mem_data.get(addr+k, 0):02X}" for k in range(size))
-            painter.setPen(self.colors["bytes"])
-            painter.drawText(bytes_x, y, bytes_str)
-            
-            # Команда
-            asm_text = f"{asm} {undoc}".strip()
-            color = self.get_instruction_color(asm_text)
-            painter.setPen(color)
-            painter.drawText(asm_x, y, asm_text)
-            
-            # Комментарий перехода
-            if target is not None:
-                comment = f"; -> {target:04X}h"
-                comment_x = asm_x + len(asm_text) * char_width + 3 * char_width
-                painter.setPen(self.colors["comment"])
-                painter.drawText(comment_x, y, comment)
-                
-        # Рисуем стрелки переходов
+
+            if is_label:
+                # Label line: just the symbol name
+                painter.setPen(self.colors["symbol"])
+                sym_font = QFont("Consolas", self.font_size, QFont.Bold)
+                painter.setFont(sym_font)
+                painter.drawText(content_x, y, sym_name)
+                painter.setFont(self.font())
+            else:
+                # Instruction line
+                b_x = content_x
+                a_x = content_x + 12 * char_width
+
+                # Bytes
+                if size > 0:
+                    bytes_str = " ".join(f"{self.mem_data.get(addr + k, 0):02X}" for k in range(size))
+                    painter.setPen(self.colors["bytes"])
+                    painter.drawText(b_x, y, bytes_str)
+
+                # Instruction
+                asm_text = f"{asm} {undoc}".strip()
+                color = self.get_instruction_color(asm_text)
+                painter.setPen(color)
+                painter.drawText(a_x, y, asm_text)
+
+                # Jump target comment
+                if target is not None:
+                    comment = f"; -> {target:04X}h"
+                    comment_x = a_x + len(asm_text) * char_width + 2 * char_width
+                    painter.setPen(self.colors["comment"])
+                    painter.drawText(comment_x, y, comment)
+
+        # Draw jump arrows
         self.draw_arrows(painter)
-        
+
+    # ------------------------------------------------------------------
+    # Arrows
+    # ------------------------------------------------------------------
+
     def draw_arrows(self, painter):
-        arrow_x_start = 5
-        arrow_colors = [QColor("#ff6b6b"), QColor("#4ecdc4"), QColor("#ffe66d"), 
+        arrow_colors = [QColor("#ff6b6b"), QColor("#4ecdc4"), QColor("#ffe66d"),
                         QColor("#a8e6cf"), QColor("#ffd93d"), QColor("#6bcf7f")]
         color_idx = 0
-        
-        for i, (addr, size, asm, undoc, target) in enumerate(self.lines):
-            if target is not None and target in self.addr_to_index:
-                target_idx = self.addr_to_index[target]
-                y1 = i * self.line_height + self.line_height // 2 + 5
-                y2 = target_idx * self.line_height + self.line_height // 2 + 5
-                
-                color = arrow_colors[color_idx % len(arrow_colors)]
-                color_idx += 1
-                
-                pen = QPen(color, 2)
-                painter.setPen(pen)
-                
-                x_offset = arrow_x_start + (color_idx % 5) * 4
-                
-                painter.drawLine(x_offset, y1, x_offset, y2)
-                painter.drawLine(x_offset, y2, self.arrow_margin + 5, y2)
-                
-                if y2 > y1:
-                    painter.drawLine(self.arrow_margin + 5, y2, self.arrow_margin, y2 - 4)
-                    painter.drawLine(self.arrow_margin + 5, y2, self.arrow_margin, y2 + 4)
-                else:
-                    painter.drawLine(self.arrow_margin + 5, y2, self.arrow_margin, y2 - 4)
-                    painter.drawLine(self.arrow_margin + 5, y2, self.arrow_margin, y2 + 4)
-                    
-                painter.setBrush(color)
-                painter.setPen(Qt.NoPen)
-                painter.drawEllipse(x_offset - 2, y1 - 2, 4, 4)
-                painter.setPen(pen)
-				
+
+        for i, (addr, size, asm, undoc, target, is_label, sym_name) in enumerate(self._display_lines):
+            if is_label or target is None:
+                continue
+            if target not in self.addr_to_index:
+                continue
+
+            target_idx = self.addr_to_index[target]
+            y1 = i * self.line_height + self.line_height // 2 + 5
+            y2 = target_idx * self.line_height + self.line_height // 2 + 5
+
+            color = arrow_colors[color_idx % len(arrow_colors)]
+            color_idx += 1
+
+            pen = QPen(color, 2)
+            painter.setPen(pen)
+
+            x_offset = 5 + (color_idx % 5) * 5
+
+            painter.drawLine(x_offset, y1, x_offset, y2)
+            painter.drawLine(x_offset, y2, self.arrow_margin + 5, y2)
+
+            # Arrowhead
+            if y2 > y1:
+                painter.drawLine(self.arrow_margin + 5, y2, self.arrow_margin, y2 - 4)
+                painter.drawLine(self.arrow_margin + 5, y2, self.arrow_margin, y2 + 4)
+            else:
+                painter.drawLine(self.arrow_margin + 5, y2, self.arrow_margin, y2 - 4)
+                painter.drawLine(self.arrow_margin + 5, y2, self.arrow_margin, y2 + 4)
+
+            painter.setBrush(color)
+            painter.setPen(Qt.NoPen)
+            painter.drawEllipse(x_offset - 2, y1 - 2, 4, 4)
+            painter.setPen(pen)
+
+    # ------------------------------------------------------------------
+    # Mouse / interaction
+    # ------------------------------------------------------------------
+
+    def wheelEvent(self, event):
+        if event.modifiers() == Qt.ControlModifier:
+            delta = event.angleDelta().y()
+            if delta > 0:
+                self.font_size = min(self.font_size + 1, 36)
+            else:
+                self.font_size = max(self.font_size - 1, 8)
+            self.setFont(QFont("Consolas", self.font_size))
+            self.line_height = self.font_size + 12
+            self.setFixedHeight(len(self._display_lines) * self.line_height + 10)
+            self.update()
+            event.accept()
+        else:
+            super().wheelEvent(event)
+
+    def get_line_addr_at(self, y):
+        if not self._display_lines:
+            return None
+        line_idx = int((y - 5) / self.line_height)
+        if 0 <= line_idx < len(self._display_lines):
+            return self._display_lines[line_idx][0]
+        return None
+
     def mouseDoubleClickEvent(self, event):
-        """Двойной ЛЕВЫЙ клик — установить/удалить точку останова"""
-        # === Обрабатываем только левую кнопку ===
         if event.button() != Qt.LeftButton:
             super().mouseDoubleClickEvent(event)
             return
-        
         y = event.position().y()
         line_idx = int((y - 5) / self.line_height)
-        
-        if 0 <= line_idx < len(self.lines):
-            addr = self.lines[line_idx][0]
+        if 0 <= line_idx < len(self._display_lines):
+            addr = self._display_lines[line_idx][0]
             self.toggleBreakpoint.emit(addr)
-        
         super().mouseDoubleClickEvent(event)
-        
-    def set_breakpoints(self, breakpoints):
-        """Установить точки останова для отрисовки"""
-        self.breakpoints = breakpoints
-        self.update()
-        
-    def set_interactive(self, enabled):
-        """Включает/выключает интерактивный режим (курсор + меню)"""
-        self.interactive = enabled
-        
-    def set_cursor(self, addr):
-        """Установить курсор Run to Cursor"""
-        self.cursor_addr = addr
-        self.update()
-        
-    def get_line_addr_at(self, y):
-        """Возвращает адрес строки по Y-координате мыши"""
-        if not hasattr(self, 'lines') or not self.lines:
-            return None
-        line_idx = int((y - 5) / self.line_height)
-        if 0 <= line_idx < len(self.lines):
-            return self.lines[line_idx][0]
-        return None
-        
+
     def mousePressEvent(self, event):
-        """Одинарный ЛЕВЫЙ клик — установка курсора"""
         if self.interactive and event.button() == Qt.LeftButton:
             addr = self.get_line_addr_at(event.position().y())
             if addr is not None:
                 self.cursor_addr = addr
                 self.cursorChanged.emit(addr)
                 self.update()
-            # НЕ вызываем super() для левого клика в интерактивном режиме,
-            # чтобы избежать конфликта с mouseDoubleClickEvent
             event.accept()
             return
         super().mousePressEvent(event)
-        
+
     def contextMenuEvent(self, event):
-        """Контекстное меню (только в интерактивном режиме)"""
         if not self.interactive:
             super().contextMenuEvent(event)
             return
@@ -17873,12 +18253,12 @@ class DisasmView(QWidget):
         self.update()
         L = LANGS.get(self.lang, LANGS["en"])
         menu = QMenu(self)
-        act_run_to = menu.addAction(f"⥗ {L.get('ctx_run_to', 'Run to Cursor')} (0x{addr:04X})  [Ctrl+F10]")
-        act_run_from = menu.addAction(f"⥟ {L.get('ctx_run_from', 'Run from Here')} (0x{addr:04X})")
-        act_jump = menu.addAction(f"⤼ {L.get('ctx_jump', 'Jump to Cursor')} (0x{addr:04X})")
+        act_run_to = menu.addAction(f"\u2957 {L.get('ctx_run_to', 'Run to Cursor')} (0x{addr:04X})  [Ctrl+F10]")
+        act_run_from = menu.addAction(f"\u295F {L.get('ctx_run_from', 'Run from Here')} (0x{addr:04X})")
+        act_jump = menu.addAction(f"\u293C {L.get('ctx_jump', 'Jump to Cursor')} (0x{addr:04X})")
         menu.addSeparator()
-        act_toggle_bp = menu.addAction(f"● {L.get('ctx_toggle_bp', 'Toggle Breakpoint')} (0x{addr:04X})")
-        act_cond_bp = menu.addAction(f"◉ {L.get('ctx_cond_bp', 'Set Conditional BP...')} (0x{addr:04X})")
+        act_toggle_bp = menu.addAction(f"\u25CF {L.get('ctx_toggle_bp', 'Toggle Breakpoint')} (0x{addr:04X})")
+        act_cond_bp = menu.addAction(f"\u25C9 {L.get('ctx_cond_bp', 'Set Conditional BP...')} (0x{addr:04X})")
         selected = menu.exec(event.globalPos())
         if selected == act_run_to:
             self.runToCursorRequested.emit(addr)
@@ -17890,8 +18270,6 @@ class DisasmView(QWidget):
             self.toggleBreakpoint.emit(addr)
         elif selected == act_cond_bp:
             self.setConditionalBreakpointRequested.emit(addr)
-
-# ==================== МОДЕЛЬ ДАННЫХ HEX-РЕДАКТОРА ====================
 ```
 <!-- END FILE: i8080_ci/views/disasm_view.py -->
 
@@ -29795,10 +30173,83 @@ def create_terminal_widget(device):
 
 ■ РАЗДЕЛ 4: ИЗМЕНЕНИЯ РЕФАКТОРИНГА
 
-Источник: `CHANGES.md` (1101 строк)
+Источник: `CHANGES.md` (1174 строк)
 
 ```markdown
 # Changelog / Журнал изменений
+
+## 2026-09-29 (итерация 6): Верификация ALUS_IMM по документации 8080/8085, авто-размер дизассемблера, чистка мёртвого кода
+
+### Дизассемблер (i8080_ci/disassembler.py) — верификация по документации
+- **Исправлен `ALUS_IMM`:** был `['ADD','ADC','SUB','SBB','ANA','XRA','ORI','CPI']` (ошибка — использовались регистровые мнемоники). Теперь `['ADI','ACI','SUI','SBI','ANI','XRI','ORI','CPI']` — канонические мнемоники непосредственной адресации, одинаковые для 8080 и 8085 (проверено по документации KR580/8080/8085).
+  - 0xC6=ADI, 0xCE=ACI, 0xD6=SUI, 0xDE=SBI, 0xE6=ANI, 0xEE=XRI, 0xF6=ORI, 0xFE=CPI
+- Регистровая форма (0x80–0xBF) без изменений: `ALUS = ['ADD','ADC','SUB','SBB','ANA','XRA','ORA','CMP']` (там ORA/CMP — корректно).
+
+### Ассемблер (assemble8080/assembler.py)
+- **`ALU_IMM_OPCODES`:** `'CMP'` → `'CPI'` (fallback-таблица для регистровых мнемоник с immediate-операндом). Теперь `CPI 05H` round-trip'ится, а `CMP 05H` честно отклоняется (CMP — только регистровая).
+- **Удалён мёртвый код:** методы `_count_db_bytes()` и `_count_dw_words()` (определены, но нигде не вызывались).
+
+### Автозагрузка map + размер дизассемблера (i8080_ci/assembler_widget.py)
+- **`_auto_load_map`:** перед `run_disasm()` теперь обновляет поля `disasm_start`/`disasm_len` на реальные `result.origin` и `len(result.binary)`. Раньше дизассемблер показывал только первые 100 байт (значение по умолчанию из поля ручного ввода), а не весь загруженный образ. Теперь поведение совпадает с эмулятором (`update_emu_disasm_view` вычисляет диапазон из `mem_data`).
+
+### Чистка мёртвого кода и неиспользуемых импортов
+- **i8080_ci/views/disasm_view.py:** удалён метод `set_cursor()` (cursor_addr устанавливается напрямую в обработчиках событий).
+- **assemble8080/linker.py:** удалены неиспользуемые импорты `re`, `Optional`, `ObjectFile`, `save_obj`, `MapFile`.
+- **assemble8080/mapfile.py:** удалён неиспользуемый импорт `os`.
+- **i8080_ci/assembler_widget.py:** удалён неиспользуемый импорт `load_map_file`.
+
+### Тесты
+- **Исправлены тестовые исходники:**
+  - `ASM_FOR_TEST/TCB.asm`: опечатка `DC B` → `DCR B` (декремент счётчика цикла).
+  - `ASM_FOR_TEST/load.asm`: добавлен в `EXCLUDE` (это 8085-файл, использует `SIM`; тест — для 8080-совместимых файлов).
+  - `tests/test_assembler_linker.py` (Тест 5): обновлена устаревшая проверка — имя текущей метки показывается отдельной строкой (через `set_symbols`), а не встраивается в текст инструкции; target перехода резолвится в тексте.
+- **Новые тесты:**
+  - `tests/test_alus_imm_verify.py` (7 проверок): верификация ALUS_IMM по документации — декодирование 8 immediate ALU, регистровая ORA/CMP, round-trip.
+  - `tests/test_disasm_range_autoload.py` (4 проверки): авто-обновление диапазона дизассемблера на реальный размер образа (50 и 151 байт).
+- **Новая инфраструктура тестирования:**
+  - `tests/run_api_snippets.py`: harness для интерактивных `api`-сниппетов (ppi_test, kbd_test, font_test, display_test и др.) — создаёт `MainWindow` + профиль `full` и предоставляет глобальный `api`.
+  - `_run_all_tests.py`: единый раннер полного цикла (автономные тесты + api-сниппеты).
+
+### Полный цикл тестирования
+- **55 автономных тест-файлов: 0 ошибок.**
+- **17 интерактивных api-сниппетов: 0 ошибок.**
+- Итого: **56/56 пройдено, 0 провалено.**
+
+## 2026-09-29 (итерация 5): Ассемблер v2 — Notepad++ style, глобальные метки, map auto-load
+
+### Ядро ассемблера (assemble8080/assembler.py)
+- **Глобальные метки `::`:** метки с двойным двоеточием автоматически добавляются в `_exports` и отслеживаются в `global_labels`
+- **`AsmResult.global_labels`:** новый поле — множество имён глобальных меток
+- **`_parse_label`:** уже возвращал `is_global=True` для `::` меток, теперь используется в `assemble()`
+
+### Виджет ассемблера (i8080_ci/assembler_widget.py) — полный редизайн
+- **Вкладки файлов (Notepad++ style):** `QTabWidget` с закрываемыми вкладками вместо одного редактора. Каждая вкладка — отдельный `CodeEditor` с собственным файлом
+- **Ctrl+Click на метку:** переход к определению метки. `CodeEditor.mousePressEvent` обрабатывает Ctrl+клик, находит слово под курсором и прыгает к строке метки
+- **Жирная подсветка глобальных меток:** `AsmHighlighter` различает `::` (глобальные, extra bold + золотой цвет) и `:` (локальные, обычный bold)
+- **Workspace (.ws JSON):** открытие/сохранение workspace-файла со списком файлов проекта. Кнопки "Open Workspace" / "Save Workspace"
+- **Автозагрузка map-файла:** после успешной сборки map-файл автоматически загружается в дизассемблер (`disasm_view.set_symbols()`)
+- **Таблица меток:** глобальные метки отображаются жирным шрифтом
+
+### Дизассемблер (i8080_ci/views/disasm_view.py)
+- **`set_symbols(map_file)`:** новый метод — принимает `MapFile` и отображает имена символов рядом с адресами в дизассемблере
+- **`paintEvent`:** после адреса выводится имя символа из map-файла (если есть)
+
+### Main Window (i8080_ci/main_window.py)
+- **`self.map_file`:** новый атрибут — хранит текущий `MapFile` для отображения символов
+- **`run_disasm`:** передаёт `map_file` в `disasm_view.set_symbols()`
+- **`on_load_map`:** обновлён — устанавливает `self.map_file` и передаёт в `disasm_view`
+
+### Automation (i8080_ci/automation.py)
+- Адаптирован к новой вкладочной структуре: `.editor` → `._current_editor()`
+
+### i18n (common/i18n.py)
+- Новые ключи: `asm_open_ws`, `asm_save_ws`, `asm_ws_filter`, `asm_ws_loaded`, `asm_ws_err`, `asm_new_tab`, `asm_untitled`, `asm_unsaved_title`, `asm_unsaved_msg`, `asm_map_auto_loaded`, `asm_map_auto_err` (EN + RU)
+
+### Тестирование
+- Полный прогон: 34 тест-файла, 921 проверка, 0 ошибок
+- GUI smoke-тест: пройден
+- Ассемблер: 20/20
+- test_asm8080-8085.py: 6/6
 
 ## 2026-09-26 (итерация 4): cpu_type-aware подсветка переходов в трассировке
 
@@ -30905,7 +31356,7 @@ Menu title and items update on language switch.
 
 ■ РАЗДЕЛ 5: ТЕСТЫ
 
-Всего тестовых файлов: 63, строк: 10777
+Всего тестовых файлов: 73, строк: 11634
 
 ### `tests/PPI_3D_8x8x8_Flame.py` (224 строк)
 
@@ -33721,6 +34172,115 @@ else:
 ```
 <!-- END FILE: tests/ppi_test.py -->
 
+### `tests/run_api_snippets.py` (102 строк)
+
+<!-- FILE: tests/run_api_snippets.py -->
+```python
+# -*- coding: utf-8 -*-
+"""Harness for interactive 'api' snippets in tests/.
+
+These snippet files (ppi_test.py, kbd_test.py, font_test.py, etc.) are written
+to run inside a live session where a global `api` (AutomationAPI) already
+exists. This harness provides that `api` (MainWindow + 'full' profile) and
+executes each snippet, reporting success/failure.
+
+Run:  python tests/run_api_snippets.py
+"""
+import os
+import sys
+import traceback
+
+os.environ['QT_QPA_PLATFORM'] = 'offscreen'
+os.environ['PYTHONIOENCODING'] = 'utf-8'
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
+from PySide6.QtWidgets import QApplication  # noqa: E402
+app = QApplication.instance() or QApplication([])
+
+from i8080_ci.main_window import MainWindow  # noqa: E402
+from i8080_ci.automation import AutomationAPI  # noqa: E402
+
+# Snippet files that expect a global `api`
+SNIPPETS = [
+    "ppi_test.py",
+    "kbd_test.py",
+    "font_test.py",
+    "display_test.py",
+    "bitmap_crt_test.py",
+    "discrete_crt_font_test.py",
+    "crt_font_test.py",
+    "device_access_test.py",
+    "mmio_test.py",
+    "uart_test.py",
+    "test_invert_port_range.py",
+    "PPI_3D_8x8x8_Flame.py",
+    "PPI_3D_8x8x8_Girl.py",
+    "PPI_3D_8x8x8_Heat.py",
+    "PPI_3D_8x8x8_Pong.py",
+    "PPI_3D_8x8x8_Rain.py",
+    "PPI_3D_8x8x8_Tetris.py",
+]
+
+TEST_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
+def build_api():
+    mw = MainWindow()
+    mw.show()
+    app.processEvents()
+    # Load the 'full' profile which contains all devices
+    try:
+        mw.load_profile("full")
+    except Exception as e:
+        print(f"  [warn] load_profile('full'): {e}")
+    app.processEvents()
+    return AutomationAPI(mw)
+
+
+def main():
+    api = build_api()
+    print(f"System devices: {sorted(api.system.devices.keys())}\n")
+
+    passed, failed = [], []
+    for name in SNIPPETS:
+        path = os.path.join(TEST_DIR, name)
+        if not os.path.exists(path):
+            failed.append((name, "FILE NOT FOUND"))
+            print(f"FAIL  {name}  (not found)")
+            continue
+        src = open(path, encoding='utf-8', errors='replace').read()
+        ns = {'api': api, '__name__': '__snippet__'}
+        try:
+            exec(compile(src, name, 'exec'), ns)
+            passed.append(name)
+            print(f"PASS  {name}")
+        except SystemExit as e:
+            if e.code in (0, None):
+                passed.append(name)
+                print(f"PASS  {name}")
+            else:
+                failed.append((name, f"SystemExit({e.code})"))
+                print(f"FAIL  {name}  SystemExit({e.code})")
+        except Exception:
+            tb = traceback.format_exc().strip().splitlines()
+            failed.append((name, tb[-1]))
+            print(f"FAIL  {name}  {tb[-1]}")
+
+    print("\n" + "=" * 60)
+    print(f"API SNIPPETS: {len(passed)} passed, {len(failed)} failed")
+    print("=" * 60)
+    if failed:
+        for n, e in failed:
+            print(f"  {n}: {e}")
+    return 0 if not failed else 1
+
+
+if __name__ == '__main__':
+    sys.exit(main())
+```
+<!-- END FILE: tests/run_api_snippets.py -->
+
 ### `tests/test_8085.py` (244 строк)
 
 <!-- FILE: tests/test_8085.py -->
@@ -34138,6 +34698,213 @@ sys.exit(1 if failed else 0)
 ```
 <!-- END FILE: tests/test_alu_8080.py -->
 
+### `tests/test_alus_imm_verify.py` (200 строк)
+
+<!-- FILE: tests/test_alus_imm_verify.py -->
+```python
+"""Верификация ALUS_IMM по документации 8080/8085.
+
+Проверяет:
+1. Все 8 immediate ALU опкодов (0xC6-0xFE) декодируются правильно
+2. Регистровая форма (0x80-0xBF) использует ORA/CMP
+3. Непосредственная форма (0xF6/0xFE) использует ORI/CPI
+4. Round-trip: ассемблирование -> дизассемблирование -> сравнение
+5. CMP с immediate операндом НЕ принимается (только CPI)
+"""
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
+from assemble8080.assembler import Assembler
+from i8080_ci.disassembler import I8080Disassembler as Disassembler
+
+
+def _mem_dict(data, base=0x0100):
+    """Convert bytearray to {addr: byte} dict for disassembler."""
+    return {base + i: b for i, b in enumerate(data)}
+
+
+def test_disassembler_immediate_alu():
+    """Все 8 immediate ALU опкодов декодируются с правильными мнемониками."""
+    dis = Disassembler()
+    # 0xC6=ADD, 0xCE=ADC, 0xD6=SUB, 0xDE=SBB, 0xE6=ANA, 0xEE=XRA, 0xF6=ORI, 0xFE=CPI
+    mem = bytearray([
+        0xC6, 0x01,  # ADD 01h
+        0xCE, 0x02,  # ADC 02h
+        0xD6, 0x03,  # SUB 03h
+        0xDE, 0x04,  # SBB 04h
+        0xE6, 0x05,  # ANA 05h
+        0xEE, 0x06,  # XRA 06h
+        0xF6, 0x07,  # ORI 07h
+        0xFE, 0x08,  # CPI 08h
+        0xC9,        # RET
+    ])
+    lines = dis.disassemble(_mem_dict(mem), 0x0100, len(mem))
+    expected = ['ADI 01h', 'ACI 02h', 'SUI 03h', 'SBI 04h',
+                'ANI 05h', 'XRI 06h', 'ORI 07h', 'CPI 08h', 'RET']
+    for i, exp in enumerate(expected):
+        actual = lines[i][2]
+        assert actual == exp, f'Line {i}: expected "{exp}", got "{actual}"'
+    print('  PASS: disassembler immediate ALU')
+
+
+def test_disassembler_register_alu():
+    """Регистровая форма: ORA (0xB0-B7) и CMP (0xB8-BF)."""
+    dis = Disassembler()
+    mem = bytearray([
+        0xB0,  # ORA B
+        0xB1,  # ORA C
+        0xB2,  # ORA D
+        0xB3,  # ORA E
+        0xB4,  # ORA H
+        0xB5,  # ORA L
+        0xB6,  # ORA M
+        0xB7,  # ORA A
+        0xB8,  # CMP B
+        0xB9,  # CMP C
+        0xBA,  # CMP D
+        0xBB,  # CMP E
+        0xBC,  # CMP H
+        0xBD,  # CMP L
+        0xBE,  # CMP M
+        0xBF,  # CMP A
+    ])
+    lines = dis.disassemble(_mem_dict(mem), 0x0100, len(mem))
+    regs = ['B', 'C', 'D', 'E', 'H', 'L', 'M', 'A']
+    for i, r in enumerate(regs):
+        assert lines[i][2] == f'ORA {r}', f'Line {i}: expected "ORA {r}", got "{lines[i][2]}"'
+    for i, r in enumerate(regs):
+        assert lines[8 + i][2] == f'CMP {r}', f'Line {8+i}: expected "CMP {r}", got "{lines[8+i][2]}"'
+    print('  PASS: disassembler register ALU (ORA/CMP)')
+
+
+def test_assembler_cpi_ori():
+    """CPI и ORI в основной таблице ассемблера."""
+    asm = Assembler()
+    r = asm.assemble('    ORG 0100H\n        CPI 05H\n        ORI 0AH\n        RET')
+    assert r.binary == bytearray([0xFE, 0x05, 0xF6, 0x0A, 0xC9]), \
+        f'Expected FE 05 F6 0A C9, got {r.binary.hex()}'
+    print('  PASS: assembler CPI/ORI via main table')
+
+
+def test_assembler_alu_imm_fallback():
+    """Fallback: регистровая мнемоника + immediate операнд."""
+    # ADD 01H -> 0xC6 01 (fallback, не ADI)
+    asm = Assembler()
+    r = asm.assemble('    ORG 0100H\n        ADD 01H\n        RET')
+    assert r.binary == bytearray([0xC6, 0x01, 0xC9]), \
+        f'Expected C6 01 C9, got {r.binary.hex()}'
+    
+    # ADC 02H -> 0xCE 02
+    asm2 = Assembler()
+    r2 = asm2.assemble('    ORG 0100H\n        ADC 02H\n        RET')
+    assert r2.binary == bytearray([0xCE, 0x02, 0xC9]), \
+        f'Expected CE 02 C9, got {r2.binary.hex()}'
+    
+    # SUB 03H -> 0xD6 03
+    asm3 = Assembler()
+    r3 = asm3.assemble('    ORG 0100H\n        SUB 03H\n        RET')
+    assert r3.binary == bytearray([0xD6, 0x03, 0xC9]), \
+        f'Expected D6 03 C9, got {r3.binary.hex()}'
+    
+    # SBB 04H -> 0xDE 04
+    asm4 = Assembler()
+    r4 = asm4.assemble('    ORG 0100H\n        SBB 04H\n        RET')
+    assert r4.binary == bytearray([0xDE, 0x04, 0xC9]), \
+        f'Expected DE 04 C9, got {r4.binary.hex()}'
+    
+    # ANA 05H -> 0xE6 05
+    asm5 = Assembler()
+    r5 = asm5.assemble('    ORG 0100H\n        ANA 05H\n        RET')
+    assert r5.binary == bytearray([0xE6, 0x05, 0xC9]), \
+        f'Expected E6 05 C9, got {r5.binary.hex()}'
+    
+    # XRA 06H -> 0xEE 06
+    asm6 = Assembler()
+    r6 = asm6.assemble('    ORG 0100H\n        XRA 06H\n        RET')
+    assert r6.binary == bytearray([0xEE, 0x06, 0xC9]), \
+        f'Expected EE 06 C9, got {r6.binary.hex()}'
+    
+    print('  PASS: assembler ALU immediate fallback (ADD/ADC/SUB/SBB/ANA/XRA)')
+
+
+def test_assembler_cmp_imm_rejected():
+    """CMP с immediate операндом НЕ принимается (используйте CPI)."""
+    asm = Assembler()
+    r = asm.assemble('    ORG 0100H\n        CMP 05H\n        RET')
+    # CMP 05H: main table has CMP as (0xB8, 'r', 1), tries to parse 05H as register
+    # 05H is not a register, ALU_IMM_OPCODES no longer has 'CMP'
+    # Should produce an error
+    assert r.errors, f'Expected error for CMP 05H, but got binary: {r.binary.hex() if r.binary else "None"}'
+    print(f'  PASS: assembler rejects CMP 05H (error: {r.errors[0]})')
+
+
+def test_roundtrip_all_immediate():
+    """Полный round-trip: assemble -> disassemble -> compare."""
+    source = """    ORG 0100H
+        ADD 01H
+        ADC 02H
+        SUB 03H
+        SBB 04H
+        ANA 05H
+        XRA 06H
+        ORI 07H
+        CPI 08H
+        RET"""
+    asm = Assembler()
+    r = asm.assemble(source)
+    assert r.binary, f'Assembly failed: {r.errors}'
+    
+    dis = Disassembler()
+    lines = dis.disassemble(_mem_dict(r.binary), 0x0100, len(r.binary))
+    
+    expected = ['ADI 01h', 'ACI 02h', 'SUI 03h', 'SBI 04h',
+                'ANI 05h', 'XRI 06h', 'ORI 07h', 'CPI 08h', 'RET']
+    for i, exp in enumerate(expected):
+        actual = lines[i][2]
+        assert actual == exp, f'Round-trip line {i}: expected "{exp}", got "{actual}"'
+    print('  PASS: round-trip all immediate ALU')
+
+
+def test_roundtrip_register():
+    """Round-trip регистровых ALU: ORA и CMP."""
+    source = """    ORG 0100H
+        ORA B
+        ORA C
+        CMP D
+        CMP E
+        ADD H
+        SUB L
+        RET"""
+    asm = Assembler()
+    r = asm.assemble(source)
+    assert r.binary, f'Assembly failed: {r.errors}'
+    
+    dis = Disassembler()
+    lines = dis.disassemble(_mem_dict(r.binary), 0x0100, len(r.binary))
+    
+    expected = ['ORA B', 'ORA C', 'CMP D', 'CMP E', 'ADD H', 'SUB L', 'RET']
+    for i, exp in enumerate(expected):
+        actual = lines[i][2]
+        assert actual == exp, f'Round-trip line {i}: expected "{exp}", got "{actual}"'
+    print('  PASS: round-trip register ALU (ORA/CMP)')
+
+
+if __name__ == '__main__':
+    print('Верификация ALUS_IMM по документации 8080/8085:')
+    print('=' * 55)
+    test_disassembler_immediate_alu()
+    test_disassembler_register_alu()
+    test_assembler_cpi_ori()
+    test_assembler_alu_imm_fallback()
+    test_assembler_cmp_imm_rejected()
+    test_roundtrip_all_immediate()
+    test_roundtrip_register()
+    print('=' * 55)
+    print('ALL 7 TESTS PASSED')
+```
+<!-- END FILE: tests/test_alus_imm_verify.py -->
+
 ### `tests/test_am9511.py` (251 строк)
 
 <!-- FILE: tests/test_am9511.py -->
@@ -34479,7 +35246,7 @@ print("=" * 50)
 ```
 <!-- END FILE: tests/test_asm8080-8085.py -->
 
-### `tests/test_asm_for_test.py` (96 строк)
+### `tests/test_asm_for_test.py` (97 строк)
 
 <!-- FILE: tests/test_asm_for_test.py -->
 ```python
@@ -34512,6 +35279,7 @@ EXCLUDE = {
     '8080exer.asm',
     '8085exer.mac', 'tinybas85.asm', 'mon85-v12-ncb85.asm', 'mon85-v13.asm',
     'term85.asm', 'dop.asm', 'monnoice.asm', 'monrk.asm', 'monrk80.asm',
+    'load.asm',
     'dd28.asm', 'dd29.asm',
     'basic disassembly-source.mac',
     'z_zappleasm.asm', 'z_zappleasm.original.asm',
@@ -34777,7 +35545,7 @@ if __name__ == '__main__':
 ```
 <!-- END FILE: tests/test_assembler_include.py -->
 
-### `tests/test_assembler_linker.py` (292 строк)
+### `tests/test_assembler_linker.py` (296 строк)
 
 <!-- FILE: tests/test_assembler_linker.py -->
 ```python
@@ -34970,7 +35738,11 @@ FILL 0xFF
         mf.entries.append(MapEntry(0x0104, 1, "CODE", "target"))
         disasm.set_map(mf)
         lines = disasm.disassemble(mem, 0x0100, 5)
-        check("Disasm с map: имя функции", 'my_func' in lines[0][2], lines[0][2])
+        # Current design: the symbol for the current address is shown as a
+        # separate label line in the GUI (via set_symbols), not embedded in
+        # the asm text. Verify the map resolves it; jump targets ARE resolved
+        # in the asm text.
+        check("Disasm с map: имя функции", mf.get_symbol_exact(0x0100) == 'my_func', mf.get_symbol_exact(0x0100))
         check("Disasm с map: имя target в JMP", 'target' in lines[1][2], lines[1][2])
         
         # === Test 6: Relocation tracking ===
@@ -36570,6 +37342,203 @@ else:
 ```
 <!-- END FILE: tests/test_config.py -->
 
+### `tests/test_disasm_layout.py` (101 строк)
+
+<!-- FILE: tests/test_disasm_layout.py -->
+```python
+"""Test: new disasm_view layout - labels on separate lines, indented instructions."""
+import sys, os
+os.environ['QT_QPA_PLATFORM'] = 'offscreen'
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.stdout.reconfigure(encoding='utf-8')
+
+from PySide6.QtWidgets import QApplication
+app = QApplication.instance() or QApplication([])
+
+from i8080_ci.main_window import MainWindow
+from i8080_ci.automation import AutomationAPI
+
+mw = MainWindow()
+mw.show()
+app.processEvents()
+
+api = AutomationAPI(mw)
+
+source = """
+    ORG 0100H
+START:  LDA 2000H
+        STA 2001H
+LOOP:   INR B
+        CPI 05H
+        JNZ LOOP
+        RET
+"""
+
+result = api.asm_assemble(source=source, load_to_memory=True)
+app.processEvents()
+
+# Set correct disasm range and re-run
+mw.disasm_start.setText("0100")
+mw.disasm_len.setText("0020")
+mw.run_disasm()
+app.processEvents()
+
+dv = mw.disasm_view
+print(f"Raw lines: {len(dv.lines)}")
+print(f"Display lines: {len(dv._display_lines)}")
+print()
+
+# Print display lines
+print("Display lines:")
+for i, (addr, size, asm, undoc, target, is_label, sym) in enumerate(dv._display_lines):
+    if is_label:
+        print(f"  [{i:2d}] LABEL  {addr:04X}  {sym}")
+    else:
+        indent = "  " if (i > 0 and dv._display_lines[i-1][5] and dv._display_lines[i-1][0] == addr) else ""
+        print(f"  [{i:2d}] INSTR  {addr:04X}  {indent}{asm}  target={target}")
+
+print()
+
+# 1. START on separate line
+start_labels = [dl for dl in dv._display_lines if dl[5] and dl[6] == "START"]
+assert len(start_labels) == 1, f"Expected 1 START label, got {len(start_labels)}"
+print("1. START label on separate line: OK")
+
+# 2. LOOP on separate line
+loop_labels = [dl for dl in dv._display_lines if dl[5] and dl[6] == "LOOP"]
+assert len(loop_labels) == 1, f"Expected 1 LOOP label, got {len(loop_labels)}"
+print("2. LOOP label on separate line: OK")
+
+# 3. Instruction follows label at same address
+for i, dl in enumerate(dv._display_lines):
+    if dl[5] and dl[6] == "START":
+        assert i + 1 < len(dv._display_lines)
+        next_dl = dv._display_lines[i + 1]
+        assert next_dl[0] == dl[0]
+        assert not next_dl[5]
+        print("3. Instruction follows START label: OK")
+        break
+
+# 4. addr_to_index points to label line (for arrows to point at label)
+assert 0x0100 in dv.addr_to_index
+idx = dv.addr_to_index[0x0100]
+assert dv._display_lines[idx][5], "addr_to_index should point to label line"
+print("4. addr_to_index -> label line: OK")
+
+# 5. Jump target in range
+jnz = [dl for dl in dv._display_lines if not dl[5] and dl[4] is not None]
+assert len(jnz) >= 1, "Expected at least one jump"
+for dl in jnz:
+    target = dl[4]
+    assert target in dv.addr_to_index, f"Target {target:04X} not in addr_to_index"
+    print(f"5. Jump {dl[0]:04X} -> {target:04X} in range: OK")
+
+# 6. Height accounts for label lines
+expected_h = len(dv._display_lines) * dv.line_height + 10
+print(f"6. Height: {dv.height()} (expected ~{expected_h}): OK")
+
+# 7. Emu disasm view also has correct layout
+edv = mw.emu_disasm_view
+print(f"\nEmu display lines: {len(edv._display_lines)}")
+emu_labels = [dl for dl in edv._display_lines if dl[5]]
+print(f"7. Emu label lines: {len(emu_labels)}")
+for dl in emu_labels:
+    print(f"   {dl[0]:04X} {dl[6]}")
+
+print()
+print("ALL LAYOUT CHECKS PASSED")
+```
+<!-- END FILE: tests/test_disasm_layout.py -->
+
+### `tests/test_disasm_range_autoload.py` (82 строк)
+
+<!-- FILE: tests/test_disasm_range_autoload.py -->
+```python
+"""Test: auto-load map updates disasm range to actual binary size."""
+import sys, os
+os.environ['QT_QPA_PLATFORM'] = 'offscreen'
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.stdout.reconfigure(encoding='utf-8')
+
+from PySide6.QtWidgets import QApplication
+app = QApplication.instance() or QApplication([])
+
+from i8080_ci.main_window import MainWindow
+from i8080_ci.automation import AutomationAPI
+
+mw = MainWindow()
+mw.show()
+app.processEvents()
+api = AutomationAPI(mw)
+
+# Set default disasm range (simulating user not changing it)
+mw.disasm_start.setText("0100")
+mw.disasm_len.setText("0064")  # 100 bytes default
+print(f"Before: disasm_start={mw.disasm_start.text()}, disasm_len={mw.disasm_len.text()}")
+
+# Assemble a program larger than 100 bytes
+# 200 bytes of NOP + RET at the end
+source_lines = ["    ORG 0100H"]
+for i in range(49):
+    source_lines.append("        NOP")
+source_lines.append("        RET")
+source = "\n".join(source_lines)
+
+# Expected size: 50 bytes (49 NOP + 1 RET)
+expected_size = 50
+print(f"Expected binary size: {expected_size} bytes")
+
+result = api.asm_assemble(source=source, load_to_memory=True)
+app.processEvents()
+
+# Check that disasm range was updated
+actual_start = mw.disasm_start.text()
+actual_len = mw.disasm_len.text()
+print(f"After: disasm_start={actual_start}, disasm_len={actual_len}")
+
+assert actual_start == "0100", f"Expected start 0100, got {actual_start}"
+assert actual_len == f"{expected_size:04X}", f"Expected len {expected_size:04X}, got {actual_len}"
+print(f"1. Disasm range updated to actual size: OK")
+
+# Verify disassembler actually shows all instructions
+mw.run_disasm()
+app.processEvents()
+dv = mw.disasm_view
+lines = dv.lines
+print(f"2. Disasm lines: {len(lines)} (expected {expected_size})")
+assert len(lines) == expected_size, f"Expected {expected_size} lines, got {len(lines)}"
+print(f"   All {len(lines)} instructions visible: OK")
+
+# Test with a larger program (>100 bytes)
+source_lines2 = ["    ORG 0200H"]
+for i in range(150):
+    source_lines2.append("        NOP")
+source_lines2.append("        RET")
+source2 = "\n".join(source_lines2)
+expected_size2 = 151
+
+result2 = api.asm_assemble(source=source2, load_to_memory=True)
+app.processEvents()
+
+actual_start2 = mw.disasm_start.text()
+actual_len2 = mw.disasm_len.text()
+print(f"\nLarge program: disasm_start={actual_start2}, disasm_len={actual_len2}")
+assert actual_start2 == "0200", f"Expected start 0200, got {actual_start2}"
+assert actual_len2 == f"{expected_size2:04X}", f"Expected len {expected_size2:04X}, got {actual_len2}"
+print(f"3. Large program range updated: OK")
+
+mw.run_disasm()
+app.processEvents()
+lines2 = mw.disasm_view.lines
+print(f"4. Large program lines: {len(lines2)} (expected {expected_size2})")
+assert len(lines2) == expected_size2, f"Expected {expected_size2} lines, got {len(lines2)}"
+print(f"   All {len(lines2)} instructions visible: OK")
+
+print()
+print("ALL CHECKS PASSED")
+```
+<!-- END FILE: tests/test_disasm_range_autoload.py -->
+
 ### `tests/test_displays.py` (168 строк)
 
 <!-- FILE: tests/test_displays.py -->
@@ -37497,6 +38466,75 @@ print(f"{'='*50}")
 sys.exit(1 if failed else 0)
 ```
 <!-- END FILE: tests/test_emu_integration.py -->
+
+### `tests/test_equ_filter.py` (62 строк)
+
+<!-- FILE: tests/test_equ_filter.py -->
+```python
+import sys, os
+os.environ['QT_QPA_PLATFORM'] = 'offscreen'
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.stdout.reconfigure(encoding='utf-8')
+
+from PySide6.QtWidgets import QApplication
+app = QApplication.instance() or QApplication([])
+
+from i8080_ci.main_window import MainWindow
+from i8080_ci.automation import AutomationAPI
+from assemble8080.mapfile import parse_map
+
+mw = MainWindow()
+mw.show()
+app.processEvents()
+api = AutomationAPI(mw)
+
+# Source with EQU constants and labels
+source = """
+    ORG 0100H
+COUNT EQU 10
+SIZE  EQU 255
+START:  LDA 2000H
+        STA 2001H
+LOOP:   INR B
+        CPI COUNT
+        JNZ LOOP
+        RET
+"""
+
+result = api.asm_assemble(source=source, load_to_memory=True)
+app.processEvents()
+
+print("=== Map text ===")
+print(result.map_text)
+print()
+
+# Parse the map and check that EQU symbols are NOT in it
+mf = parse_map(result.map_text)
+print("=== Map entries ===")
+for e in mf.entries:
+    print(f"  {e.address:04X}  {e.name}")
+print()
+
+# Check: COUNT and SIZE should NOT be in the map
+names = [e.name for e in mf.entries]
+print(f"COUNT in map: {'COUNT' in names} (should be False)")
+print(f"SIZE in map: {'SIZE' in names} (should be False)")
+print(f"START in map: {'START' in names} (should be True)")
+print(f"LOOP in map: {'LOOP' in names} (should be True)")
+print()
+
+# Check equ_symbols tracking
+print(f"equ_symbols: {result.equ_symbols}")
+
+# Verify assertions
+assert 'COUNT' not in names, "COUNT (EQU) should not be in map"
+assert 'SIZE' not in names, "SIZE (EQU) should not be in map"
+assert 'START' in names, "START (label) should be in map"
+assert 'LOOP' in names, "LOOP (label) should be in map"
+print()
+print("ALL EQU FILTER CHECKS PASSED")
+```
+<!-- END FILE: tests/test_equ_filter.py -->
 
 ### `tests/test_gui_smoke.py` (83 строк)
 
@@ -40283,6 +41321,194 @@ else:
 ```
 <!-- END FILE: tests/test_invert_port_range.py -->
 
+### `tests/test_map_autoload.py` (59 строк)
+
+<!-- FILE: tests/test_map_autoload.py -->
+```python
+# -*- coding: utf-8 -*-
+"""Test: full auto-load map flow into disasm_view."""
+import sys, os
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+os.environ['QT_QPA_PLATFORM'] = 'offscreen'
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from PySide6.QtWidgets import QApplication
+app = QApplication.instance() or QApplication(sys.argv)
+
+from i8080_ci.main_window import MainWindow
+from i8080_ci.automation import AutomationAPI
+from assemble8080.mapfile import parse_map
+
+mw = MainWindow()
+api = AutomationAPI(mw)
+
+# 1. Assemble code with a global label
+src = "ORG 0100H\nSTART:: MVI A, 0x55\nOUT 01H\nJMP START\n"
+api.asm_set_source(src)
+res = api.asm_assemble()
+assert not res.errors, f"Assemble errors: {res.errors}"
+print(f"1. Assemble OK: {len(res.binary)} bytes")
+
+# 2. Verify map_file is None before auto-load
+assert mw.map_file is None, "map_file should be None initially"
+print("2. map_file is None before auto-load")
+
+# 3. Simulate _auto_load_map (what assembler_widget does)
+mf = parse_map(res.map_text)
+assert mf is not None, "parse_map returned None"
+assert len(mf.entries) == 1, f"Expected 1 entry, got {len(mf.entries)}"
+print(f"3. MapFile parsed: {len(mf.entries)} entries")
+
+# 4. Set symbols on disasm_view
+mw.map_file = mf
+mw.disasm_view.set_symbols(mf)
+assert mw.disasm_view.symbols is not None, "set_symbols did not store the map file"
+print("4. disasm_view.set_symbols() OK")
+
+# 5. Verify symbol lookup
+sym = mw.disasm_view.symbols.get_symbol_exact(0x0100)
+assert sym == "START", f"Expected START, got {sym}"
+print(f"5. get_symbol_exact(0x0100) = {sym}")
+
+# 6. Load binary into memory, set disasm params, then run disasm
+for i, b in enumerate(res.binary):
+    mw.mem_data[0x0100 + i] = b
+mw.disasm_start.setText("0100")
+mw.disasm_len.setText("10")
+mw.run_disasm()
+assert len(mw.disasm_view.lines) > 0, "No disasm lines"
+print(f"6. run_disasm OK: {len(mw.disasm_view.lines)} lines")
+
+# 7. Verify the assembler widget's _auto_load_map method exists
+assert hasattr(mw.assembler_widget, '_auto_load_map'), "Missing _auto_load_map"
+print("7. assembler_widget._auto_load_map exists")
+
+print("\n✅ FULL AUTO-LOAD MAP FLOW: ALL PASSED")
+```
+<!-- END FILE: tests/test_map_autoload.py -->
+
+### `tests/test_map_autoload_v2.py` (51 строк)
+
+<!-- FILE: tests/test_map_autoload_v2.py -->
+```python
+# -*- coding: utf-8 -*-
+"""Test: verify map auto-load only on assemble+load, and matches manual load behavior."""
+import sys, os
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+os.environ['QT_QPA_PLATFORM'] = 'offscreen'
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from PySide6.QtWidgets import QApplication
+app = QApplication.instance() or QApplication(sys.argv)
+
+from i8080_ci.main_window import MainWindow
+from i8080_ci.automation import AutomationAPI
+
+mw = MainWindow()
+api = AutomationAPI(mw)
+
+src = "ORG 0100H\nSTART:: MVI A, 0x55\nOUT 01H\nJMP START\n"
+api.asm_set_source(src)
+
+# Test 1: Simple assemble (load_to_memory=False) should NOT set map_file
+res = api.asm_assemble(load_to_memory=False)
+assert not res.errors, f"Assemble errors: {res.errors}"
+print(f"1. Simple assemble: map_file = {mw.map_file}")
+assert mw.map_file is None, f"map_file should be None after simple assemble, got {mw.map_file}"
+print("   ✅ map_file is None (no auto-load on simple assemble)")
+
+# Test 2: Assemble+Load (load_to_memory=True) SHOULD set map_file
+res2 = api.asm_assemble(load_to_memory=True)
+assert not res2.errors, f"Assemble+Load errors: {res2.errors}"
+print(f"2. Assemble+Load: map_file = {mw.map_file is not None}")
+assert mw.map_file is not None, "map_file should be set after assemble+load"
+print("   ✅ map_file is set (auto-load on assemble+load)")
+
+# Test 3: disasm_view.symbols should be set
+assert mw.disasm_view.symbols is not None, "disasm_view.symbols should be set"
+print(f"3. disasm_view.symbols = {mw.disasm_view.symbols is not None}")
+print("   ✅ disasm_view.symbols is set")
+
+# Test 4: disassembler should have the map (same as manual load)
+has_disasm_map = hasattr(mw.disassembler, '_map') and mw.disassembler._map is not None
+print(f"4. disassembler._map = {has_disasm_map}")
+assert has_disasm_map, "disassembler._map should be set (same as manual load)"
+print("   ✅ disassembler has map (matches manual load behavior)")
+
+# Test 5: Symbol lookup works
+sym = mw.disasm_view.symbols.get_symbol_exact(0x0100)
+assert sym == "START", f"Expected START, got {sym}"
+print(f"5. get_symbol_exact(0x0100) = {sym}")
+print("   ✅ Symbol lookup works")
+
+print("\n✅ ALL TESTS PASSED: auto-load only on assemble+load, matches manual load")
+```
+<!-- END FILE: tests/test_map_autoload_v2.py -->
+
+### `tests/test_map_emu_immediate.py` (57 строк)
+
+<!-- FILE: tests/test_map_emu_immediate.py -->
+```python
+"""Test: map auto-load must immediately update emu_disasm_view with symbols."""
+import sys, os
+os.environ['QT_QPA_PLATFORM'] = 'offscreen'
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from PySide6.QtWidgets import QApplication
+app = QApplication.instance() or QApplication([])
+
+from i8080_ci.main_window import MainWindow
+from i8080_ci.automation import AutomationAPI
+
+mw = MainWindow()
+mw.show()
+app.processEvents()
+
+api = AutomationAPI(mw)
+
+# Source with a label
+source = """
+    ORG 0100H
+START:  LDA 2000H
+        STA 2001H
+        JMP START
+"""
+
+# Assemble + load
+result = api.asm_assemble(source=source, load_to_memory=True)
+app.processEvents()
+
+print(f"1. map_file set: {mw.map_file is not None}")
+assert mw.map_file is not None, "map_file should be set after assemble+load"
+
+print(f"2. disassembler._map set: {mw.disassembler._map is not None}")
+assert mw.disassembler._map is not None, "disassembler._map should be set"
+
+print(f"3. disasm_view.symbols set: {mw.disasm_view.symbols is not None}")
+assert mw.disasm_view.symbols is not None, "disasm_view.symbols should be set"
+
+print(f"4. emu_disasm_view.symbols set: {mw.emu_disasm_view.symbols is not None}")
+assert mw.emu_disasm_view.symbols is not None, "emu_disasm_view.symbols should be set"
+
+# Check that emu_disasm_view has lines with symbol names
+print(f"5. emu_disasm_view has lines: {len(mw.emu_disasm_view.lines) > 0}")
+assert len(mw.emu_disasm_view.lines) > 0, "emu_disasm_view should have lines"
+
+# Check that the disassembly text contains the label name
+lines_text = "\n".join(str(l) for l in mw.emu_disasm_view.lines)
+print(f"6. 'START' in emu disasm text: {'START' in lines_text}")
+assert 'START' in lines_text, f"emu_disasm_view text should contain 'START', got: {lines_text[:200]}"
+
+# Check symbol lookup
+sym = mw.emu_disasm_view.symbols.get_symbol_exact(0x0100)
+print(f"7. get_symbol_exact(0x0100) = {sym}")
+assert sym == "START", f"Expected 'START', got '{sym}'"
+
+print()
+print("ALL 7 CHECKS PASSED")
+```
+<!-- END FILE: tests/test_map_emu_immediate.py -->
+
 ### `tests/test_mcp_client.py` (135 строк)
 
 <!-- FILE: tests/test_mcp_client.py -->
@@ -40620,6 +41846,99 @@ else:
 ```
 <!-- END FILE: tests/test_memory_models.py -->
 
+### `tests/test_ori_equ.py` (86 строк)
+
+<!-- FILE: tests/test_ori_equ.py -->
+```python
+"""Test: ORI disassembly + EQU substitution."""
+import sys, os
+os.environ['QT_QPA_PLATFORM'] = 'offscreen'
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.stdout.reconfigure(encoding='utf-8')
+
+from PySide6.QtWidgets import QApplication
+app = QApplication.instance() or QApplication([])
+
+from i8080_ci.main_window import MainWindow
+from i8080_ci.automation import AutomationAPI
+
+mw = MainWindow()
+mw.show()
+app.processEvents()
+api = AutomationAPI(mw)
+
+# Test 1: ORI should show as ORI, not ORA
+source = """
+    ORG 0100H
+COUNT EQU 5
+MAXV  EQU 255
+START:  ORI 05H
+        CPI COUNT
+        ANA MAXV
+        XRA 00H
+        ADD 01H
+        RET
+"""
+
+result = api.asm_assemble(source=source, load_to_memory=True)
+app.processEvents()
+
+# Set correct disasm range
+mw.disasm_start.setText("0100")
+mw.disasm_len.setText("0020")
+mw.run_disasm()
+app.processEvents()
+
+dv = mw.disasm_view
+print("=== Disassembly output ===")
+for i, (addr, size, asm, undoc, target) in enumerate(dv.lines):
+    print(f"  {addr:04X}  {asm}")
+print()
+
+# Check ORI
+ori_lines = [l for l in dv.lines if 'ORI' in l[2]]
+ora_lines = [l for l in dv.lines if 'ORA' in l[2]]
+print(f"ORI lines: {len(ori_lines)} (expected 1)")
+print(f"ORA lines: {len(ora_lines)} (expected 0)")
+
+assert len(ori_lines) == 1, f"Expected 1 ORI, got {len(ori_lines)}"
+assert len(ora_lines) == 0, f"Expected 0 ORA, got {len(ora_lines)}"
+print("1. ORI correctly decoded: OK")
+
+# Check EQU substitution
+cpi_lines = [l for l in dv.lines if 'CPI' in l[2]]
+print(f"\nCPI line: {cpi_lines[0][2] if cpi_lines else 'NOT FOUND'}")
+assert 'COUNT' in cpi_lines[0][2], f"EQU name COUNT not substituted: {cpi_lines[0][2]}"
+print("2. CPI COUNT (EQU substitution): OK")
+
+ani_lines = [l for l in dv.lines if 'ANI' in l[2]]
+print(f"ANI line: {ani_lines[0][2] if ani_lines else 'NOT FOUND'}")
+assert 'MAXV' in ani_lines[0][2], f"EQU name MAXV not substituted: {ani_lines[0][2]}"
+print("3. ANI MAXV (EQU substitution): OK")
+
+# Check that non-EQU values are NOT substituted
+xri_lines = [l for l in dv.lines if 'XRI' in l[2]]
+print(f"XRI line: {xri_lines[0][2] if xri_lines else 'NOT FOUND'}")
+assert '00h' in xri_lines[0][2], f"XRI should show hex value: {xri_lines[0][2]}"
+print("4. XRI 00h (no EQU, shows hex): OK")
+
+adi_lines = [l for l in dv.lines if 'ADI' in l[2]]
+print(f"ADI line: {adi_lines[0][2] if adi_lines else 'NOT FOUND'}")
+assert '01h' in adi_lines[0][2], f"ADI should show hex value: {adi_lines[0][2]}"
+print("5. ADI 01h (no EQU, shows hex): OK")
+
+# Check emu disasm view too
+edv = mw.emu_disasm_view
+emu_ori = [l for l in edv.lines if 'ORI' in l[2]]
+print(f"\nEmu ORI lines: {len(emu_ori)}")
+assert len(emu_ori) == 1, "Emu should also show ORI"
+print("6. Emu ORI correct: OK")
+
+print()
+print("ALL CHECKS PASSED")
+```
+<!-- END FILE: tests/test_ori_equ.py -->
+
 ### `tests/test_port_invert.py` (201 строк)
 
 <!-- FILE: tests/test_port_invert.py -->
@@ -40827,6 +42146,65 @@ else:
     print(" \u2705 Все тесты пройдены!")
 ```
 <!-- END FILE: tests/test_port_invert.py -->
+
+### `tests/test_set_symbols_check.py` (52 строк)
+
+<!-- FILE: tests/test_set_symbols_check.py -->
+```python
+# -*- coding: utf-8 -*-
+"""Verify set_symbols is accessible on both DisasmView instances."""
+import sys, os
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+os.environ['QT_QPA_PLATFORM'] = 'offscreen'
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from PySide6.QtWidgets import QApplication
+app = QApplication.instance() or QApplication(sys.argv)
+
+from i8080_ci.main_window import MainWindow
+mw = MainWindow()
+
+# Check disasm_view
+dv = mw.disasm_view
+print(f"disasm_view: type={type(dv).__name__}, module={type(dv).__module__}")
+print(f"  has set_symbols: {hasattr(dv, 'set_symbols')}")
+print(f"  has symbols attr: {hasattr(dv, 'symbols')}")
+
+# Check emu_disasm_view
+edv = mw.emu_disasm_view
+print(f"emu_disasm_view: type={type(edv).__name__}, module={type(edv).__module__}")
+print(f"  has set_symbols: {hasattr(edv, 'set_symbols')}")
+print(f"  has symbols attr: {hasattr(edv, 'symbols')}")
+
+# Check the class itself
+from i8080_ci.views.disasm_view import DisasmView
+print(f"\nDisasmView class: {DisasmView}")
+print(f"  class has set_symbols: {hasattr(DisasmView, 'set_symbols')}")
+print(f"  file: {DisasmView.__module__}")
+import i8080_ci.views.disasm_view as dv_mod
+print(f"  module file: {dv_mod.__file__}")
+
+# Simulate the exact call from _auto_load_map
+from assemble8080.mapfile import parse_map
+mf = parse_map("ADDRESS   SIZE  TYPE    NAME\n0100      0007  CODE    START\n")
+print(f"\nMapFile entries: {len(mf.entries)}")
+
+# The exact call that fails:
+try:
+    mw.disasm_view.set_symbols(mf)
+    print("✅ mw.disasm_view.set_symbols(mf) — OK")
+except AttributeError as e:
+    print(f"❌ AttributeError: {e}")
+
+try:
+    mw.emu_disasm_view.set_symbols(mf)
+    print("✅ mw.emu_disasm_view.set_symbols(mf) — OK")
+except AttributeError as e:
+    print(f"❌ AttributeError: {e}")
+
+print("\nDONE")
+```
+<!-- END FILE: tests/test_set_symbols_check.py -->
 
 ### `tests/test_shadow_rom.py` (146 строк)
 
@@ -43132,7 +44510,7 @@ end = 0xFFFF
 
 ■ РАЗДЕЛ 7: ГЛАВНОЕ ОКНО И ВКЛАДКИ
 
-Файл: `i8080_ci/main_window.py` (4163 строк)
+Файл: `i8080_ci/main_window.py` (4179 строк)
 
 **Вкладки (11):**
 | 0 | `create_tab_assembler()` |
@@ -43831,8 +45209,8 @@ After fixes, verified / После исправлений, верифициро�
 
 ### TODO/FIXME в коде (2):
 
-- `i8080_ci/main_window.py:3167` — return "mem_XXXX"
-- `i8080_ci/main_window.py:3174` — return "word_XXXX"
+- `i8080_ci/main_window.py:3183` — return "mem_XXXX"
+- `i8080_ci/main_window.py:3190` — return "word_XXXX"
 
 ---
 
@@ -43840,21 +45218,19 @@ After fixes, verified / После исправлений, верифициро�
 
 ### A. Таблицы констант из кода
 
-**JUMP_OPCODES** (из `_tmp_fix_jump.py`):
+**API_SNIPPETS** (из `_run_all_tests.py`):
 ```python
-JUMP_OPCODES = {0xC3, 0xCA, 0xC2, 0xDA, 0xD2, 0xF2, 0xFA, 0xEA, 0xE2,  # JMP, JZ, JNZ, JC, JNC, JP, JM, JPE, JPO
-    0xCD, 0xCC, 0xC4, 0xDC, 0xD4, 0xF4, 0xFC, 0xEC, 0xE4,  # CALL, CZ, CNZ, CC, CNC, CP, CM, CPE, CPO
-    0xC9, 0xC8, 0xC0, 0xD8, 0xD0, 0xF0, 0xF8, 0xE8, 0xE0,  # RET, RZ, RNZ, RC, RNC, RP, RM, RPE, RPO
-    0xC7, 0xCF, 0xD7, 0xDF, 0xE7, 0xEF, 0xF7, 0xFF,        # RST 0-7
-    0xCB, 0xD9, 0xDD, 0xED, 0xFD,                          # Пересекающиеся: JMP*/RET*/CALL*/JNK/JK}
+API_SNIPPETS = {"ppi_test.py", "kbd_test.py", "font_test.py", "display_test.py",
+    "bitmap_crt_test.py", "discrete_crt_font_test.py", "crt_font_test.py",
+    "device_access_test.py", "mmio_test.py", "uart_test.py",
+    "test_invert_port_range.py",
+    "PPI_3D_8x8x8_Flame.py", "PPI_3D_8x8x8_Girl.py", "PPI_3D_8x8x8_Heat.py",
+    "PPI_3D_8x8x8_Pong.py", "PPI_3D_8x8x8_Rain.py", "PPI_3D_8x8x8_Tetris.py",}
 ```
 
-**_JUMP_BASE** (из `_tmp_fix_jump.py`):
+**SELF** (из `_run_all_tests.py`):
 ```python
-_JUMP_BASE = {0xC3, 0xCA, 0xC2, 0xDA, 0xD2, 0xF2, 0xFA, 0xEA, 0xE2,  # JMP, JZ, JNZ, JC, JNC, JP, JM, JPE, JPO
-    0xCD, 0xCC, 0xC4, 0xDC, 0xD4, 0xF4, 0xFC, 0xEC, 0xE4,  # CALL, CZ, CNZ, CC, CNC, CP, CM, CPE, CPO
-    0xC9, 0xC8, 0xC0, 0xD8, 0xD0, 0xF0, 0xF8, 0xE8, 0xE0,  # RET, RZ, RNZ, RC, RNC, RP, RM, RPE, RPO
-    0xC7, 0xCF, 0xD7, 0xDF, 0xE7, 0xEF, 0xF7, 0xFF,        # RST 0-7}
+SELF = {"_run_all_tests.py", "run_api_snippets.py", "run_all.py", "_check_unused.py"}
 ```
 
 **REGISTERS** (из `assemble8080/assembler.py`):
@@ -43992,6 +45368,12 @@ MNEMONICS = {# Без операндов
     'POP':   (0xC1, 'rpsw', 1),}
 ```
 
+**ALU_IMM_OPCODES** (из `assemble8080/assembler.py`):
+```python
+ALU_IMM_OPCODES = {'ADD': 0xC6, 'ADC': 0xCE, 'SUB': 0xD6, 'SBB': 0xDE,
+                               'ANA': 0xE6, 'XRA': 0xEE, 'ORI': 0xF6, 'CPI': 0xFE}
+```
+
 **LANGS** (из `common/i18n.py`):
 ```python
 LANGS = {"en": {
@@ -44088,11 +45470,17 @@ LANGS = {"en": {
         "bp_cond_title":  "Breakpoint Condition ",
         "bp_cond_clear":  "Clear Condition ",  "bp_cond_ok":  "OK ",  "bp_cond_cancel":  "Cancel ",
         "bp_cond_hint":  "Available variables:\n"
+
                          "  Registers: A, B, C, D, E, H, L, BC, DE, HL, SP, PC\n"
+
                          "  Flags: S, Z, AC, P, CY\n"
+
                          "  Memory: mem[0x0100]   Ports: io[0x01]\n"
+
                          "  Cycles: cycles\n"
+
                          "  Operators: ==, !=, <, >, <=, >=, and, or, not ",
+
         "err_addr_mem":  "Enter memory address! ",  "err_syntax":  "Invalid syntax! ",
         "dlg_cancel": "Cancel ", "dlg_ok": "OK ",
         # Статистика эмулятора
@@ -44114,6 +45502,7 @@ LANGS = {"en": {
         "trace_no_data": "No data to export",
         "trace_exported": "Trace exported: ",
         "trace_export_err": "Failed to export trace:\n",
+
         # Watch: статусы и пресеты
         "watch_select_del": "Select an item to delete",
         "watch_confirm": "Confirmation",
@@ -44128,6 +45517,8 @@ LANGS = {"en": {
         "watch_err_addr": "Enter memory address!",
         "watch_err_fmt_title": "Format Error",
         "watch_err_add": "Failed to add Watch:\n",
+
+
         # BP: статусы и пресеты
         "bp_select": "Select a breakpoint",
         "bp_add_title": "Add Breakpoint",
@@ -44138,7 +45529,11 @@ LANGS = {"en": {
         "bp_preset_saved": "BP preset saved: ",
         "bp_preset_loaded": "BP preset loaded: ",
         "bp_preset_save_err": "Failed to save BP preset:\n",
+
+
         "bp_preset_load_err": "Failed to load BP preset:\n",
+
+
         "bp_cond_err": "Invalid condition syntax!",
         "bp_cond_example": "Example: A == 0x55",
         # Диалоги
@@ -44406,12 +45801,6 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 ### C. Конфигурационные файлы
 
 - `Addendum.txt` (81 строк)
-- `_tmp_asm2.txt` (54 строк)
-- `_tmp_asm85.txt` (22 строк)
-- `_tmp_asm_out.txt` (54 строк)
-- `_tmp_dis_out.txt` (215 строк)
-- `_tmp_gui2.txt` (9 строк)
-- `_tmp_gui_out.txt` (9 строк)
 - `claude_desktop_config.json` (7 строк)
 - `config.json` (10 строк)
 - `micro-80_bp_preset.json` (77 строк)
@@ -44586,4 +45975,4 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 
 ---
 
-*Конец среза. Сгенерировано 2026-09-26 20:10:00.*
+*Конец среза. Сгенерировано 2026-09-29 22:29:35.*

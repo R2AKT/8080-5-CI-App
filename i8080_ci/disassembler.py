@@ -18,6 +18,7 @@ JUMP_OPCODES_8085 = _JUMP_BASE | {0xDD, 0xFD}
 class I8080Disassembler:
     REGS = ['B', 'C', 'D', 'E', 'H', 'L', 'M', 'A']
     ALUS = ['ADD', 'ADC', 'SUB', 'SBB', 'ANA', 'XRA', 'ORA', 'CMP']
+    ALUS_IMM = ['ADI', 'ACI', 'SUI', 'SBI', 'ANI', 'XRI', 'ORI', 'CPI']
     RP = ['B', 'D', 'H', 'SP']
     RP_PUSH = ['B', 'D', 'H', 'PSW']
     CC = ['NZ', 'Z', 'NC', 'C', 'PO', 'PE', 'P', 'M']
@@ -27,6 +28,7 @@ class I8080Disassembler:
         self.table = self._generate_table()
         self._map = map_file  # MapFile or None
         self._map_dict = {}   # {address: name}
+        self._equ_dict = {}   # {value: name} for EQU constants
         if map_file:
             self._map_dict = map_file.to_dict()
         
@@ -94,7 +96,7 @@ class I8080Disassembler:
             t[0xC5 + i*16] = (1, f"PUSH {self.RP_PUSH[i]}")
             
         for i in range(8):
-            t[0xC6 + i*8] = (2, f"{self.ALUS[i]} {{0:02X}}h")
+            t[0xC6 + i*8] = (2, f"{self.ALUS_IMM[i]} {{0:02X}}h")
             
         t[0xC7] = (1, "RST 0"); t[0xCF] = (1, "RST 1"); t[0xD7] = (1, "RST 2")
         t[0xDF] = (1, "RST 3"); t[0xE7] = (1, "RST 4"); t[0xEF] = (1, "RST 5")
@@ -161,6 +163,12 @@ class I8080Disassembler:
         """Set map file for symbol resolution."""
         self._map = map_file
         self._map_dict = map_file.to_dict() if map_file else {}
+
+    def set_equ(self, equ_dict: dict):
+        """Set EQU constants for value-to-name substitution.
+        equ_dict: {value: name} e.g. {5: 'COUNT', 255: 'MAX'}
+        """
+        self._equ_dict = equ_dict or {}
     
     def _resolve_symbol(self, addr):
         """Resolve address to symbol name from map file."""
@@ -170,6 +178,19 @@ class I8080Disassembler:
             return self._map_dict[addr]
         return None
     
+    def _substitute_equ(self, text: str) -> str:
+        """Replace hex values with EQU names where applicable."""
+        if not self._equ_dict:
+            return text
+        import re
+        def _repl(m):
+            val = int(m.group(1), 16)
+            if val in self._equ_dict:
+                return self._equ_dict[val]
+            return m.group(0)
+        # Replace 1-2 digit hex values followed by 'h' (immediate operands)
+        return re.sub(r'\b([0-9A-Fa-f]{1,2})h\b', _repl, text)
+
     def disassemble(self, mem_dict, start_addr, length):
         lines = []
         i = 0
@@ -190,11 +211,7 @@ class I8080Disassembler:
                 asm = fmt.format(*args) if args else fmt
             except (ValueError, IndexError, KeyError):
                 asm = fmt
-            
-            # Resolve symbol at current address
-            sym = self._resolve_symbol(addr)
-            if sym:
-                asm = f"{sym}: {asm}"
+            asm = self._substitute_equ(asm)
             
             # Resolve target address to symbol
             target = self.get_target(op, args)
