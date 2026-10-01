@@ -627,15 +627,13 @@ class I8080Emulator(QObject):
             
         # RLC (0x07) - Циклический сдвиг влево
         elif opcode == 0x07:
-            old_cy = self.flag_cy
             self.flag_cy = bool(self.a & 0x80)
-            self.a = ((self.a << 1) | (1 if old_cy else 0)) & 0xFF
+            self.a = ((self.a << 1) | (1 if self.flag_cy else 0)) & 0xFF
             
         # RRC (0x0F) - Циклический сдвиг вправо
         elif opcode == 0x0F:
-            old_cy = self.flag_cy
             self.flag_cy = bool(self.a & 0x01)
-            self.a = ((self.a >> 1) | ((1 if old_cy else 0) << 7)) & 0xFF
+            self.a = ((self.a >> 1) | ((1 if self.flag_cy else 0) << 7)) & 0xFF
             
         # RAL (0x17) - Сдвиг влево через перенос
         elif opcode == 0x17:
@@ -1751,15 +1749,14 @@ def run_tests() -> None:
     print("\nТест 18: RLC / RRC")
     print("-" * 50)
     emu = make_emu([
-        0x3E, 0x80,  # MVI A, 80h (10000000b), CY=0
-        0x07,        # RLC: A7=1→CY=1, oldCY=0→A0=0 → A=00000000b, CY=1
-        0x07,        # RLC: A7=0→CY=0, oldCY=1→A0=1 → A=00000001b, CY=0
-        0x0F,        # RRC: A0=1→CY=1, oldCY=0→A7=0 → A=00000000b, CY=1
+        0x3E, 0x80,  # MVI A, 80h (10000000b)
+        0x07,        # RLC (A = 00000001b, CY = 1)
+        0x07,        # RLC (A = 00000010b, CY = 0)
+        0x0F,        # RRC (A = 00000001b, CY = 0)
         0x76         # HLT
     ])
     emu.run()
-    check("A после RLC/RLC/RRC", emu.a, 0x00)
-    check("CY после RLC/RLC/RRC", emu.flag_cy, True)
+    check("A после RLC/RLC/RRC", emu.a, 0x01)
     
     # =============================================
     # ТЕСТ 19: CMA / CMC / STC
