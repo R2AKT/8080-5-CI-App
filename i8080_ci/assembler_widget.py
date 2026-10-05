@@ -176,8 +176,8 @@ class FoldableDocumentLayout(QPlainTextDocumentLayout):
             painter.translate(0, -o)
             top = self.blockBoundingRect(doc.findBlockByNumber(a)).top()
             bot = self.blockBoundingRect(doc.findBlockByNumber(z)).bottom()
-            opt = option
-            opt.rect = QRectF(option.rect.left(), top, option.rect.width(), bot - top + 1)
+            opt = QPlainTextDocumentLayout.PaintContext(option)
+            opt.clip = QRectF(option.clip.left(), top, option.clip.width(), bot - top + 1)
             super().draw(painter, opt)
             painter.restore()
 
