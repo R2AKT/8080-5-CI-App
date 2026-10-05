@@ -204,9 +204,11 @@ class CodeEditor(QPlainTextEdit):
         cr = self.contentsRect()
         self.folding_area.setGeometry(
             QRect(cr.left(), cr.top(), FoldingArea.WIDTH, cr.height()))
+        self.folding_area.raise_()
         ln_x = cr.left() + FoldingArea.WIDTH
         self.line_number_area.setGeometry(
             QRect(ln_x, cr.top(), self.lineNumberAreaWidth(), cr.height()))
+        self.line_number_area.raise_()
 
     def lineNumberAreaPaintEvent(self, event):
         painter = QPainter(self.line_number_area)
@@ -453,6 +455,11 @@ class CodeEditor(QPlainTextEdit):
             start, name = stack.pop()
             new_regions.append((start, len(ln_list) - 1, name))
         
+        # Debug: log to stderr for troubleshooting
+        if new_regions:
+            import sys as _sys
+            print(f"[FOLD] {len(new_regions)} regions: {new_regions}", file=_sys.stderr)
+        
         old_regions = self._fold_regions
         self._fold_regions = new_regions
         new_collapsed = set()
@@ -468,13 +475,15 @@ class CodeEditor(QPlainTextEdit):
             return
         start, end, _ = self._fold_regions[region_idx]
         doc = self.document()
+        was_modified = doc.isModified()
+        self._suppress_change = True
         if region_idx in self._collapsed:
             self._collapsed.discard(region_idx)
             for ln in range(start + 1, end + 1):
                 block = doc.findBlockByNumber(ln)
                 if block.isValid():
                     fmt = block.blockFormat()
-                    fmt.setLineHeight(1, 100)  # LengthPercent=1, 100% = normal
+                    fmt.setLineHeight(1, 100)
                     cursor = QTextCursor(block)
                     cursor.setBlockFormat(fmt)
         else:
@@ -483,9 +492,11 @@ class CodeEditor(QPlainTextEdit):
                 block = doc.findBlockByNumber(ln)
                 if block.isValid():
                     fmt = block.blockFormat()
-                    fmt.setLineHeight(0, 0)  # LengthAbsolute=0, height=0 = hidden
+                    fmt.setLineHeight(0, 0)
                     cursor = QTextCursor(block)
                     cursor.setBlockFormat(fmt)
+        self._suppress_change = False
+        doc.setModified(was_modified)
         self.folding_area.update()
         self.viewport().update()
 
@@ -506,31 +517,23 @@ class CodeEditor(QPlainTextEdit):
             self.toggle_fold(idx)
 
     def _on_fold_margin_click(self, pos):
-        """Handle click in folding margin."""
-        # pos is in folding_area coordinates; y matches viewport y
+        """Handle click in folding margin - toggle fold at clicked line."""
         y = pos.y()
-        block = self.firstVisibleBlock()
-        top = round(self.blockBoundingGeometry(block).translated(self.contentOffset()).top())
-        bottom = top + round(self.blockBoundingRect(block).height())
-        while block.isValid() and top < y:
-            block = block.next()
-            top = bottom
-            bottom = top + round(self.blockBoundingRect(block).height())
-        if not block.isValid():
-            return
-        line_num = block.blockNumber()
-        # Check if click is within this block's bounds
-        if y >= top and y < bottom:
-            for idx, (start, end, name) in enumerate(self._fold_regions):
-                if start == line_num:
-                    self.toggle_fold(idx)
-                    return
-            # Also check if click is on a line inside a collapsed region
-            # (allow expanding by clicking inside the collapsed area)
-            for idx, (start, end, name) in enumerate(self._fold_regions):
-                if idx in self._collapsed and start < line_num <= end:
-                    self.toggle_fold(idx)
-                    return
+        # Map y to document position via viewport
+        from PySide6.QtCore import QPoint
+        vp_pos = QPoint(0, y)
+        cursor = self.cursorForPosition(vp_pos)
+        line_num = cursor.blockNumber()
+        # Find fold region starting at this line
+        for idx, (start, end, name) in enumerate(self._fold_regions):
+            if start == line_num:
+                self.toggle_fold(idx)
+                return
+        # If clicking inside a collapsed region, expand it
+        for idx, (start, end, name) in enumerate(self._fold_regions):
+            if idx in self._collapsed and start < line_num <= end:
+                self.toggle_fold(idx)
+                return
 
     def _paint_fold_margin(self, event):
         """Paint folding margin: +/- buttons + change indicators."""
@@ -587,28 +590,31 @@ class CodeEditor(QPlainTextEdit):
         self.folding_area.update()
 
     def mark_saved(self):
-        """Call after save. Flash green on changed lines."""
+        """Call after save. Show green on changed lines (persistent until next edit)."""
         self._saved_flash = set(self._changed_lines)
         self._changed_lines = set()
         self._saved_lines = self.toPlainText().split('\n')
         self.folding_area.update()
-        QTimer.singleShot(2000, self._clear_saved_flash)
-
-    def _clear_saved_flash(self):
-        self._saved_flash.clear()
-        self.folding_area.update()
 
     def _on_text_changed(self):
-        """Update change tracking + re-parse folds."""
+        """Update change tracking (difflib-based) + re-parse folds."""
         if self._suppress_change:
             return
+        import difflib
         current_lines = self.toPlainText().split('\n')
+        # Use SequenceMatcher to find only actually changed/added lines
+        sm = difflib.SequenceMatcher(None, self._saved_lines, current_lines, autojunk=False)
         new_changed = set()
-        for i, line in enumerate(current_lines):
-            if i < len(self._saved_lines) and line != self._saved_lines[i]:
-                new_changed.add(i)
-            elif i >= len(self._saved_lines):
-                new_changed.add(i)
+        for tag, i1, i2, j1, j2 in sm.get_opcodes():
+            if tag == 'replace':
+                # Mark lines in the new text that were replaced
+                for j in range(j1, j2):
+                    new_changed.add(j)
+            elif tag == 'insert':
+                # Mark inserted lines
+                for j in range(j1, j2):
+                    new_changed.add(j)
+            # 'delete' and 'equal' - no marking needed
         self._changed_lines = new_changed
         self.parse_fold_regions()
         self.folding_area.update()
