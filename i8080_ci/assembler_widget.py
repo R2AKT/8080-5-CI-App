@@ -23,14 +23,15 @@ from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QPushButton,
     QFileDialog, QMessageBox, QGroupBox,
     QSplitter, QPlainTextEdit, QTableWidget, QTableWidgetItem,
+    QPlainTextDocumentLayout,
     QHeaderView, QCompleter, QAbstractItemView, QLabel, QComboBox,
     QTabWidget, QToolButton, QToolTip
 )
 from PySide6.QtGui import (
-    QFont, QSyntaxHighlighter, QTextCharFormat, QColor, QPainter,
+    QFont, QFontMetrics, QSyntaxHighlighter, QTextCharFormat, QColor, QPainter,
     QPen, QTextCursor, QTextFormat
 )
-from PySide6.QtCore import Qt, QRegularExpression, QRect, QSize, QStringListModel, QEvent, QTimer
+from PySide6.QtCore import QRectF,  Qt, QRegularExpression, QRect, QSize, QStringListModel, QEvent, QTimer
 
 from assemble8080.assembler import Assembler
 from assemble8080.objfile import obj_from_asm_result, save_obj, load_obj
@@ -132,6 +133,55 @@ class LineNumberArea(QWidget):
 # CODE EDITOR WITH LINE NUMBERS, ARROWS, AUTOCOMPLETE, CTRL+CLICK
 # =============================================
 
+class FoldableDocumentLayout(QPlainTextDocumentLayout):
+    """Layout that can hide specific blocks (code folding)."""
+
+    def __init__(self, document):
+        super().__init__(document)
+        self._hidden = set()
+
+    def set_hidden(self, blocks):
+        self._hidden = set(blocks)
+        self.requestUpdate()
+
+    def _lh(self):
+        doc = self.document()
+        if doc is None:
+            return 15.0
+        return QFontMetrics(doc.defaultFont()).height()
+
+    def documentSize(self):
+        base = super().documentSize()
+        if not self._hidden:
+            return base
+        return QSizeF(base.width(), max(0.0, base.height() - len(self._hidden) * self._lh()))
+
+    def draw(self, painter, option):
+        doc = self.document()
+        if doc is None or not self._hidden:
+            super().draw(painter, option)
+            return
+        total = doc.blockCount()
+        segments, start, off = [], 0, 0.0
+        for b in range(total):
+            if b in self._hidden:
+                if b > start:
+                    segments.append((start, b - 1, off))
+                off += self._lh()
+                start = b + 1
+        if start < total:
+            segments.append((start, total - 1, off))
+        for (a, z, o) in segments:
+            painter.save()
+            painter.translate(0, -o)
+            top = self.blockBoundingRect(doc.findBlockByNumber(a)).top()
+            bot = self.blockBoundingRect(doc.findBlockByNumber(z)).bottom()
+            opt = option
+            opt.rect = QRectF(option.rect.left(), top, option.rect.width(), bot - top + 1)
+            super().draw(painter, opt)
+            painter.restore()
+
+
 class CodeEditor(QPlainTextEdit):
     """Assembler editor: line numbers, jump arrows, autocomplete, Ctrl+Click."""
 
@@ -149,6 +199,8 @@ class CodeEditor(QPlainTextEdit):
         self._saved_lines = []  # lines at last save/load
         self._changed_lines = set()  # currently modified line numbers
         self._saved_flash = set()  # lines to flash green after save
+        self._fold_layout = FoldableDocumentLayout(self.document())
+        self.document().setDocumentLayout(self._fold_layout)
 
         self.blockCountChanged.connect(self._updateMargins)
         self.updateRequest.connect(self._updateMarginsUpdate)
@@ -464,50 +516,25 @@ class CodeEditor(QPlainTextEdit):
                     new_collapsed.add(idx2)
         self._collapsed = new_collapsed
 
+    def _rebuild_hidden(self):
+        hidden = set()
+        for idx in self._collapsed:
+            if idx < len(self._fold_regions):
+                st, en, _ = self._fold_regions[idx]
+                for ln in range(st + 1, en + 1):
+                    hidden.add(ln)
+        self._fold_layout.set_hidden(hidden)
+
     def toggle_fold(self, region_idx: int):
-        """Toggle a fold region: hide/show lines via line height + font size."""
+        """Toggle a fold region by hiding/showing its inner lines."""
         if region_idx >= len(self._fold_regions):
             return
-        start, end, _ = self._fold_regions[region_idx]
-        doc = self.document()
-        was_modified = doc.isModified()
-        self._suppress_change = True
-        default_font_size = self.font().pointSizeF()
         if region_idx in self._collapsed:
-            # EXPAND: restore line height and font size
             self._collapsed.discard(region_idx)
-            for ln in range(start + 1, end + 1):
-                block = doc.findBlockByNumber(ln)
-                if block.isValid():
-                    fmt = block.blockFormat()
-                    fmt.setLineHeight(100, 1)  # PySide6: (value, mode) = (100, LengthPercent)
-                    cursor = QTextCursor(block)
-                    cursor.setBlockFormat(fmt)
-                    # Restore font size
-                    cursor.select(QTextCursor.BlockUnderCursor)
-                    cf = QTextCharFormat()
-                    cf.setFontPointSize(default_font_size)
-                    cursor.mergeCharFormat(cf)
         else:
-            # COLLAPSE: zero line height and font size
             self._collapsed.add(region_idx)
-            for ln in range(start + 1, end + 1):
-                block = doc.findBlockByNumber(ln)
-                if block.isValid():
-                    fmt = block.blockFormat()
-                    fmt.setLineHeight(0, 0)  # PySide6: (value, mode) = (0, LengthAbsolute)
-                    cursor = QTextCursor(block)
-                    cursor.setBlockFormat(fmt)
-                    # Hide text
-                    cursor.select(QTextCursor.BlockUnderCursor)
-                    cf = QTextCharFormat()
-                    cf.setFontPointSize(0)
-                    cursor.mergeCharFormat(cf)
-        self._suppress_change = False
-        doc.setModified(was_modified)
-        doc.markContentsDirty(0, doc.characterCount())
+        self._rebuild_hidden()
         self.folding_area.update()
-        self.viewport().update()
 
     def collapse_all(self):
         for idx in range(len(self._fold_regions)):
