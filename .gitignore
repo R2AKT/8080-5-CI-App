@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.pyo
+.vscode/
+*.vsix
+node_modules/
+Plugins/i8080_ci-vscode/out/
+*.egg-info/
+dist/
+build/

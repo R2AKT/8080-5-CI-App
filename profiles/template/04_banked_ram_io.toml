@@ -1,0 +1,16 @@
+# 04_banked_ram_io.toml
+# Банковая RAM: 4 банка по 64 КБ, переключение через порт 0x00
+# Пример: Орион-128 стиль
+
+[system]
+name = "Banked RAM System"
+cpu = "i8080A"
+clock = 2000000
+
+[[memory.regions]]
+type = "banked_ram"
+name = "Banked RAM"
+start = 0x0000
+end = 0xFFFF          # Окно на всё адресное пространство
+num_banks = 4         # 4 банка по 64 КБ = 256 КБ физической памяти
+switch_port = 0x00    # OUT 0x00, N — выбрать банк N

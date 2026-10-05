@@ -1,0 +1,12 @@
+[profiles.empty8080]
+description = "Пустая система (без устройств)"
+
+[profiles.empty8080.system]
+name = "Empty System 64k RAM, CPU 8080"
+cpu = "i8080"  # i8080 для систем на 8080 или "i8085" для систем на 8085
+clock_mhz = 2
+
+[[profiles.empty8080.memory.regions]]
+type = "ram"
+start = 0x0000
+end = 0xFFFF

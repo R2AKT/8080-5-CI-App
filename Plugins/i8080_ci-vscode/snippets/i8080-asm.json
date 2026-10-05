@@ -1,0 +1,178 @@
+{
+  "8080 Main Program": {
+    "prefix": "main8080",
+    "body": [
+      "; ${1:Program name}",
+      "; Intel 8080/8085",
+      "        CPU   8080",
+      "        ORG   0100H",
+      "",
+      "START:  MVI   A, 00H",
+      "        CALL  ${2:init}",
+      "",
+      "LOOP:   ${3:; main loop}",
+      "        JMP   LOOP",
+      "",
+      "${2:init}:",
+      "        ${4:; initialization}",
+      "        RET",
+      "",
+      "        END"
+    ],
+    "description": "Шаблон основной программы 8080"
+  },
+  "8085 Main Program": {
+    "prefix": "main8085",
+    "body": [
+      "; ${1:Program name}",
+      "; Intel 8085",
+      "        CPU   8085",
+      "        ORG   0100H",
+      "",
+      "START:  MVI   A, 00H",
+      "        CALL  ${2:init}",
+      "",
+      "LOOP:   ${3:; main loop}",
+      "        JMP   LOOP",
+      "",
+      "${2:init}:",
+      "        ${4:; initialization}",
+      "        RET",
+      "",
+      "        END"
+    ],
+    "description": "Шаблон основной программы 8085"
+  },
+  "Delay Loop": {
+    "prefix": "delay",
+    "body": [
+      "${1:delay}:",
+      "        MVI   B, ${2:0FFH}",
+      "${1:delay}_loop:",
+      "        DCR   B",
+      "        JNZ   ${1:delay}_loop",
+      "        RET"
+    ],
+    "description": "Петля задержки (DCR B / JNZ)"
+  },
+  "Delay 1ms (2MHz)": {
+    "prefix": "delay1ms",
+    "body": [
+      "; Задержка ~1 мс при 2 МГц",
+      "${1:delay1ms}:",
+      "        MVI   D, ${2:0C8H}",
+      "${1:delay1ms}_1:",
+      "        MVI   C, ${3:0FFH}",
+      "${1:delay1ms}_2:",
+      "        DCR   C",
+      "        JNZ   ${1:delay1ms}_2",
+      "        DCR   D",
+      "        JNZ   ${1:delay1ms}_1",
+      "        RET"
+    ],
+    "description": "Двухвложенная задержка ~1 мс"
+  },
+  "Output to Port": {
+    "prefix": "outport",
+    "body": [
+      "        MVI   A, ${1:00H}",
+      "        OUT   ${2:01H}"
+    ],
+    "description": "Вывод байта в порт (OUT)"
+  },
+  "Input from Port": {
+    "prefix": "inport",
+    "body": [
+      "        IN    ${1:01H}"
+    ],
+    "description": "Чтение байта из порта (IN)"
+  },
+  "Subroutine": {
+    "prefix": "sub",
+    "body": [
+      "${1:subroutine}:",
+      "        PUSH  PSW",
+      "        ${2:; body}",
+      "        POP   PSW",
+      "        RET"
+    ],
+    "description": "Подпрограмма с сохранением PSW"
+  },
+  "Data Byte": {
+    "prefix": "db",
+    "body": [
+      "${1:label}:  DB    ${2:00H}"
+    ],
+    "description": "Определение байта данных (DB)"
+  },
+  "Data Word": {
+    "prefix": "dw",
+    "body": [
+      "${1:label}:  DW    ${2:0000H}"
+    ],
+    "description": "Определение слова данных (DW)"
+  },
+  "EQU Constant": {
+    "prefix": "equ",
+    "body": [
+      "${1:NAME}  EQU   ${2:00H}"
+    ],
+    "description": "Константа (EQU)"
+  },
+  "Macro": {
+    "prefix": "macro",
+    "body": [
+      "${1:macro_name} MACRO ${2:arg1}",
+      "        ${3:; macro body}",
+      "ENDM"
+    ],
+    "description": "Макрос (MACRO/ENDM)"
+  },
+  "REPT Block": {
+    "prefix": "rept",
+    "body": [
+      "        REPT  ${1:10}"
+      "        ${2:; repeated body}"
+      "        ENDM"
+    ],
+    "description": "Повторение блока (REPT/ENDM)"
+  },
+  "Interrupt Vector": {
+    "prefix": "rst",
+    "body": [
+      "${1:handler}:",
+      "        PUSH  PSW",
+      "        PUSH  B",
+      "        ${2:; handler body}",
+      "        POP   B",
+      "        POP   PSW",
+      "        RSTV"
+    ],
+    "description": "Обработчик прерывания (8085 RSTV)"
+  },
+  "SIM Interrupt (8085)": {
+    "prefix": "sim",
+    "body": [
+      "        SIM",
+      "        ${1:; wait for interrupt}"
+    ],
+    "description": "Включение прерываний (SIM, 8085)"
+  },
+  "Include File": {
+    "prefix": "inc",
+    "body": [
+      "#include \"${1:file.inc}\""
+    ],
+    "description": "Включение файла (#include)"
+  },
+  "Memory Read/Write": {
+    "prefix": "memrw",
+    "body": [
+      "        LXI   H, ${1:0000H}",
+      "        MOV   A, M",
+      "        ${2:; use A}",
+      "        MOV   M, A"
+    ],
+    "description": "Чтение/запись памяти через HL"
+  }
+}

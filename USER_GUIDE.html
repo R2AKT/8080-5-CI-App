@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>USER_GUIDE</title>
+<style>
+:root {
+    --bg: #1a1a2e;
+    --bg-alt: #16213e;
+    --text: #e0e0e0;
+    --text-muted: #a0a0a0;
+    --accent: #0f3460;
+    --accent-light: #1a5276;
+    --code-bg: #0d1117;
+    --code-text: #c9d1d9;
+    --border: #2a2a4a;
+    --nav-bg: #0f1626;
+    --table-stripe: #1e2a4a;
+    --link: #58a6ff;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding-top: 60px;
+}
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 20px;
+    z-index: 1000;
+    overflow-x: auto;
+    white-space: nowrap;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    transition: all 0.2s;
+}
+nav a:hover {
+    color: var(--text);
+    background: var(--accent);
+}
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+}
+h1 { color: #fff; margin: 30px 0 15px; font-size: 2em; border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+h2 { color: #fff; margin: 35px 0 15px; font-size: 1.5em; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+h3 { color: var(--link); margin: 25px 0 10px; font-size: 1.2em; }
+h4 { color: var(--text); margin: 20px 0 8px; font-size: 1.05em; }
+p { margin: 10px 0; }
+a { color: var(--link); }
+code {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.9em;
+    font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+}
+pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 15px;
+    overflow-x: auto;
+    margin: 15px 0;
+}
+pre code {
+    background: none;
+    padding: 0;
+    font-size: 0.85em;
+    line-height: 1.5;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 0.9em;
+}
+th {
+    background: var(--accent);
+    color: #fff;
+    padding: 10px 12px;
+    text-align: left;
+    border: 1px solid var(--border);
+}
+td {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+}
+tr:nth-child(even) td { background: var(--table-stripe); }
+ul, ol { margin: 10px 0 10px 25px; }
+li { margin: 4px 0; }
+blockquote {
+    border-left: 4px solid var(--accent-light);
+    padding: 10px 15px;
+    margin: 15px 0;
+    background: var(--bg-alt);
+    border-radius: 0 6px 6px 0;
+}
+hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 30px 0;
+}
+strong { color: #fff; }
+@media (max-width: 768px) {
+    body { padding-top: 80px; }
+    nav { padding: 8px 10px; }
+    nav a { font-size: 0.75em; padding: 3px 6px; }
+    .container { padding: 10px; }
+    h1 { font-size: 1.5em; }
+    h2 { font-size: 1.2em; }
+    table { font-size: 0.8em; }
+}
+</style>
+</head>
+<body>
+<nav>
+<a href="#contents--содержание">Contents</a>
+<a href="#1-overview--обзор">1. Overview</a>
+<a href="#2-installation--установка">2. Installation</a>
+<a href="#3-interface-overview--обзор-интерфейса">3. Interface Overview</a>
+<a href="#4-control-tab--вкладка-управление">4. Control Tab</a>
+<a href="#5-data-tab--вкладка-данные">5. Data Tab</a>
+<a href="#6-hex-editor--hex-редактор">6. Hex Editor</a>
+<a href="#7-disassembler--дизассемблер">7. Disassembler</a>
+<a href="#8-assembler--ассемблер">8. Assembler</a>
+<a href="#9-memory-test--тест-памяти">9. Memory Test</a>
+<a href="#10-io-sequencer--io-секвенсор">10. IO Sequencer</a>
+<a href="#11-comparison--сравнение">11. Comparison</a>
+<a href="#12-scripts--скрипты">12. Scripts</a>
+<a href="#13-emulator--эмулятор">13. Emulator</a>
+<a href="#14-trace-log--трассировка">14. Trace Log</a>
+<a href="#15-hotkeys--горячие-клавиши">15. Hotkeys</a>
+<a href="#16-mcp-integration--mcp-интеграция">16. MCP Integration</a>
+<a href="#17-typical-workflows--типовые-сценарии">17. Typical Workflows</a>
+<a href="#appendix--приложения">Appendix</a>
+</nav>
+<div class="container">
+<h1 id="i8080-5-ci--user-guide--пользовательское-руководство">i8080-5 CI — User Guide / Пользовательское руководство</h1>
+<blockquote><strong>Version / Версия:</strong> 2.8
+<strong>Date / Дата:</strong> 2026-09-29
+<strong>Platform / Платформа:</strong> Windows / Linux
+<strong>UI Languages / Языки интерфейса:</strong> Русский, English
+</blockquote>
+<hr>
+<blockquote><strong>Note (v2.8):</strong> Corrected the immediate-ALU mnemonics in the Disassembler to the canonical 8080/8085 forms (<code>ADI</code>/<code>ACI</code>/<code>SUI</code>/<code>SBI</code>/<code>ANI</code>/<code>XRI</code>/<code>ORI</code>/<code>CPI</code>) — previously the register forms (<code>ADD</code>/<code>ADC</code>/<code>SUB</code>/<code>SBB</code>/<code>ANA</code>/<code>XRA</code>) were shown. The Disassembler range now auto-updates to the full loaded binary after "Assemble & Load". Removed dead code and unused imports.
+<strong>Примечание (v2.8):</strong> Исправлены мнемоники ALU с непосредственным операндом в Дизассемблере на канонические формы 8080/8085 (<code>ADI</code>/<code>ACI</code>/<code>SUI</code>/<code>SBI</code>/<code>ANI</code>/<code>XRI</code>/<code>ORI</code>/<code>CPI</code>) — ранее показывались регистровые (<code>ADD</code>/<code>ADC</code>/<code>SUB</code>/<code>SBB</code>/<code>ANA</code>/<code>XRA</code>). Диапазон Дизассемблера теперь автоматически обновляется на весь загруженный бинарник после «Ассемблировать и загрузить». Убран мёртвый код и неиспользуемые импорты.
+</blockquote>
+<blockquote><strong>Note (v2.7):</strong> Assembler v2 — Notepad++ style multi-file tabs, Ctrl+Click label navigation, global labels (::) with bold highlighting, workspace file support (.ws JSON), and automatic map-file loading into the disassembler after assembly.
+</blockquote>
+<blockquote><strong>Примечание (v2.7):</strong> Ассемблер v2 — вкладки файлов в стиле Notepad++, переход по меткам через Ctrl+Click, глобальные метки (::) с жирной подсветкой, поддержка workspace-файлов (.ws JSON), автоматическая загрузка map-файла в дизассемблер после сборки.
+</blockquote>
+<blockquote><strong>Note (v2.6):</strong> Fixed the execution-trace jump highlighting to be CPU-type aware — on the 8085, the undocumented opcodes RSTV/SHLX/LHLX (0xCB/0xD9/0xED) are no longer highlighted as jumps (only JNK/JK are).
+<strong>Примечание (v2.6):</strong> Исправлена подсветка переходов в трассировке с учётом типа процессора — на 8085 недокументированные опкоды RSTV/SHLX/LHLX (0xCB/0xD9/0xED) больше не подсвечиваются как переходы (переходами являются только JNK/JK).
+<strong>Note (v2.5):</strong> Fixed the Emulator status bar "Running..." message to translate properly (i18n). Fixed CPU-type change via <code>.8085</code>/<code>.8080</code> directive to properly reset the emulator (consistent with manual CPU change). Cleared the Run-to-Cursor target on CPU change.
+<strong>Примечание (v2.5):</strong> Исправлен перевод сообщения статус-бара «Выполнение...» во вкладке «Эмулятор» (i18n). Исправлена смена типа CPU через директиву <code>.8085</code>/<code>.8080</code> — теперь эмулятор корректно сбрасывается (как при ручной смене через combo). Очищена цель Run to Cursor при смене CPU.
+<strong>Note (v2.4):</strong> Fixed <strong>SIM/RIM</strong> opcodes (8085) to match the Intel 8085 standard (0x20=SIM, 0x30=RIM) — previously swapped in the emulator and disassembler. Fixed the Emulator 'CPU:' label to translate properly (i18n).
+<strong>Примечание (v2.4):</strong> Исправлены опкоды <strong>SIM/RIM</strong> (8085) — теперь соответствуют стандарту Intel 8085 (0x20=SIM, 0x30=RIM); ранее были перепутаны в эмуляторе и дизассемблере. Исправлен перевод метки «Процессор:» во вкладке «Эмулятор» (i18n).
+<strong>Note (v2.3):</strong> Added <strong>CPU type selection</strong> to the Disassembler tab (section 7.2) — synced across Disassembler, Emulator, and Assembler tabs; blocked when the source has a <code>.8085</code>/<code>.8080</code> directive. Added <strong>Max Speed</strong> checkbox to the Emulator (section 13.5) — runs at maximum speed with no window updates until stop or breakpoint.
+<strong>Примечание (v2.3):</strong> Добавлен <strong>выбор типа процессора</strong> во вкладку «Дизассемблер» (раздел 7.2) — синхронизирован между вкладками «Дизассемблер», «Эмулятор» и «Ассемблер»; блокируется при наличии директивы <code>.8085</code>/<code>.8080</code> в исходном коде. Добавлен чек-бокс <strong>«Макс. скорость»</strong> во вкладку «Эмулятор» (раздел 13.5) — выполнение на максимальной скорости без обновления окон до остановки или точки останова.
+<strong>Note (v2.2):</strong> Added the <strong>Assembler</strong> tab (section 8) — write, assemble, and load i8080 source. Fixed auto-sync of the assembler view from memory.
+<strong>Примечание (v2.2):</strong> Добавлена вкладка <strong>«Ассемблер»</strong> (раздел 8) — написание, сборка и загрузка i8080-кода. Исправлена автосинхронизация вида ассемблера с памятью.
+</blockquote>
+<blockquote><strong>Note (v2.1):</strong> Application code is organized in the <code>i8080_ci/</code> package. Entry point remains <code>i8080_CI.py</code>.
+<strong>Примечание (v2.1):</strong> Код приложения организован в пакете <code>i8080_ci/</code>. Точка входа — <code>i8080_CI.py</code>.
+</blockquote>
+<h2 id="contents--содержание">Contents / Содержание</h2>
+<ol>
+<li><a href="#1-overview--обзор">Overview / Обзор</a></li>
+<li><a href="#2-installation--установка">Installation / Установка</a></li>
+<li><a href="#3-interface-overview--обзор-интерфейса">Interface Overview / Обзор интерфейса</a></li>
+<li><a href="#4-control-tab--вкладка-управление">Control Tab / Вкладка «Управление»</a></li>
+<li><a href="#5-data-tab--вкладка-данные">Data Tab / Вкладка «Данные»</a></li>
+<li><a href="#6-hex-editor--hex-редактор">Hex Editor / Hex-редактор</a></li>
+<li><a href="#7-disassembler--дизассемблер">Disassembler / Дизассемблер</a></li>
+<li><a href="#8-assembler--ассемблер">Assembler / Ассемблер</a></li>
+<li><a href="#9-memory-test--тест-памяти">Memory Test / Тест памяти</a></li>
+<li><a href="#10-io-sequencer--io-секвенсор">IO Sequencer / IO Секвенсор</a></li>
+<li><a href="#11-comparison--сравнение">Comparison / Сравнение</a></li>
+<li><a href="#12-scripts--скрипты">Scripts / Скрипты</a></li>
+<li><a href="#13-emulator--эмулятор">Emulator / Эмулятор</a></li>
+<li><a href="#14-trace-log--трассировка">Trace Log / Трассировка</a></li>
+<li><a href="#15-hotkeys--горячие-клавиши">Hotkeys / Горячие клавиши</a></li>
+<li><a href="#16-mcp-integration--mcp-интеграция">MCP Integration / MCP-интеграция</a></li>
+<li><a href="#17-typical-workflows--типовые-сценарии">Typical Workflows / Типовые сценарии</a></li>
+</ol>
+<hr>
+<h2 id="1-overview--обзор">1. Overview / Обзор</h2>
+<p><strong>EN:</strong></p>
+<p><strong>i8080-5 CI</strong> (i8080-5 Control Interface) — a comprehensive environment for working with the Intel 8080 processor and devices based on it. The program combines:</p>
+<ul>
+<li><strong>i8080 Emulator</strong> — full CPU emulation with all 256 instructions, including undocumented</li>
+<li><strong>Debugger</strong> — breakpoints (regular & conditional), step execution, watch windows, trace</li>
+<li><strong>Hex Editor</strong> — view and edit memory images</li>
+<li><strong>Disassembler</strong> — with jump arrows and instruction-type color highlighting</li>
+<li><strong>Real Device Control</strong> — read/write memory and IO ports via COM port (SLIP protocol)</li>
+<li><strong>Memory Test</strong> — test device RAM with various patterns</li>
+<li><strong>IO Sequencer</strong> — execute sequences of input/output operations</li>
+<li><strong>Comparison</strong> — compare current memory image with a file</li>
+<li><strong>Scripts</strong> — automation via Python scripts</li>
+<li><strong>MCP Server</strong> — integration with AI assistants</li>
+</ul>
+<p>The program supports <strong>Russian and English</strong> interface languages and <strong>Light/Dark</strong> themes.</p>
+<p><strong>RU:</strong></p>
+<p><strong>i8080-5 CI</strong> (i8080-5 Control Interface) — комплексная среда для работы с процессором Intel 8080 и устройствами на его базе. Программа объединяет:</p>
+<ul>
+<li><strong>Эмулятор i8080</strong> — полная эмуляция процессора со всеми 256 инструкциями, включая недокументированные</li>
+<li><strong>Отладчик</strong> — точки останова (обычные и условные), пошаговое выполнение, watch-окна, трассировка</li>
+<li><strong>Hex-редактор</strong> — просмотр и редактирование образов памяти</li>
+<li><strong>Дизассемблер</strong> — со стрелками переходов, подсветкой типов команд</li>
+<li><strong>Работа с реальным устройством</strong> — чтение/запись памяти и IO-портов по COM-порту (протокол SLIP)</li>
+<li><strong>Тест памяти</strong> — тестирование RAM устройства различными паттернами</li>
+<li><strong>IO Секвенсор</strong> — выполнение последовательности операций ввода-вывода</li>
+<li><strong>Сравнение</strong> — сравнение текущего образа памяти с файлом</li>
+<li><strong>Скрипты</strong> — автоматизация через Python-скрипты</li>
+<li><strong>MCP-сервер</strong> — интеграция с AI-ассистентами</li>
+</ul>
+<p>Программа поддерживает <strong>русский и английский</strong> языки интерфейса и <strong>светлую/тёмную</strong> темы.</p>
+<hr>
+<h2 id="2-installation--установка">2. Installation / Установка</h2>
+<h3 id="21-requirements--требования">2.1. Requirements / Требования</h3>
+<p><strong>EN:</strong></p>
+<ul>
+<li>Python 3.10+</li>
+<li>PySide6</li>
+<li>pyserial</li>
+<li>For MCP: <code>mcp</code>, <code>uvicorn</code>, <code>starlette</code>, <code>pydantic</code>, <code>pydantic-settings</code></li>
+</ul>
+<p><strong>RU:</strong></p>
+<ul>
+<li>Python 3.10+</li>
+<li>PySide6</li>
+<li>pyserial</li>
+<li>Для MCP: <code>mcp</code>, <code>uvicorn</code>, <code>starlette</code>, <code>pydantic</code>, <code>pydantic-settings</code></li>
+</ul>
+<h3 id="22-install-dependencies--установка-зависимостей">2.2. Install Dependencies / Установка зависимостей</h3>
+<pre><code>pip install PySide6 pyserial
+pip install mcp uvicorn starlette pydantic pydantic-settings
+</code></pre>
+<h3 id="23-run--запуск">2.3. Run / Запуск</h3>
+<pre><code>python i8080_CI.py
+</code></pre>
+<p><strong>EN:</strong> The program launches with a 1280×720 window. Language and theme are auto-detected from system settings (can be changed in the interface).</p>
+<p><strong>RU:</strong> Программа запускается с окном 1280×720. Язык и тема определяются автоматически из системных настроек (можно изменить в интерфейсе).</p>
+<hr>
+<h2 id="3-interface-overview--обзор-интерфейса">3. Interface Overview / Обзор интерфейса</h2>
+<p><strong>EN:</strong> The main window consists of:</p>
+<ol>
+<li><strong>Top panel</strong> — COM port selection, baud rate, connect/disconnect, language and theme selection</li>
+<li><strong>Tabs</strong> — 11 tabs with various functions</li>
+<li><strong>Log</strong> — bottom panel with operation log</li>
+</ol>
+<p><strong>RU:</strong> Главное окно состоит из:</p>
+<ol>
+<li><strong>Верхняя панель</strong> — выбор COM-порта, скорости, подключение/отключение, выбор языка и темы</li>
+<li><strong>Вкладки</strong> — 11 вкладок с различными функциями</li>
+<li><strong>Журнал</strong> — нижняя панель с журналом операций</li>
+</ol>
+<h3 id="tab-order--порядок-вкладок">Tab Order / Порядок вкладок</h3>
+<table>
+<tr><th>#</th><th>EN</th><th>RU</th><th>Purpose</th></tr>
+<tr><td>0</td><td>Assembler</td><td>Ассемблер</td><td>Write & assemble i8080 code</td></tr>
+<tr><td>1</td><td>Disassembler</td><td>Дизассемблер</td><td>Disassemble code</td></tr>
+<tr><td>2</td><td>Hex Editor</td><td>Hex редактор</td><td>View and edit memory</td></tr>
+<tr><td>3</td><td>Emulator</td><td>Эмулятор</td><td>i8080 debugger</td></tr>
+<tr><td>4</td><td>Trace Log</td><td>Трассировка</td><td>Execution trace view</td></tr>
+<tr><td>5</td><td>Scripts</td><td>Скрипты</td><td>Automation</td></tr>
+<tr><td>6</td><td>Control</td><td>Управление</td><td>Connection, bus, files</td></tr>
+<tr><td>7</td><td>Data</td><td>Данные</td><td>Read/write memory and IO</td></tr>
+<tr><td>8</td><td>Memory Test</td><td>Тест памяти</td><td>Test RAM</td></tr>
+<tr><td>9</td><td>IO Sequencer</td><td>IO последовательность</td><td>IO sequences</td></tr>
+<tr><td>10</td><td>Comparison</td><td>Сравнение</td><td>Compare memory images</td></tr>
+</table>
+<hr>
+<h2 id="4-control-tab--вкладка-управление">4. Control Tab / Вкладка «Управление»</h2>
+<h3 id="41-device-connection--подключение-к-устройству">4.1. Device Connection / Подключение к устройству</h3>
+<p><strong>EN:</strong></p>
+<ol>
+<li>Select COM port from the dropdown</li>
+<li>Select baud rate (9600, 38400, 57600, 115200)</li>
+<li>Click <strong>"Connect"</strong></li>
+<li>Program sends NOP to verify connection</li>
+</ol>
+<blockquote>💡 If device is not detected, click <strong>"Refresh"</strong> to update port list.
+</blockquote>
+<p><strong>RU:</strong></p>
+<ol>
+<li>Выберите COM-порт из выпадающего списка</li>
+<li>Выберите скорость (9600, 38400, 57600, 115200)</li>
+<li>Нажмите <strong>«Подключиться»</strong></li>
+<li>Программа отправит NOP для проверки соединения</li>
+</ol>
+<blockquote>💡 Если устройство не обнаружено, нажмите <strong>«Обновить»</strong> для обновления списка портов.
+</blockquote>
+<h3 id="42-bus-control--управление-шиной">4.2. Bus Control / Управление шиной</h3>
+<p><strong>EN:</strong></p>
+<ul>
+<li><strong>"Hold Bus (HOLD)"</strong> — sends HOLD signal to processor. Program waits for HLDA confirmation.</li>
+<li><strong>"Release Bus (UnHOLD)"</strong> — releases bus, processor continues.</li>
+</ul>
+<blockquote>⚠️ <strong>Important:</strong> Bus must be held before reading/writing device memory. On application close, bus is released automatically.
+</blockquote>
+<p><strong>RU:</strong></p>
+<ul>
+<li><strong>«Захватить шину (HOLD)»</strong> — отправляет сигнал HOLD процессору. Программа ожидает подтверждения HLDA.</li>
+<li><strong>«Освободить шину (UnHOLD)»</strong> — освобождает шину, процессор продолжает работу.</li>
+</ul>
+<blockquote>⚠️ <strong>Важно:</strong> Перед чтением/записью памяти устройства необходимо захватить шину. При закрытии программы шина освобождается автоматически.
+</blockquote>
+<h3 id="43-files--файлы">4.3. Files / Файлы</h3>
+<p><strong>EN:</strong></p>
+<ul>
+<li><strong>"Save Dump (.hex)"</strong> — save current memory image in Intel HEX or BIN format</li>
+<li><strong>"Load Firmware (.hex/.bin)"</strong> — load firmware into local memory image. For BIN files, base address is requested. After loading, option to write to device is offered.</li>
+</ul>
+<p><strong>RU:</strong></p>
+<ul>
+<li><strong>«Сохранить дамп (.hex)»</strong> — сохранение текущего образа памяти в Intel HEX или BIN формат</li>
+<li><strong>«Загрузить прошивку (.hex/.bin)»</strong> — загрузка прошивки в локальный образ памяти. Для BIN-файлов запрашивается базовый адрес. После загрузки предлагается записать в устройство.</li>
+</ul>
+<h3 id="44-mcp-server--mcp-сервер">4.4. MCP Server / MCP-сервер</h3>
+<p><strong>EN:</strong> The <strong>"MCP Server: OFF/ON"</strong> button toggles the built-in MCP server for AI assistant integration.</p>
+<p><strong>RU:</strong> Кнопка <strong>«MCP Server: OFF/ON»</strong> включает/выключает встроенный MCP-сервер для интеграции с AI-ассистентами.</p>
+<hr>
+<h2 id="5-data-tab--вкладка-данные">5. Data Tab / Вкладка «Данные»</h2>
+<p><strong>EN:</strong> Allows reading and writing values to device memory and IO ports.</p>
+<h3 id="memory-ramrom">Memory (RAM/ROM)</h3>
+<ul>
+<li><strong>Address (HEX)</strong> — memory address (4 hex digits)</li>
+<li><strong>Bit Width</strong> — 8, 16, 24, 32 bits</li>
+<li><strong>Value (HEX)</strong> — value to write</li>
+<li><strong>Endianness</strong> — Little-endian or Big-endian</li>
+<li><strong>"Read"</strong> and <strong>"Write"</strong> buttons</li>
+</ul>
+<h3 id="io-ports">IO Ports</h3>
+<ul>
+<li>Same as memory, but address is port number (2 hex digits)</li>
+</ul>
+<blockquote>⚠️ Device connection and bus hold required for both memory and IO operations.
+</blockquote>
+<p><strong>RU:</strong> Позволяет читать и записывать значения в память и IO-порты устройства.</p>
+<h3 id="память-ramrom">Память (RAM/ROM)</h3>
+<ul>
+<li><strong>Адрес (HEX)</strong> — адрес в памяти (4 hex-цифры)</li>
+<li><strong>Разрядность</strong> — 8, 16, 24, 32 бита</li>
+<li><strong>Значение (HEX)</strong> — значение для записи</li>
+<li><strong>Порядок байтов</strong> — Little-endian или Big-endian</li>
+<li>Кнопки <strong>«Прочитать»</strong> и <strong>«Записать»</strong></li>
+</ul>
+<h3 id="io-порты">IO-порты</h3>
+<ul>
+<li>Аналогично памяти, но адрес — это номер порта (2 hex-цифры)</li>
+</ul>
+<blockquote>⚠️ Для работы с памятью и IO необходимо подключение и захват шины.
+</blockquote>
+<hr>
+<h2 id="6-hex-editor--hex-редактор">6. Hex Editor / Hex-редактор</h2>
+<h3 id="61-overview--обзор">6.1. Overview / Обзор</h3>
+<p><strong>EN:</strong> The hex editor displays memory as a table:</p>
+<ul>
+<li><strong>Column 0</strong> — row address</li>
+<li><strong>Columns 1-16</strong> — bytes (00-F)</li>
+<li><strong>Column 17</strong> — ASCII representation</li>
+</ul>
+<p><strong>RU:</strong> Hex-редактор отображает образ памяти в виде таблицы:</p>
+<ul>
+<li><strong>Колонка 0</strong> — адрес строки</li>
+<li><strong>Колонки 1-16</strong> — байты (00-F)</li>
+<li><strong>Колонка 17</strong> — ASCII-представление</li>
+</ul>
+<h3 id="62-features--возможности">6.2. Features / Возможности</h3>
+<p><strong>EN:</strong></p>
+<ul>
+<li><strong>Editing</strong> — double-click a cell to edit</li>
+<li><strong>Tooltips</strong> — hover over byte shows corresponding instruction mnemonic</li>
+<li><strong>Undo/Redo</strong> — Ctrl+Z / Ctrl+Y (up to 100 operations)</li>
+<li><strong>Context menu</strong> (right-click):</li>
+<li>Copy address</li>
+<li>Copy value</li>
+<li>Invert byte</li>
+<li>Fill range</li>
+<li>Disassemble from here</li>
+<li>Go to address</li>
+<li><strong>Search</strong> — Ctrl+F (HEX pattern, ASCII string, HEX with mask <code>??</code>)</li>
+<li><strong>Go to address</strong> — Ctrl+G</li>
+<li><strong>Read block</strong> — read block from device into image</li>
+</ul>
+<p><strong>RU:</strong></p>
+<ul>
+<li><strong>Редактирование</strong> — двойной клик по ячейке для редактирования</li>
+<li><strong>Подсказки</strong> — при наведении на байт показывается мнемоника инструкции</li>
+<li><strong>Undo/Redo</strong> — Ctrl+Z / Ctrl+Y (до 100 операций)</li>
+<li><strong>Контекстное меню</strong> (правый клик):</li>
+<li>Копировать адрес</li>
+<li>Копировать значение</li>
+<li>Инвертировать байт</li>
+<li>Заполнить диапазон</li>
+<li>Дизассемблировать отсюда</li>
+<li>Перейти к адресу</li>
+<li><strong>Поиск</strong> — Ctrl+F (HEX-паттерн, ASCII-строка, HEX с маской <code>??</code>)</li>
+<li><strong>Переход к адресу</strong> — Ctrl+G</li>
+<li><strong>Чтение блока</strong> — чтение блока из устройства в образ</li>
+</ul>
+<hr>
+<h2 id="7-disassembler--дизассемблер">7. Disassembler / Дизассемблер</h2>
+<h3 id="71-overview--обзор">7.1. Overview / Обзор</h3>
+<p><strong>EN:</strong> The disassembler displays code with:</p>
+<ul>
+<li><strong>Jump arrows</strong> — colored arrows showing jump targets (JMP, CALL, Jcc, Ccc, RST)</li>
+<li><strong>Color highlighting by instruction type:</strong></li>
+<li>🔵 Blue — jumps (JMP, CALL, Jcc, Ccc, RST)</li>
+<li>🟢 Green — memory operations (LDA, STA, LHLD, SHLD, LDAX, STAX, XCHG, XTHL)</li>
+<li>🟣 Purple — IO (IN, OUT)</li>
+<li>⚪ Gray — control (NOP, HLT, DI, EI, RET, PCHL, SPHL)</li>
+<li>🟠 Orange — registers and data (MVI, LXI, INR, DCR, MOV, INX, DCX)</li>
+<li>🟡 Yellow — arithmetic and logic (ADD, ADC, SUB, SBB, ANA, XRA, ORA, CMP, etc.)</li>
+<li>🟢 Teal — stack (PUSH, POP)</li>
+<li>🔴 Red — undocumented instructions (NOP<em>, RET</em>, CALL*)</li>
+<li><strong>Jump comments</strong> — <code>; -> XXXXh</code> shows jump target</li>
+</ul>
+<p><strong>RU:</strong> Дизассемблер отображает код с:</p>
+<ul>
+<li><strong>Стрелками переходов</strong> — цветные стрелки показывают цели переходов</li>
+<li><strong>Цветовой подсветкой типов команд:</strong></li>
+<li>🔵 Синий — переходы (JMP, CALL, Jcc, Ccc, RST)</li>
+<li>🟢 Зелёный — операции с памятью (LDA, STA, LHLD, SHLD, LDAX, STAX, XCHG, XTHL)</li>
+<li>🟣 Фиолетовый — ввод-вывод (IN, OUT)</li>
+<li>⚪ Серый — управление (NOP, HLT, DI, EI, RET, PCHL, SPHL)</li>
+<li>🟠 Оранжевый — регистры и данные (MVI, LXI, INR, DCR, MOV, INX, DCX)</li>
+<li>🟡 Жёлтый — арифметика и логика (ADD, ADC, SUB, SBB, ANA, XRA, ORA, CMP и др.)</li>
+<li>🟢 Бирюзовый — стек (PUSH, POP)</li>
+<li>🔴 Красный — недокументированные команды (NOP<em>, RET</em>, CALL*)</li>
+<li><strong>Комментариями переходов</strong> — <code>; -> XXXXh</code></li>
+</ul>
+<h3 id="72-controls--управление">7.2. Controls / Управление</h3>
+<p><strong>EN:</strong></p>
+<ul>
+<li><strong>Start</strong> — start address for disassembly</li>
+<li><strong>Len</strong> — length (number of bytes)</li>
+<li><strong>"Disassemble"</strong> — perform disassembly</li>
+<li><strong>Auto on read/load</strong> — auto-disassemble on device read or file load</li>
+<li><strong>"Export"</strong> — export disassembly listing to file (.asm / .txt)</li>
+<li><strong>"Load Map"</strong> — load a <code>.map</code> file so the disassembler shows label names and resolves jump targets by symbol</li>
+<li><strong>CPU</strong> — select processor type (i8080/i8085). Synced with the Emulator and Assembler tabs. Blocked when the source has a <code>.8085</code>/<code>.8080</code> directive.</li>
+</ul>
+<p><strong>RU:</strong></p>
+<ul>
+<li><strong>Start</strong> — начальный адрес дизассемблирования</li>
+<li><strong>Len</strong> — длина (количество байт)</li>
+<li><strong>«Дизассемблировать»</strong> — выполнить дизассемблирование</li>
+<li><strong>Авто при чтении/загрузке</strong> — автоматическое дизассемблирование</li>
+<li><strong>«Экспорт»</strong> — экспорт листинга в файл (.asm / .txt)</li>
+<li><strong>«Загрузить Map»</strong> — загрузить <code>.map</code> файл, чтобы дизассемблер показывал имена меток и резолвил цели переходов по символу</li>
+<li><strong>Процессор</strong> — выбор типа процессора (i8080/i8085). Синхронизирован с вкладками «Эмулятор» и «Ассемблер». Блокируется при наличии директивы <code>.8085</code>/<code>.8080</code> в исходном коде.</li>
+</ul>
+<h3 id="73-font-size--размер-шрифта">7.3. Font Size / Размер шрифта</h3>
+<p><strong>Ctrl + mouse wheel</strong> — change disassembler font size.</p>
+<hr>
+<h2 id="8-assembler--ассемблер">8. Assembler / Ассемблер</h2>
+<p><strong>EN:</strong></p>
+<p>The <strong>Assembler</strong> tab (tab 0, the first tab) lets you write i8080 assembly source, assemble it to machine code, and load the result into the emulator memory for debugging. It is powered by the built-in two-pass assembler (<code>assemble8080</code>).</p>
+<h3 id="81-interface--интерфейс">8.1. Interface / Интерфейс</h3>
+<table>
+<tr><th>Button</th><th>Purpose</th></tr>
+<tr><td>📄 New Program</td><td>Clear the editor and the error/label panels</td></tr>
+<tr><td>📂 Load .asm</td><td>Load a source file (<code>.asm</code> / <code>.inc</code> / <code>.s</code>)</td></tr>
+<tr><td>💾 Save .asm</td><td>Save the source to a file</td></tr>
+<tr><td>🔨 Assemble</td><td>Assemble the code — shows errors, labels, and binary size</td></tr>
+<tr><td>🚀 Assemble & Load</td><td>Assemble and write the binary into emulator memory at the <code>ORG</code> address</td></tr>
+<tr><td>📦 Assemble → OBJ</td><td>Assemble and save an object file (<code>.obj</code>) for linking</td></tr>
+<tr><td>🔗 Link</td><td>Link object files (<code>.obj</code>) using a linker script (<code>.lnk</code>)</td></tr>
+</table>
+<h3 id="82-editor--редактор">8.2. Editor / Редактор</h3>
+<ul>
+<li><strong>Syntax highlighting</strong> — mnemonics, directives, registers, numbers, labels, comments</li>
+<li><strong>Line numbers</strong> — on the left margin</li>
+<li><strong>Jump arrows</strong> — colored arrows (next to line numbers) showing jump targets (JMP, CALL, Jcc, Ccc)</li>
+<li><strong>Autocomplete</strong> — mnemonics, registers, directives, and your own labels (pops up after 2 characters)</li>
+<li><strong>Ctrl + mouse wheel</strong> — change font size (8–36 pt)</li>
+<li><strong>Error lines</strong> — highlighted in red after a failed assembly</li>
+</ul>
+<h3 id="83-error-panel--панель-ошибок">8.3. Error Panel / Панель ошибок</h3>
+<p>Below the editor. After assembly it lists all errors with line numbers. <strong>Double-click</strong> a row to jump to that line in the editor.</p>
+<h3 id="84-label-table--таблица-меток">8.4. Label Table / Таблица меток</h3>
+<p>On the right. After a successful assembly it lists all labels with their addresses and source lines. <strong>Double-click</strong> a row to jump to the label's line.</p>
+<h3 id="85-number-formats--форматы-чисел">8.5. Number Formats / Форматы чисел</h3>
+<table>
+<tr><th>Format</th><th>Example</th><th>Value</th></tr>
+<tr><td>Hex prefix</td><td><code>0xFF</code></td><td>255</td></tr>
+<tr><td>Hex suffix</td><td><code>FFH</code>, <code>0FFH</code></td><td>255</td></tr>
+<tr><td>Decimal</td><td><code>255</code>, <code>255D</code></td><td>255</td></tr>
+<tr><td>Binary</td><td><code>11111111B</code></td><td>255</td></tr>
+<tr><td>Octal</td><td><code>377Q</code>, <code>377O</code></td><td>255</td></tr>
+</table>
+<h3 id="86-directives--директивы">8.6. Directives / Директивы</h3>
+<table>
+<tr><th>Directive</th><th>Purpose</th></tr>
+<tr><td><code>ORG addr</code></td><td>Set the origin (start) address; the binary is emitted starting at <code>addr</code></td></tr>
+<tr><td><code>DB ...</code></td><td>Define bytes (numbers, strings, expressions)</td></tr>
+<tr><td><code>DW ...</code></td><td>Define words (16-bit, little-endian)</td></tr>
+<tr><td><code>DS n[,fill]</code></td><td>Reserve <code>n</code> bytes (optionally filled with <code>fill</code>)</td></tr>
+<tr><td><code>EQU expr</code></td><td>Define a symbolic constant (<code>LABEL EQU value</code>)</td></tr>
+<tr><td><code>END</code></td><td>End of program (optional)</td></tr>
+<tr><td><code>EXPORT name</code> / <code>PUBLIC name</code></td><td>Mark a symbol as exported (visible to the linker)</td></tr>
+<tr><td><code>IMPORT name</code> / <code>EXTERN name</code></td><td>Declare an external symbol (defined in another module)</td></tr>
+<tr><td><code>#path dir</code> / <code>.path dir</code></td><td>Add a directory to the include search path</td></tr>
+</table>
+<p>Dot-prefixed forms are also accepted: <code>.org</code>, <code>.db</code>, <code>.dw</code>, <code>.ds</code>, <code>.equ</code>, <code>.end</code>, <code>.byte</code>, <code>.word</code>, <code>.space</code>, <code>.ascii</code>, <code>.text</code>.</p>
+<h3 id="87-comments-and-special-symbols--комментарии-и-спецсимволы">8.7. Comments and Special Symbols / Комментарии и спецсимволы</h3>
+<ul>
+<li><code>;</code> — comment to end of line (anywhere)</li>
+<li><code>*</code> — comment when at the start of a line (M80 style)</li>
+<li><code>$</code> — current address (location counter)</li>
+<li><strong>Labels</strong> — <code>LABEL:</code>; usable in expressions and as jump targets; forward references are supported</li>
+</ul>
+<h3 id="88-expressions--выражения">8.8. Expressions / Выражения</h3>
+<p>Arithmetic and logical expressions are supported in operands and in <code>EQU</code>:</p>
+<ul>
+<li>Arithmetic: <code>+  -  *  /  %</code> (integer division)</li>
+<li>Bitwise: <code>&  |  ~  ^</code>, <code>SHL</code>/<code><<</code>, <code>SHR</code>/<code>>></code>, <code>MOD</code></li>
+<li>Logical: <code>AND</code>, <code>OR</code>, <code>NOT</code>, <code>XOR</code></li>
+<li>Comparison (zasm): <code>EQ</code>, <code>NE</code>, <code>GT</code>, <code>LT</code>, <code>GE</code>, <code>LE</code>, <code><></code></li>
+<li><code>HIGH expr</code>, <code>LOW expr</code> — high / low byte</li>
+<li>Character literals: <code>'A'</code> = 0x41, with escapes <code>\n</code>, <code>\t</code>, <code>\r</code>, <code>\0</code>; e.g. <code>'A'+80H</code> = 0xC1</li>
+</ul>
+<h3 id="89-data-db--данные-db">8.9. Data (DB) / Данные (DB)</h3>
+<pre><code>DB 42H, 'A', 10010110B      ; byte, char, binary
+DB "Hello"                  ; string (double quotes)
+DB 'Hi'                     ; string (single quotes)
+DB <literal text>           ; zasm: literal text in angle brackets
+DB 10 dup(0)                ; M80: repeat a value 10 times
+DB CR, LF                    ; carriage return, line feed
+DB __date__, __TIME__        ; build date / time
+</code></pre>
+<h3 id="810-preprocessor--препроцессор">8.10. Preprocessor / Препроцессор</h3>
+<table>
+<tr><th>Feature</th><th>Syntax</th></tr>
+<tr><td>Include file</td><td><code>#include "file.inc"</code> or <code>include "file.inc"</code></td></tr>
+<tr><td>Constant</td><td><code>#define NAME value</code></td></tr>
+<tr><td>Conditional</td><td><code>#if expr</code> / <code>#elif expr</code> / <code>#else</code> / <code>#endif</code></td></tr>
+<tr><td>Conditional (no <code>#</code>)</td><td><code>IF expr</code> / <code>ELSE</code> / <code>ENDIF</code></td></tr>
+<tr><td>Macro</td><td><code>NAME MACRO [params]</code> … <code>ENDM</code></td></tr>
+<tr><td>Repeat block</td><td><code>REPT n</code> … <code>ENDM</code></td></tr>
+</table>
+<p><strong>Macros</strong> support parameters referenced as <code>&PARAM</code>, <code>%PARAM</code>, <code>#PARAM</code>, or <code>\PARAM</code> (zasm style):</p>
+<pre><code>DELAY MACRO N
+    MVI B, N
+LOOP: DCR B
+      JNZ LOOP
+ENDM
+...
+DELAY 10        ; expands with N = 10
+</code></pre>
+<p><strong>zasm compatibility:</strong> <code>#target</code>, <code>#charset</code>, <code>XDEF</code>/<code>XREF</code>/<code>SECTION</code>, <code>.asm8080</code>, and the <code><...></code> line wrapper are recognized.</p>
+<h3 id="811-loading-into-memory--загрузка-в-память">8.11. Loading into Memory / Загрузка в память</h3>
+<p><strong>"Assemble & Load"</strong> assembles the code and writes the binary into the emulator memory at the <code>ORG</code> address, then sets the emulator PC to that address. After that you can debug it in the <strong>Emulator</strong> tab (F5 to run, F11 to step).</p>
+<p>The <strong>Disassembler</strong> tab range (start/length) is automatically updated to cover the full loaded binary, so the whole program is visible without manually adjusting the range (same behaviour as the Emulator view).</p>
+<h3 id="812-sync-from-memory--синхронизация-с-памятью">8.12. Sync from Memory / Синхронизация с памятью</h3>
+<p>When you edit memory in the <strong>Hex Editor</strong>, the Assembler view is automatically re-disassembled from the current memory — unless you are actively editing the assembler source. This keeps the assembler in sync with the actual memory contents.</p>
+<h3 id="813-example--пример">8.13. Example / Пример</h3>
+<pre><code>        ORG 0100H
+START:  MVI A, 55H        ; A = 0x55
+        OUT 01H           ; output to port 1
+        MVI B, 0FFH       ; B = FF
+LOOP:   DCR B             ; B = B - 1
+        JNZ LOOP          ; repeat while B != 0
+        LDA DATA
+        STA DATA+1
+        CALL SUBR
+        HLT
+SUBR:   INR A
+        RET
+DATA:   DB 42H, 'A'
+        DW 1234H
+        DS 10
+        END
+</code></pre>
+<h3 id="814-object-files-and-linking--объектные-файлы-и-линковка">8.14. Object Files and Linking / Объектные файлы и линковка</h3>
+<p>The assembler can produce <strong>object files</strong> (<code>.obj</code>, JSON format <code>i8080-obj-v1</code>) and a <strong>linker</strong> combines several objects into a single binary.</p>
+<p><strong>Workflow:</strong></p>
+<ol>
+<li>Write each module with <code>ORG</code> (its load address), <code>EXPORT</code> for public symbols, and <code>IMPORT</code> for symbols defined elsewhere.</li>
+<li>Click <strong>📦 Assemble → OBJ</strong> for each module — saves a <code>.obj</code> file (binary + symbols + exports + imports + relocations).</li>
+<li>Write a <strong>linker script</strong> (<code>.lnk</code>) and click <strong>🔗 Link</strong>.</li>
+</ol>
+<p><strong>Linker script directives:</strong></p>
+<table>
+<tr><th>Directive</th><th>Purpose</th></tr>
+<tr><td><code>INPUT f1.obj f2.obj ...</code></td><td>Object files to link (in order)</td></tr>
+<tr><td><code>OUTPUT out.bin</code></td><td>Output binary file</td></tr>
+<tr><td><code>MAP out.map</code></td><td>Generate a map file</td></tr>
+<tr><td><code>ORIGIN 0x0000</code></td><td>Base address for the output</td></tr>
+<tr><td><code>SIZE 0x10000</code></td><td>Total output size</td></tr>
+<tr><td><code>FILL 0xFF</code></td><td>Fill byte for gaps</td></tr>
+</table>
+<p><strong>Example linker script</strong> (<code>app.lnk</code>):</p>
+<pre><code>INPUT main.obj helper.obj
+OUTPUT app.bin
+MAP app.map
+ORIGIN 0x0000
+SIZE 0x10000
+FILL 0xFF
+</code></pre>
+<p><strong>Relocations:</strong> when an instruction references an <code>IMPORT</code>ed symbol (e.g. <code>CALL HELPER</code>, <code>JMP LABEL</code>, <code>LHLD PTR</code>, <code>DW TBL</code>), the assembler records a relocation entry. The linker patches the 16-bit address with the symbol's final location. Local symbols are resolved at assembly time and need no relocation.</p>
+<p><strong>Rules:</strong></p>
+<ul>
+<li>Each object must have a <strong>unique <code>ORG</code></strong> (the linker reports ORG conflicts).</li>
+<li>Every <code>IMPORT</code> must be satisfied by an <code>EXPORT</code> in some object (otherwise: <em>Unresolved symbol</em>).</li>
+<li>Objects are placed at their own <code>ORG</code>; the linker does not rebase them.</li>
+</ul>
+<h3 id="815-map-files-and-symbol-resolution--map-файлы-и-резолв-символов">8.15. Map Files and Symbol Resolution / Map-файлы и резолв символов</h3>
+<p>A <strong>map file</strong> (<code>.map</code>, text format v1) lists all symbols with their addresses. It is generated by the linker (<code>MAP</code> directive) and can be loaded into the <strong>Disassembler</strong> tab via the <strong>🗺 Load Map</strong> button.</p>
+<p>Once a map is loaded, the disassembler:</p>
+<ul>
+<li>shows each <strong>label on its own line</strong> (bold) at the symbol address, with the instruction on the following line (e.g. a <code>HELPER</code> label line, then <code>INR B</code> below it)</li>
+<li><strong>resolves jump/call targets</strong> to symbol names instead of raw addresses (e.g. <code>CALL HELPER</code> instead of <code>CALL 0200h</code>)</li>
+<li><strong>substitutes EQU constant names</strong> for matching immediate values (e.g. <code>CPI COUNT</code> instead of <code>CPI 05h</code>)</li>
+</ul>
+<p>This makes disassembly of linked programs much more readable.</p>
+<p><strong>RU:</strong></p>
+<p>Вкладка <strong>«Ассемблер»</strong> (вкладка 0, первая) позволяет писать исходный код i8080 на ассемблере, собирать его в машинный код и загружать результат в память эмулятора для отладки. Работает на встроенном двухпроходном ассемблере (<code>assemble8080</code>).</p>
+<h3 id="81-интерфейс">8.1. Интерфейс</h3>
+<table>
+<tr><th>Кнопка</th><th>Назначение</th></tr>
+<tr><td>📄 Новая программа</td><td>Очистить редактор и панели ошибок/меток</td></tr>
+<tr><td>📂 Загрузить .asm</td><td>Загрузить исходный файл (<code>.asm</code> / <code>.inc</code> / <code>.s</code>)</td></tr>
+<tr><td>💾 Сохранить .asm</td><td>Сохранить исходный код в файл</td></tr>
+<tr><td>🔨 Ассемблировать</td><td>Собрать код — показать ошибки, метки и размер бинарника</td></tr>
+<tr><td>🚀 Ассемблировать и загрузить</td><td>Собрать и записать бинарник в память эмулятора по адресу <code>ORG</code></td></tr>
+<tr><td>📦 Собрать → OBJ</td><td>Собрать и сохранить объектный файл (<code>.obj</code>) для линковки</td></tr>
+<tr><td>🔗 Линковка</td><td>Слинковать объектные файлы (<code>.obj</code>) по скрипту линковщика (<code>.lnk</code>)</td></tr>
+</table>
+<h3 id="82-редактор">8.2. Редактор</h3>
+<ul>
+<li><strong>Подсветка синтаксиса</strong> — мнемоники, директивы, регистры, числа, метки, комментарии</li>
+<li><strong>Номера строк</strong> — в левой колонке</li>
+<li><strong>Стрелки переходов</strong> — цветные стрелки (рядом с номерами строк) показывают цели переходов (JMP, CALL, Jcc, Ccc)</li>
+<li><strong>Автодополнение</strong> — мнемоники, регистры, директивы и ваши метки (появляется после 2 символов)</li>
+<li><strong>Ctrl + колесо мыши</strong> — изменение размера шрифта (8–36 pt)</li>
+<li><strong>Строки с ошибками</strong> — подсвечиваются красным после неудачной сборки</li>
+</ul>
+<h3 id="83-панель-ошибок">8.3. Панель ошибок</h3>
+<p>Под редактором. После сборки перечисляет все ошибки с номерами строк. <strong>Двойной клик</strong> по строке — переход к этой строке в редакторе.</p>
+<h3 id="84-таблица-меток">8.4. Таблица меток</h3>
+<p>Справа. После успешной сборки перечисляет все метки с их адресами и строками исходника. <strong>Двойной клик</strong> по строке — переход к строке метки.</p>
+<h3 id="85-форматы-чисел">8.5. Форматы чисел</h3>
+<table>
+<tr><th>Формат</th><th>Пример</th><th>Значение</th></tr>
+<tr><td>HEX с префиксом</td><td><code>0xFF</code></td><td>255</td></tr>
+<tr><td>HEX с суффиксом</td><td><code>FFH</code>, <code>0FFH</code></td><td>255</td></tr>
+<tr><td>Десятичный</td><td><code>255</code>, <code>255D</code></td><td>255</td></tr>
+<tr><td>Двоичный</td><td><code>11111111B</code></td><td>255</td></tr>
+<tr><td>Восьмеричный</td><td><code>377Q</code>, <code>377O</code></td><td>255</td></tr>
+</table>
+<h3 id="86-директивы">8.6. Директивы</h3>
+<table>
+<tr><th>Директива</th><th>Назначение</th></tr>
+<tr><td><code>ORG addr</code></td><td>Установить начальный адрес; бинарник выводится начиная с <code>addr</code></td></tr>
+<tr><td><code>DB ...</code></td><td>Определить байты (числа, строки, выражения)</td></tr>
+<tr><td><code>DW ...</code></td><td>Определить слова (16 бит, little-endian)</td></tr>
+<tr><td><code>DS n[,fill]</code></td><td>Зарезервировать <code>n</code> байт (опционально заполнить <code>fill</code>)</td></tr>
+<tr><td><code>EQU expr</code></td><td>Определить символьную константу (<code>МЕТКА EQU значение</code>)</td></tr>
+<tr><td><code>END</code></td><td>Конец программы (необязательно)</td></tr>
+<tr><td><code>EXPORT name</code> / <code>PUBLIC name</code></td><td>Отметить символ как экспортируемый (видим для линковщика)</td></tr>
+<tr><td><code>IMPORT name</code> / <code>EXTERN name</code></td><td>Объявить внешний символ (определён в другом модуле)</td></tr>
+<tr><td><code>#path dir</code> / <code>.path dir</code></td><td>Добавить каталог в путь поиска include</td></tr>
+</table>
+<p>Принимаются и формы с точкой: <code>.org</code>, <code>.db</code>, <code>.dw</code>, <code>.ds</code>, <code>.equ</code>, <code>.end</code>, <code>.byte</code>, <code>.word</code>, <code>.space</code>, <code>.ascii</code>, <code>.text</code>.</p>
+<h3 id="87-комментарии-и-спецсимволы">8.7. Комментарии и спецсимволы</h3>
+<ul>
+<li><code>;</code> — комментарий до конца строки (в любом месте)</li>
+<li><code>*</code> — комментарий, если стоит в начале строки (стиль M80)</li>
+<li><code>$</code> — текущий адрес (счётчик позиции)</li>
+<li><strong>Метки</strong> — <code>МЕТКА:</code>; используются в выражениях и как цели переходов; поддерживаются вперёд-ссылки</li>
+</ul>
+<h3 id="88-выражения">8.8. Выражения</h3>
+<p>В операндах и в <code>EQU</code> поддерживаются арифметические и логические выражения:</p>
+<ul>
+<li>Арифметика: <code>+  -  *  /  %</code> (целочисленное деление)</li>
+<li>Побитовые: <code>&  |  ~  ^</code>, <code>SHL</code>/<code><<</code>, <code>SHR</code>/<code>>></code>, <code>MOD</code></li>
+<li>Логические: <code>AND</code>, <code>OR</code>, <code>NOT</code>, <code>XOR</code></li>
+<li>Сравнение (zasm): <code>EQ</code>, <code>NE</code>, <code>GT</code>, <code>LT</code>, <code>GE</code>, <code>LE</code>, <code><></code></li>
+<li><code>HIGH expr</code>, <code>LOW expr</code> — старший / младший байт</li>
+<li>Символьные литералы: <code>'A'</code> = 0x41, с экранированием <code>\n</code>, <code>\t</code>, <code>\r</code>, <code>\0</code>; например <code>'A'+80H</code> = 0xC1</li>
+</ul>
+<h3 id="89-данные-db">8.9. Данные (DB)</h3>
+<pre><code>DB 42H, 'A', 10010110B      ; байт, символ, двоичное
+DB "Hello"                  ; строка (двойные кавычки)
+DB 'Hi'                     ; строка (одинарные кавычки)
+DB <literal text>           ; zasm: литеральный текст в угловых скобках
+DB 10 dup(0)                ; M80: повторить значение 10 раз
+DB CR, LF                    ; возврат каретки, перевод строки
+DB __date__, __TIME__        ; дата / время сборки
+</code></pre>
+<h3 id="810-препроцессор">8.10. Препроцессор</h3>
+<table>
+<tr><th>Возможность</th><th>Синтаксис</th></tr>
+<tr><td>Включение файла</td><td><code>#include "file.inc"</code> или <code>include "file.inc"</code></td></tr>
+<tr><td>Константа</td><td><code>#define NAME value</code></td></tr>
+<tr><td>Условие</td><td><code>#if expr</code> / <code>#elif expr</code> / <code>#else</code> / <code>#endif</code></td></tr>
+<tr><td>Условие (без <code>#</code>)</td><td><code>IF expr</code> / <code>ELSE</code> / <code>ENDIF</code></td></tr>
+<tr><td>Макрос</td><td><code>NAME MACRO [параметры]</code> … <code>ENDM</code></td></tr>
+<tr><td>Повтор блока</td><td><code>REPT n</code> … <code>ENDM</code></td></tr>
+</table>
+<p><strong>Макросы</strong> поддерживают параметры, ссылаемые как <code>&PARAM</code>, <code>%PARAM</code>, <code>#PARAM</code> или <code>\PARAM</code> (стиль zasm):</p>
+<pre><code>DELAY MACRO N
+    MVI B, N
+LOOP: DCR B
+      JNZ LOOP
+ENDM
+...
+DELAY 10        ; разворачивается с N = 10
+</code></pre>
+<p><strong>Совместимость с zasm:</strong> распознаются <code>#target</code>, <code>#charset</code>, <code>XDEF</code>/<code>XREF</code>/<code>SECTION</code>, <code>.asm8080</code> и обёртка строки <code><...></code>.</p>
+<h3 id="811-загрузка-в-память">8.11. Загрузка в память</h3>
+<p><strong>«Ассемблировать и загрузить»</strong> собирает код и записывает бинарник в память эмулятора по адресу <code>ORG</code>, затем устанавливает PC эмулятора на этот адрес. После этого его можно отлаживать на вкладке <strong>«Эмулятор»</strong> (F5 — запуск, F11 — шаг).</p>
+<p>Диапазон вкладки <strong>«Дизассемблер»</strong> (начало/длина) автоматически обновляется на весь загруженный бинарник, поэтому вся программа видна без ручной настройки диапазона (то же поведение, что и во вкладке «Эмулятор»).</p>
+<h3 id="812-синхронизация-с-памятью">8.12. Синхронизация с памятью</h3>
+<p>При редактировании памяти в <strong>Hex-редакторе</strong> вид ассемблера автоматически пере-дизассемблируется из текущей памяти — если вы не редактируете исходный код ассемблера. Это держит ассемблер в синхроне с фактическим содержимым памяти.</p>
+<h3 id="813-пример">8.13. Пример</h3>
+<pre><code>        ORG 0100H
+START:  MVI A, 55H        ; A = 0x55
+        OUT 01H           ; вывод в порт 1
+        MVI B, 0FFH       ; B = FF
+LOOP:   DCR B             ; B = B - 1
+        JNZ LOOP          ; повторять пока B != 0
+        LDA DATA
+        STA DATA+1
+        CALL SUBR
+        HLT
+SUBR:   INR A
+        RET
+DATA:   DB 42H, 'A'
+        DW 1234H
+        DS 10
+        END
+</code></pre>
+<h3 id="814-объектные-файлы-и-линковка">8.14. Объектные файлы и линковка</h3>
+<p>Ассемблер может создавать <strong>объектные файлы</strong> (<code>.obj</code>, JSON-формат <code>i8080-obj-v1</code>), а <strong>линковщик</strong> объединяет несколько объектов в единый бинарник.</p>
+<p><strong>Порядок работы:</strong></p>
+<ol>
+<li>Напишите каждый модуль с <code>ORG</code> (адрес загрузки), <code>EXPORT</code> для публичных символов и <code>IMPORT</code> для символов, определённых в других модулях.</li>
+<li>Для каждого модуля нажмите <strong>📦 Собрать → OBJ</strong> — сохраняется <code>.obj</code> файл (бинарник + символы + экспорты + импорты + переносы).</li>
+<li>Напишите <strong>скрипт линковщика</strong> (<code>.lnk</code>) и нажмите <strong>🔗 Линковка</strong>.</li>
+</ol>
+<p><strong>Директивы скрипта линковщика:</strong></p>
+<table>
+<tr><th>Директива</th><th>Назначение</th></tr>
+<tr><td><code>INPUT f1.obj f2.obj ...</code></td><td>Объектные файлы для линковки (в порядке)</td></tr>
+<tr><td><code>OUTPUT out.bin</code></td><td>Выходной бинарный файл</td></tr>
+<tr><td><code>MAP out.map</code></td><td>Сгенерировать map-файл</td></tr>
+<tr><td><code>ORIGIN 0x0000</code></td><td>Базовый адрес вывода</td></tr>
+<tr><td><code>SIZE 0x10000</code></td><td>Общий размер вывода</td></tr>
+<tr><td><code>FILL 0xFF</code></td><td>Байт заполнения для промежутков</td></tr>
+</table>
+<p><strong>Пример скрипта линковщика</strong> (<code>app.lnk</code>):</p>
+<pre><code>INPUT main.obj helper.obj
+OUTPUT app.bin
+MAP app.map
+ORIGIN 0x0000
+SIZE 0x10000
+FILL 0xFF
+</code></pre>
+<p><strong>Переносы (relocations):</strong> когда инструкция ссылается на <code>IMPORT</code>-символ (например <code>CALL HELPER</code>, <code>JMP LABEL</code>, <code>LHLD PTR</code>, <code>DW TBL</code>), ассемблер записывает запись переноса. Линковщик подставляет 16-битный адрес финального расположения символа. Локальные символы резолвятся при ассемблировании и не требуют переноса.</p>
+<p><strong>Правила:</strong></p>
+<ul>
+<li>У каждого объекта должен быть <strong>уникальный <code>ORG</code></strong> (линковщик сообщает о конфликтах ORG).</li>
+<li>Каждый <code>IMPORT</code> должен быть удовлетворён <code>EXPORT</code> в каком-то объекте (иначе: <em>Unresolved symbol</em>).</li>
+<li>Объекты размещаются по своему <code>ORG</code>; линковщик не перебазирует их.</li>
+</ul>
+<h3 id="815-map-файлы-и-резолв-символов">8.15. Map-файлы и резолв символов</h3>
+<p><strong>Map-файл</strong> (<code>.map</code>, текстовый формат v1) перечисляет все символы с их адресами. Он генерируется линковщиком (директива <code>MAP</code>) и может быть загружен на вкладке <strong>«Дизассемблер»</strong> кнопкой <strong>🗺 Загрузить Map</strong>.</p>
+<p>После загрузки map дизассемблер:</p>
+<ul>
+<li>показывает <strong>каждую метку на отдельной строке</strong> (жирным) по адресу символа, а инструкция идёт следующей строкой (например строка метки <code>HELPER</code>, под ней <code>INR B</code>)</li>
+<li><strong>резолвит цели переходов/вызовов</strong> в имена символов вместо сырых адресов (например <code>CALL HELPER</code> вместо <code>CALL 0200h</code>)</li>
+<li><strong>подставляет имена EQU-констант</strong> для совпадающих immediate-значений (например <code>CPI COUNT</code> вместо <code>CPI 05h</code>)</li>
+</ul>
+<p>Это делает дизассемблирование слинкованных программ гораздо более читаемым.</p>
+<hr>
+<h2 id="9-memory-test--тест-памяти">9. Memory Test / Тест памяти</h2>
+<p><strong>EN:</strong></p>
+<h3 id="parameters">Parameters</h3>
+<ul>
+<li><strong>Start</strong> — start address (HEX)</li>
+<li><strong>End</strong> — end address (HEX)</li>
+<li><strong>Pattern</strong> — pattern selection:</li>
+<li><strong>Checker</strong> — chessboard pattern (55/AA)</li>
+<li><strong>Zero</strong> — all zeros</li>
+<li><strong>One</strong> — all FF</li>
+<li><strong>Addr</strong> — value equals address</li>
+</ul>
+<h3 id="run">Run</h3>
+<p>Click <strong>"Run Memory Test"</strong>. Progress shown in progress bar. Errors logged with address, expected and actual values.</p>
+<blockquote>⚠️ Memory test overwrites RAM contents. Do not run on areas with important data.
+</blockquote>
+<p><strong>RU:</strong></p>
+<h3 id="параметры">Параметры</h3>
+<ul>
+<li><strong>Start</strong> — начальный адрес (HEX)</li>
+<li><strong>End</strong> — конечный адрес (HEX)</li>
+<li><strong>Паттерн</strong> — выбор:</li>
+<li><strong>Checker</strong> — шахматный паттерн (55/AA)</li>
+<li><strong>Zero</strong> — все нули</li>
+<li><strong>One</strong> — все FF</li>
+<li><strong>Addr</strong> — значение равно адресу</li>
+</ul>
+<h3 id="запуск">Запуск</h3>
+<p>Нажмите <strong>«Запустить тест памяти»</strong>. Прогресс в прогресс-баре. Ошибки в журнале с адресом, ожидаемым и полученным значениями.</p>
+<blockquote>⚠️ Тест памяти перезаписывает содержимое RAM. Не запускайте на важных данных.
+</blockquote>
+<hr>
+<h2 id="10-io-sequencer--io-секвенсор">10. IO Sequencer / IO Секвенсор</h2>
+<h3 id="101-single-io-operations--одиночные-операции">10.1. Single IO Operations / Одиночные операции</h3>
+<p><strong>EN:</strong></p>
+<ul>
+<li><strong>Port (HEX)</strong> — port number</li>
+<li><strong>Value (HEX)</strong> — value</li>
+<li><strong>"Read (IN)"</strong> and <strong>"Write (OUT)"</strong> buttons</li>
+</ul>
+<p><strong>RU:</strong></p>
+<ul>
+<li><strong>Порт (HEX)</strong> — номер порта</li>
+<li><strong>Значение (HEX)</strong> — значение</li>
+<li>Кнопки <strong>«Читать (IN)»</strong> и <strong>«Записать (OUT)»</strong></li>
+</ul>
+<h3 id="102-sequences--последовательности">10.2. Sequences / Последовательности</h3>
+<p><strong>EN:</strong></p>
+<p><strong>Sequence format:</strong></p>
+<pre><code>W 01 FF ; Write FF to port 01h
+R 02    ; Read from port 02h
+D 10    ; Delay 10 ms
+</code></pre>
+<ul>
+<li><strong>W PP DD</strong> — write value DD to port PP</li>
+<li><strong>R PP</strong> — read from port PP</li>
+<li><strong>D NN</strong> — delay NN milliseconds</li>
+<li>Lines starting with <code>;</code> or <code>#</code> are comments</li>
+</ul>
+<p><strong>Controls:</strong></p>
+<ul>
+<li><strong>"Load File..."</strong> — load sequence from file</li>
+<li><strong>"Execute Sequence"</strong> — run sequence</li>
+</ul>
+<p><strong>RU:</strong></p>
+<p><strong>Формат последовательности:</strong></p>
+<pre><code>W 01 FF ; Запись FF в порт 01h
+R 02    ; Чтение из порта 02h
+D 10    ; Задержка 10 мс
+</code></pre>
+<ul>
+<li><strong>W PP DD</strong> — запись значения DD в порт PP</li>
+<li><strong>R PP</strong> — чтение из порта PP</li>
+<li><strong>D NN</strong> — задержка NN миллисекунд</li>
+<li>Строки, начинающиеся с <code>;</code> или <code>#</code> — комментарии</li>
+</ul>
+<p><strong>Управление:</strong></p>
+<ul>
+<li><strong>«Загрузить файл...»</strong> — загрузка последовательности из файла</li>
+<li><strong>«Выполнить последовательность»</strong> — выполнение</li>
+</ul>
+<hr>
+<h2 id="11-comparison--сравнение">11. Comparison / Сравнение</h2>
+<p><strong>EN:</strong></p>
+<h3 id="usage">Usage</h3>
+<ol>
+<li><strong>"Load file for comparison"</strong> — load file (.hex / .bin)</li>
+<li><strong>"Compare"</strong> — run comparison</li>
+<li><strong>"Export Report"</strong> — export results to file (.txt / .csv)</li>
+</ol>
+<h3 id="results">Results</h3>
+<p>Table displays differences:</p>
+<ul>
+<li><strong>Address</strong> — difference address</li>
+<li><strong>Current</strong> — current value</li>
+<li><strong>File</strong> — value from file</li>
+<li><strong>Status</strong> — difference type:</li>
+<li>🟡 <strong>Modified</strong> — value differs</li>
+<li>🟢 <strong>Added in file</strong> — exists in file, missing in current image</li>
+<li>🔴 <strong>Removed</strong> — exists in current image, missing in file</li>
+</ul>
+<p><strong>RU:</strong></p>
+<h3 id="использование">Использование</h3>
+<ol>
+<li><strong>«Загрузить файл для сравнения»</strong> — загрузка файла (.hex / .bin)</li>
+<li><strong>«Сравнить»</strong> — выполнение сравнения</li>
+<li><strong>«Экспорт отчёта»</strong> — экспорт результатов в файл (.txt / .csv)</li>
+</ol>
+<h3 id="результаты">Результаты</h3>
+<p>Таблица отображает различия:</p>
+<ul>
+<li><strong>Адрес</strong> — адрес различия</li>
+<li><strong>Текущий</strong> — текущее значение</li>
+<li><strong>Файл</strong> — значение из файла</li>
+<li><strong>Статус</strong> — тип различия:</li>
+<li>🟡 <strong>Изменено</strong> — значение отличается</li>
+<li>🟢 <strong>Добавлено в файле</strong> — есть в файле, отсутствует в текущем образе</li>
+<li>🔴 <strong>Удалено</strong> — есть в текущем образе, отсутствует в файле</li>
+</ul>
+<hr>
+<h2 id="12-scripts--скрипты">12. Scripts / Скрипты</h2>
+<p><strong>EN:</strong></p>
+<h3 id="interface">Interface</h3>
+<ul>
+<li><strong>Code editor</strong> — Python script editor</li>
+<li><strong>Output</strong> — script output (print)</li>
+<li>Buttons:</li>
+<li><strong>▶ Run Script</strong> — execute</li>
+<li><strong>Load Script</strong> — load from file (.py / .txt)</li>
+<li><strong>Save Script</strong> — save to file</li>
+<li><strong>Clear Output</strong> — clear output window</li>
+</ul>
+<h3 id="available-functions">Available Functions</h3>
+<table>
+<tr><th>Function</th><th>Purpose</th></tr>
+<tr><td><code>read_mem(addr)</code></td><td>Read byte from local image</td></tr>
+<tr><td><code>write_mem(addr, val)</code></td><td>Write byte to local image</td></tr>
+<tr><td><code>read_block(addr, size)</code></td><td>Read block from local image</td></tr>
+<tr><td><code>write_block(addr, data)</code></td><td>Write block to local image</td></tr>
+<tr><td><code>fill_mem(addr, size, val)</code></td><td>Fill range</td></tr>
+<tr><td><code>dev_read_mem(addr)</code></td><td>Read from device memory</td></tr>
+<tr><td><code>dev_write_mem(addr, val)</code></td><td>Write to device memory</td></tr>
+<tr><td><code>dev_read_io(port)</code></td><td>Read device IO port</td></tr>
+<tr><td><code>dev_write_io(port, val)</code></td><td>Write to device IO port</td></tr>
+<tr><td><code>download(addr, size)</code></td><td>Read block from device</td></tr>
+<tr><td><code>upload(addr, size)</code></td><td>Write block to device</td></tr>
+<tr><td><code>download_all(start, end)</code></td><td>Read all device memory</td></tr>
+<tr><td><code>upload_all()</code></td><td>Write entire image to device</td></tr>
+<tr><td><code>hold_bus()</code></td><td>Hold bus</td></tr>
+<tr><td><code>unhold_bus()</code></td><td>Release bus</td></tr>
+<tr><td><code>wait_bus(timeout)</code></td><td>Wait for bus hold</td></tr>
+<tr><td><code>wait_unhold(timeout)</code></td><td>Wait for bus release</td></tr>
+<tr><td><code>load_file(path, base_addr)</code></td><td>Load file into image</td></tr>
+<tr><td><code>save_file(path)</code></td><td>Save image to file</td></tr>
+<tr><td><code>disassemble(addr, length, show)</code></td><td>Disassemble</td></tr>
+<tr><td><code>search(pattern, mode)</code></td><td>Search in image</td></tr>
+<tr><td><code>refresh()</code></td><td>Refresh GUI</td></tr>
+<tr><td><code>log(msg)</code></td><td>Output to log</td></tr>
+<tr><td><code>status()</code></td><td>Current state</td></tr>
+<tr><td><code>goto(addr)</code></td><td>Go to address</td></tr>
+</table>
+<p>Full guide: <strong>SCRIPTS_GUIDE.md</strong></p>
+<p><strong>RU:</strong></p>
+<h3 id="интерфейс">Интерфейс</h3>
+<ul>
+<li><strong>Редактор кода</strong> — редактор Python-скрипта</li>
+<li><strong>Вывод</strong> — вывод скрипта (print)</li>
+<li>Кнопки:</li>
+<li><strong>▶ Выполнить скрипт</strong></li>
+<li><strong>Загрузить скрипт</strong> — загрузка из файла (.py / .txt)</li>
+<li><strong>Сохранить скрипт</strong> — сохранение в файл</li>
+<li><strong>Очистить вывод</strong> — очистка окна вывода</li>
+</ul>
+<h3 id="доступные-функции">Доступные функции</h3>
+<table>
+<tr><th>Функция</th><th>Назначение</th></tr>
+<tr><td><code>read_mem(addr)</code></td><td>Чтение байта из локального образа</td></tr>
+<tr><td><code>write_mem(addr, val)</code></td><td>Запись байта в локальный образ</td></tr>
+<tr><td><code>read_block(addr, size)</code></td><td>Чтение блока из локального образа</td></tr>
+<tr><td><code>write_block(addr, data)</code></td><td>Запись блока в локальный образ</td></tr>
+<tr><td><code>fill_mem(addr, size, val)</code></td><td>Заполнение диапазона</td></tr>
+<tr><td><code>dev_read_mem(addr)</code></td><td>Чтение из памяти устройства</td></tr>
+<tr><td><code>dev_write_mem(addr, val)</code></td><td>Запись в память устройства</td></tr>
+<tr><td><code>dev_read_io(port)</code></td><td>Чтение IO-порта устройства</td></tr>
+<tr><td><code>dev_write_io(port, val)</code></td><td>Запись в IO-порт устройства</td></tr>
+<tr><td><code>download(addr, size)</code></td><td>Чтение блока из устройства</td></tr>
+<tr><td><code>upload(addr, size)</code></td><td>Запись блока в устройство</td></tr>
+<tr><td><code>download_all(start, end)</code></td><td>Чтение всей памяти устройства</td></tr>
+<tr><td><code>upload_all()</code></td><td>Запись всего образа в устройство</td></tr>
+<tr><td><code>hold_bus()</code></td><td>Захват шины</td></tr>
+<tr><td><code>unhold_bus()</code></td><td>Освобождение шины</td></tr>
+<tr><td><code>wait_bus(timeout)</code></td><td>Ожидание захвата шины</td></tr>
+<tr><td><code>wait_unhold(timeout)</code></td><td>Ожидание освобождения шины</td></tr>
+<tr><td><code>load_file(path, base_addr)</code></td><td>Загрузка файла в образ</td></tr>
+<tr><td><code>save_file(path)</code></td><td>Сохранение образа в файл</td></tr>
+<tr><td><code>disassemble(addr, length, show)</code></td><td>Дизассемблирование</td></tr>
+<tr><td><code>search(pattern, mode)</code></td><td>Поиск в образе</td></tr>
+<tr><td><code>refresh()</code></td><td>Обновление GUI</td></tr>
+<tr><td><code>log(msg)</code></td><td>Вывод в журнал</td></tr>
+<tr><td><code>status()</code></td><td>Текущее состояние</td></tr>
+<tr><td><code>goto(addr)</code></td><td>Переход к адресу</td></tr>
+</table>
+<p>Подробное описание — в <strong>SCRIPTS_GUIDE.md</strong>.</p>
+<hr>
+<h2 id="13-emulator--эмулятор">13. Emulator / Эмулятор</h2>
+<p><strong>EN:</strong> Full i8080 CPU debugger. Tab is divided into 4 columns:</p>
+<h3 id="131-column-1-disassembled-code">13.1. Column 1: Disassembled Code</h3>
+<p>Displays disassembled code with:</p>
+<ul>
+<li><strong>►</strong> — current PC position (yellow highlight)</li>
+<li><strong>●</strong> — breakpoints (red = regular, orange = conditional)</li>
+<li><strong>▷</strong> — Run to Cursor (green)</li>
+<li>Jump arrows</li>
+</ul>
+<p><strong>Interaction:</strong></p>
+<ul>
+<li><strong>Single click</strong> — set Run to Cursor</li>
+<li><strong>Double click</strong> — toggle breakpoint</li>
+<li><strong>Context menu</strong> (right-click):</li>
+<li>▶ Run to Cursor (Ctrl+F10)</li>
+<li>⤳ Run from Here</li>
+<li>⇢ Jump to Cursor</li>
+<li>● Toggle Breakpoint</li>
+<li>◉ Set Conditional BP...</li>
+</ul>
+<h3 id="132-column-2-watch">13.2. Column 2: Watch</h3>
+<p>Watch window for observing memory and register values.</p>
+<p><strong>Watch types:</strong></p>
+<ul>
+<li><strong>Memory (byte)</strong> — watch a memory byte</li>
+<li><strong>Memory (word)</strong> — watch a word (2 bytes)</li>
+<li><strong>Register</strong> — watch a register (A, B, C, D, E, H, L, BC, DE, HL, SP, PC, FLAGS)</li>
+</ul>
+<p><strong>Display formats:</strong> hex, dec, signed, bin, ascii</p>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Add/remove watch items</li>
+<li>Clear all items</li>
+<li>Save/Load presets (JSON)</li>
+<li>Highlight changed values (red background)</li>
+</ul>
+<h3 id="133-column-3-breakpoints">13.3. Column 3: Breakpoints</h3>
+<p><strong>Table columns:</strong></p>
+<ul>
+<li><strong>Address</strong> — breakpoint address</li>
+<li><strong>Condition</strong> — trigger condition (for conditional BP)</li>
+<li><strong>Enabled</strong> — enabled/disabled (✓/✗)</li>
+<li><strong>Hits</strong> — hit count</li>
+</ul>
+<p><strong>Buttons:</strong></p>
+<ul>
+<li><strong>+</strong> — add breakpoint</li>
+<li><strong>🔧</strong> — edit condition (double-click row)</li>
+<li><strong>🚫</strong> — enable/disable</li>
+<li><strong>❌</strong> — remove selected</li>
+<li><strong>✕</strong> — clear all</li>
+<li><strong>💾</strong> — save BP preset (JSON)</li>
+<li><strong>📂</strong> — load BP preset</li>
+</ul>
+<h3 id="134-column-4-registers-flags-stack-statistics">13.4. Column 4: Registers, Flags, Stack, Statistics</h3>
+<ul>
+<li><strong>Registers</strong> — A, B, C, D, E, H, L, SP, PC, BC, DE, HL. Changed registers highlighted in red.</li>
+<li><strong>Flags</strong> — S, Z, AC, P, CY. Set flags highlighted in red.</li>
+<li><strong>Stack</strong> — top 8 values. Stack top highlighted in red.</li>
+<li><strong>Statistics</strong> — cycle count, state (Halted / Running / Ready).</li>
+</ul>
+<h3 id="135-bottom-control-panel">13.5. Bottom Control Panel</h3>
+<table>
+<tr><th>Button</th><th>Hotkey</th><th>Purpose</th></tr>
+<tr><td>Reset</td><td>Ctrl+F2</td><td>Reset emulator</td></tr>
+<tr><td>Set PC...</td><td>—</td><td>Set PC manually</td></tr>
+<tr><td>Step Into</td><td>F11</td><td>Step with subroutine entry</td></tr>
+<tr><td>Step Over</td><td>F10</td><td>Step without subroutine entry</td></tr>
+<tr><td>▶ Run</td><td>F5</td><td>Start execution</td></tr>
+<tr><td>■ Stop</td><td>F8</td><td>Stop execution</td></tr>
+<tr><td>☑ Trace</td><td>—</td><td>Enable trace recording</td></tr>
+<tr><td>☑ Max Speed</td><td>—</td><td>Run at maximum speed (no window updates until stop or breakpoint)</td></tr>
+</table>
+<h3 id="136-conditional-breakpoints">13.6. Conditional Breakpoints</h3>
+<p><strong>Available variables:</strong></p>
+<ul>
+<li>Registers: <code>A</code>, <code>B</code>, <code>C</code>, <code>D</code>, <code>E</code>, <code>H</code>, <code>L</code>, <code>BC</code>, <code>DE</code>, <code>HL</code>, <code>SP</code>, <code>PC</code></li>
+<li>Flags: <code>S</code>, <code>Z</code>, <code>AC</code>, <code>P</code>, <code>CY</code></li>
+<li>Memory: <code>mem[0x0100]</code></li>
+<li>IO ports: <code>io[0x01]</code></li>
+<li>Cycles: <code>cycles</code></li>
+<li>Operators: <code>==</code>, <code>!=</code>, <code><</code>, <code>></code>, <code><=</code>, <code>>=</code>, <code>and</code>, <code>or</code>, <code>not</code></li>
+</ul>
+<p><strong>Examples:</strong></p>
+<pre><code>A == 0x55                    — stop when A becomes 0x55
+HL > 0x1000                  — when HL exceeds 0x1000
+mem[0x0100] == 0xFF          — when memory cell becomes FF
+Z == 1                       — when Zero flag is set
+cycles > 10000               — after 10000 cycles
+HL > 0x1000 and Z == 0       — combined conditions
+</code></pre>
+<p><strong>RU:</strong></p>
+<p>Полноценный отладчик процессора i8080. Вкладка разделена на 4 колонки:</p>
+<h3 id="131-колонка-1-дизассемблированный-код">13.1. Колонка 1: Дизассемблированный код</h3>
+<p>Отображает код с:</p>
+<ul>
+<li><strong>►</strong> — текущая позиция PC (жёлтая подсветка)</li>
+<li><strong>●</strong> — точки останова (красный — обычная, оранжевый — условная)</li>
+<li><strong>▷</strong> — курсор Run to Cursor (зелёный)</li>
+<li>Стрелки переходов</li>
+</ul>
+<p><strong>Взаимодействие:</strong></p>
+<ul>
+<li><strong>Одинарный клик</strong> — установка курсора Run to Cursor</li>
+<li><strong>Двойной клик</strong> — установка/удаление точки останова</li>
+<li><strong>Контекстное меню</strong> (правый клик):</li>
+<li>▶ Run to Cursor (Ctrl+F10)</li>
+<li>⤳ Run from Here</li>
+<li>⇢ Jump to Cursor</li>
+<li>● Toggle Breakpoint</li>
+<li>◉ Set Conditional BP...</li>
+</ul>
+<h3 id="132-колонка-2-watch">13.2. Колонка 2: Watch</h3>
+<p>Watch-окно для наблюдения за значениями памяти и регистров.</p>
+<p><strong>Типы наблюдения:</strong></p>
+<ul>
+<li><strong>Память (байт)</strong></li>
+<li><strong>Память (слово)</strong></li>
+<li><strong>Регистр</strong> (A, B, C, D, E, H, L, BC, DE, HL, SP, PC, FLAGS)</li>
+</ul>
+<p><strong>Форматы:</strong> hex, dec, signed, bin, ascii</p>
+<p><strong>Возможности:</strong></p>
+<ul>
+<li>Добавление/удаление элементов</li>
+<li>Очистка всех элементов</li>
+<li>Сохранение/загрузка пресетов (JSON)</li>
+<li>Подсветка изменённых значений (красный фон)</li>
+</ul>
+<h3 id="133-колонка-3-breakpoints--точки-останова">13.3. Колонка 3: Breakpoints / Точки останова</h3>
+<p><strong>Кнопки:</strong></p>
+<ul>
+<li><strong>+</strong> — добавить точку останова</li>
+<li><strong>🔧</strong> — редактировать условие</li>
+<li><strong>🚫</strong> — включить/выключить</li>
+<li><strong>❌</strong> — удалить выбранную</li>
+<li><strong>✕</strong> — очистить все</li>
+<li><strong>💾</strong> — сохранить пресет BP (JSON)</li>
+<li><strong>📂</strong> — загрузить пресет BP</li>
+</ul>
+<h3 id="134-колонка-4-регистры-флаги-стек-статистика">13.4. Колонка 4: Регистры, Флаги, Стек, Статистика</h3>
+<ul>
+<li><strong>Регистры</strong> — изменённые подсвечиваются красным</li>
+<li><strong>Флаги</strong> — установленные подсвечиваются красным</li>
+<li><strong>Стек</strong> — верхние 8 значений, вершина подсвечена</li>
+<li><strong>Статистика</strong> — такты, состояние (Остановлен / Выполняется / Готов)</li>
+</ul>
+<h3 id="135-нижняя-панель-управления">13.5. Нижняя панель управления</h3>
+<table>
+<tr><th>Кнопка</th><th>Горячая клавиша</th><th>Назначение</th></tr>
+<tr><td>Reset</td><td>Ctrl+F2</td><td>Сброс эмулятора</td></tr>
+<tr><td>Set PC...</td><td>—</td><td>Установка PC вручную</td></tr>
+<tr><td>Step Into</td><td>F11</td><td>Шаг с заходом в подпрограммы</td></tr>
+<tr><td>Step Over</td><td>F10</td><td>Шаг без захода в подпрограммы</td></tr>
+<tr><td>▶ Run</td><td>F5</td><td>Запуск выполнения</td></tr>
+<tr><td>■ Stop</td><td>F8</td><td>Остановка выполнения</td></tr>
+<tr><td>☑ Трассировка</td><td>—</td><td>Включение записи трассировки</td></tr>
+<tr><td>☑ Макс. скорость</td><td>—</td><td>Выполнение на максимальной скорости (без обновления окон до остановки/точки останова)</td></tr>
+</table>
+<h3 id="136-условные-точки-останова">13.6. Условные точки останова</h3>
+<p><strong>Доступные переменные:</strong></p>
+<ul>
+<li>Регистры: <code>A</code>, <code>B</code>, <code>C</code>, <code>D</code>, <code>E</code>, <code>H</code>, <code>L</code>, <code>BC</code>, <code>DE</code>, <code>HL</code>, <code>SP</code>, <code>PC</code></li>
+<li>Флаги: <code>S</code>, <code>Z</code>, <code>AC</code>, <code>P</code>, <code>CY</code></li>
+<li>Память: <code>mem[0x0100]</code></li>
+<li>IO-порты: <code>io[0x01]</code></li>
+<li>Такты: <code>cycles</code></li>
+</ul>
+<p><strong>Примеры условий:</strong></p>
+<pre><code>A == 0x55                    — когда A станет 0x55
+HL > 0x1000                  — когда HL превысит 0x1000
+mem[0x0100] == 0xFF          — когда ячейка станет FF
+Z == 1                       — когда флаг Zero установлен
+cycles > 10000               — после 10000 тактов
+HL > 0x1000 and Z == 0       — комбинация условий
+</code></pre>
+<hr>
+<h2 id="14-trace-log--трассировка">14. Trace Log / Трассировка</h2>
+<h3 id="141-control-panel--панель-управления">14.1. Control Panel / Панель управления</h3>
+<p><strong>EN:</strong></p>
+<ul>
+<li><strong>🔥 Enable Recording</strong> — enable trace recording</li>
+<li><strong>🗑 Clear</strong> — clear trace buffer</li>
+<li><strong>💾 Export</strong> — export trace (TXT / CSV / JSON)</li>
+<li><strong>Depth</strong> — max record count (default 10000)</li>
+<li><strong>Records: X / Y</strong> — current / max</li>
+</ul>
+<p><strong>RU:</strong></p>
+<ul>
+<li><strong>🔥 Включить запись</strong> — включение записи трассировки</li>
+<li><strong>🗑 Очистить</strong> — очистка буфера</li>
+<li><strong>💾 Экспорт</strong> — экспорт трассировки (TXT / CSV / JSON)</li>
+<li><strong>Глубина</strong> — максимальное количество записей (по умолчанию 10000)</li>
+<li><strong>Записей: X / Y</strong> — текущее / максимальное</li>
+</ul>
+<h3 id="142-search--поиск">14.2. Search / Поиск</h3>
+<p><strong>EN:</strong></p>
+<p>Search field supports:</p>
+<ul>
+<li><strong>Address (HEX)</strong> — e.g., <code>0010</code> — search by PC address</li>
+<li><strong>Register OP value</strong> — e.g., <code>A==55</code>, <code>HL>1000</code>, <code>SP<=F000</code>, <code>Z=1</code></li>
+<li><strong>Mnemonic</strong> — e.g., <code>CPI</code>, <code>JMP</code></li>
+</ul>
+<p><strong>Comparison operators:</strong> <code>=</code>, <code>==</code>, <code>!=</code>, <code>></code>, <code><</code>, <code>>=</code>, <code><=</code></p>
+<p><strong>RU:</strong></p>
+<p>Поле поиска поддерживает:</p>
+<ul>
+<li><strong>Адрес (HEX)</strong> — например, <code>0010</code></li>
+<li><strong>Регистр ОП значение</strong> — например, <code>A==55</code>, <code>HL>1000</code>, <code>SP<=F000</code>, <code>Z=1</code></li>
+<li><strong>Мнемоника</strong> — например, <code>CPI</code>, <code>JMP</code></li>
+</ul>
+<p><strong>Операторы сравнения:</strong> <code>=</code>, <code>==</code>, <code>!=</code>, <code>></code>, <code><</code>, <code>>=</code>, <code><=</code></p>
+<h3 id="143-trace-table--таблица-трассировки">14.3. Trace Table / Таблица трассировки</h3>
+<table>
+<tr><th>Column / Колонка</th><th>Purpose / Назначение</th></tr>
+<tr><td>#</td><td>Record number / Номер записи</td></tr>
+<tr><td>PC</td><td>Instruction address / Адрес инструкции</td></tr>
+<tr><td>Bytes</td><td>Instruction bytes / Байты инструкции</td></tr>
+<tr><td>Mnemonic</td><td>Instruction mnemonic / Мнемоника</td></tr>
+<tr><td>A</td><td>Accumulator / Аккумулятор</td></tr>
+<tr><td>BC</td><td>BC pair / Пара BC</td></tr>
+<tr><td>DE</td><td>DE pair / Пара DE</td></tr>
+<tr><td>HL</td><td>HL pair / Пара HL</td></tr>
+<tr><td>SP</td><td>Stack pointer / Указатель стека</td></tr>
+<tr><td>Flags</td><td>Flags (S Z A P C) / Флаги</td></tr>
+</table>
+<h3 id="144-export--экспорт">14.4. Export / Экспорт</h3>
+<p>Supported formats: <strong>TXT</strong>, <strong>CSV</strong>, <strong>JSON</strong></p>
+<hr>
+<h2 id="15-hotkeys--горячие-клавиши">15. Hotkeys / Горячие клавиши</h2>
+<h3 id="general--общие">General / Общие</h3>
+<table>
+<tr><th>Key / Клавиша</th><th>Purpose / Назначение</th></tr>
+<tr><td>Ctrl+O</td><td>Load firmware / Загрузить прошивку</td></tr>
+<tr><td>Ctrl+S</td><td>Save dump / Сохранить дамп</td></tr>
+<tr><td>Ctrl+E</td><td>Export disassembler / Экспорт дизассемблера</td></tr>
+<tr><td>Ctrl+Q</td><td>Quit / Выход</td></tr>
+<tr><td>Ctrl+F</td><td>Search in memory / Поиск в памяти</td></tr>
+<tr><td>Ctrl+G</td><td>Go to address / Перейти к адресу</td></tr>
+<tr><td>Ctrl+D</td><td>Disassemble / Дизассемблировать</td></tr>
+<tr><td>Ctrl+H</td><td>Hold bus / Захватить шину</td></tr>
+<tr><td>Ctrl+U</td><td>Release bus / Освободить шину</td></tr>
+<tr><td>Ctrl+R</td><td>Refresh / Обновить</td></tr>
+<tr><td>Ctrl+Z</td><td>Undo</td></tr>
+<tr><td>Ctrl+Y / Ctrl+Shift+Z</td><td>Redo</td></tr>
+</table>
+<h3 id="emulator--эмулятор">Emulator / Эмулятор</h3>
+<table>
+<tr><th>Key / Клавиша</th><th>Purpose / Назначение</th></tr>
+<tr><td>F5</td><td>Run / Запуск</td></tr>
+<tr><td>F10</td><td>Step Over / Шаг без захода</td></tr>
+<tr><td>F11</td><td>Step Into / Шаг с заходом</td></tr>
+<tr><td>F8</td><td>Stop / Остановка</td></tr>
+<tr><td>Ctrl+F2</td><td>Reset / Сброс</td></tr>
+<tr><td>Ctrl+F10</td><td>Run to Cursor</td></tr>
+</table>
+<h3 id="assembler--ассемблер">Assembler / Ассемблер</h3>
+<table>
+<tr><th>Key / Клавиша</th><th>Purpose / Назначение</th></tr>
+<tr><td>Ctrl + mouse wheel</td><td>Change editor font size / Изменить размер шрифта редактора</td></tr>
+</table>
+<hr>
+<h2 id="16-mcp-integration--mcp-интеграция">16. MCP Integration / MCP-интеграция</h2>
+<p><strong>EN:</strong> The program includes a built-in MCP server for integration with AI assistants (Claude, Cursor, VS Code, etc.).</p>
+<h3 id="enabling-mcp-server">Enabling MCP Server</h3>
+<ol>
+<li>"Control" tab</li>
+<li>Click <strong>"MCP Server: OFF"</strong> — it will toggle to <strong>"MCP Server: ON"</strong></li>
+<li>Server available at <code>http://127.0.0.1:8000/sse</code></li>
+</ol>
+<h3 id="claude-desktop-configuration">Claude Desktop Configuration</h3>
+<pre><code>{
+  "mcpServers": {
+    "i8080-ci": {
+      "url": "http://127.0.0.1:8000/sse"
+    }
+  }
+}
+</code></pre>
+<p>Full description: <strong>MCP_GUIDE.md</strong></p>
+<p><strong>RU:</strong> Программа включает встроенный MCP-сервер для интеграции с AI-ассистентами (Claude, Cursor, VS Code и др.).</p>
+<h3 id="включение-mcp-сервера">Включение MCP-сервера</h3>
+<ol>
+<li>Вкладка «Управление»</li>
+<li>Нажмите <strong>«MCP Server: OFF»</strong> — переключится на <strong>«MCP Server: ON»</strong></li>
+<li>Сервер доступен по адресу <code>http://127.0.0.1:8000/sse</code></li>
+</ol>
+<h3 id="конфигурация-для-claude-desktop">Конфигурация для Claude Desktop</h3>
+<pre><code>{
+  "mcpServers": {
+    "i8080-ci": {
+      "url": "http://127.0.0.1:8000/sse"
+    }
+  }
+}
+</code></pre>
+<p>Подробное описание: <strong>MCP_GUIDE.md</strong></p>
+<hr>
+<h2 id="17-typical-workflows--типовые-сценарии">17. Typical Workflows / Типовые сценарии</h2>
+<h3 id="171-load-and-disassemble-firmware--загрузка-и-дизассемблирование">17.1. Load and Disassemble Firmware / Загрузка и дизассемблирование</h3>
+<p><strong>EN:</strong></p>
+<ol>
+<li>"Control" tab → "Load Firmware" → select .hex/.bin file</li>
+<li>"Disassembler" tab → "Disassemble"</li>
+<li>Study code using jump arrows and color highlighting</li>
+</ol>
+<p><strong>RU:</strong></p>
+<ol>
+<li>Вкладка «Управление» → «Загрузить прошивку» → выберите .hex/.bin файл</li>
+<li>Вкладка «Дизассемблер» → «Дизассемблировать»</li>
+<li>Изучите код, используя стрелки переходов и цветовую подсветку</li>
+</ol>
+<h3 id="172-debug-in-emulator--отладка-в-эмуляторе">17.2. Debug in Emulator / Отладка в эмуляторе</h3>
+<p><strong>EN:</strong></p>
+<ol>
+<li>Load firmware</li>
+<li>"Emulator" tab</li>
+<li>Set breakpoints (double-click code line)</li>
+<li>Press F5 to run or F11 for step execution</li>
+<li>Observe registers, flags, and stack</li>
+<li>Use Watch window to monitor memory</li>
+</ol>
+<p><strong>RU:</strong></p>
+<ol>
+<li>Загрузите прошивку</li>
+<li>Вкладка «Эмулятор»</li>
+<li>Установите точки останова (двойной клик по строке кода)</li>
+<li>Нажмите F5 для запуска или F11 для пошагового выполнения</li>
+<li>Наблюдайте за регистрами, флагами и стеком</li>
+<li>Используйте Watch-окно для наблюдения за памятью</li>
+</ol>
+<h3 id="173-conditional-debugging--условная-отладка">17.3. Conditional Debugging / Условная отладка</h3>
+<p><strong>EN:</strong></p>
+<ol>
+<li>Set a breakpoint</li>
+<li>Double-click breakpoint → enter condition</li>
+<li>Run execution — will stop only when condition is met</li>
+</ol>
+<p><strong>RU:</strong></p>
+<ol>
+<li>Установите точку останова</li>
+<li>Двойной клик по точке → введите условие</li>
+<li>Запустите — остановится только при выполнении условия</li>
+</ol>
+<h3 id="174-analysis-with-trace--анализ-с-трассировкой">17.4. Analysis with Trace / Анализ с трассировкой</h3>
+<p><strong>EN:</strong></p>
+<ol>
+<li>"Emulator" tab → enable "Trace" checkbox</li>
+<li>Execute program (F5) or step (F11)</li>
+<li>"Trace Log" tab — study execution history</li>
+<li>Use search to filter</li>
+<li>Export trace for further analysis</li>
+</ol>
+<p><strong>RU:</strong></p>
+<ol>
+<li>Вкладка «Эмулятор» → включите «Трассировка»</li>
+<li>Выполните программу (F5) или пошагово (F11)</li>
+<li>Вкладка «Трассировка» — изучите историю</li>
+<li>Используйте поиск для фильтрации</li>
+<li>Экспортируйте трассировку для анализа</li>
+</ol>
+<h3 id="175-work-with-real-device--работа-с-реальным-устройством">17.5. Work with Real Device / Работа с реальным устройством</h3>
+<p><strong>EN:</strong></p>
+<ol>
+<li>Connect to device (COM port)</li>
+<li>Hold bus (Ctrl+H)</li>
+<li>Read/write memory and IO ports</li>
+<li>Release bus (Ctrl+U)</li>
+</ol>
+<p><strong>RU:</strong></p>
+<ol>
+<li>Подключитесь к устройству (COM-порт)</li>
+<li>Захватите шину (Ctrl+H)</li>
+<li>Читайте/записывайте память и IO-порты</li>
+<li>Освободите шину (Ctrl+U)</li>
+</ol>
+<h3 id="176-device-memory-test--тестирование-памяти-устройства">17.6. Device Memory Test / Тестирование памяти устройства</h3>
+<p><strong>EN:</strong></p>
+<ol>
+<li>Connect to device and hold bus</li>
+<li>"Memory Test" tab</li>
+<li>Specify range and pattern</li>
+<li>Run test</li>
+<li>Study results in log</li>
+</ol>
+<p><strong>RU:</strong></p>
+<ol>
+<li>Подключитесь к устройству и захватите шину</li>
+<li>Вкладка «Тест Памяти»</li>
+<li>Укажите диапазон и паттерн</li>
+<li>Запустите тест</li>
+<li>Изучите результаты в журнале</li>
+</ol>
+<h3 id="177-compare-images--сравнение-образов">17.7. Compare Images / Сравнение образов</h3>
+<p><strong>EN:</strong></p>
+<ol>
+<li>Load current image (or connect to device and read memory)</li>
+<li>"Comparison" tab → "Load file for comparison"</li>
+<li>Click "Compare"</li>
+<li>Study differences in table</li>
+</ol>
+<p><strong>RU:</strong></p>
+<ol>
+<li>Загрузите текущий образ (или подключитесь к устройству и прочитайте память)</li>
+<li>Вкладка «Сравнение» → «Загрузить файл для сравнения»</li>
+<li>Нажмите «Сравнить»</li>
+<li>Изучите различия в таблице</li>
+</ol>
+<hr>
+<h3 id="178-write-assemble--debug-a-program--написание-сборка-и-отладка-программы">17.8. Write, Assemble & Debug a Program / Написание, сборка и отладка программы</h3>
+<p><strong>EN:</strong></p>
+<ol>
+<li>"Assembler" tab → type or load the source</li>
+<li>Click <strong>"Assemble"</strong> — check the error panel and the label table</li>
+<li>Click <strong>"Assemble & Load"</strong> — the binary is written to memory at the <code>ORG</code> address and PC is set there</li>
+<li>"Emulator" tab → set breakpoints (double-click a code line)</li>
+<li>Press F5 to run or F11 to step; watch registers, flags, and stack</li>
+</ol>
+<p><strong>RU:</strong></p>
+<ol>
+<li>Вкладка «Ассемблер» → введите или загрузите исходный код</li>
+<li>Нажмите <strong>«Ассемблировать»</strong> — проверьте панель ошибок и таблицу меток</li>
+<li>Нажмите <strong>«Ассемблировать и загрузить»</strong> — бинарник записан в память по адресу <code>ORG</code>, PC установлен туда</li>
+<li>Вкладка «Эмулятор» → установите точки останова (двойной клик по строке кода)</li>
+<li>Нажмите F5 для запуска или F11 для пошагового выполнения; наблюдайте за регистрами, флагами и стеком</li>
+</ol>
+<hr>
+<h2 id="appendix--приложения">Appendix / Приложения</h2>
+<h3 id="a-supported-i8080-instructions--поддерживаемые-инструкции">A. Supported i8080 Instructions / Поддерживаемые инструкции</h3>
+<p><strong>EN:</strong> The emulator supports all 256 i8080 instructions, including undocumented:</p>
+<ul>
+<li>NOP* (08, 10, 18, 20, 28, 30, 38, DD, ED, FD)</li>
+<li>RET* (D9)</li>
+<li>CALL* (CB)</li>
+</ul>
+<p><strong>RU:</strong> Эмулятор поддерживает все 256 инструкций i8080, включая недокументированные.</p>
+<h3 id="b-device-communication-protocol--протокол-связи">B. Device Communication Protocol / Протокол связи</h3>
+<p><strong>EN:</strong> SLIP protocol via COM port:</p>
+<ul>
+<li>Baud rates: 9600, 38400, 57600, 115200</li>
+<li>Commands: NOP, HOLD, UNHOLD, read/write memory, read/write IO</li>
+</ul>
+<p><strong>RU:</strong> Протокол SLIP через COM-порт:</p>
+<ul>
+<li>Скорости: 9600, 38400, 57600, 115200</li>
+<li>Команды: NOP, HOLD, UNHOLD, чтение/запись памяти, чтение/запись IO</li>
+</ul>
+<h3 id="c-file-formats--форматы-файлов">C. File Formats / Форматы файлов</h3>
+<ul>
+<li><strong>Intel HEX (.hex)</strong> — standard firmware format</li>
+<li><strong>Binary (.bin)</strong> — binary format (base address requested on load)</li>
+</ul>
+<h3 id="d-preset-formats--форматы-пресетов">D. Preset Formats / Форматы пресетов</h3>
+<ul>
+<li><strong>Watch presets</strong> — JSON (watch_preset.json)</li>
+<li><strong>BP presets</strong> — JSON (bp_preset.json)</li>
+</ul>
+<hr>
+<p><em>Documentation generated for i8080-5 CI version 2.2.</em></p>
+<p><em>Документация сгенерирована для версии 2.2 программы i8080-5 CI.</em></p>
+</div>
+</body>
+</html>

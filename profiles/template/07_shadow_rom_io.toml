@@ -1,0 +1,26 @@
+# 07_shadow_rom_io.toml
+# Теневое ПЗУ: переключение записью в IO-порт
+# OUT 0x80, 0x01 — переместить ROM на high_addr
+# OUT 0x80, 0xFF — полностью отключить ROM
+# OUT 0x80, 0x00 — вернуть ROM на low_addr
+
+[system]
+name = "Shadow ROM (IO switch)"
+cpu = "i8080A"
+clock = 2000000
+
+[[memory.regions]]
+type = "shadow_rom"
+name = "Boot ROM"
+low_addr = 0x0000
+high_addr = 0xE000
+file = "boot.bin"
+mode = "io_write"     # Переключение по записи в IO-порт
+trigger_port = 0x80   # Порт переключения
+action = "move"       # Переместить на high_addr
+
+[[memory.regions]]
+type = "ram"
+name = "Main RAM"
+start = 0x0000
+end = 0xFFFF

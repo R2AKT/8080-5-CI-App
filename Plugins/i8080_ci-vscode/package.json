@@ -1,0 +1,279 @@
+{
+  "name": "i8080-ci-vscode",
+  "displayName": "i8080-5 CI (8080/8085 Assembler & Emulator)",
+  "description": "Intel 8080/8085 assembler and emulator for VS Code: syntax highlighting, autocomplete, assemble, and live emulation via headless MCP server.",
+  "version": "0.2.0",
+  "publisher": "mega80",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Debuggers",
+    "Other"
+  ],
+  "keywords": [
+    "8080",
+    "8085",
+    "i8080",
+    "assembler",
+    "emulator",
+    "z80",
+    "retro",
+    "embedded"
+  ],
+  "activationEvents": [
+    "onLanguage:i8080-asm",
+    "workspace:**/*.asm",
+    "workspace:**/*.ASM",
+    "workspace:**/*.mac",
+    "workspace:**/*.inc"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "i8080-asm",
+        "aliases": [
+          "Intel 8080/8085 Assembly",
+          "i8080-asm"
+        ],
+        "extensions": [
+          ".asm",
+          ".ASM",
+          ".s",
+          ".S",
+          ".mac",
+          ".MAC",
+          ".inc"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "i8080-asm",
+        "scopeName": "source.i8080asm",
+        "path": "./syntaxes/i8080-asm.tmLanguage.json",
+        "embeddedLanguages": {
+          "comment.line.semicolon.i8080asm": "i8080-asm"
+        }
+      }
+    ],
+    "snippets": [
+      {
+        "language": "i8080-asm",
+        "path": "./snippets/i8080-asm.json"
+      }
+    ],
+    "configuration": {
+      "title": "i8080-5 CI",
+      "properties": {
+        "i8080ci.pythonPath": {
+          "type": "string",
+          "default": "",
+          "description": "Путь к Python-интерпретатору. Пусто = автопоиск через 'where python' / PATH."
+        },
+        "i8080ci.projectRoot": {
+          "type": "string",
+          "default": "",
+          "description": "Корень проекта i8080-5_CI-AI-analysis (папка с mcp_headless.py и profiles/). Пусто = автопоиск вверх от файла."
+        },
+        "i8080ci.profile": {
+          "type": "string",
+          "default": "full",
+          "description": "Профиль системы для эмуляции (имя TOML в profiles/ без расширения)."
+        },
+        "i8080ci.mcpPort": {
+          "type": "number",
+          "default": 8000,
+          "description": "Порт headless MCP-сервера (SSE)."
+        },
+        "i8080ci.mcpHost": {
+          "type": "string",
+          "default": "127.0.0.1",
+          "description": "Хост headless MCP-сервера."
+        },
+        "i8080ci.autoAssemble": {
+          "type": "boolean",
+          "default": false,
+          "description": "Ассемблировать автоматически при сохранении .asm-файла."
+        },
+        "i8080ci.outputBin": {
+          "type": "boolean",
+          "default": true,
+          "description": "Сохранять .bin-файл рядом с исходником при успешной сборке."
+        },
+        "i8080ci.outputMap": {
+          "type": "boolean",
+          "default": true,
+          "description": "Сохранять .map-файл рядом с исходником при успешной сборке."
+        },
+        "i8080ci.showWarnings": {
+          "type": "boolean",
+          "default": true,
+          "description": "Показывать предупреждения ассемблера как diagnostics."
+        },
+        "i8080ci.errorLens": {
+          "type": "boolean",
+          "default": true,
+          "description": "Показывать ошибки ассемблера inline в конце строки (Error Lens)."
+        },
+        "i8080ci.autoRun": {
+          "type": "boolean",
+          "default": true,
+          "description": "Автоматически запускать эмуляцию после загрузки бинарника (Assemble & Emulate)."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "i8080ci.assemble",
+        "title": "i8080-5 CI: Assemble",
+        "icon": "$(symbol-misc)"
+      },
+      {
+        "command": "i8080ci.assembleAndEmulate",
+        "title": "i8080-5 CI: Assemble & Emulate",
+        "icon": "$(play)"
+      },
+      {
+        "command": "i8080ci.selectProfile",
+        "title": "i8080-5 CI: Select Profile",
+        "icon": "$(settings-gear)"
+      },
+      {
+        "command": "i8080ci.emuStart",
+        "title": "i8080-5 CI: Emulator — Start (headless MCP)",
+        "icon": "$(debug-start)"
+      },
+      {
+        "command": "i8080ci.emuStop",
+        "title": "i8080-5 CI: Emulator — Stop",
+        "icon": "$(debug-stop)"
+      },
+      {
+        "command": "i8080ci.emuReset",
+        "title": "i8080-5 CI: Emulator — Reset",
+        "icon": "$(debug-disconnect)"
+      },
+      {
+        "command": "i8080ci.emuRun",
+        "title": "i8080-5 CI: Emulator — Run",
+        "icon": "$(play)"
+      },
+      {
+        "command": "i8080ci.emuStepInto",
+        "title": "i8080-5 CI: Emulator — Step Into",
+        "icon": "$(debug-step-into)"
+      },
+      {
+        "command": "i8080ci.emuStepOver",
+        "title": "i8080-5 CI: Emulator — Step Over",
+        "icon": "$(debug-step-over)"
+      },
+      {
+        "command": "i8080ci.emuStopRun",
+        "title": "i8080-5 CI: Emulator — Stop Run",
+        "icon": "$(debug-stop)"
+      },
+      {
+        "command": "i8080ci.emuGetState",
+        "title": "i8080-5 CI: Emulator — Show State",
+        "icon": "$(device-desktop)"
+      },
+      {
+        "command": "i8080ci.emuDisassemble",
+        "title": "i8080-5 CI: Emulator — Disassemble",
+        "icon": "$(code)"
+      },
+      {
+        "command": "i8080ci.showOutput",
+        "title": "i8080-5 CI: Show Output",
+        "icon": "$(terminal)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "i8080ci.assemble",
+        "key": "ctrl+alt+a",
+        "when": "editorLangId == i8080-asm"
+      },
+      {
+        "command": "i8080ci.assembleAndEmulate",
+        "key": "ctrl+alt+return",
+        "when": "editorLangId == i8080-asm"
+      },
+      {
+        "command": "i8080ci.emuStepInto",
+        "key": "f11",
+        "when": "editorLangId == i8080-asm && i8080ci.emulatorRunning"
+      },
+      {
+        "command": "i8080ci.emuStepOver",
+        "key": "shift+f11",
+        "when": "editorLangId == i8080-asm && i8080ci.emulatorRunning"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "i8080ci.assemble",
+          "when": "editorLangId == i8080-asm",
+          "group": "i8080ci@1"
+        },
+        {
+          "command": "i8080ci.assembleAndEmulate",
+          "when": "editorLangId == i8080-asm",
+          "group": "i8080ci@2"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "i8080ci.assemble",
+          "when": "resourceLangId == i8080-asm",
+          "group": "i8080ci@1"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "i8080ci.assemble",
+          "when": "editorLangId == i8080-asm",
+          "group": "navigation@9"
+        }
+      ]
+    },
+    "tasks": [
+      {
+        "type": "i8080ci-assemble",
+        "presentation": {
+          "reveal": "always",
+          "panel": "shared"
+        },
+        "problemMatcher": {
+          "owner": "i8080ci",
+          "fileLocation": ["relative", "${workspaceFolder}"],
+          "pattern": {
+            "regexp": "^(\\d+):(\\d+)\\s+(.*)$",
+            "line": 1,
+            "column": 2,
+            "message": 3
+          }
+        },
+        "build": true
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.4.0"
+  },
+  "dependencies": {}
+}

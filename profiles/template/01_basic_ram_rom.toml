@@ -1,0 +1,20 @@
+# 01_basic_ram_rom.toml
+# Простая система: RAM + ROM в фиксированных диапазонах
+
+[system]
+name = "Basic i8080 System"
+cpu = "i8080A"
+clock = 2000000  # 2 МГц
+
+[[memory.regions]]
+type = "ram"
+name = "Main RAM"
+start = 0x0000
+end = 0xF7FF
+
+[[memory.regions]]
+type = "rom"
+name = "Monitor ROM"
+start = 0xF800
+end = 0xFFFF
+file = "monitor.bin"

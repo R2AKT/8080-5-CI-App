@@ -1,0 +1,1538 @@
+{
+ "00": {
+  "mnemonic": "NOP",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "01": {
+  "mnemonic": "LXI",
+  "operand": "B,0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "02": {
+  "mnemonic": "STAX",
+  "operand": "B",
+  "size": 1,
+  "undoc": ""
+ },
+ "03": {
+  "mnemonic": "INX",
+  "operand": "B",
+  "size": 1,
+  "undoc": ""
+ },
+ "04": {
+  "mnemonic": "INR",
+  "operand": "B",
+  "size": 1,
+  "undoc": ""
+ },
+ "05": {
+  "mnemonic": "DCR",
+  "operand": "B",
+  "size": 1,
+  "undoc": ""
+ },
+ "06": {
+  "mnemonic": "MVI",
+  "operand": "B,00h",
+  "size": 2,
+  "undoc": ""
+ },
+ "07": {
+  "mnemonic": "RLC",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "08": {
+  "mnemonic": "NOP*",
+  "operand": "",
+  "size": 1,
+  "undoc": "*"
+ },
+ "09": {
+  "mnemonic": "DAD",
+  "operand": "B",
+  "size": 1,
+  "undoc": ""
+ },
+ "0A": {
+  "mnemonic": "LDAX",
+  "operand": "B",
+  "size": 1,
+  "undoc": ""
+ },
+ "0B": {
+  "mnemonic": "DCX",
+  "operand": "B",
+  "size": 1,
+  "undoc": ""
+ },
+ "0C": {
+  "mnemonic": "INR",
+  "operand": "C",
+  "size": 1,
+  "undoc": ""
+ },
+ "0D": {
+  "mnemonic": "DCR",
+  "operand": "C",
+  "size": 1,
+  "undoc": ""
+ },
+ "0E": {
+  "mnemonic": "MVI",
+  "operand": "C,00h",
+  "size": 2,
+  "undoc": ""
+ },
+ "0F": {
+  "mnemonic": "RRC",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "10": {
+  "mnemonic": "NOP*",
+  "operand": "",
+  "size": 1,
+  "undoc": "*"
+ },
+ "11": {
+  "mnemonic": "LXI",
+  "operand": "D,0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "12": {
+  "mnemonic": "STAX",
+  "operand": "D",
+  "size": 1,
+  "undoc": ""
+ },
+ "13": {
+  "mnemonic": "INX",
+  "operand": "D",
+  "size": 1,
+  "undoc": ""
+ },
+ "14": {
+  "mnemonic": "INR",
+  "operand": "D",
+  "size": 1,
+  "undoc": ""
+ },
+ "15": {
+  "mnemonic": "DCR",
+  "operand": "D",
+  "size": 1,
+  "undoc": ""
+ },
+ "16": {
+  "mnemonic": "MVI",
+  "operand": "D,00h",
+  "size": 2,
+  "undoc": ""
+ },
+ "17": {
+  "mnemonic": "RAL",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "18": {
+  "mnemonic": "NOP*",
+  "operand": "",
+  "size": 1,
+  "undoc": "*"
+ },
+ "19": {
+  "mnemonic": "DAD",
+  "operand": "D",
+  "size": 1,
+  "undoc": ""
+ },
+ "1A": {
+  "mnemonic": "LDAX",
+  "operand": "D",
+  "size": 1,
+  "undoc": ""
+ },
+ "1B": {
+  "mnemonic": "DCX",
+  "operand": "D",
+  "size": 1,
+  "undoc": ""
+ },
+ "1C": {
+  "mnemonic": "INR",
+  "operand": "E",
+  "size": 1,
+  "undoc": ""
+ },
+ "1D": {
+  "mnemonic": "DCR",
+  "operand": "E",
+  "size": 1,
+  "undoc": ""
+ },
+ "1E": {
+  "mnemonic": "MVI",
+  "operand": "E,00h",
+  "size": 2,
+  "undoc": ""
+ },
+ "1F": {
+  "mnemonic": "RAR",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "20": {
+  "mnemonic": "NOP*",
+  "operand": "",
+  "size": 1,
+  "undoc": "*"
+ },
+ "21": {
+  "mnemonic": "LXI",
+  "operand": "H,0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "22": {
+  "mnemonic": "SHLD",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "23": {
+  "mnemonic": "INX",
+  "operand": "H",
+  "size": 1,
+  "undoc": ""
+ },
+ "24": {
+  "mnemonic": "INR",
+  "operand": "H",
+  "size": 1,
+  "undoc": ""
+ },
+ "25": {
+  "mnemonic": "DCR",
+  "operand": "H",
+  "size": 1,
+  "undoc": ""
+ },
+ "26": {
+  "mnemonic": "MVI",
+  "operand": "H,00h",
+  "size": 2,
+  "undoc": ""
+ },
+ "27": {
+  "mnemonic": "DAA",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "28": {
+  "mnemonic": "NOP*",
+  "operand": "",
+  "size": 1,
+  "undoc": "*"
+ },
+ "29": {
+  "mnemonic": "DAD",
+  "operand": "H",
+  "size": 1,
+  "undoc": ""
+ },
+ "2A": {
+  "mnemonic": "LHLD",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "2B": {
+  "mnemonic": "DCX",
+  "operand": "H",
+  "size": 1,
+  "undoc": ""
+ },
+ "2C": {
+  "mnemonic": "INR",
+  "operand": "L",
+  "size": 1,
+  "undoc": ""
+ },
+ "2D": {
+  "mnemonic": "DCR",
+  "operand": "L",
+  "size": 1,
+  "undoc": ""
+ },
+ "2E": {
+  "mnemonic": "MVI",
+  "operand": "L,00h",
+  "size": 2,
+  "undoc": ""
+ },
+ "2F": {
+  "mnemonic": "CMA",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "30": {
+  "mnemonic": "NOP*",
+  "operand": "",
+  "size": 1,
+  "undoc": "*"
+ },
+ "31": {
+  "mnemonic": "LXI",
+  "operand": "SP,0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "32": {
+  "mnemonic": "STA",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "33": {
+  "mnemonic": "INX",
+  "operand": "SP",
+  "size": 1,
+  "undoc": ""
+ },
+ "34": {
+  "mnemonic": "INR",
+  "operand": "M",
+  "size": 1,
+  "undoc": ""
+ },
+ "35": {
+  "mnemonic": "DCR",
+  "operand": "M",
+  "size": 1,
+  "undoc": ""
+ },
+ "36": {
+  "mnemonic": "MVI",
+  "operand": "M,00h",
+  "size": 2,
+  "undoc": ""
+ },
+ "37": {
+  "mnemonic": "STC",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "38": {
+  "mnemonic": "NOP*",
+  "operand": "",
+  "size": 1,
+  "undoc": "*"
+ },
+ "39": {
+  "mnemonic": "DAD",
+  "operand": "SP",
+  "size": 1,
+  "undoc": ""
+ },
+ "3A": {
+  "mnemonic": "LDA",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "3B": {
+  "mnemonic": "DCX",
+  "operand": "SP",
+  "size": 1,
+  "undoc": ""
+ },
+ "3C": {
+  "mnemonic": "INR",
+  "operand": "A",
+  "size": 1,
+  "undoc": ""
+ },
+ "3D": {
+  "mnemonic": "DCR",
+  "operand": "A",
+  "size": 1,
+  "undoc": ""
+ },
+ "3E": {
+  "mnemonic": "MVI",
+  "operand": "A,00h",
+  "size": 2,
+  "undoc": ""
+ },
+ "3F": {
+  "mnemonic": "CMC",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "40": {
+  "mnemonic": "MOV",
+  "operand": "B,B",
+  "size": 1,
+  "undoc": ""
+ },
+ "41": {
+  "mnemonic": "MOV",
+  "operand": "B,C",
+  "size": 1,
+  "undoc": ""
+ },
+ "42": {
+  "mnemonic": "MOV",
+  "operand": "B,D",
+  "size": 1,
+  "undoc": ""
+ },
+ "43": {
+  "mnemonic": "MOV",
+  "operand": "B,E",
+  "size": 1,
+  "undoc": ""
+ },
+ "44": {
+  "mnemonic": "MOV",
+  "operand": "B,H",
+  "size": 1,
+  "undoc": ""
+ },
+ "45": {
+  "mnemonic": "MOV",
+  "operand": "B,L",
+  "size": 1,
+  "undoc": ""
+ },
+ "46": {
+  "mnemonic": "MOV",
+  "operand": "B,M",
+  "size": 1,
+  "undoc": ""
+ },
+ "47": {
+  "mnemonic": "MOV",
+  "operand": "B,A",
+  "size": 1,
+  "undoc": ""
+ },
+ "48": {
+  "mnemonic": "MOV",
+  "operand": "C,B",
+  "size": 1,
+  "undoc": ""
+ },
+ "49": {
+  "mnemonic": "MOV",
+  "operand": "C,C",
+  "size": 1,
+  "undoc": ""
+ },
+ "4A": {
+  "mnemonic": "MOV",
+  "operand": "C,D",
+  "size": 1,
+  "undoc": ""
+ },
+ "4B": {
+  "mnemonic": "MOV",
+  "operand": "C,E",
+  "size": 1,
+  "undoc": ""
+ },
+ "4C": {
+  "mnemonic": "MOV",
+  "operand": "C,H",
+  "size": 1,
+  "undoc": ""
+ },
+ "4D": {
+  "mnemonic": "MOV",
+  "operand": "C,L",
+  "size": 1,
+  "undoc": ""
+ },
+ "4E": {
+  "mnemonic": "MOV",
+  "operand": "C,M",
+  "size": 1,
+  "undoc": ""
+ },
+ "4F": {
+  "mnemonic": "MOV",
+  "operand": "C,A",
+  "size": 1,
+  "undoc": ""
+ },
+ "50": {
+  "mnemonic": "MOV",
+  "operand": "D,B",
+  "size": 1,
+  "undoc": ""
+ },
+ "51": {
+  "mnemonic": "MOV",
+  "operand": "D,C",
+  "size": 1,
+  "undoc": ""
+ },
+ "52": {
+  "mnemonic": "MOV",
+  "operand": "D,D",
+  "size": 1,
+  "undoc": ""
+ },
+ "53": {
+  "mnemonic": "MOV",
+  "operand": "D,E",
+  "size": 1,
+  "undoc": ""
+ },
+ "54": {
+  "mnemonic": "MOV",
+  "operand": "D,H",
+  "size": 1,
+  "undoc": ""
+ },
+ "55": {
+  "mnemonic": "MOV",
+  "operand": "D,L",
+  "size": 1,
+  "undoc": ""
+ },
+ "56": {
+  "mnemonic": "MOV",
+  "operand": "D,M",
+  "size": 1,
+  "undoc": ""
+ },
+ "57": {
+  "mnemonic": "MOV",
+  "operand": "D,A",
+  "size": 1,
+  "undoc": ""
+ },
+ "58": {
+  "mnemonic": "MOV",
+  "operand": "E,B",
+  "size": 1,
+  "undoc": ""
+ },
+ "59": {
+  "mnemonic": "MOV",
+  "operand": "E,C",
+  "size": 1,
+  "undoc": ""
+ },
+ "5A": {
+  "mnemonic": "MOV",
+  "operand": "E,D",
+  "size": 1,
+  "undoc": ""
+ },
+ "5B": {
+  "mnemonic": "MOV",
+  "operand": "E,E",
+  "size": 1,
+  "undoc": ""
+ },
+ "5C": {
+  "mnemonic": "MOV",
+  "operand": "E,H",
+  "size": 1,
+  "undoc": ""
+ },
+ "5D": {
+  "mnemonic": "MOV",
+  "operand": "E,L",
+  "size": 1,
+  "undoc": ""
+ },
+ "5E": {
+  "mnemonic": "MOV",
+  "operand": "E,M",
+  "size": 1,
+  "undoc": ""
+ },
+ "5F": {
+  "mnemonic": "MOV",
+  "operand": "E,A",
+  "size": 1,
+  "undoc": ""
+ },
+ "60": {
+  "mnemonic": "MOV",
+  "operand": "H,B",
+  "size": 1,
+  "undoc": ""
+ },
+ "61": {
+  "mnemonic": "MOV",
+  "operand": "H,C",
+  "size": 1,
+  "undoc": ""
+ },
+ "62": {
+  "mnemonic": "MOV",
+  "operand": "H,D",
+  "size": 1,
+  "undoc": ""
+ },
+ "63": {
+  "mnemonic": "MOV",
+  "operand": "H,E",
+  "size": 1,
+  "undoc": ""
+ },
+ "64": {
+  "mnemonic": "MOV",
+  "operand": "H,H",
+  "size": 1,
+  "undoc": ""
+ },
+ "65": {
+  "mnemonic": "MOV",
+  "operand": "H,L",
+  "size": 1,
+  "undoc": ""
+ },
+ "66": {
+  "mnemonic": "MOV",
+  "operand": "H,M",
+  "size": 1,
+  "undoc": ""
+ },
+ "67": {
+  "mnemonic": "MOV",
+  "operand": "H,A",
+  "size": 1,
+  "undoc": ""
+ },
+ "68": {
+  "mnemonic": "MOV",
+  "operand": "L,B",
+  "size": 1,
+  "undoc": ""
+ },
+ "69": {
+  "mnemonic": "MOV",
+  "operand": "L,C",
+  "size": 1,
+  "undoc": ""
+ },
+ "6A": {
+  "mnemonic": "MOV",
+  "operand": "L,D",
+  "size": 1,
+  "undoc": ""
+ },
+ "6B": {
+  "mnemonic": "MOV",
+  "operand": "L,E",
+  "size": 1,
+  "undoc": ""
+ },
+ "6C": {
+  "mnemonic": "MOV",
+  "operand": "L,H",
+  "size": 1,
+  "undoc": ""
+ },
+ "6D": {
+  "mnemonic": "MOV",
+  "operand": "L,L",
+  "size": 1,
+  "undoc": ""
+ },
+ "6E": {
+  "mnemonic": "MOV",
+  "operand": "L,M",
+  "size": 1,
+  "undoc": ""
+ },
+ "6F": {
+  "mnemonic": "MOV",
+  "operand": "L,A",
+  "size": 1,
+  "undoc": ""
+ },
+ "70": {
+  "mnemonic": "MOV",
+  "operand": "M,B",
+  "size": 1,
+  "undoc": ""
+ },
+ "71": {
+  "mnemonic": "MOV",
+  "operand": "M,C",
+  "size": 1,
+  "undoc": ""
+ },
+ "72": {
+  "mnemonic": "MOV",
+  "operand": "M,D",
+  "size": 1,
+  "undoc": ""
+ },
+ "73": {
+  "mnemonic": "MOV",
+  "operand": "M,E",
+  "size": 1,
+  "undoc": ""
+ },
+ "74": {
+  "mnemonic": "MOV",
+  "operand": "M,H",
+  "size": 1,
+  "undoc": ""
+ },
+ "75": {
+  "mnemonic": "MOV",
+  "operand": "M,L",
+  "size": 1,
+  "undoc": ""
+ },
+ "76": {
+  "mnemonic": "HLT",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "77": {
+  "mnemonic": "MOV",
+  "operand": "M,A",
+  "size": 1,
+  "undoc": ""
+ },
+ "78": {
+  "mnemonic": "MOV",
+  "operand": "A,B",
+  "size": 1,
+  "undoc": ""
+ },
+ "79": {
+  "mnemonic": "MOV",
+  "operand": "A,C",
+  "size": 1,
+  "undoc": ""
+ },
+ "7A": {
+  "mnemonic": "MOV",
+  "operand": "A,D",
+  "size": 1,
+  "undoc": ""
+ },
+ "7B": {
+  "mnemonic": "MOV",
+  "operand": "A,E",
+  "size": 1,
+  "undoc": ""
+ },
+ "7C": {
+  "mnemonic": "MOV",
+  "operand": "A,H",
+  "size": 1,
+  "undoc": ""
+ },
+ "7D": {
+  "mnemonic": "MOV",
+  "operand": "A,L",
+  "size": 1,
+  "undoc": ""
+ },
+ "7E": {
+  "mnemonic": "MOV",
+  "operand": "A,M",
+  "size": 1,
+  "undoc": ""
+ },
+ "7F": {
+  "mnemonic": "MOV",
+  "operand": "A,A",
+  "size": 1,
+  "undoc": ""
+ },
+ "80": {
+  "mnemonic": "ADD",
+  "operand": "B",
+  "size": 1,
+  "undoc": ""
+ },
+ "81": {
+  "mnemonic": "ADD",
+  "operand": "C",
+  "size": 1,
+  "undoc": ""
+ },
+ "82": {
+  "mnemonic": "ADD",
+  "operand": "D",
+  "size": 1,
+  "undoc": ""
+ },
+ "83": {
+  "mnemonic": "ADD",
+  "operand": "E",
+  "size": 1,
+  "undoc": ""
+ },
+ "84": {
+  "mnemonic": "ADD",
+  "operand": "H",
+  "size": 1,
+  "undoc": ""
+ },
+ "85": {
+  "mnemonic": "ADD",
+  "operand": "L",
+  "size": 1,
+  "undoc": ""
+ },
+ "86": {
+  "mnemonic": "ADD",
+  "operand": "M",
+  "size": 1,
+  "undoc": ""
+ },
+ "87": {
+  "mnemonic": "ADD",
+  "operand": "A",
+  "size": 1,
+  "undoc": ""
+ },
+ "88": {
+  "mnemonic": "ADC",
+  "operand": "B",
+  "size": 1,
+  "undoc": ""
+ },
+ "89": {
+  "mnemonic": "ADC",
+  "operand": "C",
+  "size": 1,
+  "undoc": ""
+ },
+ "8A": {
+  "mnemonic": "ADC",
+  "operand": "D",
+  "size": 1,
+  "undoc": ""
+ },
+ "8B": {
+  "mnemonic": "ADC",
+  "operand": "E",
+  "size": 1,
+  "undoc": ""
+ },
+ "8C": {
+  "mnemonic": "ADC",
+  "operand": "H",
+  "size": 1,
+  "undoc": ""
+ },
+ "8D": {
+  "mnemonic": "ADC",
+  "operand": "L",
+  "size": 1,
+  "undoc": ""
+ },
+ "8E": {
+  "mnemonic": "ADC",
+  "operand": "M",
+  "size": 1,
+  "undoc": ""
+ },
+ "8F": {
+  "mnemonic": "ADC",
+  "operand": "A",
+  "size": 1,
+  "undoc": ""
+ },
+ "90": {
+  "mnemonic": "SUB",
+  "operand": "B",
+  "size": 1,
+  "undoc": ""
+ },
+ "91": {
+  "mnemonic": "SUB",
+  "operand": "C",
+  "size": 1,
+  "undoc": ""
+ },
+ "92": {
+  "mnemonic": "SUB",
+  "operand": "D",
+  "size": 1,
+  "undoc": ""
+ },
+ "93": {
+  "mnemonic": "SUB",
+  "operand": "E",
+  "size": 1,
+  "undoc": ""
+ },
+ "94": {
+  "mnemonic": "SUB",
+  "operand": "H",
+  "size": 1,
+  "undoc": ""
+ },
+ "95": {
+  "mnemonic": "SUB",
+  "operand": "L",
+  "size": 1,
+  "undoc": ""
+ },
+ "96": {
+  "mnemonic": "SUB",
+  "operand": "M",
+  "size": 1,
+  "undoc": ""
+ },
+ "97": {
+  "mnemonic": "SUB",
+  "operand": "A",
+  "size": 1,
+  "undoc": ""
+ },
+ "98": {
+  "mnemonic": "SBB",
+  "operand": "B",
+  "size": 1,
+  "undoc": ""
+ },
+ "99": {
+  "mnemonic": "SBB",
+  "operand": "C",
+  "size": 1,
+  "undoc": ""
+ },
+ "9A": {
+  "mnemonic": "SBB",
+  "operand": "D",
+  "size": 1,
+  "undoc": ""
+ },
+ "9B": {
+  "mnemonic": "SBB",
+  "operand": "E",
+  "size": 1,
+  "undoc": ""
+ },
+ "9C": {
+  "mnemonic": "SBB",
+  "operand": "H",
+  "size": 1,
+  "undoc": ""
+ },
+ "9D": {
+  "mnemonic": "SBB",
+  "operand": "L",
+  "size": 1,
+  "undoc": ""
+ },
+ "9E": {
+  "mnemonic": "SBB",
+  "operand": "M",
+  "size": 1,
+  "undoc": ""
+ },
+ "9F": {
+  "mnemonic": "SBB",
+  "operand": "A",
+  "size": 1,
+  "undoc": ""
+ },
+ "A0": {
+  "mnemonic": "ANA",
+  "operand": "B",
+  "size": 1,
+  "undoc": ""
+ },
+ "A1": {
+  "mnemonic": "ANA",
+  "operand": "C",
+  "size": 1,
+  "undoc": ""
+ },
+ "A2": {
+  "mnemonic": "ANA",
+  "operand": "D",
+  "size": 1,
+  "undoc": ""
+ },
+ "A3": {
+  "mnemonic": "ANA",
+  "operand": "E",
+  "size": 1,
+  "undoc": ""
+ },
+ "A4": {
+  "mnemonic": "ANA",
+  "operand": "H",
+  "size": 1,
+  "undoc": ""
+ },
+ "A5": {
+  "mnemonic": "ANA",
+  "operand": "L",
+  "size": 1,
+  "undoc": ""
+ },
+ "A6": {
+  "mnemonic": "ANA",
+  "operand": "M",
+  "size": 1,
+  "undoc": ""
+ },
+ "A7": {
+  "mnemonic": "ANA",
+  "operand": "A",
+  "size": 1,
+  "undoc": ""
+ },
+ "A8": {
+  "mnemonic": "XRA",
+  "operand": "B",
+  "size": 1,
+  "undoc": ""
+ },
+ "A9": {
+  "mnemonic": "XRA",
+  "operand": "C",
+  "size": 1,
+  "undoc": ""
+ },
+ "AA": {
+  "mnemonic": "XRA",
+  "operand": "D",
+  "size": 1,
+  "undoc": ""
+ },
+ "AB": {
+  "mnemonic": "XRA",
+  "operand": "E",
+  "size": 1,
+  "undoc": ""
+ },
+ "AC": {
+  "mnemonic": "XRA",
+  "operand": "H",
+  "size": 1,
+  "undoc": ""
+ },
+ "AD": {
+  "mnemonic": "XRA",
+  "operand": "L",
+  "size": 1,
+  "undoc": ""
+ },
+ "AE": {
+  "mnemonic": "XRA",
+  "operand": "M",
+  "size": 1,
+  "undoc": ""
+ },
+ "AF": {
+  "mnemonic": "XRA",
+  "operand": "A",
+  "size": 1,
+  "undoc": ""
+ },
+ "B0": {
+  "mnemonic": "ORA",
+  "operand": "B",
+  "size": 1,
+  "undoc": ""
+ },
+ "B1": {
+  "mnemonic": "ORA",
+  "operand": "C",
+  "size": 1,
+  "undoc": ""
+ },
+ "B2": {
+  "mnemonic": "ORA",
+  "operand": "D",
+  "size": 1,
+  "undoc": ""
+ },
+ "B3": {
+  "mnemonic": "ORA",
+  "operand": "E",
+  "size": 1,
+  "undoc": ""
+ },
+ "B4": {
+  "mnemonic": "ORA",
+  "operand": "H",
+  "size": 1,
+  "undoc": ""
+ },
+ "B5": {
+  "mnemonic": "ORA",
+  "operand": "L",
+  "size": 1,
+  "undoc": ""
+ },
+ "B6": {
+  "mnemonic": "ORA",
+  "operand": "M",
+  "size": 1,
+  "undoc": ""
+ },
+ "B7": {
+  "mnemonic": "ORA",
+  "operand": "A",
+  "size": 1,
+  "undoc": ""
+ },
+ "B8": {
+  "mnemonic": "CMP",
+  "operand": "B",
+  "size": 1,
+  "undoc": ""
+ },
+ "B9": {
+  "mnemonic": "CMP",
+  "operand": "C",
+  "size": 1,
+  "undoc": ""
+ },
+ "BA": {
+  "mnemonic": "CMP",
+  "operand": "D",
+  "size": 1,
+  "undoc": ""
+ },
+ "BB": {
+  "mnemonic": "CMP",
+  "operand": "E",
+  "size": 1,
+  "undoc": ""
+ },
+ "BC": {
+  "mnemonic": "CMP",
+  "operand": "H",
+  "size": 1,
+  "undoc": ""
+ },
+ "BD": {
+  "mnemonic": "CMP",
+  "operand": "L",
+  "size": 1,
+  "undoc": ""
+ },
+ "BE": {
+  "mnemonic": "CMP",
+  "operand": "M",
+  "size": 1,
+  "undoc": ""
+ },
+ "BF": {
+  "mnemonic": "CMP",
+  "operand": "A",
+  "size": 1,
+  "undoc": ""
+ },
+ "C0": {
+  "mnemonic": "RNZ",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "C1": {
+  "mnemonic": "POP",
+  "operand": "B",
+  "size": 1,
+  "undoc": ""
+ },
+ "C2": {
+  "mnemonic": "JNZ",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "C3": {
+  "mnemonic": "JMP",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "C4": {
+  "mnemonic": "CNZ",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "C5": {
+  "mnemonic": "PUSH",
+  "operand": "B",
+  "size": 1,
+  "undoc": ""
+ },
+ "C6": {
+  "mnemonic": "ADI",
+  "operand": "00h",
+  "size": 2,
+  "undoc": ""
+ },
+ "C7": {
+  "mnemonic": "RST",
+  "operand": "0",
+  "size": 1,
+  "undoc": ""
+ },
+ "C8": {
+  "mnemonic": "RZ",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "C9": {
+  "mnemonic": "RET",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "CA": {
+  "mnemonic": "JZ",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "CB": {
+  "mnemonic": "JMP*",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "CC": {
+  "mnemonic": "CZ",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "CD": {
+  "mnemonic": "CALL",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "CE": {
+  "mnemonic": "ACI",
+  "operand": "00h",
+  "size": 2,
+  "undoc": ""
+ },
+ "CF": {
+  "mnemonic": "RST",
+  "operand": "1",
+  "size": 1,
+  "undoc": ""
+ },
+ "D0": {
+  "mnemonic": "RNC",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "D1": {
+  "mnemonic": "POP",
+  "operand": "D",
+  "size": 1,
+  "undoc": ""
+ },
+ "D2": {
+  "mnemonic": "JNC",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "D3": {
+  "mnemonic": "OUT",
+  "operand": "00h",
+  "size": 2,
+  "undoc": ""
+ },
+ "D4": {
+  "mnemonic": "CNC",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "D5": {
+  "mnemonic": "PUSH",
+  "operand": "D",
+  "size": 1,
+  "undoc": ""
+ },
+ "D6": {
+  "mnemonic": "SUI",
+  "operand": "00h",
+  "size": 2,
+  "undoc": ""
+ },
+ "D7": {
+  "mnemonic": "RST",
+  "operand": "2",
+  "size": 1,
+  "undoc": ""
+ },
+ "D8": {
+  "mnemonic": "RC",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "D9": {
+  "mnemonic": "RET*",
+  "operand": "",
+  "size": 1,
+  "undoc": "*"
+ },
+ "DA": {
+  "mnemonic": "JC",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "DB": {
+  "mnemonic": "IN",
+  "operand": "00h",
+  "size": 2,
+  "undoc": ""
+ },
+ "DC": {
+  "mnemonic": "CC",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "DD": {
+  "mnemonic": "CALL*",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": "*"
+ },
+ "DE": {
+  "mnemonic": "SBI",
+  "operand": "00h",
+  "size": 2,
+  "undoc": ""
+ },
+ "DF": {
+  "mnemonic": "RST",
+  "operand": "3",
+  "size": 1,
+  "undoc": ""
+ },
+ "E0": {
+  "mnemonic": "RPO",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "E1": {
+  "mnemonic": "POP",
+  "operand": "H",
+  "size": 1,
+  "undoc": ""
+ },
+ "E2": {
+  "mnemonic": "JPO",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "E3": {
+  "mnemonic": "XTHL",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "E4": {
+  "mnemonic": "CPO",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "E5": {
+  "mnemonic": "PUSH",
+  "operand": "H",
+  "size": 1,
+  "undoc": ""
+ },
+ "E6": {
+  "mnemonic": "ANI",
+  "operand": "00h",
+  "size": 2,
+  "undoc": ""
+ },
+ "E7": {
+  "mnemonic": "RST",
+  "operand": "4",
+  "size": 1,
+  "undoc": ""
+ },
+ "E8": {
+  "mnemonic": "RPE",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "E9": {
+  "mnemonic": "PCHL",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "EA": {
+  "mnemonic": "JPE",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "EB": {
+  "mnemonic": "XCHG",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "EC": {
+  "mnemonic": "CPE",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "ED": {
+  "mnemonic": "CALL*",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": "*"
+ },
+ "EE": {
+  "mnemonic": "XRI",
+  "operand": "00h",
+  "size": 2,
+  "undoc": ""
+ },
+ "EF": {
+  "mnemonic": "RST",
+  "operand": "5",
+  "size": 1,
+  "undoc": ""
+ },
+ "F0": {
+  "mnemonic": "RP",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "F1": {
+  "mnemonic": "POP",
+  "operand": "PSW",
+  "size": 1,
+  "undoc": ""
+ },
+ "F2": {
+  "mnemonic": "JP",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "F3": {
+  "mnemonic": "DI",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "F4": {
+  "mnemonic": "CP",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "F5": {
+  "mnemonic": "PUSH",
+  "operand": "PSW",
+  "size": 1,
+  "undoc": ""
+ },
+ "F6": {
+  "mnemonic": "ORI",
+  "operand": "00h",
+  "size": 2,
+  "undoc": ""
+ },
+ "F7": {
+  "mnemonic": "RST",
+  "operand": "6",
+  "size": 1,
+  "undoc": ""
+ },
+ "F8": {
+  "mnemonic": "RM",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "F9": {
+  "mnemonic": "SPHL",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "FA": {
+  "mnemonic": "JM",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "FB": {
+  "mnemonic": "EI",
+  "operand": "",
+  "size": 1,
+  "undoc": ""
+ },
+ "FC": {
+  "mnemonic": "CM",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": ""
+ },
+ "FD": {
+  "mnemonic": "CALL*",
+  "operand": "0000h",
+  "size": 3,
+  "undoc": "*"
+ },
+ "FE": {
+  "mnemonic": "CPI",
+  "operand": "00h",
+  "size": 2,
+  "undoc": ""
+ },
+ "FF": {
+  "mnemonic": "RST",
+  "operand": "7",
+  "size": 1,
+  "undoc": ""
+ }
+}

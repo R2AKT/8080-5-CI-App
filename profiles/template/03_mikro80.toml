@@ -1,0 +1,23 @@
+# 03_mikro80.toml
+# Микро-80: аналог Радио-86РК, теневое ПЗУ с переключением по M1
+
+[system]
+name = "Микро-80"
+cpu = "i8080A"
+clock = 1000000  # 1 МГц
+
+[[memory.regions]]
+type = "shadow_rom"
+name = "Monitor ROM"
+low_addr = 0x0000
+high_addr = 0xF800
+file = "mikro80_monitor.bin"
+mode = "m1"
+m1_count = 3
+action = "move"
+
+[[memory.regions]]
+type = "ram"
+name = "Main RAM"
+start = 0x0000
+end = 0x3FFF          # 16 КБ RAM

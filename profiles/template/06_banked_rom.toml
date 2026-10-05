@@ -1,0 +1,27 @@
+# 06_banked_rom.toml
+# Банковое ПЗУ: 4 банка ROM по 16 КБ, переключение через порт 0x80
+# Пример: Вектор-06Ц стиль
+
+[system]
+name = "Вектор-06Ц"
+cpu = "i8080A"
+clock = 3000000  # 3 МГц
+
+[[memory.regions]]
+type = "ram"
+name = "Main RAM"
+start = 0x0000
+end = 0xBFFF          # 48 КБ RAM
+
+[[memory.regions]]
+type = "banked_rom"
+name = "Banked ROM"
+start = 0xC000
+end = 0xFFFF          # Окно 16 КБ
+banks = [
+    "vector06c_rom0.bin",
+    "vector06c_rom1.bin",
+    "vector06c_rom2.bin",
+    "vector06c_rom3.bin"
+]
+switch_port = 0x80    # OUT 0x80, N — выбрать банк N

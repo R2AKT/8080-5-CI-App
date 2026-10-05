@@ -1,0 +1,115 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Intel 8080/8085 Assembly",
+  "scopeName": "source.i8080asm",
+  "patterns": [
+    { "include": "#comment" },
+    { "include": "#preprocessor" },
+    { "include": "#label" },
+    { "include": "#directive" },
+    { "include": "#mnemonic" },
+    { "include": "#number" },
+    { "include": "#string" },
+    { "include": "#register-pair" },
+    { "include": "#register" },
+    { "include": "#symbol" }
+  ],
+  "repository": {
+    "comment": {
+      "name": "comment.line.semicolon.i8080asm",
+      "match": ";.*$",
+      "captures": {
+        "0": { "name": "comment.line.semicolon.i8080asm" }
+      }
+    },
+    "preprocessor": {
+      "patterns": [
+        {
+          "name": "keyword.control.preprocessor.i8080asm",
+          "match": "^\\s*#(include|define|undef|if|elif|else|endif|path|target|charset)\\b",
+          "captures": {
+            "1": { "name": "keyword.control.preprocessor.i8080asm" }
+          }
+        },
+        {
+          "name": "meta.preprocessor.i8080asm",
+          "match": "^\\s*#\\w+.*$",
+          "captures": {
+            "0": { "name": "keyword.control.preprocessor.i8080asm" }
+          }
+        }
+      ]
+    },
+    "label": {
+      "patterns": [
+        {
+          "name": "entity.name.label.global.i8080asm",
+          "match": "^\\s*::[A-Za-z_@][A-Za-z0-9_@]*\\s*:",
+          "captures": {
+            "0": { "name": "entity.name.label.global.i8080asm" }
+          }
+        },
+        {
+          "name": "entity.name.label.global.i8080asm",
+          "match": "^\\s*::[A-Za-z_@][A-Za-z0-9_@]*",
+          "captures": {
+            "0": { "name": "entity.name.label.global.i8080asm" }
+          }
+        },
+        {
+          "name": "entity.name.label.local.i8080asm",
+          "match": "^\\s*[A-Za-z_@][A-Za-z0-9_@]*\\s*:(?!=)",
+          "captures": {
+            "0": { "name": "entity.name.label.local.i8080asm" }
+          }
+        }
+      ]
+    },
+    "directive": {
+      "name": "keyword.directive.i8080asm",
+      "match": "\\b(CPU|ORG|EQU|DEFL|DEF|DB|DW|DM|BYTE|WORD|DS|SPACE|ENDM|END|EXPORT|PUBLIC|IMPORT|EXTERN|CODE|REPT|XDEF|XREF|SECTION|MACRO)\\b",
+      "captures": {
+        "1": { "name": "keyword.directive.i8080asm" }
+      }
+    },
+    "mnemonic": {
+      "name": "keyword.mnemonic.i8080asm",
+      "match": "\\b(ACI|ADC|ADD|ADI|ANA|ANI|ARHL|CALL\\*?|CC|CM|CMA|CMC|CMP|CNC|CNZ|CP|CPE|CPI|CPO|CZ|DAA|DAD|DCR|DCX|DI|DSUB|EI|HLT|IN|INR|INX|JC|JK|JM|JMP\\*?|JNC|JNK|JNZ|JP|JPE|JPO|JZ|LDA|LDAX|LDHI|LDSI|LHLD|LHLX|LXI|MOV|MVI|NOP\\*?|ORA|ORI|OUT|PCHL|POP|PUSH|RAL|RAR|RC|RDEL|RET\\*?|RIM|RLC|RM|RNC|RNZ|RP|RPE|RPO|RRC|RST|RSTV|RZ|SBB|SBI|SHLD|SHLX|SIM|SPHL|STA|STAX|STC|SUB|SUI|XCHG|XRA|XRI|XTHL)\\b",
+      "captures": {
+        "1": { "name": "keyword.mnemonic.i8080asm" }
+      }
+    },
+    "number": {
+      "patterns": [
+        {
+          "name": "constant.numeric.hex.i8080asm",
+          "match": "\\b0[xX][0-9A-Fa-f]+\\b|\\b[0-9A-Fa-f]+[hH]\\b"
+        },
+        {
+          "name": "constant.numeric.binary.i8080asm",
+          "match": "\\b[01]+[bB]\\b"
+        },
+        {
+          "name": "constant.numeric.decimal.i8080asm",
+          "match": "\\b[0-9]+\\b"
+        }
+      ]
+    },
+    "string": {
+      "name": "string.quoted.single.i8080asm",
+      "match": "'([^'\\\\]|\\\\.)*'"
+    },
+    "register-pair": {
+      "name": "variable.register.pair.i8080asm",
+      "match": "\\b(SP|PSW)\\b"
+    },
+    "register": {
+      "name": "variable.register.i8080asm",
+      "match": "\\b([A-HL])\\b"
+    },
+    "symbol": {
+      "name": "variable.other.symbol.i8080asm",
+      "match": "\\b[A-Za-z_@][A-Za-z0-9_@]*\\b"
+    }
+  }
+}

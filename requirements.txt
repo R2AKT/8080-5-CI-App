@@ -1,0 +1,22 @@
+# i8080-5 CI — Python dependencies
+# Core
+PySide6>=6.6.0
+pyserial>=3.5
+
+# MCP Server
+mcp>=1.0.0
+uvicorn>=0.23.0
+starlette>=0.27.0
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+
+# Config
+toml>=0.10.2
+tomli>=2.0.0; python_version < "3.11"
+
+# Development
+pytest>=7.0.0
+mypy>=1.0.0
+
+# Build (optional)
+pyinstaller>=6.0.0
