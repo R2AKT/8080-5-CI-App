@@ -455,11 +455,6 @@ class CodeEditor(QPlainTextEdit):
             start, name = stack.pop()
             new_regions.append((start, len(ln_list) - 1, name))
         
-        # Debug: log to stderr for troubleshooting
-        if new_regions:
-            import sys as _sys
-            print(f"[FOLD] {len(new_regions)} regions: {new_regions}", file=_sys.stderr)
-        
         old_regions = self._fold_regions
         self._fold_regions = new_regions
         new_collapsed = set()
