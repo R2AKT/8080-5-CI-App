@@ -31,7 +31,7 @@ from PySide6.QtGui import (
     QFont, QFontMetrics, QSyntaxHighlighter, QTextCharFormat, QColor, QPainter,
     QPen, QTextCursor, QTextFormat
 )
-from PySide6.QtCore import QRectF,  Qt, QRegularExpression, QRect, QSize, QStringListModel, QEvent, QTimer
+from PySide6.QtCore import QRectF, QSizeF, Qt, QRegularExpression, QRect, QSize, QStringListModel, QEvent, QTimer
 
 from assemble8080.assembler import Assembler
 from assemble8080.objfile import obj_from_asm_result, save_obj, load_obj
