@@ -465,33 +465,47 @@ class CodeEditor(QPlainTextEdit):
         self._collapsed = new_collapsed
 
     def toggle_fold(self, region_idx: int):
-        """Toggle a fold region using setLineHeight(0)."""
+        """Toggle a fold region: hide/show lines via line height + font size."""
         if region_idx >= len(self._fold_regions):
             return
         start, end, _ = self._fold_regions[region_idx]
         doc = self.document()
         was_modified = doc.isModified()
         self._suppress_change = True
+        default_font_size = self.font().pointSizeF()
         if region_idx in self._collapsed:
+            # EXPAND: restore line height and font size
             self._collapsed.discard(region_idx)
             for ln in range(start + 1, end + 1):
                 block = doc.findBlockByNumber(ln)
                 if block.isValid():
                     fmt = block.blockFormat()
-                    fmt.setLineHeight(1, 100)
+                    fmt.setLineHeight(100, 1)  # PySide6: (value, mode) = (100, LengthPercent)
                     cursor = QTextCursor(block)
                     cursor.setBlockFormat(fmt)
+                    # Restore font size
+                    cursor.select(QTextCursor.BlockUnderCursor)
+                    cf = QTextCharFormat()
+                    cf.setFontPointSize(default_font_size)
+                    cursor.mergeCharFormat(cf)
         else:
+            # COLLAPSE: zero line height and font size
             self._collapsed.add(region_idx)
             for ln in range(start + 1, end + 1):
                 block = doc.findBlockByNumber(ln)
                 if block.isValid():
                     fmt = block.blockFormat()
-                    fmt.setLineHeight(0, 0)
+                    fmt.setLineHeight(0, 0)  # PySide6: (value, mode) = (0, LengthAbsolute)
                     cursor = QTextCursor(block)
                     cursor.setBlockFormat(fmt)
+                    # Hide text
+                    cursor.select(QTextCursor.BlockUnderCursor)
+                    cf = QTextCharFormat()
+                    cf.setFontPointSize(0)
+                    cursor.mergeCharFormat(cf)
         self._suppress_change = False
         doc.setModified(was_modified)
+        doc.markContentsDirty(0, doc.characterCount())
         self.folding_area.update()
         self.viewport().update()
 
