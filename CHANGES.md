@@ -1,6 +1,26 @@
 # Changelog / Журнал изменений
 
 
+## v2.1.2 (2026-10-06)
+
+### Bug Fixes
+- Fixed fold marker false positive: \t{N} in block content no longer breaks folding
+  (marker now only recognized when block is actually in collapsed state via self._collapsed)
+
+### New Features
+- Added .lnk (linker script) file type support:
+  - File dialog filters now include *.lnk for open/save
+  - Syntax highlighting for linker directives (INPUT, OUTPUT, MAP, ORIGIN, SIZE, FILL)
+- MCP Server: added 19 new tools:
+  - Assembler: asm_assemble, asm_get_source, asm_set_source, asm_get_errors, asm_get_labels
+  - Emulator: emu_set_pc, emu_set_interrupts, emu_request_interrupt, emu_read_word, emu_write_word, emu_push, emu_pop
+  - System: get_cpu_type, set_cpu_type, get_version, get_language, set_language
+  - Automation: run_script, get_watch_list
+
+### Improvements
+- Fold marker detection: uses self._collapsed set to distinguish real markers from content
+- Linker keywords (BLOCK, ENDBLOCK) added to syntax highlighting
+
 ## v2.1.1 (2026-10-06)
 
 ### Bug Fixes

@@ -531,12 +531,17 @@ class CodeEditor(QPlainTextEdit):
                     new_regions.append((start, i, name))
                 continue
 
-            # Check for collapsed indicator: \t{N lines} (replaces .endblock when collapsed)
+            # Check for collapsed indicator: 	{N} (replaces .endblock when collapsed)
+            # Only recognized if the block is actually in collapsed state (name in self._collapsed)
+            # This prevents false positives when 	{N} appears as content in expanded blocks
             m_collapsed = _re.match(r'^\{\d+\}$', code_part.strip()) if line.startswith('\t') else None
             if m_collapsed and stack:
-                start, name = stack.pop()
-                new_regions.append((start, i, name))
-                continue
+                top_start, top_name = stack[-1]
+                if top_name in self._collapsed:
+                    stack.pop()
+                    new_regions.append((top_start, i, top_name))
+                    continue
+                # Otherwise it is just content - fall through
             
             m_blk = re_block.match(code_part)
             if m_blk:
@@ -873,7 +878,7 @@ class AsmHighlighter(QSyntaxHighlighter):
             r'RET|RNZ|RZ|RNC|RC|RPO|RPE|RP|RM|'
             r'RST|PUSH|POP|IN|OUT|EI|DI|HLT|NOP|PCHL|SPHL|XTHL)\b'
         )
-        directives = r'\b(ORG|DB|DW|DS|EQU|END|INCLUDE)\b'
+        directives = r'\b(ORG|DB|DW|DS|EQU|END|INCLUDE|INPUT|OUTPUT|ORIGIN|SIZE|FILL|BLOCK|ENDBLOCK)\b'
         numbers = r'\b(0[xX][0-9A-Fa-f]+|[0-9][0-9A-Fa-f]*[hH]|[0-9]+[dD]?|[01]+[bB]|[0-7]+[qoQo])\b'
         # Global labels (::) — checked FIRST so they take priority
         global_labels = r'^([A-Za-z_][A-Za-z0-9_$]*)::'
