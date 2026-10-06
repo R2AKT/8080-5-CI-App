@@ -194,13 +194,12 @@ class CodeEditor(QPlainTextEdit):
         self._label_lines = {}  # {LABEL: line_number} for Ctrl+Click
         # Folding state
         self._fold_regions = []  # [(start_line, end_line, name), ...]
-        self._collapsed = set()  # indices of collapsed regions
+        self._collapsed = set()  # NAMES of collapsed regions
+        self._fold_saved = {}  # {name: text} saved content of collapsed regions
         # Change tracking
         self._saved_lines = []  # lines at last save/load
         self._changed_lines = set()  # currently modified line numbers
         self._saved_flash = set()  # lines to flash green after save
-        self._fold_layout = FoldableDocumentLayout(self.document())
-        self.document().setDocumentLayout(self._fold_layout)
 
         self.blockCountChanged.connect(self._updateMargins)
         self.updateRequest.connect(self._updateMarginsUpdate)
@@ -507,55 +506,92 @@ class CodeEditor(QPlainTextEdit):
             start, name = stack.pop()
             new_regions.append((start, len(ln_list) - 1, name))
         
-        old_regions = self._fold_regions
         self._fold_regions = new_regions
-        new_collapsed = set()
-        for idx2 in self._collapsed:
-            if idx2 < len(old_regions) and idx2 < len(new_regions):
-                if old_regions[idx2] == new_regions[idx2]:
-                    new_collapsed.add(idx2)
-        self._collapsed = new_collapsed
+        # Preserve collapsed state by name (regions that still exist)
+        valid_names = set(r[2] for r in new_regions)
+        self._collapsed = self._collapsed & valid_names
+        # Clean up saved text for regions that no longer exist
+        for name in list(self._fold_saved.keys()):
+            if name not in valid_names:
+                del self._fold_saved[name]
 
-    def _rebuild_hidden(self):
-        hidden = set()
-        for idx in self._collapsed:
-            if idx < len(self._fold_regions):
-                st, en, _ = self._fold_regions[idx]
-                for ln in range(st + 1, en + 1):
-                    hidden.add(ln)
-        self._fold_layout.set_hidden(hidden)
+    def _collapse_region(self, region_idx: int):
+        """Physically remove inner lines of a fold region."""
+        st, en, name = self._fold_regions[region_idx]
+        if st + 1 >= en:
+            return  # nothing to hide
+        # Select from start of line (st+1) to start of line en
+        cursor = self.textCursor()
+        cursor.movePosition(QTextCursor.Start)
+        for _ in range(st + 1):
+            cursor.movePosition(QTextCursor.Down)
+        start_pos = cursor.position()
+        # Move to start of line en
+        cursor.movePosition(QTextCursor.Start)
+        for _ in range(en):
+            cursor.movePosition(QTextCursor.Down)
+        end_pos = cursor.position()
+        # Select and remove
+        cursor.setPosition(start_pos)
+        cursor.setPosition(end_pos, QTextCursor.KeepAnchor)
+        removed_text = cursor.selectedText()
+        cursor.removeSelectedText()
+        self._fold_saved[name] = removed_text
+        self._collapsed.add(name)
+
+    def _expand_region(self, region_idx: int):
+        """Physically insert saved text back into a fold region."""
+        st, en, name = self._fold_regions[region_idx]
+        if name not in self._fold_saved:
+            return
+        saved_text = self._fold_saved[name]
+        # Insert after the .block line (line st)
+        cursor = self.textCursor()
+        cursor.movePosition(QTextCursor.Start)
+        for _ in range(st + 1):
+            cursor.movePosition(QTextCursor.Down)
+        cursor.insertText(saved_text)
+        del self._fold_saved[name]
+        self._collapsed.discard(name)
 
     def toggle_fold(self, region_idx: int):
-        """Toggle a fold region by hiding/showing its inner lines."""
+        """Toggle a fold region by physically removing/inserting its inner lines."""
         if region_idx >= len(self._fold_regions):
             return
-        if region_idx in self._collapsed:
-            self._collapsed.discard(region_idx)
-        else:
-            self._collapsed.add(region_idx)
-        self._rebuild_hidden()
+        st, en, name = self._fold_regions[region_idx]
+        self._suppress_change = True
+        try:
+            if name in self._collapsed:
+                self._expand_region(region_idx)
+            else:
+                self._collapse_region(region_idx)
+        finally:
+            self._suppress_change = False
+        self.document().setModified(False)
+        self.parse_fold_regions()
         self.folding_area.update()
 
     def collapse_all(self):
-        for idx in range(len(self._fold_regions)):
-            if idx not in self._collapsed:
-                start, end, _ = self._fold_regions[idx]
-                is_nested = any(
-                    o_start < start and o_end > end
-                    for o_idx, (o_start, o_end, _) in enumerate(self._fold_regions)
-                    if o_idx != idx and o_idx in self._collapsed
-                )
-                if not is_nested:
-                    self.toggle_fold(idx)
+        # Collapse from bottom to top so line numbers stay valid
+        for idx in range(len(self._fold_regions) - 1, -1, -1):
+            _, _, name = self._fold_regions[idx]
+            if name not in self._collapsed:
+                self.toggle_fold(idx)
 
     def expand_all(self):
-        for idx in sorted(self._collapsed, reverse=True):
-            self.toggle_fold(idx)
+        # Expand from top to bottom
+        for idx in range(len(self._fold_regions)):
+            _, _, name = self._fold_regions[idx]
+            if name in self._collapsed:
+                self.toggle_fold(idx)
+
+    def expand_all_folds(self):
+        """Expand all folds (use before saving to restore full text)."""
+        self.expand_all()
 
     def _on_fold_margin_click(self, pos):
         """Handle click in folding margin - toggle fold at clicked line."""
         y = pos.y()
-        # Map y to document position via viewport
         from PySide6.QtCore import QPoint
         vp_pos = QPoint(0, y)
         cursor = self.cursorForPosition(vp_pos)
@@ -563,11 +599,6 @@ class CodeEditor(QPlainTextEdit):
         # Find fold region starting at this line
         for idx, (start, end, name) in enumerate(self._fold_regions):
             if start == line_num:
-                self.toggle_fold(idx)
-                return
-        # If clicking inside a collapsed region, expand it
-        for idx, (start, end, name) in enumerate(self._fold_regions):
-            if idx in self._collapsed and start < line_num <= end:
                 self.toggle_fold(idx)
                 return
 
@@ -603,7 +634,7 @@ class CodeEditor(QPlainTextEdit):
                         # Always draw horizontal line
                         painter.drawLine(cx - 4, cy, cx + 4, cy)
                         # If collapsed, draw vertical (making +)
-                        if idx in self._collapsed:
+                        if name in self._collapsed:
                             painter.drawLine(cx, cy - 4, cx, cy + 4)
                         break
 
@@ -1127,6 +1158,7 @@ class AssemblerWidget(QWidget):
                 return
             tab_info['file_path'] = file_path
         
+        editor.expand_all_folds()
         try:
             with open(file_path, 'w', encoding='utf-8') as f:
                 f.write(editor.toPlainText())
@@ -1442,6 +1474,7 @@ class AssemblerWidget(QWidget):
         editor = self._current_editor()
         if not editor:
             return
+        editor.expand_all_folds()
         source = editor.toPlainText()
         if not source.strip():
             if self.main_window is not None:
@@ -1557,6 +1590,7 @@ class AssemblerWidget(QWidget):
         editor = self._current_editor()
         if not editor:
             return
+        editor.expand_all_folds()
         source = editor.toPlainText()
         if not source.strip():
             if self.main_window is not None:
