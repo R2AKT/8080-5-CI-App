@@ -532,7 +532,7 @@ class CodeEditor(QPlainTextEdit):
                 continue
 
             # Check for collapsed indicator: \t{N lines} (replaces .endblock when collapsed)
-            m_collapsed = _re.match(r'^\t\{\d+\s*(?:lines|строк)\}$', code_part.strip())
+            m_collapsed = _re.match(r'^\{\d+\}$', code_part.strip())
             if m_collapsed and stack:
                 start, name = stack.pop()
                 new_regions.append((start, i, name))
@@ -613,8 +613,7 @@ class CodeEditor(QPlainTextEdit):
         removed_text = cursor.selectedText()
         cursor.removeSelectedText()
         # Insert the collapsed indicator: \t{N}
-        collapsed_label = _tr("fold_collapsed_lines").format(n=n_lines)
-        cursor.insertText("\t" + collapsed_label)
+        cursor.insertText("\t{" + str(n_lines) + "}")
         self._fold_saved[name] = removed_text
         self._collapsed.add(name)
 
@@ -993,12 +992,12 @@ class AssemblerWidget(QWidget):
 
         ctrl_layout.addSpacing(8)
         self.btn_collapse_all = QPushButton("\u2212")
-        self.btn_collapse_all.setToolTip("Collapse all blocks")
+        self.btn_collapse_all.setToolTip(_tr("fold_collapse_all"))
         self.btn_collapse_all.setFixedWidth(28)
         self.btn_collapse_all.clicked.connect(self._on_collapse_all)
         ctrl_layout.addWidget(self.btn_collapse_all)
         self.btn_expand_all = QPushButton("+")
-        self.btn_expand_all.setToolTip("Expand all blocks")
+        self.btn_expand_all.setToolTip(_tr("fold_expand_all"))
         self.btn_expand_all.setFixedWidth(28)
         self.btn_expand_all.clicked.connect(self._on_expand_all)
         ctrl_layout.addWidget(self.btn_expand_all)
