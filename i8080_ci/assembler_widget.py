@@ -353,7 +353,7 @@ class CodeEditor(QPlainTextEdit):
                 new_size = max(current_size - 1, 8)
             if new_size != current_size:
                 self.setFont(QFont("Consolas", new_size))
-                self._updateLineNumberAreaWidth(0)
+                self._updateMargins(0)
                 self.line_number_area.update()
             event.accept()
         else:
@@ -572,11 +572,15 @@ class CodeEditor(QPlainTextEdit):
         self.folding_area.update()
 
     def collapse_all(self):
-        # Collapse from bottom to top so line numbers stay valid
-        for idx in range(len(self._fold_regions) - 1, -1, -1):
+        # Collapse from bottom to top; re-check length each iteration
+        # since toggle_fold() re-parses regions (list shrinks)
+        while self._fold_regions:
+            idx = len(self._fold_regions) - 1
             _, _, name = self._fold_regions[idx]
             if name not in self._collapsed:
                 self.toggle_fold(idx)
+            else:
+                break
 
     def expand_all(self):
         # Expand from top to bottom
