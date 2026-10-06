@@ -397,7 +397,36 @@ class CodeEditor(QPlainTextEdit):
         tc.insertText(completion)
         self.setTextCursor(tc)
 
+    def _is_collapsed_marker_line(self, line_num: int) -> bool:
+        """Check if the given line is a .block/.endblock marker of a collapsed region."""
+        for st, en, name in self._fold_regions:
+            if name in self._collapsed:
+                if line_num == st or line_num == en:
+                    return True
+        return False
+
     def keyPressEvent(self, event):
+        # Prohibit editing of collapsed block markers
+        cursor = self.textCursor()
+        line_num = cursor.blockNumber()
+        if self._is_collapsed_marker_line(line_num):
+            key = event.key()
+            ctrl = event.modifiers() & Qt.ControlModifier
+            nav_keys = (Qt.Key_Left, Qt.Key_Right, Qt.Key_Up, Qt.Key_Down,
+                        Qt.Key_Home, Qt.Key_End, Qt.Key_PageUp, Qt.Key_PageDown,
+                        Qt.Key_Escape)
+            if key in nav_keys:
+                pass
+            elif ctrl and key == Qt.Key_C:
+                pass
+            elif ctrl and key in (Qt.Key_V, Qt.Key_X):
+                event.accept()
+                return
+            elif event.text() or key in (Qt.Key_Backspace, Qt.Key_Delete,
+                                         Qt.Key_Enter, Qt.Key_Return, Qt.Key_Tab):
+                event.accept()
+                return
+
         if self._completer.popup().isVisible():
             if event.key() in (Qt.Key_Enter, Qt.Key_Return, Qt.Key_Escape,
                                Qt.Key_Tab, Qt.Key_Backtab):
@@ -437,6 +466,14 @@ class CodeEditor(QPlainTextEdit):
                     event.accept()
                     return
         super().mousePressEvent(event)
+
+    def insertFromMimeData(self, source):
+        """Block paste on collapsed block marker lines."""
+        cursor = self.textCursor()
+        line_num = cursor.blockNumber()
+        if self._is_collapsed_marker_line(line_num):
+            return  # reject paste
+        super().insertFromMimeData(source)
 
     # ------------------------------------------------------------------
     # Hover: tooltip на мнемонику + такты выделенного блока
