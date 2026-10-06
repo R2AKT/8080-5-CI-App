@@ -530,6 +530,13 @@ class CodeEditor(QPlainTextEdit):
                     start, name = stack.pop()
                     new_regions.append((start, i, name))
                 continue
+
+            # Check for collapsed indicator: \t{N lines} (replaces .endblock when collapsed)
+            m_collapsed = _re.match(r'^\t\{\d+\s*(?:lines|строк)\}$', code_part.strip())
+            if m_collapsed and stack:
+                start, name = stack.pop()
+                new_regions.append((start, i, name))
+                continue
             
             m_blk = re_block.match(code_part)
             if m_blk:
@@ -567,7 +574,7 @@ class CodeEditor(QPlainTextEdit):
                 del self._fold_saved[name]
 
     def _collapse_region(self, region_idx: int):
-        """Physically remove inner lines of a fold region."""
+        """Physically remove inner lines + .endblock, replace with \t{N}."""
         st, en, name = self._fold_regions[region_idx]
         if st + 1 >= en:
             return  # nothing to hide
@@ -586,36 +593,44 @@ class CodeEditor(QPlainTextEdit):
                 st, en, name = self._fold_regions[region_idx]
                 if st + 1 >= en:
                     return
-        # Select from start of line (st+1) to start of line en
+        # Number of collapsed lines (between .block and .endblock, exclusive)
+        n_lines = en - st - 1
+        # Select from start of line (st+1) to END of line en (including .endblock)
         cursor = self.textCursor()
         cursor.movePosition(QTextCursor.Start)
         for _ in range(st + 1):
             cursor.movePosition(QTextCursor.Down)
         start_pos = cursor.position()
-        # Move to start of line en
+        # Move to start of line en, then to end of that line
         cursor.movePosition(QTextCursor.Start)
         for _ in range(en):
             cursor.movePosition(QTextCursor.Down)
+        cursor.movePosition(QTextCursor.EndOfLine)
         end_pos = cursor.position()
         # Select and remove
         cursor.setPosition(start_pos)
         cursor.setPosition(end_pos, QTextCursor.KeepAnchor)
         removed_text = cursor.selectedText()
         cursor.removeSelectedText()
+        # Insert the collapsed indicator: \t{N}
+        collapsed_label = _tr("fold_collapsed_lines").format(n=n_lines)
+        cursor.insertText("\t" + collapsed_label)
         self._fold_saved[name] = removed_text
         self._collapsed.add(name)
 
     def _expand_region(self, region_idx: int):
-        """Physically insert saved text back into a fold region."""
+        """Replace the \t{N} indicator line with saved text (including .endblock)."""
         st, en, name = self._fold_regions[region_idx]
         if name not in self._fold_saved:
             return
         saved_text = self._fold_saved[name]
-        # Insert after the .block line (line st)
+        # Select the \t{N} line (line en) and replace with saved text
         cursor = self.textCursor()
         cursor.movePosition(QTextCursor.Start)
-        for _ in range(st + 1):
+        for _ in range(en):
             cursor.movePosition(QTextCursor.Down)
+        cursor.movePosition(QTextCursor.StartOfLine)
+        cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
         cursor.insertText(saved_text)
         del self._fold_saved[name]
         self._collapsed.discard(name)
