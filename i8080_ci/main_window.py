@@ -954,6 +954,10 @@ class MainWindow(QMainWindow):
         self.tabs.setTabText(8, self.tr("tab_test"))       # Тест Памяти
         self.tabs.setTabText(9, self.tr("tab_io_seq"))     # IO Секвенсор
         self.tabs.setTabText(10, self.tr("tab_compare"))   # Сравнение
+        # Обновляем переводы ассемблера
+        if hasattr(self, 'assembler_widget'):
+            self.assembler_widget.retranslate()
+        
         
         # ============================================================
         # ВКЛАДКА "УПРАВЛЕНИЕ"

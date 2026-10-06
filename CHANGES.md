@@ -1,5 +1,19 @@
 # Changelog / Журнал изменений
 
+
+## v2.1.1 (2026-10-06)
+
+### Bug Fixes
+- Fixed runtime language switching: collapse/expand button tooltips now update when language changes
+- Fixed fold detection: `{N}` in block content no longer breaks folding (requires leading tab for fold marker)
+- Fixed hardcoded "Процессор:" label - now uses i18n
+
+### Improvements
+- Added `retranslate()` method to AssemblerWidget for runtime language updates
+- Fold marker protection: only `\t{N}` (tab-prefixed) is recognized as fold indicator
+
+### Tests
+- 921/0 checks passed (3 consecutive clean passes)
 ## 2026-09-29 (итерация 6): Верификация ALUS_IMM по документации 8080/8085, авто-размер дизассемблера, чистка мёртвого кода
 
 ### Дизассемблер (i8080_ci/disassembler.py) — верификация по документации

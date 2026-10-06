@@ -1,6 +1,6 @@
 """Project version and build information."""
 
-__version__ = "2.1.0"
+__version__ = "2.1.1"
 __build__ = "20261006"
 __app_name__ = "i8080-5 CI"
 

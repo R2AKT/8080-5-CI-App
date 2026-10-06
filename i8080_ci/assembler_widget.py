@@ -532,7 +532,7 @@ class CodeEditor(QPlainTextEdit):
                 continue
 
             # Check for collapsed indicator: \t{N lines} (replaces .endblock when collapsed)
-            m_collapsed = _re.match(r'^\{\d+\}$', code_part.strip())
+            m_collapsed = _re.match(r'^\{\d+\}$', code_part.strip()) if line.startswith('\t') else None
             if m_collapsed and stack:
                 start, name = stack.pop()
                 new_regions.append((start, i, name))
@@ -991,12 +991,12 @@ class AssemblerWidget(QWidget):
         ctrl_layout.addWidget(self.btn_link)
 
         ctrl_layout.addSpacing(8)
-        self.btn_collapse_all = QPushButton("\u2212")
+        self.btn_collapse_all = QPushButton("⚞")
         self.btn_collapse_all.setToolTip(_tr("fold_collapse_all"))
         self.btn_collapse_all.setFixedWidth(28)
         self.btn_collapse_all.clicked.connect(self._on_collapse_all)
         ctrl_layout.addWidget(self.btn_collapse_all)
-        self.btn_expand_all = QPushButton("+")
+        self.btn_expand_all = QPushButton("⚟")
         self.btn_expand_all.setToolTip(_tr("fold_expand_all"))
         self.btn_expand_all.setFixedWidth(28)
         self.btn_expand_all.clicked.connect(self._on_expand_all)
@@ -1005,7 +1005,7 @@ class AssemblerWidget(QWidget):
 
         # === CPU type selector ===
         ctrl_layout.addSpacing(20)
-        ctrl_layout.addWidget(QLabel("Процессор:"))
+        ctrl_layout.addWidget(QLabel(_tr("asm_processor")))
         self.cpu_combo = QComboBox()
         self.cpu_combo.addItems(["i8080", "i8085"])
         self.cpu_combo.setCurrentText("i8080")
@@ -1531,6 +1531,18 @@ class AssemblerWidget(QWidget):
     def _on_cpu_changed(self, cpu_type: str):
         for ti in getattr(self, '_tab_infos', []):
             ti['editor'].set_cpu_type(cpu_type)
+
+    def retranslate(self):
+        """Update all translatable strings (called on language change)."""
+        self.btn_collapse_all.setToolTip(_tr("fold_collapse_all"))
+        self.btn_expand_all.setToolTip(_tr("fold_expand_all"))
+        self.btn_assemble.setText(_tr("asm_assemble"))
+        self.btn_assemble_load.setText(_tr("asm_assemble_load"))
+        self.btn_assemble_obj.setText(_tr("asm_assemble_obj"))
+        self.btn_link.setText(_tr("asm_link"))
+        # Update folding area tooltips
+        if hasattr(self, 'folding_area'):
+            self.folding_area.update()
 
     def _on_collapse_all(self):
         editor = self._current_editor()
