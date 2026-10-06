@@ -506,6 +506,20 @@ class CodeEditor(QPlainTextEdit):
             start, name = stack.pop()
             new_regions.append((start, len(ln_list) - 1, name))
         
+        # If a saved region's marker was deleted, force-restore its text
+        old_saved = dict(self._fold_saved)
+        for name, saved_text in old_saved.items():
+            # Check if the .block marker still exists in current text
+            import re as _re2
+            pattern = _re2.compile(r'^\s*\.?BLOCK\b\s*' + _re2.escape(name) + r'\b', _re2.IGNORECASE | _re2.MULTILINE)
+            if not pattern.search(self.toPlainText()):
+                # Marker deleted - insert saved text back at end of document
+                cursor = self.textCursor()
+                cursor.movePosition(QTextCursor.End)
+                cursor.insertText(saved_text)
+                del self._fold_saved[name]
+                self._collapsed.discard(name)
+
         self._fold_regions = new_regions
         # Preserve collapsed state by name (regions that still exist)
         valid_names = set(r[2] for r in new_regions)
@@ -520,6 +534,21 @@ class CodeEditor(QPlainTextEdit):
         st, en, name = self._fold_regions[region_idx]
         if st + 1 >= en:
             return  # nothing to hide
+        # Expand any inner collapsed blocks first (so their text is included)
+        for inner_idx in range(len(self._fold_regions) - 1, -1, -1):
+            i_st, i_en, i_name = self._fold_regions[inner_idx]
+            if i_name != name and i_st > st and i_en < en and i_name in self._collapsed:
+                self._expand_region(inner_idx)
+                # Re-parse after expand (line numbers changed)
+                self.parse_fold_regions()
+                # Re-find this region (index may have changed)
+                for ri in range(len(self._fold_regions)):
+                    if self._fold_regions[ri][2] == name:
+                        region_idx = ri
+                        break
+                st, en, name = self._fold_regions[region_idx]
+                if st + 1 >= en:
+                    return
         # Select from start of line (st+1) to start of line en
         cursor = self.textCursor()
         cursor.movePosition(QTextCursor.Start)
