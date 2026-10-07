@@ -1,5 +1,39 @@
 # Changelog / Журнал изменений
 
+
+## v2.1.2 (2026-10-06)
+
+### Bug Fixes
+- Fixed fold marker false positive: \t{N} in block content no longer breaks folding
+  (marker now only recognized when block is actually in collapsed state via self._collapsed)
+
+### New Features
+- Added .lnk (linker script) file type support:
+  - File dialog filters now include *.lnk for open/save
+  - Syntax highlighting for linker directives (INPUT, OUTPUT, MAP, ORIGIN, SIZE, FILL)
+- MCP Server: added 19 new tools:
+  - Assembler: asm_assemble, asm_get_source, asm_set_source, asm_get_errors, asm_get_labels
+  - Emulator: emu_set_pc, emu_set_interrupts, emu_request_interrupt, emu_read_word, emu_write_word, emu_push, emu_pop
+  - System: get_cpu_type, set_cpu_type, get_version, get_language, set_language
+  - Automation: run_script, get_watch_list
+
+### Improvements
+- Fold marker detection: uses self._collapsed set to distinguish real markers from content
+- Linker keywords (BLOCK, ENDBLOCK) added to syntax highlighting
+
+## v2.1.1 (2026-10-06)
+
+### Bug Fixes
+- Fixed runtime language switching: collapse/expand button tooltips now update when language changes
+- Fixed fold detection: `{N}` in block content no longer breaks folding (requires leading tab for fold marker)
+- Fixed hardcoded "Процессор:" label - now uses i18n
+
+### Improvements
+- Added `retranslate()` method to AssemblerWidget for runtime language updates
+- Fold marker protection: only `\t{N}` (tab-prefixed) is recognized as fold indicator
+
+### Tests
+- 921/0 checks passed (3 consecutive clean passes)
 ## 2026-09-29 (итерация 6): Верификация ALUS_IMM по документации 8080/8085, авто-размер дизассемблера, чистка мёртвого кода
 
 ### Дизассемблер (i8080_ci/disassembler.py) — верификация по документации

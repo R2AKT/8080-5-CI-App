@@ -30,6 +30,7 @@ except ImportError as e:
     print(f"MCP Server доступен: {e}")
 
 from common.i18n import LANGS, get_system_language, set_language
+from version import get_version_string
 from common.themes import THEMES
 from .slip import (SlipProtocol, _FEND, CMD_NOP, CMD_HOLD, CMD_UNHOLD,
                    CMD_IO_READ_BYTE, CMD_IO_WRITE_BYTE,
@@ -953,6 +954,10 @@ class MainWindow(QMainWindow):
         self.tabs.setTabText(8, self.tr("tab_test"))       # Тест Памяти
         self.tabs.setTabText(9, self.tr("tab_io_seq"))     # IO Секвенсор
         self.tabs.setTabText(10, self.tr("tab_compare"))   # Сравнение
+        # Обновляем переводы ассемблера
+        if hasattr(self, 'assembler_widget'):
+            self.assembler_widget.retranslate()
+        
         
         # ============================================================
         # ВКЛАДКА "УПРАВЛЕНИЕ"
@@ -4148,7 +4153,7 @@ class MainWindow(QMainWindow):
 
     def _show_about(self):
         """Show About dialog."""
-        QMessageBox.about(self, self.tr("help_about"), self.tr("help_about_text")+self.tr("help_author"))
+        QMessageBox.about(self, self.tr("help_about"), self.tr("help_about_text")+"\n\n"+get_version_string()+self.tr("help_author"))
 
     @staticmethod
     def _md_to_html(md_text: str) -> str:

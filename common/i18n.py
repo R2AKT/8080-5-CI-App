@@ -97,17 +97,11 @@ LANGS = {
         "bp_cond_title":  "Breakpoint Condition ",
         "bp_cond_clear":  "Clear Condition ",  "bp_cond_ok":  "OK ",  "bp_cond_cancel":  "Cancel ",
         "bp_cond_hint":  "Available variables:\n"
-
                          "  Registers: A, B, C, D, E, H, L, BC, DE, HL, SP, PC\n"
-
                          "  Flags: S, Z, AC, P, CY\n"
-
                          "  Memory: mem[0x0100]   Ports: io[0x01]\n"
-
                          "  Cycles: cycles\n"
-
                          "  Operators: ==, !=, <, >, <=, >=, and, or, not ",
-
         "err_addr_mem":  "Enter memory address! ",  "err_syntax":  "Invalid syntax! ",
         "dlg_cancel": "Cancel ", "dlg_ok": "OK ",
         # Статистика эмулятора
@@ -156,13 +150,10 @@ LANGS = {
         "bp_preset_saved": "BP preset saved: ",
         "bp_preset_loaded": "BP preset loaded: ",
         "bp_preset_save_err": "Failed to save BP preset:\n",
-
-
         "bp_preset_load_err": "Failed to load BP preset:\n",
-
-
         "bp_cond_err": "Invalid condition syntax!",
         "bp_cond_example": "Example: A == 0x55",
+
         # Диалоги
         "set_pc_title": "Set PC",
         "export_disasm_title": "Export Disassembly",
@@ -281,6 +272,7 @@ LANGS = {
         "asm_assemble_load": "\U0001F680 Assemble & Load",
         "asm_assemble_obj": "\U0001F4E6 Assemble \u2192 OBJ",
         "asm_link": "\U0001F517 Link",
+        "asm_processor": "Processor:",
         "asm_obj_title": "Save Object File",
         "asm_obj_filter": "Object (*.obj);;All files (*)",
         "asm_obj_saved": "\U0001F4E6 Object saved: {path}",
@@ -299,7 +291,6 @@ LANGS = {
         "asm_map_filter": "Map (*.map);;All files (*)",
         "asm_map_loaded": "\U0001F5FA Map loaded: {path} ({n} symbols)",
         "asm_map_err": "Failed to load map file:\n{e}",
-
         "asm_errors": "Errors",
         "asm_col_line": "Line",
         "asm_col_msg": "Message",
@@ -309,8 +300,8 @@ LANGS = {
         "asm_col_line2": "Line",
         "asm_load_title": "Load Assembler File",
         "asm_save_title": "Save Assembler File",
-        "asm_file_filter": "Assembler (*.asm *.inc *.s);;All files (*)",
-        "asm_file_filter_save": "Assembler (*.asm);;All files (*)",
+        "asm_file_filter": "Assembler (*.asm *.inc *.s);;Linker script (*.lnk);;All files (*)",
+        "asm_file_filter_save": "Assembler (*.asm);;Linker script (*.lnk);;All files (*)",
         "asm_loaded": "\U0001F4C2 Loaded: {path}",
         "asm_saved": "\U0001F4BE Saved: {path}",
         "asm_err_title": "Error",
@@ -330,35 +321,21 @@ LANGS = {
         "asm_loaded_mem": "\U0001F680 Loaded {n} bytes at 0x{addr:04X}",
         "asm_load_mem_err": "\u274C Load error:\n{tb}",
         "asm_placeholder": "; Assembler 8080-5 CI\n; Number formats: 0x1A, 1AH, 26, 11010B, 32q\n; Ctrl+wheel \u2014 font size\n\n        ORG 0100H\nSTART:  MVI A, 0x55\n        OUT 01H\n        JMP START\n",
-
-
         "asm_open_ws": "📂 Open Workspace",
-
         "asm_save_ws": "💾 Save Workspace",
-
         "asm_open_ws_title": "Open Workspace File",
-
         "asm_save_ws_title": "Save Workspace File",
-
         "asm_ws_filter": "Workspace (*.ws);;All files (*)",
-
         "asm_ws_filter_save": "Workspace (*.ws);;All files (*)",
-
         "asm_ws_loaded": "📂 Workspace loaded: {path} ({n} files)",
-
         "asm_ws_err": "❌ Failed to load workspace:\n{e}",
-
         "asm_ws_saved": "💾 Workspace saved: {path}",
-
         "asm_ws_save_err": "❌ Failed to save workspace:\n{e}",
-
         "asm_new_tab": "\U0001F4C4 New file",
-
         "asm_untitled": "untitled",
-
         "asm_unsaved_title": "Unsaved Changes",
-
         "asm_unsaved_msg": "File '{file}' has unsaved changes. Save?",
+
         "btn_save": "Save",
         "btn_discard": "Discard",
         "btn_cancel": "Cancel",
@@ -376,7 +353,15 @@ LANGS = {
         "help_mcp": "MCP Guide",
         "help_scripts": "Scripts Guide",
         "help_about": "About i8080-5 CI",
-        "help_about_text": "i8080-5 CI\nIntel 8080 Emulator & Debugger\n\nVersion 1.0\n\nFeatures:\n- 8080 CPU emulator (all 256 opcodes)\n- Assembler (M80/zasm formats)\n- Disassembler\n- Memory/IO bus with SLIP protocol\n- 20+ IO device emulators\n- System profiles\n- MCP Server (AI integration)\n- Python automation API",
+        "help_about_text": "i8080-5 CI\nIntel 8080 Emulator & Debugger\n\nFeatures:\n- 8080 CPU emulator (all 256 opcodes)\n- Assembler (M80/zasm formats)\n- Disassembler\n- Memory/IO bus with SLIP protocol\n- 20+ IO device emulators\n- System profiles\n- MCP Server (AI integration)\n- Python automation API",
+        # === Code Folding ===
+        "fold_collapsed_lines": "{n} lines",
+        "fold_collapse_all": "Collapse All",
+        "fold_expand_all": "Expand All",
+        "fold_tip_collapse": "Collapse block",
+        "fold_tip_expand": "Expand block",
+        "fold_locked": "Block is collapsed. Expand to edit.",
+        "sel_cycles": "Selected code",
         "help_author": "\n\n Author - Sergey Dorozhkin aka R2AKT",
     },
     "ru": {
@@ -472,17 +457,11 @@ LANGS = {
         "bp_cond_title":  "Условие точки останова ",
         "bp_cond_clear":  "Очистить условие ",  "bp_cond_ok":  "OK ",  "bp_cond_cancel":  "Отмена ",
         "bp_cond_hint":  "Available variables:\n"
-
                          "  Registers: A, B, C, D, E, H, L, BC, DE, HL, SP, PC\n"
-
                          "  Flags: S, Z, AC, P, CY\n"
-
                          "  Memory: mem[0x0100]   Ports: io[0x01]\n"
-
                          "  Cycles: cycles\n"
-
                          "  Operators: ==, !=, <, >, <=, >=, and, or, not ",
-
         "err_addr_mem":  "Введите адрес памяти! ",  "err_syntax":  "Неверный синтаксис! ",
         "dlg_cancel": "Отмена ", "dlg_ok": "OK ",
         # Статистика эмулятора
@@ -520,7 +499,6 @@ LANGS = {
         "watch_err_fmt_title": "Ошибка формата",
         "watch_err_add": "Не удалось добавить Watch:\n",
 
-
         # BP: статусы и пресеты
         "bp_select": "Выберите точку останова",
         "bp_add_title": "Добавить точку останова",
@@ -531,13 +509,10 @@ LANGS = {
         "bp_preset_saved": "Пресет BP сохранён: ",
         "bp_preset_loaded": "Пресет BP загружен: ",
         "bp_preset_save_err": "Не удалось сохранить пресет BP:\n",
-
-
         "bp_preset_load_err": "Не удалось загрузить пресет BP:\n",
-
-
         "bp_cond_err": "Неверный синтаксис условия!",
         "bp_cond_example": "Например: A == 0x55",
+
         # Диалоги
         "set_pc_title": "Установить PC",
         "export_disasm_title": "Экспорт дизассемблера",
@@ -656,6 +631,7 @@ LANGS = {
         "asm_assemble_load": "\U0001F680 Ассемблировать и загрузить",
         "asm_assemble_obj": "\U0001F4E6 Собрать \u2192 OBJ",
         "asm_link": "\U0001F517 Линковка",
+        "asm_processor": "Процессор:",
         "asm_obj_title": "Сохранить объектный файл",
         "asm_obj_filter": "Объектный (*.obj);;Все файлы (*)",
         "asm_obj_saved": "\U0001F4E6 Объект сохранён: {path}",
@@ -674,7 +650,6 @@ LANGS = {
         "asm_map_filter": "Map (*.map);;Все файлы (*)",
         "asm_map_loaded": "\U0001F5FA Map загружен: {path} ({n} символов)",
         "asm_map_err": "Не удалось загрузить map-файл:\n{e}",
-
         "asm_errors": "Ошибки",
         "asm_col_line": "Строка",
         "asm_col_msg": "Сообщение",
@@ -684,8 +659,8 @@ LANGS = {
         "asm_col_line2": "Строка",
         "asm_load_title": "Загрузить ассемблерный файл",
         "asm_save_title": "Сохранить ассемблерный файл",
-        "asm_file_filter": "Ассемблер (*.asm *.inc *.s);;Все файлы (*)",
-        "asm_file_filter_save": "Ассемблер (*.asm);;Все файлы (*)",
+        "asm_file_filter": "Ассемблер (*.asm *.inc *.s);;Скрипт линковщика (*.lnk);;Все файлы (*)",
+        "asm_file_filter_save": "Ассемблер (*.asm);;Скрипт линковщика (*.lnk);;Все файлы (*)",
         "asm_loaded": "\U0001F4C2 Загружен: {path}",
         "asm_saved": "\U0001F4BE Сохранено: {path}",
         "asm_err_title": "Ошибка",
@@ -705,41 +680,26 @@ LANGS = {
         "asm_loaded_mem": "\U0001F680 Загружено {n} байт по адресу 0x{addr:04X}",
         "asm_load_mem_err": "\u274C Ошибка загрузки:\n{tb}",
         "asm_placeholder": "; Ассемблер 8080-5 CI\n; Форматы чисел: 0x1A, 1AH, 26, 11010B, 32q\n; Ctrl+колесо мыши — размер шрифта\n\n        ORG 0100H\nSTART:  MVI A, 0x55\n        OUT 01H\n        JMP START\n",
-
-
         "asm_open_ws": "📂 Открыть Workspace",
-
         "asm_save_ws": "💾 Сохранить Workspace",
-
         "asm_open_ws_title": "Открыть файл Workspace",
-
         "asm_save_ws_title": "Сохранить файл Workspace",
-
         "asm_ws_filter": "Workspace (*.ws);;Все файлы (*)",
-
         "asm_ws_filter_save": "Workspace (*.ws);;Все файлы (*)",
-
         "asm_ws_loaded": "📂 Workspace загружен: {path} ({n} файлов)",
-
         "asm_ws_err": "❌ Ошибка загрузки workspace:\n{e}",
-
         "asm_ws_saved": "💾 Workspace сохранён: {path}",
-
         "asm_ws_save_err": "❌ Ошибка сохранения workspace:\n{e}",
-
         "asm_new_tab": "\U0001F4C4 Новый файл",
-
         "asm_untitled": "без имени",
-
         "asm_unsaved_title": "Несохранённые изменения",
-
         "asm_unsaved_msg": "Файл '{file}' имеет несохранённые изменения. Сохранить?",
+
         "btn_save": "Сохранить",
         "btn_discard": "Отменить",
         "btn_cancel": "Отмена",
 
         "asm_map_auto_loaded": "  Map автозагружен: {n} символов",
-
         "asm_map_auto_err": "  Ошибка автозагрузки map: {e}",
 
         # === Справка ===
@@ -751,10 +711,220 @@ LANGS = {
         "help_mcp": "MCP Руководство",
         "help_scripts": "Руководство по скриптам",
         "help_about": "О программе i8080-5 CI",
-        "help_about_text": "i8080-5 CI\nЭмулятор и отладчик Intel 8080\n\nВерсия 1.0\n\nВозможности:\n- Эмулятор CPU 8080 (все 256 команд)\n- Ассемблер (форматы M80/zasm)\n- Дизассемблер\n- Шина памяти/IO с протоколом SLIP\n- 20+ эмуляторов IO-устройств\n- Системные профили\n- MCP Server (интеграция с ИИ)\n- Python API автоматизации",
+        "help_about_text": "i8080-5 CI\nЭмулятор и отладчик Intel 8080\n\nВозможности:\n- Эмулятор CPU 8080 (все 256 команд)\n- Ассемблер (форматы M80/zasm)\n- Дизассемблер\n- Шина памяти/IO с протоколом SLIP\n- 20+ эмуляторов IO-устройств\n- Системные профили\n- MCP Server (интеграция с ИИ)\n- Python API автоматизации",
+        # === Сворачивание кода ===
+        "fold_collapsed_lines": "{n} строк",
+        "fold_collapse_all": "Свернуть все",
+        "fold_expand_all": "Развернуть все",
+        "fold_tip_collapse": "Свернуть блок",
+        "fold_tip_expand": "Развернуть блок",
+        "fold_locked": "Блок свёрнут. Разверните для редактирования.",
+        "sel_cycles": "Выделенный код",
         "help_author": "\n\n - Автор - Сергей Дорожкин aka R2AKT",
     }
 }
+
+# =============================================================
+# MNEMONIC_INFO: описания мнемоник для hover-подсказок.
+# Формат: { "MNEMONIC": (description, opcode_str, cycles) }
+# =============================================================
+
+MNEMONIC_INFO = {
+    "en": {
+        "NOP":  ("No Operation", "0x00", 4),
+        "HLT":  ("Halt CPU", "0x76", 7),
+        "DI":   ("Disable Interrupts", "0x77", 4),
+        "EI":   ("Enable Interrupts", "0xFB", 4),
+        "SIM":  ("Set Interrupt Mask (8085)", "0x04", 4),
+        "RIM":  ("Read Interrupt Mask (8085)", "0x67", 13),
+        "RET":  ("Return from Subroutine", "0xC9", 10),
+        "RZ":   ("Return if Zero", "0xC8", "5/12"),
+        "RNZ":  ("Return if Not Zero", "0xC0", "5/12"),
+        "RC":   ("Return if Carry", "0xD8", "5/12"),
+        "RNC":  ("Return if No Carry", "0xD0", "5/12"),
+        "RPE":  ("Return if Parity Even", "0xE8", "5/12"),
+        "RPO":  ("Return if Parity Odd", "0xE0", "5/12"),
+        "RM":   ("Return if Minus", "0xF8", "5/12"),
+        "RP":   ("Return if Plus", "0xF0", "5/12"),
+        "JMP":  ("Unconditional Jump", "0xC3", 10),
+        "JZ":   ("Jump if Zero", "0xC2", 10),
+        "JNZ":  ("Jump if Not Zero", "0xC2", 10),
+        "JC":   ("Jump if Carry", "0xD2", 10),
+        "JNC":  ("Jump if No Carry", "0xD2", 10),
+        "JPE":  ("Jump if Parity Even", "0xE2", 10),
+        "JPO":  ("Jump if Parity Odd", "0xE2", 10),
+        "JM":   ("Jump if Minus", "0xF2", 10),
+        "JP":   ("Jump if Plus", "0xF2", 10),
+        "CALL": ("Call Subroutine", "0xCD", 17),
+        "CZ":   ("Call if Zero", "0xCC", "6/17"),
+        "CNZ":  ("Call if Not Zero", "0xC4", "6/17"),
+        "CC":   ("Call if Carry", "0xDC", "6/17"),
+        "CNC":  ("Call if No Carry", "0xD4", "6/17"),
+        "CPE":  ("Call if Parity Even", "0xEC", "6/17"),
+        "CPO":  ("Call if Parity Odd", "0xE4", "6/17"),
+        "CM":   ("Call if Minus", "0xFC", "6/17"),
+        "CP":   ("Call if Plus", "0xF4", "6/17"),
+        "RST":  ("Restart (fixed address call)", "0xC7-0xF7", 11),
+        "MVI":  ("Move Immediate to Register", "0x06-0x3E", 7),
+        "LXI":  ("Load Register Pair Immediate", "0x01-0x31", 10),
+        "MOV":  ("Move Register to Register", "0x40-0x77", 5),
+        "INR":  ("Increment Register", "0x04-0x3C", 5),
+        "DCR":  ("Decrement Register", "0x05-0x3D", 5),
+        "INX":  ("Increment Register Pair", "0x03/0x13/0x23/0x33", 5),
+        "DCX":  ("Decrement Register Pair", "0x0B/0x1B/0x2B/0x3B", 5),
+        "ADD":  ("Add Register to A", "0x80-0x87", 4),
+        "ADC":  ("Add with Carry", "0x88-0x8F", 4),
+        "SUB":  ("Subtract Register from A", "0x90-0x97", 4),
+        "SBB":  ("Subtract with Borrow", "0x98-0x9F", 4),
+        "ANA":  ("AND with A", "0xA0-0xA7", 4),
+        "XRA":  ("XOR with A", "0xA8-0xAF", 4),
+        "ORA":  ("OR with A", "0xB0-0xB7", 4),
+        "CMP":  ("Compare with A", "0xB8-0xBF", 4),
+        "ADI":  ("Add Immediate to A", "0xC6", 7),
+        "ACI":  ("Add Immediate with Carry", "0xCE", 7),
+        "SUI":  ("Subtract Immediate from A", "0xD6", 7),
+        "SBI":  ("Subtract Immediate with Borrow", "0xDE", 7),
+        "ANI":  ("AND Immediate with A", "0xE6", 7),
+        "XRI":  ("XOR Immediate with A", "0xEE", 7),
+        "ORI":  ("OR Immediate with A", "0xF6", 7),
+        "CPI":  ("Compare Immediate with A", "0xFE", 7),
+        "DAA":  ("Decimal Adjust Accumulator", "0x27", 4),
+        "CMA":  ("Complement A (NOT)", "0x2F", 4),
+        "CMC":  ("Complement Carry Flag", "0x3F", 4),
+        "STC":  ("Set Carry Flag", "0x37", 4),
+        "RLC":  ("Rotate A Left through Carry", "0x07", 4),
+        "RRC":  ("Rotate A Right through Carry", "0x0F", 4),
+        "RAL":  ("Rotate A Left (CY involved)", "0x17", 4),
+        "RAR":  ("Rotate A Right (CY involved)", "0x1F", 4),
+        "DAD":  ("Add Register Pair to HL", "0x09-0x29", 10),
+        "LDA":  ("Load A from Memory", "0x3A", 13),
+        "STA":  ("Store A to Memory", "0x32", 13),
+        "LHLD": ("Load HL from Memory (16-bit)", "0x2A", 16),
+        "SHLD": ("Store HL to Memory (16-bit)", "0x22", 16),
+        "LDAX": ("Load A from Memory (addr in BC/DE)", "0x0A/0x1A", 7),
+        "STAX": ("Store A to Memory (addr in BC/DE)", "0x02/0x12", 7),
+        "IN":   ("Input from IO Port", "0xDB", 10),
+        "OUT":  ("Output to IO Port", "0xD3", 10),
+        "PUSH": ("Push Register Pair onto Stack", "0xC5-0xF5", 11),
+        "POP":  ("Pop Register Pair from Stack", "0xC1-0xF1", 10),
+        "XCHG": ("Exchange HL and DE", "0xEB", 4),
+        "XTHL": ("Exchange HL with [SP]", "0xE3", 18),
+        "SPHL": ("SP = HL", "0xF9", 5),
+        "PCHL": ("PC = HL", "0xE9", 5),
+        "DSUB": ("8085: Subtract B from A (no flags)", "0x08", 10),
+        "ARHL": ("8085: Arithmetic Right Shift HL", "0x10", 7),
+        "SHLX": ("8085: Shift Left [M] through CY", "0x18", 10),
+        "LHLX": ("8085: Load HL from [M] with shift", "0x20", 4),
+    },
+    "ru": {
+        "NOP":  ("Нет операции", "0x00", 4),
+        "HLT":  ("Остановка CPU", "0x76", 7),
+        "DI":   ("Запрет прерываний", "0x77", 4),
+        "EI":   ("Разрешить прерывания", "0xFB", 4),
+        "SIM":  ("Установка маски прерываний (8085)", "0x04", 4),
+        "RIM":  ("Чтение маски прерываний (8085)", "0x67", 13),
+        "RET":  ("Возврат из подпрограммы", "0xC9", 10),
+        "RZ":   ("Возврат если Z=1", "0xC8", "5/12"),
+        "RNZ":  ("Возврат если Z=0", "0xC0", "5/12"),
+        "RC":   ("Возврат если CY=1", "0xD8", "5/12"),
+        "RNC":  ("Возврат если CY=0", "0xD0", "5/12"),
+        "RPE":  ("Возврат если PE=1", "0xE8", "5/12"),
+        "RPO":  ("Возврат если PE=0", "0xE0", "5/12"),
+        "RM":   ("Возврат если S=1", "0xF8", "5/12"),
+        "RP":   ("Возврат если S=0", "0xF0", "5/12"),
+        "JMP":  ("Безусловный переход", "0xC3", 10),
+        "JZ":   ("Переход если Z=1", "0xC2", 10),
+        "JNZ":  ("Переход если Z=0", "0xC2", 10),
+        "JC":   ("Переход если CY=1", "0xD2", 10),
+        "JNC":  ("Переход если CY=0", "0xD2", 10),
+        "JPE":  ("Переход если PE=1", "0xE2", 10),
+        "JPO":  ("Переход если PE=0", "0xE2", 10),
+        "JM":   ("Переход если S=1", "0xF2", 10),
+        "JP":   ("Переход если S=0", "0xF2", 10),
+        "CALL": ("Вызов подпрограммы", "0xCD", 17),
+        "CZ":   ("Вызов если Z=1", "0xCC", "6/17"),
+        "CNZ":  ("Вызов если Z=0", "0xC4", "6/17"),
+        "CC":   ("Вызов если CY=1", "0xDC", "6/17"),
+        "CNC":  ("Вызов если CY=0", "0xD4", "6/17"),
+        "CPE":  ("Вызов если PE=1", "0xEC", "6/17"),
+        "CPO":  ("Вызов если PE=0", "0xE4", "6/17"),
+        "CM":   ("Вызов если S=1", "0xFC", "6/17"),
+        "CP":   ("Вызов если S=0", "0xF4", "6/17"),
+        "RST":  ("Сброс (вызов фиксированного адреса)", "0xC7-0xF7", 11),
+        "MVI":  ("Загрузка константы в регистр", "0x06-0x3E", 7),
+        "LXI":  ("Загрузка константы в рег. пару", "0x01-0x31", 10),
+        "MOV":  ("Копирование регистра", "0x40-0x77", 5),
+        "INR":  ("Инкремент регистра", "0x04-0x3C", 5),
+        "DCR":  ("Декремент регистра", "0x05-0x3D", 5),
+        "INX":  ("Инкремент рег. пары", "0x03/0x13/0x23/0x33", 5),
+        "DCX":  ("Декремент рег. пары", "0x0B/0x1B/0x2B/0x3B", 5),
+        "ADD":  ("Сложение регистра с A", "0x80-0x87", 4),
+        "ADC":  ("Сложение с переносом", "0x88-0x8F", 4),
+        "SUB":  ("Вычитание регистра из A", "0x90-0x97", 4),
+        "SBB":  ("Вычитание с заёмом", "0x98-0x9F", 4),
+        "ANA":  ("И (AND) с A", "0xA0-0xA7", 4),
+        "XRA":  ("ИСКЛ. ИЛИ (XOR) с A", "0xA8-0xAF", 4),
+        "ORA":  ("ИЛИ (OR) с A", "0xB0-0xB7", 4),
+        "CMP":  ("Сравнение с A", "0xB8-0xBF", 4),
+        "ADI":  ("Сложение константы с A", "0xC6", 7),
+        "ACI":  ("Сложение константы с переносом", "0xCE", 7),
+        "SUI":  ("Вычитание константы из A", "0xD6", 7),
+        "SBI":  ("Вычитание константы с заёмом", "0xDE", 7),
+        "ANI":  ("И (AND) константы с A", "0xE6", 7),
+        "XRI":  ("ИСКЛ. ИЛИ константы с A", "0xEE", 7),
+        "ORI":  ("ИЛИ константы с A", "0xF6", 7),
+        "CPI":  ("Сравнение константы с A", "0xFE", 7),
+        "DAA":  ("Десятичная корректировка A", "0x27", 4),
+        "CMA":  ("Дополнение A (NOT)", "0x2F", 4),
+        "CMC":  ("Инверсия флага CY", "0x3F", 4),
+        "STC":  ("Установка флага CY", "0x37", 4),
+        "RLC":  ("Циклический сдвиг A влево через CY", "0x07", 4),
+        "RRC":  ("Циклический сдвиг A вправо через CY", "0x0F", 4),
+        "RAL":  ("Сдвиг A влево (CY участвует)", "0x17", 4),
+        "RAR":  ("Сдвиг A вправо (CY участвует)", "0x1F", 4),
+        "DAD":  ("Сложение рег. пары с HL", "0x09-0x29", 10),
+        "LDA":  ("Загрузка A из памяти", "0x3A", 13),
+        "STA":  ("Запись A в память", "0x32", 13),
+        "LHLD": ("Загрузка HL из памяти (16 бит)", "0x2A", 16),
+        "SHLD": ("Запись HL в память (16 бит)", "0x22", 16),
+        "LDAX": ("Загрузка A из памяти (адрес в BC/DE)", "0x0A/0x1A", 7),
+        "STAX": ("Запись A в память (адрес в BC/DE)", "0x02/0x12", 7),
+        "IN":   ("Чтение из порта ВВ", "0xDB", 10),
+        "OUT":  ("Запись в порт ВВ", "0xD3", 10),
+        "PUSH": ("Запись рег. пары на стек", "0xC5-0xF5", 11),
+        "POP":  ("Чтение рег. пары из стека", "0xC1-0xF1", 10),
+        "XCHG": ("Обмен HL ↔ DE", "0xEB", 4),
+        "XTHL": ("Обмен HL ↔ [SP]", "0xE3", 18),
+        "SPHL": ("SP ← HL", "0xF9", 5),
+        "PCHL": ("PC ← HL", "0xE9", 5),
+        "DSUB": ("8085: вычитание B из A (без флагов)", "0x08", 10),
+        "ARHL": ("8085: арифм. сдвиг HL вправо", "0x10", 7),
+        "SHLX": ("8085: сдвиг [M] влево через CY", "0x18", 10),
+        "LHLX": ("8085: загрузка HL из [M] со сдвигом", "0x20", 4),
+    },
+}
+
+# 8085 cycle overrides (instructions with different cycles or 8085-only)
+MNEMONIC_CYCLES_8085 = {
+    "INR": 10,
+    "DCR": 10,
+    "SIM": 4,
+    "RIM": 13,
+    "IN": 10,
+    "OUT": 10,
+}
+
+def get_mnemonic_info(mnemonic: str, lang: str = "en", cpu_type: str = "i8080"):
+    """Возвращает (description, opcode, cycles) для мнемоники или None."""
+    table = MNEMONIC_INFO.get(lang, MNEMONIC_INFO["en"])
+    info = table.get(mnemonic.upper())
+    if info and cpu_type == "i8085":
+        override = MNEMONIC_CYCLES_8085.get(mnemonic.upper())
+        if override is not None:
+            info = (info[0], info[1], override)
+    return info
+
+
 
 
 

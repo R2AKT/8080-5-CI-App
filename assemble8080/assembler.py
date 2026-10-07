@@ -699,7 +699,8 @@ class Assembler:
                            'CPU', 'ASEG', 'TITLE', '.TITLE',
                            'ENDR', 'DATA', 'BLKB', 'DISKDEF', 'IRP', 'ASSERT',
                            'DEFW', '.DATA', '.BLKB', '.DISKDEF', '.IRP', '.ASSERT',
-                           '.DEFW', '#DATA', '#ASSERT', 'ASMPC', 'MACRO', 'ALIGN', '.ALIGN'):
+                           '.DEFW', '#DATA', '#ASSERT', 'ASMPC', 'MACRO', 'ALIGN', '.ALIGN',
+                           'BLOCK', '.BLOCK', 'ENDBLOCK', '.ENDBLOCK'):
                 continue
             # END — конец программы
             if mnemonic in ('END', '.END'):
@@ -1147,7 +1148,8 @@ class Assembler:
                            'CPU', 'ASEG', 'TITLE', '.TITLE',
                            'ENDR', 'DATA', 'BLKB', 'DISKDEF', 'IRP', 'ASSERT',
                            'DEFW', '.DATA', '.BLKB', '.DISKDEF', '.IRP', '.ASSERT',
-                           '.DEFW', '#DATA', '#ASSERT', 'ASMPC', 'MACRO', 'ALIGN', '.ALIGN'):
+                           '.DEFW', '#DATA', '#ASSERT', 'ASMPC', 'MACRO', 'ALIGN', '.ALIGN',
+                           'BLOCK', '.BLOCK', 'ENDBLOCK', '.ENDBLOCK'):
                 continue
             # END (optional: END [start])
             if mnemonic in ('END', '.END'):

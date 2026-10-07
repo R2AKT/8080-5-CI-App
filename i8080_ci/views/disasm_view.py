@@ -1,8 +1,8 @@
 """Custom disassembly view with syntax highlighting, jump arrows, and map symbols."""
-from PySide6.QtWidgets import QWidget, QMenu
-from PySide6.QtCore import Qt, QRect, Signal
+from PySide6.QtWidgets import QWidget, QMenu, QToolTip
+from PySide6.QtCore import Qt, QRect, Signal, QEvent
 from PySide6.QtGui import QFont, QColor, QPainter, QPen
-from ..i18n import LANGS
+from ..i18n import LANGS, get_mnemonic_info
 
 
 class DisasmView(QWidget):
@@ -412,3 +412,29 @@ class DisasmView(QWidget):
             self.toggleBreakpoint.emit(addr)
         elif selected == act_cond_bp:
             self.setConditionalBreakpointRequested.emit(addr)
+
+    # ------------------------------------------------------------------
+    # Hover: tooltip на мнемонику
+    # ------------------------------------------------------------------
+
+    def event(self, event):
+        if event.type() == QEvent.ToolTip:
+            pos = event.pos()
+            line_idx = pos.y() // self.line_height
+            if 0 <= line_idx < len(self._display_lines):
+                dl = self._display_lines[line_idx]
+                # dl: (addr, size, asm, undoc, target, is_label, sym_name)
+                asm = dl[2] if len(dl) > 2 else ''
+                mnemonic = asm.split()[0].upper() if asm else ''
+                info = get_mnemonic_info(mnemonic, self.lang)
+                if info:
+                    desc, opcode, cycles = info
+                    tip = f"<b>{mnemonic}</b> — {desc}<br/>"
+                    tip += f"Opcode: <code>{opcode}</code> | Cycles: {cycles}"
+                    QToolTip.showText(event.globalPos(), tip, self)
+                    event.accept()
+                    return True
+            QToolTip.hideText()
+            event.ignore()
+            return False
+        return super().event(event)

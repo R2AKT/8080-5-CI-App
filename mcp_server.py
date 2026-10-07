@@ -656,6 +656,247 @@ class MCPServerManager:
             return "GUI refreshed"
             
         # =============================================
+
+        # =============================================
+        # TOOLS: Ассемблер
+        # =============================================
+        
+        def asm_assemble() -> dict:
+            """Ассемблировать текущий исходный код. Возвращает результат: binary, errors, labels."""
+            try:
+                if not hasattr(self.mw, 'assembler_widget'):
+                    return {"error": "Assembler not initialized"}
+                result = self.mw.assembler_widget._do_assemble(load_to_memory=False)
+                if result is None:
+                    return {"error": "Assembly failed or no source"}
+                return {
+                    "success": True,
+                    "binary_size": len(result.binary) if hasattr(result, 'binary') else 0,
+                    "origin": getattr(result, 'origin', 0),
+                    "errors": list(getattr(result, 'errors', [])),
+                    "labels_count": len(getattr(result, 'symbols', {})),
+                    "global_labels": list(getattr(result, 'global_labels', set())),
+                }
+            except Exception as e:
+                return {"error": str(e)}
+        
+        def asm_get_source() -> str:
+            """Получить текущий исходный код из редактора ассемблера."""
+            try:
+                if not hasattr(self.mw, 'assembler_widget'):
+                    return "Assembler not initialized"
+                editor = self.mw.assembler_widget._current_editor()
+                if editor is None:
+                    return "No active tab"
+                return editor.toPlainText()
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def asm_set_source(source: str) -> str:
+            """Установить исходный код в редактор ассемблера."""
+            try:
+                if not hasattr(self.mw, 'assembler_widget'):
+                    return "Assembler not initialized"
+                editor = self.mw.assembler_widget._current_editor()
+                if editor is None:
+                    return "No active tab"
+                editor.setPlainText(source)
+                return f"Source set ({len(source)} chars)"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def asm_get_errors() -> list:
+            """Получить список ошибок ассемблирования."""
+            try:
+                if not hasattr(self.mw, 'assembler_widget'):
+                    return ["Assembler not initialized"]
+                result = self.mw.assembler_widget._do_assemble(load_to_memory=False)
+                if result is None:
+                    return ["No source or assembly failed"]
+                errors = list(getattr(result, 'errors', []))
+                return errors if errors else ["No errors"]
+            except Exception as e:
+                return [f"Error: {e}"]
+        
+        def asm_get_labels() -> dict:
+            """Получить список меток и их адресов после ассемблирования."""
+            try:
+                if not hasattr(self.mw, 'assembler_widget'):
+                    return {"error": "Assembler not initialized"}
+                result = self.mw.assembler_widget._do_assemble(load_to_memory=False)
+                if result is None:
+                    return {"error": "Assembly failed"}
+                symbols = getattr(result, 'symbols', {})
+                return {k: f"0x{v:04X}" for k, v in sorted(symbols.items(), key=lambda x: x[1])}
+            except Exception as e:
+                return {"error": str(e)}
+        
+        # =============================================
+        # TOOLS: Эмулятор - расширенное управление
+        # =============================================
+        
+        def emu_set_pc(addr: int) -> str:
+            """Установить счётчик программы (PC)."""
+            try:
+                if not hasattr(self.mw, 'emulator'):
+                    return "Emulator not initialized"
+                self.mw.emulator.set_pc(addr)
+                self.mw.safe_call(self.mw.update_emulator_ui)
+                self.mw.safe_call(self.mw.update_emu_disasm_view)
+                return f"PC set to 0x{addr:04X}"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def emu_set_interrupts(mode: int) -> str:
+            """Установить режим прерываний. mode: 0=off, 1=INT 1, 2=INT 2."""
+            try:
+                if not hasattr(self.mw, 'emulator'):
+                    return "Emulator not initialized"
+                if mode not in (0, 1, 2):
+                    return "Invalid mode. Use 0, 1, or 2."
+                self.mw.emulator.interrupts = mode
+                self.mw.safe_call(self.mw.update_emulator_ui)
+                return f"Interrupt mode set to {mode}"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def emu_request_interrupt(vector: int = 0) -> str:
+            """Запросить прерывание с указанным вектором."""
+            try:
+                if not hasattr(self.mw, 'emulator'):
+                    return "Emulator not initialized"
+                self.mw.emulator.request_interrupt(vector)
+                self.mw.safe_call(self.mw.update_emulator_ui)
+                return f"Interrupt requested (vector=0x{vector:02X})"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def emu_read_word(addr: int) -> str:
+            """Прочитать 16-битное слово из памяти эмулятора."""
+            try:
+                if not hasattr(self.mw, 'emulator'):
+                    return "Emulator not initialized"
+                val = self.mw.emulator.read_word(addr)
+                return f"0x{addr:04X} = 0x{val:04X} ({val})"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def emu_write_word(addr: int, val: int) -> str:
+            """Записать 16-битное слово в память эмулятора."""
+            try:
+                if not hasattr(self.mw, 'emulator'):
+                    return "Emulator not initialized"
+                self.mw.emulator.write_word(addr, val)
+                self.mw.safe_call(self.mw.update_emulator_ui)
+                return f"Written 0x{val:04X} to 0x{addr:04X}"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def emu_push(val: int) -> str:
+            """Push 16-битное значение на стек эмулятора."""
+            try:
+                if not hasattr(self.mw, 'emulator'):
+                    return "Emulator not initialized"
+                self.mw.emulator.push(val)
+                self.mw.safe_call(self.mw.update_emulator_ui)
+                return f"Pushed 0x{val:04X}. SP=0x{self.mw.emulator.sp:04X}"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def emu_pop() -> str:
+            """Pop 16-битное значение со стека эмулятора."""
+            try:
+                if not hasattr(self.mw, 'emulator'):
+                    return "Emulator not initialized"
+                val = self.mw.emulator.pop()
+                self.mw.safe_call(self.mw.update_emulator_ui)
+                return f"Popped 0x{val:04X}. SP=0x{self.mw.emulator.sp:04X}"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        # =============================================
+        # TOOLS: CPU и система
+        # =============================================
+        
+        def get_cpu_type() -> str:
+            """Получить текущий тип CPU (8080 или 8085)."""
+            try:
+                if hasattr(self.mw, 'emulator'):
+                    return self.mw.emulator.cpu_type
+                return "8080"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def set_cpu_type(cpu_type: str) -> str:
+            """Установить тип CPU: 8080 или 8085."""
+            try:
+                cpu_type = cpu_type.upper()
+                if cpu_type not in ('8080', '8085'):
+                    return "Invalid CPU type. Use '8080' or '8085'."
+                self.mw._set_cpu_type(cpu_type)
+                return f"CPU type set to {cpu_type}"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def get_version() -> str:
+            """Получить версию приложения."""
+            try:
+                from version import get_version_string
+                return get_version_string()
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def get_language() -> str:
+            """Получить текущий язык интерфейса."""
+            try:
+                from common.i18n import get_system_language
+                return get_system_language()
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def set_language(lang: str) -> str:
+            """Установить язык интерфейса: en или ru."""
+            try:
+                if lang not in ('en', 'ru'):
+                    return "Invalid language. Use 'en' or 'ru'."
+                from common.i18n import set_language as _set_lang
+                _set_lang(lang)
+                self.mw.current_lang = lang
+                self.mw.settings.setValue("language", lang)
+                self.mw.retranslate_ui()
+                return f"Language set to {lang}"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        # =============================================
+        # TOOLS: Скрипты и автоматизация
+        # =============================================
+        
+        def run_script(script_text: str) -> str:
+            """Выполнить скрипт автоматизации (Python). Доступ к mw (MainWindow)."""
+            try:
+                if not hasattr(self.mw, 'run_script'):
+                    return "Script engine not available"
+                result = self.mw.run_script(script_text)
+                return str(result) if result else "Script executed"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def get_watch_list() -> list:
+            """Получить список watch-выражений."""
+            try:
+                if not hasattr(self.mw, 'watch_table'):
+                    return []
+                result = []
+                for row in range(self.mw.watch_table.rowCount()):
+                    name = self.mw.watch_table.item(row, 0)
+                    value = self.mw.watch_table.item(row, 1)
+                    if name and value:
+                        result.append(f"{name.text()} = {value.text()}")
+                return result if result else ["No watch expressions"]
+            except Exception as e:
+                return [f"Error: {e}"]
+        
         # РЕГИСТРАЦИЯ TOOLS (явная)
         # =============================================
         
@@ -710,6 +951,25 @@ class MCPServerManager:
         mcp.tool()(emu_trace_clear)
         mcp.tool()(emu_trace_get)
         mcp.tool()(emu_trace_export)
+        mcp.tool()(asm_assemble)
+        mcp.tool()(asm_get_source)
+        mcp.tool()(asm_set_source)
+        mcp.tool()(asm_get_errors)
+        mcp.tool()(asm_get_labels)
+        mcp.tool()(emu_set_pc)
+        mcp.tool()(emu_set_interrupts)
+        mcp.tool()(emu_request_interrupt)
+        mcp.tool()(emu_read_word)
+        mcp.tool()(emu_write_word)
+        mcp.tool()(emu_push)
+        mcp.tool()(emu_pop)
+        mcp.tool()(get_cpu_type)
+        mcp.tool()(set_cpu_type)
+        mcp.tool()(get_version)
+        mcp.tool()(get_language)
+        mcp.tool()(set_language)
+        mcp.tool()(run_script)
+        mcp.tool()(get_watch_list)
         
         # =============================================
         # RESOURCES
