@@ -1,7 +1,7 @@
 {
   "format": "i8080-obj-v1",
   "name": "main",
-  "source": "main.asm",
+  "source": "C:/\u041c\u0435\u0433\u0430-80/8080-5 CI/i8080-5_CI-AI-analysis/assembler_example/04_multifile/main.asm",
   "org": 256,
   "size": 6,
   "data": "3e42cd000076",
