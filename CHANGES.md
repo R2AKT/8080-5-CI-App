@@ -1,6 +1,25 @@
 # Changelog / Журнал изменений
 
 
+## v2.1.4 (2026-10-08)
+
+### New Features
+- **File encoding auto-detection and conversion** (new module `common/encoding.py`):
+  - On open: BOM check (UTF-8/16/32) → strict UTF-8 decode → charset_normalizer detection
+  - Heuristic: catch-all result (latin-1/iso-8859-1) + high bytes → CP1251 (Windows Russian)
+  - Files opened in non-UTF-8 encoding are automatically converted to UTF-8 on first save
+  - Log notification when a file was opened in a different encoding
+  - Applied to: assembler files (.asm/.lnk), workspace files, sequence files, script files, .hex compare, breakpoints JSON
+- All files are now saved as UTF-8 (no BOM) — stable, unambiguous encoding
+
+### Bug Fixes
+- Fixed `_on_text_changed` AttributeError: `ti.get('file_path', '')` returned `None` for new tabs (key exists with value `None`), crashing `.lower()` — now uses `(ti.get('file_path') or '')`
+
+### Tests
+- 23/23 encoding detection tests passed (UTF-8, ASCII, CP1251, KOI8-R, UTF-16 BOM, UTF-8 BOM, full open/save cycle)
+- 921/0 project tests passed
+- GUI smoke test passed
+
 ## v2.1.2 (2026-10-06)
 
 ### Bug Fixes

@@ -38,6 +38,7 @@ from assemble8080.objfile import obj_from_asm_result, save_obj, load_obj
 from assemble8080.linker import link, link_from_script
 from assemble8080.mapfile import parse_map
 from common.i18n import LANGS, get_system_language, get_mnemonic_info
+from common.encoding import read_text_auto
 from common.themes import (
     get_editor_style, get_syntax_colors, ARROW_COLORS,
     EDITOR_DARK, EDITOR_LIGHT,
@@ -1130,7 +1131,7 @@ class AssemblerWidget(QWidget):
     # TAB MANAGEMENT
     # =============================================
 
-    def _add_tab(self, file_path=None, content=None):
+    def _add_tab(self, file_path=None, content=None, encoding=None):
         """Add a new tab with optional file path and content."""
         editor = CodeEditor(self)
         editor.setFont(QFont("Consolas", 11))
@@ -1152,6 +1153,7 @@ class AssemblerWidget(QWidget):
             'highlighter': highlighter,
             'file_path': file_path,
             'modified': False,
+            'encoding': encoding,  # original file encoding (None = new/UTF-8)
         }
         
         # Connect modified tracking
@@ -1288,13 +1290,19 @@ class AssemblerWidget(QWidget):
         
         editor.expand_all_folds()
         try:
-            with open(file_path, 'w', encoding='utf-8') as f:
+            # Always save as UTF-8 (no BOM). If the file was opened in
+            # another encoding, this is the moment it gets converted on disk.
+            with open(file_path, 'w', encoding='utf-8', newline='') as f:
                 f.write(editor.toPlainText())
             editor.mark_saved()
             editor.document().setModified(False)
             self.tab_widget.setTabText(index, self._tab_title(file_path, False))
             if self.main_window is not None:
                 self.main_window.log(_tr("asm_saved").format(path=file_path))
+                orig_enc = tab_info.get('encoding')
+                if orig_enc and not orig_enc.startswith('utf-8'):
+                    self.main_window.log(_tr("asm_saved_utf8").format(path=file_path))
+                    tab_info['encoding'] = 'utf-8'
         except Exception as e:
             QMessageBox.critical(self, _tr("asm_err_title"),
                                  _tr("asm_save_err").format(e=e))
@@ -1330,9 +1338,8 @@ class AssemblerWidget(QWidget):
                 full_path = os.path.join(ws_dir, fpath) if not os.path.isabs(fpath) else fpath
                 if os.path.exists(full_path):
                     try:
-                        with open(full_path, 'r', encoding='utf-8') as f:
-                            content = f.read()
-                        self._add_tab(full_path, content)
+                        content, enc, converted = read_text_auto(full_path)
+                        self._add_tab(full_path, content, encoding=enc)
                     except Exception:
                         pass
                 else:
@@ -1500,7 +1507,7 @@ class AssemblerWidget(QWidget):
 
         # Real-time validation for .lnk files
         ti = self._current_tab_info()
-        if ti and ti.get('file_path', '').lower().endswith('.lnk'):
+        if ti and (ti.get('file_path') or '').lower().endswith('.lnk'):
             errors = self._validate_lnk_file(editor)
             self._update_errors(errors)
 
@@ -1751,11 +1758,12 @@ class AssemblerWidget(QWidget):
             _tr("asm_file_filter"))
         if path:
             try:
-                with open(path, 'r', encoding='utf-8') as f:
-                    content = f.read()
-                self._add_tab(path, content)
+                content, enc, converted = read_text_auto(path)
+                self._add_tab(path, content, encoding=enc)
                 if self.main_window is not None:
                     self.main_window.log(_tr("asm_loaded").format(path=path))
+                    if converted:
+                        self.main_window.log(_tr("asm_encoding_converted").format(enc=enc))
             except Exception as e:
                 QMessageBox.critical(self, _tr("asm_err_title"),
                                      _tr("asm_load_err").format(e=e))
