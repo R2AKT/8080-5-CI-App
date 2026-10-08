@@ -2,6 +2,7 @@
 Препроцессор ассемблера.
 Поддерживает:
   - #include "file.inc"  — включение файлов
+  - include "file.inc" / .include "file.inc" — включение файлов (M80-стиль)
   - #define NAME value     — макросы-константы
   - #if / #else / #endif   — условная компиляция
   - Макросы MACRO / ENDM
@@ -205,8 +206,11 @@ class Preprocessor:
             if re.match(r'^(XDEF|XREF|SECTION|ASEG|TITLE|\.TITLE|PUBLIC|EXTERN|MODULE)\b', stripped, re.IGNORECASE):
                 i += 1
                 continue
-            # === Обработка M80 include (без #) ===
-            m_inc = re.match(r'^include\s+["\']([^"\']+)["\']', stripped, re.IGNORECASE)
+            # === Обработка M80 include (без #), включая .include ===
+            # Поддерживает: include "file", .include "file", include file, .include file
+            m_inc = re.match(r'^\.?include\s+["\']([^"\']+)["\']', stripped, re.IGNORECASE)
+            if not m_inc:
+                m_inc = re.match(r'^\.?include\s+(\S+)', stripped, re.IGNORECASE)
             if m_inc:
                 inc_file = m_inc.group(1)
                 cur_dir = os.path.dirname(os.path.abspath(filename)) if filename != '<input>' else None

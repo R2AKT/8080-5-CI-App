@@ -1,6 +1,18 @@
 # Changelog / Журнал изменений
 
 
+## v2.1.5 (2026-10-08)
+
+### New Features
+- **`.include` pseudo-command** now handled identically to `#include` / `include` (M80-style):
+  - Supports: `include "file"`, `.include "file"`, `include file`, `.include file`
+  - All three forms (#include, include, .include) are equivalent
+- **Full pseudo-command & directive reference** added to ASSEMBLER_GUIDE.md (section 10.5):
+  - Complete tables: data/address, constants, structure, conditional, macros, file inclusion, CPU type, preprocessor, linker, no-op directives
+
+### Tests
+- 7/7 .include tests passed (quoted, unquoted, M80, #include, full assemble)
+
 ## v2.1.4 (2026-10-08)
 
 ### New Features
