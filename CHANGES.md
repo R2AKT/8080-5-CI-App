@@ -1,6 +1,55 @@
 # Changelog / Журнал изменений
 
 
+## v2.1.6 (2026-10-08)
+
+### Documentation
+- **Complete & verified pseudo-command / directive reference** (ASSEMBLER_GUIDE.md, section 10.5):
+  - Added the missing `BLOCK` / `.BLOCK` … `ENDBLOCK` / `.ENDBLOCK` (M80 data block)
+  - Moved `DATA`, `BLKB`, `DEFW`, `XDEF`/`XREF`, `SECTION`/`ASEG`, `TITLE`/`MODULE`, `LOCAL`/`ENDLOCAL` to the no-op table (recognized but skipped in code)
+  - Added `INCBIN` / `.INCBIN` to the data-directives table
+  - Note added: `IF`/`ELSE`/`ENDIF`, `MACRO`/`ENDM`, `REPT`, `CPU` are no-op in the assembler but actually processed by the preprocessor
+- **USER_GUIDE.md** (sections 8.6 EN/RU, 8.10 EN/RU):
+  - Added `INCBIN` to the directives quick reference
+  - Added `.include` to the preprocessor include line (all three forms equivalent)
+  - Added pointer to the full reference (ASSEMBLER_GUIDE.md 10.5)
+
+### Verification
+- Cross-checked the full no-op list against assembler.py code (47 directives)
+- Confirmed `BLKB`, `DEFW`, `DATA` are no-ops (not in the real DS/DB/DW checks)
+- Confirmed `INCBIN` is actually processed (binary file insertion)
+
+## v2.1.5 (2026-10-08)
+
+### New Features
+- **`.include` pseudo-command** now handled identically to `#include` / `include` (M80-style):
+  - Supports: `include "file"`, `.include "file"`, `include file`, `.include file`
+  - All three forms (#include, include, .include) are equivalent
+- **Full pseudo-command & directive reference** added to ASSEMBLER_GUIDE.md (section 10.5):
+  - Complete tables: data/address, constants, structure, conditional, macros, file inclusion, CPU type, preprocessor, linker, no-op directives
+
+### Tests
+- 7/7 .include tests passed (quoted, unquoted, M80, #include, full assemble)
+
+## v2.1.4 (2026-10-08)
+
+### New Features
+- **File encoding auto-detection and conversion** (new module `common/encoding.py`):
+  - On open: BOM check (UTF-8/16/32) → strict UTF-8 decode → charset_normalizer detection
+  - Heuristic: catch-all result (latin-1/iso-8859-1) + high bytes → CP1251 (Windows Russian)
+  - Files opened in non-UTF-8 encoding are automatically converted to UTF-8 on first save
+  - Log notification when a file was opened in a different encoding
+  - Applied to: assembler files (.asm/.lnk), workspace files, sequence files, script files, .hex compare, breakpoints JSON
+- All files are now saved as UTF-8 (no BOM) — stable, unambiguous encoding
+
+### Bug Fixes
+- Fixed `_on_text_changed` AttributeError: `ti.get('file_path', '')` returned `None` for new tabs (key exists with value `None`), crashing `.lower()` — now uses `(ti.get('file_path') or '')`
+
+### Tests
+- 23/23 encoding detection tests passed (UTF-8, ASCII, CP1251, KOI8-R, UTF-16 BOM, UTF-8 BOM, full open/save cycle)
+- 921/0 project tests passed
+- GUI smoke test passed
+
 ## v2.1.2 (2026-10-06)
 
 ### Bug Fixes

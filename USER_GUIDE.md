@@ -397,9 +397,12 @@ On the right. After a successful assembly it lists all labels with their address
 | `END` | End of program (optional) |
 | `EXPORT name` / `PUBLIC name` | Mark a symbol as exported (visible to the linker) |
 | `IMPORT name` / `EXTERN name` | Declare an external symbol (defined in another module) |
+| `INCBIN "file"` / `.INCBIN "file"` | Insert a binary file into the byte stream |
 | `#path dir` / `.path dir` | Add a directory to the include search path |
 
 Dot-prefixed forms are also accepted: `.org`, `.db`, `.dw`, `.ds`, `.equ`, `.end`, `.byte`, `.word`, `.space`, `.ascii`, `.text`.
+
+> **Full reference:** the complete list of all pseudo-commands and directives (including no-op compatibility directives such as `BLOCK`/`ENDBLOCK`, `DATA`, `BLKB`, `DEFW`, `XDEF`/`XREF`, `SECTION`, `TITLE`, etc.) is in **ASSEMBLER_GUIDE.md, section 10.5**.
 
 ### 8.7. Comments and Special Symbols / Комментарии и спецсимволы
 
@@ -435,7 +438,7 @@ DB __date__, __TIME__        ; build date / time
 
 | Feature | Syntax |
 |---|---|
-| Include file | `#include "file.inc"` or `include "file.inc"` |
+| Include file | `#include "file.inc"` / `include "file.inc"` / `.include "file.inc"` (all equivalent) |
 | Constant | `#define NAME value` |
 | Conditional | `#if expr` / `#elif expr` / `#else` / `#endif` |
 | Conditional (no `#`) | `IF expr` / `ELSE` / `ENDIF` |
@@ -591,9 +594,12 @@ This makes disassembly of linked programs much more readable.
 | `END` | Конец программы (необязательно) |
 | `EXPORT name` / `PUBLIC name` | Отметить символ как экспортируемый (видим для линковщика) |
 | `IMPORT name` / `EXTERN name` | Объявить внешний символ (определён в другом модуле) |
+| `INCBIN "file"` / `.INCBIN "file"` | Вставить бинарный файл в поток байтов |
 | `#path dir` / `.path dir` | Добавить каталог в путь поиска include |
 
 Принимаются и формы с точкой: `.org`, `.db`, `.dw`, `.ds`, `.equ`, `.end`, `.byte`, `.word`, `.space`, `.ascii`, `.text`.
+
+> **Полный справочник:** полный перечень всех псевдокоманд и директив (включая no-op директивы совместимости — `BLOCK`/`ENDBLOCK`, `DATA`, `BLKB`, `DEFW`, `XDEF`/`XREF`, `SECTION`, `TITLE` и др.) — в **ASSEMBLER_GUIDE.md, раздел 10.5**.
 
 ### 8.7. Комментарии и спецсимволы
 
@@ -629,7 +635,7 @@ DB __date__, __TIME__        ; дата / время сборки
 
 | Возможность | Синтаксис |
 |---|---|
-| Включение файла | `#include "file.inc"` или `include "file.inc"` |
+| Включение файла | `#include "file.inc"` / `include "file.inc"` / `.include "file.inc"` (все эквивалентны) |
 | Константа | `#define NAME value` |
 | Условие | `#if expr` / `#elif expr` / `#else` / `#endif` |
 | Условие (без `#`) | `IF expr` / `ELSE` / `ENDIF` |

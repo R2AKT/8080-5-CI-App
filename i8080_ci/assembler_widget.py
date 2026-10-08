@@ -38,6 +38,7 @@ from assemble8080.objfile import obj_from_asm_result, save_obj, load_obj
 from assemble8080.linker import link, link_from_script
 from assemble8080.mapfile import parse_map
 from common.i18n import LANGS, get_system_language, get_mnemonic_info
+from common.encoding import read_text_auto
 from common.themes import (
     get_editor_style, get_syntax_colors, ARROW_COLORS,
     EDITOR_DARK, EDITOR_LIGHT,
@@ -432,6 +433,45 @@ class CodeEditor(QPlainTextEdit):
                                Qt.Key_Tab, Qt.Key_Backtab):
                 event.ignore()
                 return
+
+        # Tab / Shift+Tab: indent/unindent
+        if event.key() == Qt.Key_Tab and not (event.modifiers() & Qt.ShiftModifier):
+            sel = self.textCursor()
+            if sel.hasSelection():
+                # Indent all selected lines
+                sel.select(QTextCursor.LineUnderCursor)
+                start_block = sel.selectionStart().blockNumber()
+                end_block = sel.selectionEnd().blockNumber()
+                for block_num in range(start_block, end_block + 1):
+                    c = QTextCursor(self.document().findBlockByNumber(block_num))
+                    c.insertText('\t')
+                event.accept()
+                return
+            # No selection: let default tab behavior happen (insert tab)
+        elif event.key() == Qt.Key_Backtab or (event.key() == Qt.Key_Tab and (event.modifiers() & Qt.ShiftModifier)):
+            # Shift+Tab: unindent
+            sel = self.textCursor()
+            if sel.hasSelection():
+                # Unindent all selected lines
+                start_block = sel.selectionStart().blockNumber()
+                end_block = sel.selectionEnd().blockNumber()
+                for block_num in range(start_block, end_block + 1):
+                    c2 = QTextCursor(self.document().findBlockByNumber(block_num))
+                    c2.movePosition(QTextCursor.StartOfLine)
+                    c2.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
+                    if c2.selectedText() == '\t':
+                        c2.removeSelectedText()
+                event.accept()
+                return
+            else:
+                # Single line: remove one leading tab
+                c = self.textCursor()
+                c.movePosition(QTextCursor.StartOfLine)
+                c.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
+                if c.selectedText() == '\t':
+                    c.removeSelectedText()
+                    event.accept()
+                    return
 
         super().keyPressEvent(event)
 
@@ -1091,7 +1131,7 @@ class AssemblerWidget(QWidget):
     # TAB MANAGEMENT
     # =============================================
 
-    def _add_tab(self, file_path=None, content=None):
+    def _add_tab(self, file_path=None, content=None, encoding=None):
         """Add a new tab with optional file path and content."""
         editor = CodeEditor(self)
         editor.setFont(QFont("Consolas", 11))
@@ -1113,6 +1153,7 @@ class AssemblerWidget(QWidget):
             'highlighter': highlighter,
             'file_path': file_path,
             'modified': False,
+            'encoding': encoding,  # original file encoding (None = new/UTF-8)
         }
         
         # Connect modified tracking
@@ -1249,13 +1290,19 @@ class AssemblerWidget(QWidget):
         
         editor.expand_all_folds()
         try:
-            with open(file_path, 'w', encoding='utf-8') as f:
+            # Always save as UTF-8 (no BOM). If the file was opened in
+            # another encoding, this is the moment it gets converted on disk.
+            with open(file_path, 'w', encoding='utf-8', newline='') as f:
                 f.write(editor.toPlainText())
             editor.mark_saved()
             editor.document().setModified(False)
             self.tab_widget.setTabText(index, self._tab_title(file_path, False))
             if self.main_window is not None:
                 self.main_window.log(_tr("asm_saved").format(path=file_path))
+                orig_enc = tab_info.get('encoding')
+                if orig_enc and not orig_enc.startswith('utf-8'):
+                    self.main_window.log(_tr("asm_saved_utf8").format(path=file_path))
+                    tab_info['encoding'] = 'utf-8'
         except Exception as e:
             QMessageBox.critical(self, _tr("asm_err_title"),
                                  _tr("asm_save_err").format(e=e))
@@ -1291,9 +1338,8 @@ class AssemblerWidget(QWidget):
                 full_path = os.path.join(ws_dir, fpath) if not os.path.isabs(fpath) else fpath
                 if os.path.exists(full_path):
                     try:
-                        with open(full_path, 'r', encoding='utf-8') as f:
-                            content = f.read()
-                        self._add_tab(full_path, content)
+                        content, enc, converted = read_text_auto(full_path)
+                        self._add_tab(full_path, content, encoding=enc)
                     except Exception:
                         pass
                 else:
@@ -1458,6 +1504,54 @@ class AssemblerWidget(QWidget):
     def _on_text_changed(self, editor):
         """On text change — recompute jumps and update autocomplete."""
         self._update_tab_labels(editor)
+
+        # Real-time validation for .lnk files
+        ti = self._current_tab_info()
+        if ti and (ti.get('file_path') or '').lower().endswith('.lnk'):
+            errors = self._validate_lnk_file(editor)
+            self._update_errors(errors)
+
+    # =============================================
+    # LNK FILE VALIDATION
+    # =============================================
+
+    def _validate_lnk_file(self, editor):
+        """Validate .lnk file in real-time. Returns list of (line, message) errors."""
+        errors = []
+        try:
+            from assemble8080.linker import parse_link_script
+            text = editor.toPlainText()
+            config = parse_link_script(text)
+
+            # Check that INPUT files exist
+            file_path = self._current_tab_info()['file_path'] if self._current_tab_info() else None
+            if file_path:
+                import os
+                script_dir = os.path.dirname(os.path.abspath(file_path))
+                for inp in config.get("inputs", []):
+                    inp_path = inp if os.path.isabs(inp) else os.path.join(script_dir, inp)
+                    if not os.path.exists(inp_path):
+                        # Find the line number
+                        for i, line in enumerate(text.split('\n')):
+                            if line.strip().upper().startswith('INPUT') and inp in line:
+                                errors.append((i + 1, f"Input file not found: {inp}"))
+                                break
+                        else:
+                            errors.append((1, f"Input file not found: {inp}"))
+
+            # Check that OUTPUT is specified (non-default)
+            if config.get("output") == "output.bin":
+                # Check if OUTPUT line exists
+                has_output = False
+                for line in text.split('\n'):
+                    if line.strip().upper().startswith('OUTPUT'):
+                        has_output = True
+                        break
+                if not has_output:
+                    errors.append((1, "OUTPUT not specified"))
+        except Exception:
+            pass
+        return errors
 
     # =============================================
     # ERROR PANEL UPDATE
@@ -1664,11 +1758,12 @@ class AssemblerWidget(QWidget):
             _tr("asm_file_filter"))
         if path:
             try:
-                with open(path, 'r', encoding='utf-8') as f:
-                    content = f.read()
-                self._add_tab(path, content)
+                content, enc, converted = read_text_auto(path)
+                self._add_tab(path, content, encoding=enc)
                 if self.main_window is not None:
                     self.main_window.log(_tr("asm_loaded").format(path=path))
+                    if converted:
+                        self.main_window.log(_tr("asm_encoding_converted").format(enc=enc))
             except Exception as e:
                 QMessageBox.critical(self, _tr("asm_err_title"),
                                      _tr("asm_load_err").format(e=e))
@@ -1699,6 +1794,12 @@ class AssemblerWidget(QWidget):
             return
 
         file_path = self._current_tab_info()['file_path'] if self._current_tab_info() else None
+
+        # Variant D: auto-detect .lnk files
+        if file_path and file_path.lower().endswith('.lnk'):
+            self._do_link_from_current_tab()
+            return
+
         try:
             result = self.assembler.assemble(source, file_path or '')
         except Exception:
@@ -1815,6 +1916,30 @@ class AssemblerWidget(QWidget):
         except Exception as e:
             if self.main_window is not None:
                 self.main_window.log(_tr("asm_map_auto_err").format(e=e))
+
+    def _do_link_from_current_tab(self):
+        """Link using the current .lnk tab as linker script."""
+        editor = self._current_editor()
+        if not editor:
+            return
+        file_path = self._current_tab_info()['file_path']
+        try:
+            from assemble8080.linker import link_from_script
+            result = link_from_script(file_path)
+            if not result.success:
+                if self.main_window is not None:
+                    self.main_window.log(_tr("asm_link_errors").format(n=len(result.errors)))
+                    for err in result.errors:
+                        self.main_window.log(_tr("asm_link_err").format(msg=err.message))
+                return
+            if self.main_window is not None:
+                self.main_window.log(_tr("asm_link_success").format(n=len(result.binary), path=file_path))
+            # Load binary to memory
+            if result.binary:
+                self._load_to_memory(result.binary, result.origin)
+        except Exception as e:
+            if self.main_window is not None:
+                self.main_window.log(_tr("asm_link_fail").format(e=e))
 
     def _load_to_memory(self, binary, origin):
         """Load assembled binary into emulator memory."""

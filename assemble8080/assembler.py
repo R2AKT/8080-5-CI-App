@@ -600,7 +600,7 @@ class Assembler:
         if m:
             candidate = m.group(1).upper()
             # Проверяем, что это не мнемоника
-            if candidate not in ALL_MNEMONICS and candidate not in ('ORG', 'DB', 'DW', 'DS', 'EQU', 'END', 'DM', 'BYTE', 'WORD', 'DEFL', 'REPT', 'ENDM', 'XDEF', 'XREF', 'SECTION', 'IF', 'ENDIF', 'ELSE', 'LOCAL', 'ENDLOCAL', 'ERROR', 'MACRO', 'ENDM', 'CPU', 'ASEG', 'TITLE', 'DEF', 'EXPORT', 'IMPORT', 'EXTERN', 'PUBLIC', 'ASM8080', 'ASM8085'):
+            if candidate not in ALL_MNEMONICS and candidate not in ('ORG', 'DB', 'DW', 'DS', 'EQU', 'END', 'DM', 'BYTE', 'WORD', 'DEFL', 'REPT', 'ENDM', 'XDEF', 'XREF', 'SECTION', 'IF', 'ENDIF', 'ELSE', 'LOCAL', 'ENDLOCAL', 'ERROR', 'MACRO', 'ENDM', 'CPU', 'ASEG', 'TITLE', 'DEF', 'EXPORT', 'IMPORT', 'EXTERN', 'PUBLIC', 'ASM8080', 'ASM8085', 'INCBIN', '.INCBIN'):
                 return m.group(1), False, m.group(2)
         # Метки нет
         return None, False, line
@@ -700,7 +700,8 @@ class Assembler:
                            'ENDR', 'DATA', 'BLKB', 'DISKDEF', 'IRP', 'ASSERT',
                            'DEFW', '.DATA', '.BLKB', '.DISKDEF', '.IRP', '.ASSERT',
                            '.DEFW', '#DATA', '#ASSERT', 'ASMPC', 'MACRO', 'ALIGN', '.ALIGN',
-                           'BLOCK', '.BLOCK', 'ENDBLOCK', '.ENDBLOCK'):
+                           'BLOCK', '.BLOCK', 'ENDBLOCK', '.ENDBLOCK',
+                            'INCBIN', '.INCBIN'):
                 continue
             # END — конец программы
             if mnemonic in ('END', '.END'):
@@ -1127,6 +1128,29 @@ class Assembler:
                 self.pc = location
                 continue
 
+            # INCBIN — include binary file
+            if mnemonic in ('INCBIN', '.INCBIN'):
+                bin_filename = operand.strip().strip('"').strip("'")
+                if not bin_filename:
+                    self._error(line_num, 'INCBIN: missing filename')
+                    continue
+                # Resolve path relative to source file directory
+                src_dir = os.path.dirname(self._filename) if self._filename else '.'
+                bin_path = bin_filename if os.path.isabs(bin_filename) else os.path.join(src_dir, bin_filename)
+                if not os.path.exists(bin_path):
+                    self._error(line_num, f'INCBIN: file not found: {bin_path}')
+                    continue
+                try:
+                    with open(bin_path, 'rb') as bf:
+                        bin_data = bf.read()
+                    self._write(bytearray(bin_data))
+                    self.listing.append((location, bytes(bin_data), text.strip()))
+                    location += len(bin_data)
+                    self.pc = location
+                except Exception as e:
+                    self._error(line_num, f'INCBIN: error reading {bin_path}: {e}')
+                continue
+
             # XDEF/XREF/SECTION/IF/ENDIF/ELSE/LOCAL/ENDLOCAL/ERROR — no-op
             # Директивы типа процессора: .8080/.8085/.asm8080/.asm8085/CPU
             if mnemonic in ('8080', 'ASM8080'):
@@ -1149,7 +1173,8 @@ class Assembler:
                            'ENDR', 'DATA', 'BLKB', 'DISKDEF', 'IRP', 'ASSERT',
                            'DEFW', '.DATA', '.BLKB', '.DISKDEF', '.IRP', '.ASSERT',
                            '.DEFW', '#DATA', '#ASSERT', 'ASMPC', 'MACRO', 'ALIGN', '.ALIGN',
-                           'BLOCK', '.BLOCK', 'ENDBLOCK', '.ENDBLOCK'):
+                           'BLOCK', '.BLOCK', 'ENDBLOCK', '.ENDBLOCK',
+                            'INCBIN', '.INCBIN'):
                 continue
             # END (optional: END [start])
             if mnemonic in ('END', '.END'):
