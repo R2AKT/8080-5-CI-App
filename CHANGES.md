@@ -1,6 +1,24 @@
 # Changelog / Журнал изменений
 
 
+## v2.1.6 (2026-10-08)
+
+### Documentation
+- **Complete & verified pseudo-command / directive reference** (ASSEMBLER_GUIDE.md, section 10.5):
+  - Added the missing `BLOCK` / `.BLOCK` … `ENDBLOCK` / `.ENDBLOCK` (M80 data block)
+  - Moved `DATA`, `BLKB`, `DEFW`, `XDEF`/`XREF`, `SECTION`/`ASEG`, `TITLE`/`MODULE`, `LOCAL`/`ENDLOCAL` to the no-op table (recognized but skipped in code)
+  - Added `INCBIN` / `.INCBIN` to the data-directives table
+  - Note added: `IF`/`ELSE`/`ENDIF`, `MACRO`/`ENDM`, `REPT`, `CPU` are no-op in the assembler but actually processed by the preprocessor
+- **USER_GUIDE.md** (sections 8.6 EN/RU, 8.10 EN/RU):
+  - Added `INCBIN` to the directives quick reference
+  - Added `.include` to the preprocessor include line (all three forms equivalent)
+  - Added pointer to the full reference (ASSEMBLER_GUIDE.md 10.5)
+
+### Verification
+- Cross-checked the full no-op list against assembler.py code (47 directives)
+- Confirmed `BLKB`, `DEFW`, `DATA` are no-ops (not in the real DS/DB/DW checks)
+- Confirmed `INCBIN` is actually processed (binary file insertion)
+
 ## v2.1.5 (2026-10-08)
 
 ### New Features
