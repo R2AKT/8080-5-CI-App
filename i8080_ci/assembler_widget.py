@@ -439,9 +439,8 @@ class CodeEditor(QPlainTextEdit):
             sel = self.textCursor()
             if sel.hasSelection():
                 # Indent all selected lines
-                sel.select(QTextCursor.LineUnderCursor)
-                start_block = sel.selectionStart().blockNumber()
-                end_block = sel.selectionEnd().blockNumber()
+                start_block = self.document().findBlock(sel.selectionStart()).blockNumber()
+                end_block = self.document().findBlock(sel.selectionEnd()).blockNumber()
                 for block_num in range(start_block, end_block + 1):
                     c = QTextCursor(self.document().findBlockByNumber(block_num))
                     c.insertText('\t')
@@ -453,8 +452,8 @@ class CodeEditor(QPlainTextEdit):
             sel = self.textCursor()
             if sel.hasSelection():
                 # Unindent all selected lines
-                start_block = sel.selectionStart().blockNumber()
-                end_block = sel.selectionEnd().blockNumber()
+                start_block = self.document().findBlock(sel.selectionStart()).blockNumber()
+                end_block = self.document().findBlock(sel.selectionEnd()).blockNumber()
                 for block_num in range(start_block, end_block + 1):
                     c2 = QTextCursor(self.document().findBlockByNumber(block_num))
                     c2.movePosition(QTextCursor.StartOfLine)
