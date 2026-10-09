@@ -521,9 +521,12 @@ pip install mcp uvicorn starlette pydantic pydantic-settings
 <tr><td><code>END</code></td><td>End of program (optional)</td></tr>
 <tr><td><code>EXPORT name</code> / <code>PUBLIC name</code></td><td>Mark a symbol as exported (visible to the linker)</td></tr>
 <tr><td><code>IMPORT name</code> / <code>EXTERN name</code></td><td>Declare an external symbol (defined in another module)</td></tr>
+<tr><td><code>INCBIN "file"</code> / <code>.INCBIN "file"</code></td><td>Insert a binary file into the byte stream</td></tr>
 <tr><td><code>#path dir</code> / <code>.path dir</code></td><td>Add a directory to the include search path</td></tr>
 </table>
 <p>Dot-prefixed forms are also accepted: <code>.org</code>, <code>.db</code>, <code>.dw</code>, <code>.ds</code>, <code>.equ</code>, <code>.end</code>, <code>.byte</code>, <code>.word</code>, <code>.space</code>, <code>.ascii</code>, <code>.text</code>.</p>
+<blockquote><strong>Full reference:</strong> the complete list of all pseudo-commands and directives (including no-op compatibility directives such as <code>BLOCK</code>/<code>ENDBLOCK</code>, <code>DATA</code>, <code>BLKB</code>, <code>DEFW</code>, <code>XDEF</code>/<code>XREF</code>, <code>SECTION</code>, <code>TITLE</code>, etc.) is in <strong>ASSEMBLER_GUIDE.md, section 10.5</strong>.
+</blockquote>
 <h3 id="87-comments-and-special-symbols--комментарии-и-спецсимволы">8.7. Comments and Special Symbols / Комментарии и спецсимволы</h3>
 <ul>
 <li><code>;</code> — comment to end of line (anywhere)</li>
@@ -553,7 +556,7 @@ DB __date__, __TIME__        ; build date / time
 <h3 id="810-preprocessor--препроцессор">8.10. Preprocessor / Препроцессор</h3>
 <table>
 <tr><th>Feature</th><th>Syntax</th></tr>
-<tr><td>Include file</td><td><code>#include "file.inc"</code> or <code>include "file.inc"</code></td></tr>
+<tr><td>Include file</td><td><code>#include "file.inc"</code> / <code>include "file.inc"</code> / <code>.include "file.inc"</code> (all equivalent)</td></tr>
 <tr><td>Constant</td><td><code>#define NAME value</code></td></tr>
 <tr><td>Conditional</td><td><code>#if expr</code> / <code>#elif expr</code> / <code>#else</code> / <code>#endif</code></td></tr>
 <tr><td>Conditional (no <code>#</code>)</td><td><code>IF expr</code> / <code>ELSE</code> / <code>ENDIF</code></td></tr>
@@ -681,9 +684,12 @@ FILL 0xFF
 <tr><td><code>END</code></td><td>Конец программы (необязательно)</td></tr>
 <tr><td><code>EXPORT name</code> / <code>PUBLIC name</code></td><td>Отметить символ как экспортируемый (видим для линковщика)</td></tr>
 <tr><td><code>IMPORT name</code> / <code>EXTERN name</code></td><td>Объявить внешний символ (определён в другом модуле)</td></tr>
+<tr><td><code>INCBIN "file"</code> / <code>.INCBIN "file"</code></td><td>Вставить бинарный файл в поток байтов</td></tr>
 <tr><td><code>#path dir</code> / <code>.path dir</code></td><td>Добавить каталог в путь поиска include</td></tr>
 </table>
 <p>Принимаются и формы с точкой: <code>.org</code>, <code>.db</code>, <code>.dw</code>, <code>.ds</code>, <code>.equ</code>, <code>.end</code>, <code>.byte</code>, <code>.word</code>, <code>.space</code>, <code>.ascii</code>, <code>.text</code>.</p>
+<blockquote><strong>Полный справочник:</strong> полный перечень всех псевдокоманд и директив (включая no-op директивы совместимости — <code>BLOCK</code>/<code>ENDBLOCK</code>, <code>DATA</code>, <code>BLKB</code>, <code>DEFW</code>, <code>XDEF</code>/<code>XREF</code>, <code>SECTION</code>, <code>TITLE</code> и др.) — в <strong>ASSEMBLER_GUIDE.md, раздел 10.5</strong>.
+</blockquote>
 <h3 id="87-комментарии-и-спецсимволы">8.7. Комментарии и спецсимволы</h3>
 <ul>
 <li><code>;</code> — комментарий до конца строки (в любом месте)</li>
@@ -713,7 +719,7 @@ DB __date__, __TIME__        ; дата / время сборки
 <h3 id="810-препроцессор">8.10. Препроцессор</h3>
 <table>
 <tr><th>Возможность</th><th>Синтаксис</th></tr>
-<tr><td>Включение файла</td><td><code>#include "file.inc"</code> или <code>include "file.inc"</code></td></tr>
+<tr><td>Включение файла</td><td><code>#include "file.inc"</code> / <code>include "file.inc"</code> / <code>.include "file.inc"</code> (все эквивалентны)</td></tr>
 <tr><td>Константа</td><td><code>#define NAME value</code></td></tr>
 <tr><td>Условие</td><td><code>#if expr</code> / <code>#elif expr</code> / <code>#else</code> / <code>#endif</code></td></tr>
 <tr><td>Условие (без <code>#</code>)</td><td><code>IF expr</code> / <code>ELSE</code> / <code>ENDIF</code></td></tr>

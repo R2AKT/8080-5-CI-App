@@ -1161,3 +1161,108 @@ main::
 
         END                 ; конец программы
 ```
+
+---
+
+## 11. Командная строка (CLI) — автономная сборка без GUI
+
+Ассемблер работает полностью автономно из командной строки, без запуска GUI.
+Это удобно для CI/CD, скриптов сборки и быстрой проверки.
+
+### 11.1. Запуск
+
+Каноничный способ — запуск пакета:
+
+```
+python -m assemble8080 [опции] [файлы...]
+```
+
+Также работает `python -m assemble8080.assembler` (даёт косметический
+RuntimeWarning — используйте `python -m assemble8080`).
+
+Без аргументов запускается встроенный самопроверочный тест:
+
+```
+python -m assemble8080
+# [OK] Self-test assembled: 39 bytes
+#      Origin: 0x0100
+#      ...
+```
+
+### 11.2. Опции
+
+| Опция | Описание |
+|-------|----------|
+| `файлы...` | Исходные `.asm`/`.mac`/`.s` (можно несколько) |
+| `-o, --output ФАЙЛ` | Выходной бинарник (по умолчанию `<вход>.bin`) |
+| `-m, --map ФАЙЛ` | Выходной map-файл (по умолчанию `<вход>.map`) |
+| `--obj ФАЙЛ` | Выходной объектный файл (для линковки) |
+| `--cpu {8080,8085}` | Тип CPU (по умолчанию 8080); директива `CPU` в коде может переопределить |
+| `--lnk ФАЙЛ` | Линковка по `.lnk`-скрипту (многофайловая сборка) |
+| `--hex` | Печатать hexdump результата |
+| `--list` | Печатать листинг (адрес, байты, исходная строка) |
+| `--symbols` | Печатать таблицу символов |
+| `-q, --quiet` | Тихий режим (только ошибки) |
+| `--version` | Показать версию |
+
+### 11.3. Примеры
+
+**Одиночный файл** (создаёт `hello.bin` и `hello.map`):
+
+```
+python -m assemble8080 hello.asm
+# [OK] hello.asm: 25 bytes, origin=0x0100, symbols=5
+#      -> hello.bin
+#      -> hello.map
+```
+
+**С hexdump и таблицей символов:**
+
+```
+python -m assemble8080 hello.asm --hex --symbols
+```
+
+**Сборка под 8085** (флаг `--cpu` или директива `CPU 8085` в коде):
+
+```
+python -m assemble8080 prog.asm --cpu 8085 --hex
+# 0000: 20 30 08 10 D9 ED 76   (SIM RIM DSUB ARHL SHLX LHLX HLT)
+```
+
+**Многофайловая сборка с линковкой** (сначала `.obj`, затем `.lnk`):
+
+```
+python -m assemble8080 main.asm   --obj main.obj
+python -m assemble8080 helper.asm --obj helper.obj
+python -m assemble8080 --lnk app.lnk --hex
+# [OK] Linked 65536 bytes -> app.bin
+```
+
+**Тихий режим для CI** (код возврата 0 = успех, 1 = ошибки):
+
+```
+python -m assemble8080 hello.asm -q && echo "build OK"
+```
+
+### 11.4. Коды возврата
+
+- `0` — сборка/линковка успешна.
+- `1` — есть ошибки (не найден файл, ошибки ассемблера/линковщика).
+
+### 11.5. Python API (то же ядро)
+
+CLI использует ту же функцию, что и GUI и примеры:
+
+```python
+from assemble8080.assembler import assemble
+
+result = assemble(source, filename="hello.asm", cpu_type="i8080")
+if result.success:
+    open("hello.bin", "wb").write(result.binary)
+else:
+    for err in result.errors:
+        print(err)
+```
+
+Параметры `assemble()`: `source` (текст), `filename` (для ошибок и `#include`),
+`now` (фиксированная дата для `__date__`/`__time__`), `cpu_type` (`"i8080"`/`"i8085"`).
