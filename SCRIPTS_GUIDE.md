@@ -1,7 +1,7 @@
 # SCRIPTS_GUIDE.md — Руководство по скриптам i8080-5 CI
 
-> **Версия:** 2.1  
-> **Дата:** 2026-09-21  
+> **Версия:** 2.1.7  
+> **Дата:** 2026-10-09  
 > **Вкладка:** «Скрипты» (Scripts)
 
 Скрипты позволяют автоматизировать работу с программой: читать/записывать память, управлять эмулятором, дизассемблировать код и управлять устройством через COM-порт.
@@ -17,6 +17,7 @@
 5. [Функции эмулятора (через `api`)](#5-функции-эмулятора-через-api)
 6. [Примеры скриптов](#6-примеры-скриптов)
 7. [Советы и ограничения](#7-советы-и-ограничения)
+8. [Скрипты автоматизации, тестов и сборки](#8-скрипты-автоматизации-тестов-и-сборки)
 
 ---
 
@@ -424,6 +425,126 @@ else:
         unhold_bus()
         wait_unhold(5.0)
 ```
+
+---
+
+## 8. Скрипты автоматизации, тестов и сборки
+
+Помимо встроенных скриптов вкладки «Скрипты», в корне проекта и в каталоге `tests/` есть консольные скрипты для автоматизации: запуск тестов, сборка примеров, генерация документов и референсов, а также CLI-ассемблер. Все команды выполняются из корня проекта.
+
+### 8.1. Запуск тестов
+
+| Скрипт | Назначение | Запуск |
+|---|---|---|
+| `run_tests.py` | Запускает 34 автономных unit-теста (без `api`) и сводит результат по ✅/❌. Базовый результат: 921 проверка пройдено, 0 провалов, 0 ошибок. | `python run_tests.py` |
+| `_run_all_tests.py` | Полный цикл: (1) все автономные тесты в `tests/`, (2) интерактивные `api`-сниппеты через `run_api_snippets.py`. | `python _run_all_tests.py` |
+| `tests/run_api_snippets.py` | Harness для 17 интерактивных `api`-сниппетов: загружает профиль `full`, создаёт `MainWindow` + `AutomationAPI` и выполняет каждый сниппет. | `python tests/run_api_snippets.py` |
+| `tests/test_roundtrip_256.py` | Round-trip: assemble → disassemble → re-assemble → сравнение байтов для всех 256 опкодов (i8080 + i8085), по умолчанию 3 цикла. | `python tests/test_roundtrip_256.py [N]` |
+| `tests/test_bin_compare.py` | Сравнение вывода ассемблера с 15 референсными файлами, сгенерированными реальным zasm (байт-в-байт). | `python tests/test_bin_compare.py` |
+
+Примеры:
+
+```bash
+# Только unit-тесты (34 скрипта, 921 проверка)
+python run_tests.py
+
+# Полный цикл (автономные тесты + api-сниппеты)
+python _run_all_tests.py
+
+# Round-trip 256 опкодов, 3 цикла
+python tests/test_roundtrip_256.py
+
+# Сравнение с референсами zasm
+python tests/test_bin_compare.py
+```
+
+### 8.2. Сборка и генерация документов
+
+| Скрипт | Назначение | Запуск |
+|---|---|---|
+| `build_snapshot.py` | Регенерирует `PROJECT_SNAPSHOT.md` — монолитный срез проекта (дерево, AST-описание модулей, полный код ключевых файлов, тесты, профили). | `python build_snapshot.py [project_root] [output_file]` |
+| `gen_refs.py` | Генерирует референсные `.bin`/`.rom` файлы реальным компилятором zasm (`c:\zasm\zasm.exe`) для 15 исходников в `ASM_FOR_TEST/`. | `python gen_refs.py` |
+| `md2html.py` | Конвертация Markdown в HTML со sticky-навигацией, CSS и адаптивным дизайном. | `python md2html.py [input.md] [output.html]` |
+| `clean_pycache.py` | Удаляет Python-кеш (`__pycache__/`, `*.pyc`, `*.pyo`) из дерева проекта. | `python clean_pycache.py [путь] [--dry-run]` |
+
+Примеры:
+
+```bash
+# Пересоздать срез проекта
+python build_snapshot.py
+
+# Сгенерировать референсы zasm
+python gen_refs.py
+
+# HTML из Markdown
+python md2html.py README.md
+
+# Очистить кеш (предпросмотр без удаления)
+python clean_pycache.py --dry-run
+```
+
+### 8.3. CLI ассемблера
+
+Автономная сборка Intel 8080/8085 без GUI. Точка входа — `python -m assemble8080`.
+
+```bash
+# Самопроверка (без аргументов)
+python -m assemble8080
+
+# Собрать файл
+python -m assemble8080 program.asm -o program.bin -m program.map
+
+# Собрать для i8085 с hexdump и таблицей символов
+python -m assemble8080 program.asm --cpu 8085 --hex --symbols
+
+# Линковка по .lnk-скрипту
+python -m assemble8080 --lnk app.lnk -o app.bin
+```
+
+| Опция | Описание |
+|---|---|
+| `sources` | Входные файлы `.asm`/`.mac`/`.s` |
+| `-o`, `--output` | Выходной бинарник (по умолчанию `<input>.bin`) |
+| `-m`, `--map` | Выходной map-файл (по умолчанию `<input>.map`) |
+| `--obj` | Выходной объектный файл (по умолчанию `<input>.obj`) |
+| `--cpu {8080,8085}` | Тип CPU (по умолчанию 8080) |
+| `--lnk` | Линковочный скрипт `.lnk` для многофайловой сборки |
+| `--hex` | Вывести hexdump результата |
+| `--list` | Вывести листинг (адрес, байты, исходник) |
+| `--symbols` | Вывести таблицу символов |
+| `-q`, `--quiet` | Тихий режим (только ошибки) |
+| `--version` | Версия ассемблера |
+
+Коды возврата: `0` — успех, `1` — ошибка. Без аргументов (ни файлов, ни `--lnk`) выполняется самопроверка. Полное описание — в `ASSEMBLER_GUIDE.md` (раздел «Командная строка / CLI»).
+
+### 8.4. Примеры ассемблера
+
+В каталоге `assembler_example/` — 4 примера с проверкой ожидаемых байтов. Общий модуль — `_common.py` (функции `read`, `write_bin`, `assemble_file`, `report`, `save_obj_file`, `save_map`, `run_link`, `hexdump`).
+
+| Пример | Что демонстрирует | Запуск |
+|---|---|---|
+| `01_hello` | Одиночный файл `hello.asm` → `hello.bin` + `hello.map` | `python assembler_example/01_hello/build.py` |
+| `02_directives` | Все директивы (`#if`, `#include`, `#path`, `MACRO`, `REPT`, `DB`/`DW`/`DS`, `EQU`) | `python assembler_example/02_directives/build.py` |
+| `03_macros` | Макросы, вложенные макросы, `REPT`, условная сборка | `python assembler_example/03_macros/build.py` |
+| `04_multifile` | Многофайловая сборка с линковкой (`main.asm` + `helper.asm` → `.obj` → `app.lnk` → `app.bin` + `app.map`) | `python assembler_example/04_multifile/build.py` |
+
+Собрать все примеры разом:
+
+```bash
+python assembler_example/build_all.py
+```
+
+### 8.5. Точки входа приложения
+
+| Скрипт | Назначение | Запуск |
+|---|---|---|
+| `i8080_CI.py` | Главный вход GUI-приложения (PySide6, `MainWindow`). | `python i8080_CI.py` |
+| `mcp_headless.py` | Headless-запуск MCP-сервера без GUI (SSE, порт 8000) для VS Code-плагина. | `python mcp_headless.py --profile full --port 8000` |
+| `mcp_server.py` | Реализация MCP-сервера (`MCPServerManager`), используется `mcp_headless.py`. | — (модуль) |
+| `i8080_emulator.py` | Модуль эмулятора процессора Intel 8080 (ядро, команды пересылки данных). | — (модуль) |
+| `version.py` | Версия и сборка проекта (`__version__`, `__build__`). | — (модуль) |
+
+> **Служебные скрипты** с префиксом `_` (`_apply_fixes.py`, `_audit_and_version.py`, `_facts.py`–`_facts4.py`, `_final_fixes.py`, `_fix_en.py`, `_read_code.py`–`_read_code4.py`, `_verify_fixes.py`, `_i18n_count.py`) — одноразовые утилиты для разовых правок и аудита; в штатной работе не используются.
 
 ---
 

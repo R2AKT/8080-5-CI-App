@@ -1,9 +1,9 @@
 # СРЕЗ ПРОЕКТА (PROJECT SNAPSHOT)
 
-> Сгенерировано: 2026-10-05 12:47:05
+> Сгенерировано: 2026-10-09 15:01:21
 > Корень проекта: `c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis`
-> Код: 92 файлов, 28725 строк
-> Тесты: 73 файлов, 11634 строк
+> Код: 106 файлов, 30199 строк
+> Тесты: 74 файлов, 11719 строк
 > Профили: 22 файлов, 843 строк
 
 ---
@@ -137,13 +137,14 @@
 │   └── zasm-test-opcodes-8080.asm  [408 строк]
 ├── assemble8080/
 │   ├── __init__.py  [28 строк]
-│   ├── assembler.py  [1746 строк]
+│   ├── __main__.py  [19 строк]
+│   ├── assembler.py  [1919 строк]
 │   ├── errors.py  [37 строк]
 │   ├── linker.py  [255 строк]
 │   ├── mapfile.py  [162 строк]
 │   ├── numbers.py  [84 строк]
 │   ├── objfile.py  [137 строк]
-│   ├── preprocessor.py  [626 строк]
+│   ├── preprocessor.py  [630 строк]
 │   └── symbols.py  [77 строк]
 ├── assembler_example/
 │   ├── 01_hello/
@@ -158,7 +159,7 @@
 │   │   ├── defs.inc  [7 строк]
 │   │   ├── directives.asm  [66 строк]
 │   │   ├── directives.bin  [1 строк]
-│   │   └── directives.map  [16 строк]
+│   │   └── directives.map  [10 строк]
 │   ├── 03_macros/
 │   │   ├── build.py  [65 строк]
 │   │   ├── macros.asm  [60 строк]
@@ -170,15 +171,18 @@
 │   │   ├── app.map  [10 строк]
 │   │   ├── build.py  [109 строк]
 │   │   ├── helper.asm  [13 строк]
+│   │   ├── helper.map  [9 строк]
 │   │   ├── helper.obj  [16 строк]
 │   │   ├── main.asm  [15 строк]
+│   │   ├── main.map  [10 строк]
 │   │   └── main.obj  [24 строк]
 │   ├── _common.py  [87 строк]
 │   ├── build_all.py  [52 строк]
 │   └── README.md  [55 строк]
 ├── common/
 │   ├── __init__.py  [5 строк]
-│   ├── i18n.py  [993 строк]
+│   ├── encoding.py  [109 строк]
+│   ├── i18n.py  [969 строк]
 │   └── themes.py  [115 строк]
 ├── i8080_ci/
 │   ├── models/
@@ -193,14 +197,14 @@
 │   │   ├── hex_view.py  [155 строк]
 │   │   └── search.py  [116 строк]
 │   ├── __init__.py  [20 строк]
-│   ├── assembler_widget.py  [1736 строк]
+│   ├── assembler_widget.py  [2037 строк]
 │   ├── automation.py  [736 строк]
 │   ├── bus_worker.py  [249 строк]
 │   ├── disassembler.py  [233 строк]
 │   ├── headless_host.py  [316 строк]
 │   ├── i18n.py  [4 строк]
 │   ├── intelhex.py  [51 строк]
-│   ├── main_window.py  [4179 строк]
+│   ├── main_window.py  [4192 строк]
 │   └── slip.py  [61 строк]
 ├── modules/
 │   ├── config/
@@ -295,6 +299,7 @@
 │       ├── dev_mode.bat  [42 строк]
 │       ├── e2e_test.js  [120 строк]
 │       ├── i8080-ci-vscode-0.2.0.vsix  [325 строк]
+│       ├── i8080-ci-vscode-0.2.1.vsix  [327 строк]
 │       ├── install.bat  [43 строк]
 │       ├── language-configuration.json  [31 строк]
 │       ├── LICENSE  [21 строк]
@@ -353,7 +358,6 @@
 │   ├── test_8085.py  [244 строк]
 │   ├── test_all.cmd  [33 строк]
 │   ├── test_alu_8080.py  [159 строк]
-│   ├── test_alu_8080.py.BAD roll  [159 строк]
 │   ├── test_alus_imm_verify.py  [200 строк]
 │   ├── test_am9511.py  [251 строк]
 │   ├── test_asm8080-8085.py  [76 строк]
@@ -399,6 +403,7 @@
 │   ├── test_memory_models.py  [153 строк]
 │   ├── test_ori_equ.py  [86 строк]
 │   ├── test_port_invert.py  [201 строк]
+│   ├── test_roundtrip_256.py  [85 строк]
 │   ├── test_set_symbols_check.py  [52 строк]
 │   ├── test_shadow_rom.py  [146 строк]
 │   ├── test_system.py  [280 строк]
@@ -416,6 +421,7 @@
 │   ├── gpio_widget.py  [267 строк]
 │   ├── keyboard_widget.py  [146 строк]
 │   └── serial_terminal.py  [244 строк]
+├── .gitignore  [10 строк]
 ├── 8080-5 CI_app.png  [170 строк]
 ├── 8080-5 CI_app_device.png  [666 строк]
 ├── 8080-5 CI_app_disas.png  [325 строк]
@@ -424,45 +430,137 @@
 ├── 8080-5 CI_app_Micro-80.png  [530 строк]
 ├── 8080-5 CI_app_Specialist.png  [305 строк]
 ├── 8080-5 CI_app_trace.png  [331 строк]
+├── _apply_fixes.py  [115 строк]
+├── _audit_and_version.py  [84 строк]
+├── _check_le.py  [7 строк]
+├── _final_fixes.py  [134 строк]
+├── _fix_en.py  [50 строк]
+├── _helper.py  [35 строк]
+├── _read_code.py  [37 строк]
+├── _read_code2.py  [53 строк]
+├── _read_code3.py  [33 строк]
+├── _read_code4.py  [19 строк]
 ├── _run_all_tests.py  [94 строк]
+├── _tools.json  [352 строк]
+├── _utf8test.txt  [1 строк]
+├── _verify_fixes.py  [43 строк]
 ├── Addendum.txt  [81 строк]
-├── ANALYSIS.md  [309 строк]
-├── ANALYSIS_ASSEMBLER.md  [216 строк]
-├── ASSEMBLER_GUIDE.md  [1053 строк]
-├── CHANGES.md  [1174 строк]
+├── ANALYSIS.md  [536 строк]
+├── ANALYSIS_ASSEMBLER.md  [341 строк]
+├── ASSEMBLER_GUIDE.md  [1268 строк]
+├── CHANGES.md  [2534 строк]
 ├── claude_desktop_config.json  [7 строк]
 ├── clean_pycache.py  [87 строк]
 ├── config.json  [10 строк]
 ├── Doxyfile  [2970 строк]
 ├── gen_refs.py  [93 строк]
-├── I18N_AUDIT.md  [241 строк]
+├── I18N_AUDIT.md  [310 строк]
 ├── i8080_CI.py  [15 строк]
 ├── i8080_CI.spec  [39 строк]
 ├── i8080_emulator.py  [2000 строк]
-├── i8080_emulator.py.BAD roll  [2003 строк]
 ├── LICENSE  [21 строк]
 ├── logo.png  [1161 строк]
 ├── logo.svg  [154 строк]
 ├── make.cmd  [1 строк]
-├── MCP_GUIDE.md  [332 строк]
+├── MCP_GUIDE.md  [356 строк]
 ├── mcp_headless.py  [108 строк]
-├── mcp_server.py  [953 строк]
+├── mcp_server.py  [1213 строк]
 ├── md2html.py  [372 строк]
 ├── micro-80_bp_preset.json  [77 строк]
 ├── package-lock.json  [6 строк]
-├── PROJECT_SNAPSHOT.md  [45978 строк]
+├── PROJECT_SNAPSHOT.md  [47374 строк]
 ├── pyproject.toml  [61 строк]
-├── README.md  [314 строк]
+├── README.md  [389 строк]
 ├── requirements.txt  [22 строк]
 ├── run_tests.py  [96 строк]
-├── SCRIPTS_GUIDE.md  [430 строк]
-├── USER_GUIDE.html  [1465 строк]
-└── USER_GUIDE.md  [1439 строк]
+├── SCRIPTS_GUIDE.md  [551 строк]
+├── USER_GUIDE.html  [1471 строк]
+├── USER_GUIDE.md  [1445 строк]
+└── version.py  [9 строк]
 ```
 
 ---
 
 ■ РАЗДЕЛ 2: ОПИСАНИЕ МОДУЛЕЙ
+
+### `_apply_fixes.py` (115 строк)
+
+**Импорты (1):**
+- `sys`
+
+---
+
+### `_audit_and_version.py` (84 строк)
+
+**Импорты (4):**
+- `sys`
+- `os`
+- `re`
+- `re`
+
+---
+
+### `_check_le.py` (7 строк)
+
+**Импорты (1):**
+- `sys`
+
+---
+
+### `_final_fixes.py` (134 строк)
+
+**Импорты (3):**
+- `sys`
+- `os`
+- `re`
+
+---
+
+### `_fix_en.py` (50 строк)
+
+**Импорты (4):**
+- `sys`
+- `os`
+- `re`
+- `py_compile`
+
+---
+
+### `_helper.py` (35 строк)
+
+**Импорты (2):**
+- `re`
+- `json`
+
+---
+
+### `_read_code.py` (37 строк)
+
+**Импорты (1):**
+- `sys`
+
+---
+
+### `_read_code2.py` (53 строк)
+
+**Импорты (1):**
+- `sys`
+
+---
+
+### `_read_code3.py` (33 строк)
+
+**Импорты (1):**
+- `sys`
+
+---
+
+### `_read_code4.py` (19 строк)
+
+**Импорты (1):**
+- `sys`
+
+---
 
 ### `_run_all_tests.py` (94 строк)
 
@@ -480,6 +578,14 @@
 - `main()`
 
 **Константы:** ROOT, API_SNIPPETS, SELF
+
+---
+
+### `_verify_fixes.py` (43 строк)
+
+**Импорты (2):**
+- `sys`
+- `py_compile`
 
 ---
 
@@ -573,7 +679,7 @@
 
 ---
 
-### `mcp_server.py` (953 строк)
+### `mcp_server.py` (1213 строк)
 
 > Встроенный MCP Server для i8080-5 Master Controller
 
@@ -624,6 +730,15 @@
 
 ---
 
+### `version.py` (9 строк)
+
+> Project version and build information.
+
+**Функции (1):**
+- `get_version_string()`
+
+---
+
 ### `assemble8080/__init__.py` (28 строк)
 
 > assemble8080 — компактный макроассемблер i8080.
@@ -638,7 +753,17 @@
 
 ---
 
-### `assemble8080/assembler.py` (1746 строк)
+### `assemble8080/__main__.py` (19 строк)
+
+> Точка входа CLI ассемблера: ``python -m assemble8080 [args]``.
+
+**Импорты (2):**
+- `sys`
+- `from assembler import _cli_main`
+
+---
+
+### `assemble8080/assembler.py` (1919 строк)
 
 > assemble8080 — компактный макроассемблер Intel 8080.
 
@@ -664,9 +789,12 @@
   - Методы (18): __init__(self, now), _get_mnemonics(self), _write(self, data), _strip_comment(line), _parse_label(self, line), assemble(self, source, filename), _is_import_symbol(self, operand_str), _track_relocation(self, offset, size, symbol), _encode_instruction(self, mnemonic, opcode, fmt, operands, line_num), _parse_operand(self, operand_str, line_num, allow_current), _decode_string_escapes(s), _parse_db(self, operand, line_num), _parse_dw(self, operand, line_num), _get_reg_code(self, reg_str, line_num), _get_rp_code(self, rp_str, line_num, use_psw)
     - ... и ещё 3
 
-**Функции (2):**
+**Функции (5):**
 - `parse_number(text)`
-- `assemble(source, filename, now)`
+- `assemble(source, filename, now, cpu_type)`
+- `_hexdump(data, start, width)`
+- `_run_selftest()`
+- `_cli_main(argv)`
 
 **Константы:** REGISTERS, REG_PAIRS, REG_PAIRS_PSW, CONDITIONS, MNEMONICS, MNEMONICS_8080, MNEMONICS_8085, ALL_MNEMONICS, _RE_HEX_PREFIX, _RE_HEX_SUFFIX, _RE_DECIMAL, _RE_BINARY, _RE_OCTAL
 
@@ -777,7 +905,7 @@
 
 ---
 
-### `assemble8080/preprocessor.py` (626 строк)
+### `assemble8080/preprocessor.py` (630 строк)
 
 > Препроцессор ассемблера.
 
@@ -928,7 +1056,23 @@
 
 ---
 
-### `common/i18n.py` (993 строк)
+### `common/encoding.py` (109 строк)
+
+> File encoding auto-detection and conversion.
+
+**Импорты (1):**
+- `os`
+
+**Функции (3):**
+- `detect_encoding(data)`
+- `read_text_auto(path)`
+- `write_text_utf8(path, content)`
+
+**Константы:** _BOMS, _CATCH_ALL
+
+---
+
+### `common/i18n.py` (969 строк)
 
 > Internationalization strings and system language detection.
 
@@ -974,26 +1118,27 @@
 
 ---
 
-### `i8080_ci/assembler_widget.py` (1736 строк)
+### `i8080_ci/assembler_widget.py` (2037 строк)
 
 > Assembler tab — editor, assembly, load to memory.
 
-**Импорты (13):**
+**Импорты (14):**
 - `os`
 - `re`
 - `json`
 - `traceback`
-- `from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QPushButton, QFileDialog, QMessageBox, QGroupBox, QSplitter, QPlainTextEdit, QTableWidget, QTableWidgetItem, QHeaderView, QCompleter, QAbstractItemView, QLabel, QComboBox, QTabWidget, QToolButton, QToolTip`
-- `from PySide6.QtGui import QFont, QSyntaxHighlighter, QTextCharFormat, QColor, QPainter, QPen, QTextCursor, QTextFormat`
-- `from PySide6.QtCore import Qt, QRegularExpression, QRect, QSize, QStringListModel, QEvent, QTimer`
+- `from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QPushButton, QFileDialog, QMessageBox, QGroupBox, QSplitter, QPlainTextEdit, QTableWidget, QTableWidgetItem, QPlainTextDocumentLayout, QHeaderView, QCompleter, QAbstractItemView, QLabel, QComboBox, QTabWidget, QToolButton, QToolTip`
+- `from PySide6.QtGui import QFont, QFontMetrics, QSyntaxHighlighter, QTextCharFormat, QColor, QPainter, QPen, QTextCursor, QTextFormat`
+- `from PySide6.QtCore import QRectF, QSizeF, Qt, QRegularExpression, QRect, QSize, QStringListModel, QEvent, QTimer`
 - `from assemble8080.assembler import Assembler`
 - `from assemble8080.objfile import obj_from_asm_result, save_obj, load_obj`
 - `from assemble8080.linker import link, link_from_script`
 - `from assemble8080.mapfile import parse_map`
 - `from common.i18n import LANGS, get_system_language, get_mnemonic_info`
+- `from common.encoding import read_text_auto`
 - `from common.themes import get_editor_style, get_syntax_colors, ARROW_COLORS, EDITOR_DARK, EDITOR_LIGHT`
 
-**Классы (5):**
+**Классы (6):**
 - **FoldingArea**(QWidget)
   - Vertical strip: fold +/- buttons + change indicators (yellow/green).
   - Методы (4): __init__(self, editor), sizeHint(self), mousePressEvent(self, event), paintEvent(self, event)
@@ -1002,16 +1147,19 @@
   - Area to the left of the editor: jump arrows + line numbers.
   - Методы (3): __init__(self, editor), sizeHint(self), paintEvent(self, event)
   - Атрибуты: ARROWS_WIDTH
+- **FoldableDocumentLayout**(QPlainTextDocumentLayout)
+  - Layout that can hide specific blocks (code folding).
+  - Методы (5): __init__(self, document), set_hidden(self, blocks), _lh(self), documentSize(self), draw(self, painter, option)
 - **CodeEditor**(QPlainTextEdit)
   - Assembler editor: line numbers, jump arrows, autocomplete, Ctrl+Click.
-  - Методы (30): __init__(self, parent), set_dark(self, is_dark), set_label_lines(self, label_lines), lineNumberAreaWidth(self), _updateMargins(self, _), _updateMarginsUpdate(self, rect, dy), resizeEvent(self, event), lineNumberAreaPaintEvent(self, event), _paintArrows(self, painter), set_jumps(self, jumps), wheelEvent(self, event), _highlightCurrentLine(self), highlight_error_lines(self, error_lines), set_completions(self, words), _insert_completion(self, completion)
-    - ... и ещё 15
+  - Методы (34): __init__(self, parent), set_dark(self, is_dark), set_label_lines(self, label_lines), lineNumberAreaWidth(self), _updateMargins(self, _), _updateMarginsUpdate(self, rect, dy), resizeEvent(self, event), lineNumberAreaPaintEvent(self, event), _paintArrows(self, painter), set_jumps(self, jumps), wheelEvent(self, event), _highlightCurrentLine(self), highlight_error_lines(self, error_lines), set_completions(self, words), _insert_completion(self, completion)
+    - ... и ещё 19
 - **AsmHighlighter**(QSyntaxHighlighter)
   - Методы (4): __init__(self, document, is_dark), _setup_rules(self), highlightBlock(self, text), set_theme(self, is_dark)
 - **AssemblerWidget**(QWidget)
   - Assembler tab: multi-file editor with tabs, errors, labels.
-  - Методы (38): __init__(self, main_window, is_dark, parent), _init_ui(self), _add_tab(self, file_path, content), _on_tab_close(self, index), _on_tab_changed(self, index), _on_tab_move(self, from_idx, to_idx), _on_tab_modified(self, tab_info, modified), _tab_title(self, file_path, modified), _current_editor(self), _current_tab_info(self), _save_tab(self, index), on_open_workspace(self), on_save_workspace(self), _goto_line(self, line_num), _on_error_double_clicked(self, row, column)
-    - ... и ещё 23
+  - Методы (41): __init__(self, main_window, is_dark, parent), _init_ui(self), _add_tab(self, file_path, content, encoding), _on_tab_close(self, index), _on_tab_changed(self, index), _on_tab_move(self, from_idx, to_idx), _on_tab_modified(self, tab_info, modified), _tab_title(self, file_path, modified), _current_editor(self), _current_tab_info(self), _save_tab(self, index), on_open_workspace(self), on_save_workspace(self), _goto_line(self, line_num), _on_error_double_clicked(self, row, column)
+    - ... и ещё 26
 
 **Функции (1):**
 - `_tr(key)`
@@ -1133,11 +1281,11 @@
 
 ---
 
-### `i8080_ci/main_window.py` (4179 строк)
+### `i8080_ci/main_window.py` (4192 строк)
 
 > Main application window.
 
-**Импорты (21):**
+**Импорты (23):**
 - `sys`
 - `json`
 - `time`
@@ -1151,14 +1299,14 @@
 - `from ui.device_manager import DeviceManagerDialog`
 - `from i8080_ci.assembler_widget import AssemblerWidget`
 - `from common.i18n import LANGS, get_system_language, set_language`
+- `from common.encoding import read_text_auto`
+- `from version import get_version_string`
 - `from common.themes import THEMES`
 - `from slip import SlipProtocol, _FEND, CMD_NOP, CMD_HOLD, CMD_UNHOLD, CMD_IO_READ_BYTE, CMD_IO_WRITE_BYTE, CMD_GET_SIZE_SETUP, ACK_NOP, ACK_HOLD_WAIT_LOW, ACK_HOLD_WAIT_HIGH, ACK_HOLD_ACTIVE, ACK_WAIT_UNHOLD, ACK_UNHOLD, ACK_MEM_READ_BYTE, ACK_IO_READ_BYTE, ACK_IO_WRITE_BYTE, ACK_EEPROM_WRITE_BYTE, ACK_EEPROM_WRITE_BLOCK, ACK_ERROR, ACK_GET_SIZE_SETUP`
 - `from intelhex import IntelHex`
 - `from disassembler import I8080Disassembler`
 - `from bus_worker import BusWorker`
-- `from automation import AutomationAPI`
-- `from models import HexModel, WatchModel, BreakpointModel, TraceModel`
-- ... и ещё 1
+- ... и ещё 3
 
 **Классы (1):**
 - **MainWindow**(QMainWindow)
@@ -2070,6 +2218,643 @@
 
 ■ РАЗДЕЛ 3: ПОЛНЫЙ КОД КЛЮЧЕВЫХ ФАЙЛОВ
 
+### `_apply_fixes.py` (115 строк)
+
+<!-- FILE: _apply_fixes.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+
+# ============================================================
+# FIX 1: Add retranslate() method to AssemblerWidget
+# FIX 2: Protect fold marker from { } in content (require leading tab)
+# ============================================================
+
+path = r'c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis\i8080_ci\assembler_widget.py'
+f = open(path, 'r', encoding='utf-8')
+content = f.read()
+f.close()
+
+# --- FIX 2: Protect fold marker regex ---
+# Current: m_collapsed = _re.match(r'^\{\d+\}$', code_part.strip())
+# Problem: matches ANY line that is just {number} after stripping
+# Fix: Only match if the ORIGINAL line starts with a tab character
+old_regex = "m_collapsed = _re.match(r'^\\{\\d+\\}$', code_part.strip())"
+new_regex = "m_collapsed = _re.match(r'^\\{\\d+\\}$', code_part.strip()) if line.startswith('\\t') else None"
+
+if old_regex in content:
+    content = content.replace(old_regex, new_regex)
+    print("FIX 2: Fold marker regex protected (requires leading tab)")
+else:
+    print("FIX 2: WARNING - old regex not found, trying alternate...")
+    # Try with different quote style
+    old_regex2 = "m_collapsed = _re.match(r'^\\{\\d+\\}$', code_part.strip())"
+    if old_regex2 in content:
+        content = content.replace(old_regex2, new_regex)
+        print("FIX 2: Applied with alternate pattern")
+    else:
+        # Search for the actual line
+        for i, line in enumerate(content.split('\n')):
+            if 'm_collapsed' in line and '_re.match' in line:
+                print(f"  Found at line {i+1}: {line.strip()}")
+                break
+
+# --- FIX 1: Add retranslate() method to AssemblerWidget ---
+# Find the end of __init__ or a good place to add the method
+# We'll add it after the set_theme method of AssemblerWidget (if exists) or before the first method after __init__
+
+# Find a good insertion point - after the _on_expand_all method or similar
+# Let's find "def _on_collapse_all" and add retranslate before it
+insert_marker = "    def _on_collapse_all(self):"
+retranslate_method = '''    def retranslate(self):
+        """Update all translatable strings (called on language change)."""
+        self.btn_collapse_all.setToolTip(_tr("fold_collapse_all"))
+        self.btn_expand_all.setToolTip(_tr("fold_expand_all"))
+        self.btn_assemble.setText(_tr("asm_assemble"))
+        self.btn_assemble_load.setText(_tr("asm_assemble_load"))
+        self.btn_assemble_obj.setText(_tr("asm_assemble_obj"))
+        self.btn_link.setText(_tr("asm_link"))
+        # Update folding area tooltips
+        if hasattr(self, 'folding_area'):
+            self.folding_area.update()
+
+'''
+
+if insert_marker in content:
+    content = content.replace(insert_marker, retranslate_method + insert_marker)
+    print("FIX 1: Added retranslate() method to AssemblerWidget")
+else:
+    print("FIX 1: WARNING - insert marker not found")
+    # Try alternate
+    alt_marker = "    def _on_expand_all(self):"
+    if alt_marker in content:
+        content = content.replace(alt_marker, retranslate_method + alt_marker)
+        print("FIX 1: Added retranslate() before _on_expand_all")
+    else:
+        print("FIX 1: ERROR - could not find insertion point")
+
+# Write back
+f = open(path, 'w', encoding='utf-8')
+f.write(content)
+f.close()
+print("assembler_widget.py saved")
+
+# ============================================================
+# FIX 3: Call retranslate() from main_window.retranslate_ui()
+# ============================================================
+path2 = r'c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis\i8080_ci\main_window.py'
+f = open(path2, 'r', encoding='utf-8')
+mw = f.read()
+f.close()
+
+# Find the end of retranslate_ui and add assembler widget retranslate call
+# We'll add it after the tab text updates
+# Look for a good spot - after "self.tabs.setTabText(10, ..."
+marker = 'self.tabs.setTabText(10, self.tr("tab_compare"))   # Сравнение'
+if marker in mw:
+    insert_after = marker + '\n        '
+    new_code = insert_after + '# Обновляем переводы ассемблера\n        if hasattr(self, \'assembler_widget\'):\n            self.assembler_widget.retranslate()\n        '
+    mw = mw.replace(marker, new_code)
+    print("FIX 3: Added assembler_widget.retranslate() to retranslate_ui()")
+else:
+    print("FIX 3: WARNING - marker not found, trying alternate")
+    # Try to find the last setTabText
+    last_tab = mw.rfind('self.tabs.setTabText(')
+    if last_tab != -1:
+        # Find end of that line
+        eol = mw.find('\n', last_tab)
+        line = mw[last_tab:eol]
+        print(f"  Last setTabText: {line.strip()}")
+        # Insert after it
+        mw = mw[:eol] + '\n        # Обновляем переводы ассемблера\n        if hasattr(self, \'assembler_widget\'):\n            self.assembler_widget.retranslate()' + mw[eol:]
+        print("FIX 3: Added after last setTabText")
+    else:
+        print("FIX 3: ERROR - could not find insertion point")
+
+f = open(path2, 'w', encoding='utf-8')
+f.write(mw)
+f.close()
+print("main_window.py saved")
+
+print("\n=== ALL FIXES APPLIED ===")
+```
+<!-- END FILE: _apply_fixes.py -->
+
+### `_audit_and_version.py` (84 строк)
+
+<!-- FILE: _audit_and_version.py -->
+```python
+import sys, os, re
+sys.stdout.reconfigure(encoding='utf-8')
+
+base = r'c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis'
+
+# === TASK 3: i18n audit - find hardcoded strings in assembler_widget.py ===
+print("=== I18N AUDIT: assembler_widget.py ===")
+f = open(os.path.join(base, 'i8080_ci', 'assembler_widget.py'), 'r', encoding='utf-8')
+c = f.read()
+f.close()
+
+# Find QPushButton/QLabel with hardcoded text (not using _tr)
+# Pattern: QPushButton("...") or QLabel("...") without _tr
+hardcoded = []
+for i, line in enumerate(c.split('\n'), 1):
+    stripped = line.strip()
+    # Look for QPushButton("...") or QLabel("...") with literal text
+    m = re.match(r'(?:self\.\w+\s*=\s*)?(?:QPushButton|QLabel)\("([^"]+)"\)', stripped)
+    if m and '_tr(' not in line and 'self.tr(' not in line:
+        text = m.group(1)
+        # Skip icon-like strings (single chars, symbols)
+        if len(text) > 2 and not re.match(r'^[\u2600-\u27BF\u2B00-\u2BFF\W]+$', text):
+            hardcoded.append((i, stripped[:80], text))
+
+if hardcoded:
+    print(f"Found {len(hardcoded)} potentially hardcoded strings:")
+    for ln, code, text in hardcoded[:20]:
+        print(f"  Line {ln}: '{text}' -> {code}")
+else:
+    print("No hardcoded strings found (all use _tr)")
+
+# Also check for "Процессор:" which I saw earlier
+if 'Процессор:' in c:
+    idx = c.find('Процессор:')
+    print(f"\n  Found hardcoded 'Процессор:' at position {idx}")
+    print(f"  Context: {c[max(0,idx-50):idx+50].strip()}")
+
+# === TASK 4: Check MCP server ===
+print("\n=== MCP SERVER CHECK ===")
+mcp_path = os.path.join(base, 'mcp_server.py')
+if os.path.exists(mcp_path):
+    f = open(mcp_path, 'r', encoding='utf-8')
+    mcp = f.read()
+    f.close()
+    # Count tools
+    tool_count = mcp.count('@mcp.tool')
+    print(f"MCP server: {tool_count} tools registered")
+    # Check if fold-related tools exist
+    if 'fold' in mcp.lower():
+        print("  Fold-related tools: YES")
+    else:
+        print("  Fold-related tools: NO (may need to add)")
+    # Check for version tool
+    if 'version' in mcp.lower():
+        print("  Version tool: YES")
+    else:
+        print("  Version tool: NO")
+else:
+    print("mcp_server.py not found")
+
+# === TASK 9: Version bump ===
+print("\n=== VERSION BUMP ===")
+ver_path = os.path.join(base, 'version.py')
+f = open(ver_path, 'r', encoding='utf-8')
+ver = f.read()
+f.close()
+print(f"Current: {ver.strip()}")
+
+# Bump patch version
+import re
+m = re.search(r'__version__\s*=\s*"(\d+)\.(\d+)\.(\d+)"', ver)
+if m:
+    major, minor, patch = int(m.group(1)), int(m.group(2)), int(m.group(3))
+    patch += 1
+    new_ver = f"{major}.{minor}.{patch}"
+    ver = ver.replace(f'"{m.group(1)}.{m.group(2)}.{m.group(3)}"', f'"{new_ver}"')
+    # Update build date
+    ver = re.sub(r'__build__\s*=\s*"\d+"', '__build__ = "20261006"', ver)
+    f = open(ver_path, 'w', encoding='utf-8')
+    f.write(ver)
+    f.close()
+    print(f"New version: {new_ver}")
+
+print("\n=== DONE ===")
+```
+<!-- END FILE: _audit_and_version.py -->
+
+### `_check_le.py` (7 строк)
+
+<!-- FILE: _check_le.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+for f in ["README.md","MCP_GUIDE.md","SCRIPTS_GUIDE.md","ANALYSIS.md","ANALYSIS_ASSEMBLER.md","I18N_AUDIT.md","CHANGES.md","ASSEMBLER_GUIDE.md","USER_GUIDE.md"]:
+    b = open(f, "rb").read()
+    crlf = b.count(b"\r\n")
+    lf = b.count(b"\n") - crlf
+    print(f, "CRLF=", crlf, "LF=", lf, "LINES=", b.count(b"\n"))
+```
+<!-- END FILE: _check_le.py -->
+
+### `_final_fixes.py` (134 строк)
+
+<!-- FILE: _final_fixes.py -->
+```python
+import sys, os, re
+sys.stdout.reconfigure(encoding='utf-8')
+
+base = r'c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis'
+
+# === Fix hardcoded "Процессор:" in assembler_widget.py ===
+path = os.path.join(base, 'i8080_ci', 'assembler_widget.py')
+f = open(path, 'r', encoding='utf-8')
+c = f.read()
+f.close()
+
+# Add i18n key for "Процессор:" / "Processor:"
+old = 'ctrl_layout.addWidget(QLabel("Процессор:"))'
+new = 'ctrl_layout.addWidget(QLabel(_tr("asm_processor")))'
+if old in c:
+    c = c.replace(old, new)
+    print("Fixed: 'Процессор:' -> _tr('asm_processor')")
+else:
+    print("WARNING: 'Процессор:' pattern not found")
+
+f = open(path, 'w', encoding='utf-8')
+f.write(c)
+f.close()
+
+# === Add i18n key to common/i18n.py ===
+i18n_path = os.path.join(base, 'common', 'i18n.py')
+f = open(i18n_path, 'r', encoding='utf-8')
+i18n = f.read()
+f.close()
+
+# Add EN key
+if '"asm_processor"' not in i18n:
+    # Add after "asm_link" in EN section
+    en_marker = '"asm_link": "Link",'
+    if en_marker in i18n:
+        i18n = i18n.replace(en_marker, en_marker + '\n        "asm_processor": "Processor:",')
+        print("Added EN: asm_processor")
+    else:
+        # Try alternate
+        en_marker2 = '"asm_link": "Link"'
+        if en_marker2 in i18n:
+            i18n = i18n.replace(en_marker2, en_marker2 + ',\n        "asm_processor": "Processor:",')
+            print("Added EN: asm_processor (alt)")
+        else:
+            print("WARNING: EN marker not found")
+    
+    # Add RU key
+    ru_marker = '"asm_link": "Линковка",'
+    if ru_marker in i18n:
+        i18n = i18n.replace(ru_marker, ru_marker + '\n        "asm_processor": "Процессор:",')
+        print("Added RU: asm_processor")
+    else:
+        ru_marker2 = '"asm_link": "Линковка"'
+        if ru_marker2 in i18n:
+            i18n = i18n.replace(ru_marker2, ru_marker2 + ',\n        "asm_processor": "Процессор:",')
+            print("Added RU: asm_processor (alt)")
+        else:
+            # Try to find the RU asm_link
+            idx = i18n.find('"asm_link"')
+            # Find the second occurrence (RU section)
+            idx2 = i18n.find('"asm_link"', idx + 1)
+            if idx2 != -1:
+                eol = i18n.find('\n', idx2)
+                line = i18n[idx2:eol]
+                print(f"  RU asm_link line: {line.strip()}")
+                # Add after this line
+                i18n = i18n[:eol] + '\n        "asm_processor": "Процессор:",' + i18n[eol:]
+                print("Added RU: asm_processor (manual)")
+            else:
+                print("WARNING: RU asm_link not found")
+
+f = open(i18n_path, 'w', encoding='utf-8')
+f.write(i18n)
+f.close()
+print("i18n.py saved")
+
+# === Check MCP server format ===
+mcp_path = os.path.join(base, 'mcp_server.py')
+if os.path.exists(mcp_path):
+    f = open(mcp_path, 'r', encoding='utf-8')
+    mcp = f.read()
+    f.close()
+    # Try different patterns
+    patterns = ['@mcp.tool', '@mcp.tool()', 'def tool', 'mcp.add_tool', 'FastMCP']
+    for p in patterns:
+        count = mcp.count(p)
+        if count > 0:
+            print(f"\nMCP pattern '{p}': {count} occurrences")
+    # Show first 500 chars
+    print(f"\nMCP first 300 chars:\n{mcp[:300]}")
+else:
+    print("\nMCP server file not found")
+
+# === Update CHANGES.md ===
+changes_path = os.path.join(base, 'CHANGES.md')
+if os.path.exists(changes_path):
+    f = open(changes_path, 'r', encoding='utf-8')
+    changes = f.read()
+    f.close()
+    
+    new_entry = """
+## v2.1.1 (2026-10-06)
+
+### Bug Fixes
+- Fixed runtime language switching: collapse/expand button tooltips now update when language changes
+- Fixed fold detection: `{N}` in block content no longer breaks folding (requires leading tab for fold marker)
+- Fixed hardcoded "Процессор:" label - now uses i18n
+
+### Improvements
+- Added `retranslate()` method to AssemblerWidget for runtime language updates
+- Fold marker protection: only `\\t{N}` (tab-prefixed) is recognized as fold indicator
+
+### Tests
+- 921/0 checks passed (3 consecutive clean passes)
+"""
+    # Insert after the first heading
+    first_heading_end = changes.find('\n\n')
+    if first_heading_end != -1:
+        changes = changes[:first_heading_end+2] + new_entry + changes[first_heading_end+2:]
+    else:
+        changes = new_entry + changes
+    
+    f = open(changes_path, 'w', encoding='utf-8')
+    f.write(changes)
+    f.close()
+    print("\nCHANGES.md updated")
+else:
+    print("\nCHANGES.md not found, creating...")
+    f = open(changes_path, 'w', encoding='utf-8')
+    f.write("# Changelog\n" + new_entry)
+    f.close()
+    print("CHANGES.md created")
+
+print("\n=== ALL DONE ===")
+```
+<!-- END FILE: _final_fixes.py -->
+
+### `_fix_en.py` (50 строк)
+
+<!-- FILE: _fix_en.py -->
+```python
+import sys, os, re
+sys.stdout.reconfigure(encoding='utf-8')
+base = r'c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis'
+
+# Fix EN i18n key - find asm_link in EN section
+i18n_path = os.path.join(base, 'common', 'i18n.py')
+f = open(i18n_path, 'r', encoding='utf-8')
+i18n = f.read()
+f.close()
+
+# Find all occurrences of asm_link
+for m in re.finditer(r'"asm_link"\s*:\s*"[^"]*"', i18n):
+    print(f"  Found: {m.group()}")
+
+# The EN section is the first one. Find asm_link in the first section (before "ru":)
+ru_start = i18n.find('"ru":')
+en_section = i18n[:ru_start]
+# Find asm_link in EN section
+m = re.search(r'("asm_link"\s*:\s*"[^"]*")', en_section)
+if m:
+    pos = m.end()
+    # Check if asm_processor already exists in EN
+    if '"asm_processor"' not in en_section:
+        i18n = i18n[:pos] + ',\n        "asm_processor": "Processor:",' + i18n[pos:]
+        print("Added EN asm_processor")
+    else:
+        print("EN asm_processor already exists")
+else:
+    print("WARNING: asm_link not found in EN section")
+
+f = open(i18n_path, 'w', encoding='utf-8')
+f.write(i18n)
+f.close()
+
+# Verify syntax
+import py_compile
+try:
+    py_compile.compile(i18n_path, doraise=True)
+    print("i18n.py syntax OK")
+except py_compile.PyCompileError as e:
+    print(f"i18n.py SYNTAX ERROR: {e}")
+
+# Verify assembler_widget.py still compiles
+try:
+    py_compile.compile(os.path.join(base, 'i8080_ci', 'assembler_widget.py'), doraise=True)
+    print("assembler_widget.py syntax OK")
+except py_compile.PyCompileError as e:
+    print(f"assembler_widget.py SYNTAX ERROR: {e}")
+
+print("Done")
+```
+<!-- END FILE: _fix_en.py -->
+
+### `_helper.py` (35 строк)
+
+<!-- FILE: _helper.py -->
+```python
+import re, json
+
+with open("MCP_GUIDE.md", "rb") as f:
+    data = f.read()
+text = data.decode("utf-8")
+lines = text.split("\n")
+
+# Find all '## ' header line indices (0-based)
+header_idx = []
+for i, ln in enumerate(lines):
+    if re.match(r'^##\s', ln):
+        header_idx.append(i)
+
+# Build sections: for each header, body = lines after header until next header
+sections = {}  # header_line -> body (list of lines, cleaned)
+for k, hi in enumerate(header_idx):
+    end = header_idx[k+1] if k+1 < len(header_idx) else len(lines)
+    body = lines[hi+1:end]
+    # strip trailing blank lines and a trailing '---'
+    while body and body[-1].strip() == "":
+        body.pop()
+    if body and body[-1].strip() == "---":
+        body.pop()
+    while body and body[-1].strip() == "":
+        body.pop()
+    sections[lines[hi]] = body
+
+# Print sections 1, 9, 10, 11, 12 bodies
+for key in ["## 1. ", "## 9. ", "## 10. ", "## 11. ", "## 12. "]:
+    for h, body in sections.items():
+        if h.startswith(key):
+            print("##### SECTION: %s (body lines=%d) #####" % (h, len(body)))
+            for bl in body:
+                print("   | %s" % bl)
+            print()
+```
+<!-- END FILE: _helper.py -->
+
+### `_read_code.py` (37 строк)
+
+<!-- FILE: _read_code.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+
+f = open(r'c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis\i8080_ci\assembler_widget.py', 'r', encoding='utf-8')
+c = f.read()
+f.close()
+
+# Find btn_collapse_all context
+idx = c.find('btn_collapse_all')
+print("=== BTN COLLAPSE ALL CONTEXT ===")
+print(c[max(0,idx-500):idx+800])
+print()
+
+# Find _collapse_region
+idx2 = c.find('def _collapse_region')
+print("=== _collapse_region ===")
+print(c[idx2:idx2+2000])
+print()
+
+# Find _expand_region
+idx3 = c.find('def _expand_region')
+print("=== _expand_region ===")
+print(c[idx3:idx3+1500])
+print()
+
+# Find _tr function
+idx4 = c.find('def _tr')
+print("=== _tr ===")
+print(c[idx4:idx4+300])
+print()
+
+# Find set_theme or language change
+idx5 = c.find('set_theme')
+if idx5 == -1:
+    idx5 = c.find('language')
+print("=== LANGUAGE/THEME in widget ===")
+print(c[max(0,idx5-200):idx5+500])
+```
+<!-- END FILE: _read_code.py -->
+
+### `_read_code2.py` (53 строк)
+
+<!-- FILE: _read_code2.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+
+# Read main_window.py
+f = open(r'c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis\i8080_ci\main_window.py', 'r', encoding='utf-8')
+mw = f.read()
+f.close()
+
+# Find language switching
+idx = mw.find('set_language')
+if idx == -1:
+    idx = mw.find('language')
+print("=== MAIN WINDOW LANGUAGE ===")
+print(mw[max(0,idx-300):idx+1000])
+print()
+
+# Find set_theme in main_window
+idx2 = mw.find('def set_theme')
+if idx2 == -1:
+    idx2 = mw.find('set_theme')
+print("=== MAIN WINDOW SET_THEME ===")
+print(mw[max(0,idx2-100):idx2+1500])
+print()
+
+# Find where AssemblerWidget is created
+idx3 = mw.find('AssemblerWidget')
+print("=== ASSEMBLER WIDGET CREATION ===")
+print(mw[max(0,idx3-200):idx3+500])
+print()
+
+# Read i18n.py
+f2 = open(r'c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis\common\i18n.py', 'r', encoding='utf-8')
+i18n = f2.read()
+f2.close()
+
+# Find fold-related keys
+idx4 = i18n.find('fold_')
+print("=== I18N FOLD KEYS ===")
+print(i18n[max(0,idx4-100):idx4+500])
+print()
+
+# Find get_system_language
+idx5 = i18n.find('def get_system_language')
+print("=== GET_SYSTEM_LANGUAGE ===")
+print(i18n[idx5:idx5+500])
+print()
+
+# Find set_language in i18n
+idx6 = i18n.find('def set_language')
+if idx6 == -1:
+    idx6 = i18n.find('set_language')
+print("=== SET_LANGUAGE in i18n ===")
+print(i18n[max(0,idx6-50):idx6+500])
+```
+<!-- END FILE: _read_code2.py -->
+
+### `_read_code3.py` (33 строк)
+
+<!-- FILE: _read_code3.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+
+f = open(r'c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis\i8080_ci\main_window.py', 'r', encoding='utf-8')
+mw = f.read()
+f.close()
+
+# Find language combo box
+idx = mw.find('lang_combo')
+print("=== LANG COMBO ===")
+print(mw[max(0,idx-200):idx+800])
+print()
+
+# Find on_language_changed or similar
+idx2 = mw.find('on_lang')
+if idx2 == -1:
+    idx2 = mw.find('language_changed')
+if idx2 == -1:
+    idx2 = mw.find('current_lang')
+print("=== LANGUAGE CHANGED HANDLER ===")
+print(mw[max(0,idx2-100):idx2+1500])
+print()
+
+# Find where AssemblerWidget is instantiated
+idx3 = mw.find('AssemblerWidget(')
+print("=== ASSEMBLER WIDGET INSTANTIATION ===")
+print(mw[max(0,idx3-200):idx3+500])
+print()
+
+# Find current_lang attribute
+idx4 = mw.find('self.current_lang')
+print("=== CURRENT_LANG ===")
+print(mw[max(0,idx4-200):idx4+500])
+```
+<!-- END FILE: _read_code3.py -->
+
+### `_read_code4.py` (19 строк)
+
+<!-- FILE: _read_code4.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+
+f = open(r'c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis\i8080_ci\main_window.py', 'r', encoding='utf-8')
+mw = f.read()
+f.close()
+
+# Find on_lang_changed
+idx = mw.find('def on_lang_changed')
+print("=== ON_LANG_CHANGED ===")
+print(mw[idx:idx+2000])
+print()
+
+# Find retranslate_ui
+idx2 = mw.find('def retranslate_ui')
+if idx2 == -1:
+    idx2 = mw.find('retranslate')
+print("=== RETRANSLATE ===")
+print(mw[max(0,idx2-50):idx2+2000])
+```
+<!-- END FILE: _read_code4.py -->
+
 ### `_run_all_tests.py` (94 строк)
 
 <!-- FILE: _run_all_tests.py -->
@@ -2170,6 +2955,56 @@ if __name__ == '__main__':
     sys.exit(main())
 ```
 <!-- END FILE: _run_all_tests.py -->
+
+### `_verify_fixes.py` (43 строк)
+
+<!-- FILE: _verify_fixes.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+
+# Verify the fixes
+path = r'c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis\i8080_ci\assembler_widget.py'
+f = open(path, 'r', encoding='utf-8')
+c = f.read()
+f.close()
+
+# Check fix 2 - fold marker
+idx = c.find('m_collapsed')
+print("=== FOLD MARKER LINE ===")
+print(c[idx:idx+200])
+print()
+
+# Check fix 1 - retranslate method
+idx2 = c.find('def retranslate')
+print("=== RETRANSLATE METHOD ===")
+print(c[idx2:idx2+500])
+print()
+
+# Syntax check
+import py_compile
+try:
+    py_compile.compile(path, doraise=True)
+    print("SYNTAX OK: assembler_widget.py")
+except py_compile.PyCompileError as e:
+    print(f"SYNTAX ERROR: {e}")
+
+path2 = r'c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis\i8080_ci\main_window.py'
+try:
+    py_compile.compile(path2, doraise=True)
+    print("SYNTAX OK: main_window.py")
+except py_compile.PyCompileError as e:
+    print(f"SYNTAX ERROR: {e}")
+
+# Check main_window retranslate call
+f2 = open(path2, 'r', encoding='utf-8')
+mw = f2.read()
+f2.close()
+idx3 = mw.find('assembler_widget.retranslate')
+print("\n=== MAIN WINDOW RETRANSLATE CALL ===")
+print(mw[max(0,idx3-100):idx3+200])
+```
+<!-- END FILE: _verify_fixes.py -->
 
 ### `clean_pycache.py` (87 строк)
 
@@ -4509,7 +5344,7 @@ if __name__ == "__main__":
 ```
 <!-- END FILE: mcp_headless.py -->
 
-### `mcp_server.py` (953 строк)
+### `mcp_server.py` (1213 строк)
 
 <!-- FILE: mcp_server.py -->
 ```python
@@ -5171,6 +6006,247 @@ class MCPServerManager:
             return "GUI refreshed"
             
         # =============================================
+
+        # =============================================
+        # TOOLS: Ассемблер
+        # =============================================
+        
+        def asm_assemble() -> dict:
+            """Ассемблировать текущий исходный код. Возвращает результат: binary, errors, labels."""
+            try:
+                if not hasattr(self.mw, 'assembler_widget'):
+                    return {"error": "Assembler not initialized"}
+                result = self.mw.assembler_widget._do_assemble(load_to_memory=False)
+                if result is None:
+                    return {"error": "Assembly failed or no source"}
+                return {
+                    "success": True,
+                    "binary_size": len(result.binary) if hasattr(result, 'binary') else 0,
+                    "origin": getattr(result, 'origin', 0),
+                    "errors": list(getattr(result, 'errors', [])),
+                    "labels_count": len(getattr(result, 'symbols', {})),
+                    "global_labels": list(getattr(result, 'global_labels', set())),
+                }
+            except Exception as e:
+                return {"error": str(e)}
+        
+        def asm_get_source() -> str:
+            """Получить текущий исходный код из редактора ассемблера."""
+            try:
+                if not hasattr(self.mw, 'assembler_widget'):
+                    return "Assembler not initialized"
+                editor = self.mw.assembler_widget._current_editor()
+                if editor is None:
+                    return "No active tab"
+                return editor.toPlainText()
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def asm_set_source(source: str) -> str:
+            """Установить исходный код в редактор ассемблера."""
+            try:
+                if not hasattr(self.mw, 'assembler_widget'):
+                    return "Assembler not initialized"
+                editor = self.mw.assembler_widget._current_editor()
+                if editor is None:
+                    return "No active tab"
+                editor.setPlainText(source)
+                return f"Source set ({len(source)} chars)"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def asm_get_errors() -> list:
+            """Получить список ошибок ассемблирования."""
+            try:
+                if not hasattr(self.mw, 'assembler_widget'):
+                    return ["Assembler not initialized"]
+                result = self.mw.assembler_widget._do_assemble(load_to_memory=False)
+                if result is None:
+                    return ["No source or assembly failed"]
+                errors = list(getattr(result, 'errors', []))
+                return errors if errors else ["No errors"]
+            except Exception as e:
+                return [f"Error: {e}"]
+        
+        def asm_get_labels() -> dict:
+            """Получить список меток и их адресов после ассемблирования."""
+            try:
+                if not hasattr(self.mw, 'assembler_widget'):
+                    return {"error": "Assembler not initialized"}
+                result = self.mw.assembler_widget._do_assemble(load_to_memory=False)
+                if result is None:
+                    return {"error": "Assembly failed"}
+                symbols = getattr(result, 'symbols', {})
+                return {k: f"0x{v:04X}" for k, v in sorted(symbols.items(), key=lambda x: x[1])}
+            except Exception as e:
+                return {"error": str(e)}
+        
+        # =============================================
+        # TOOLS: Эмулятор - расширенное управление
+        # =============================================
+        
+        def emu_set_pc(addr: int) -> str:
+            """Установить счётчик программы (PC)."""
+            try:
+                if not hasattr(self.mw, 'emulator'):
+                    return "Emulator not initialized"
+                self.mw.emulator.set_pc(addr)
+                self.mw.safe_call(self.mw.update_emulator_ui)
+                self.mw.safe_call(self.mw.update_emu_disasm_view)
+                return f"PC set to 0x{addr:04X}"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def emu_set_interrupts(mode: int) -> str:
+            """Установить режим прерываний. mode: 0=off, 1=INT 1, 2=INT 2."""
+            try:
+                if not hasattr(self.mw, 'emulator'):
+                    return "Emulator not initialized"
+                if mode not in (0, 1, 2):
+                    return "Invalid mode. Use 0, 1, or 2."
+                self.mw.emulator.interrupts = mode
+                self.mw.safe_call(self.mw.update_emulator_ui)
+                return f"Interrupt mode set to {mode}"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def emu_request_interrupt(vector: int = 0) -> str:
+            """Запросить прерывание с указанным вектором."""
+            try:
+                if not hasattr(self.mw, 'emulator'):
+                    return "Emulator not initialized"
+                self.mw.emulator.request_interrupt(vector)
+                self.mw.safe_call(self.mw.update_emulator_ui)
+                return f"Interrupt requested (vector=0x{vector:02X})"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def emu_read_word(addr: int) -> str:
+            """Прочитать 16-битное слово из памяти эмулятора."""
+            try:
+                if not hasattr(self.mw, 'emulator'):
+                    return "Emulator not initialized"
+                val = self.mw.emulator.read_word(addr)
+                return f"0x{addr:04X} = 0x{val:04X} ({val})"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def emu_write_word(addr: int, val: int) -> str:
+            """Записать 16-битное слово в память эмулятора."""
+            try:
+                if not hasattr(self.mw, 'emulator'):
+                    return "Emulator not initialized"
+                self.mw.emulator.write_word(addr, val)
+                self.mw.safe_call(self.mw.update_emulator_ui)
+                return f"Written 0x{val:04X} to 0x{addr:04X}"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def emu_push(val: int) -> str:
+            """Push 16-битное значение на стек эмулятора."""
+            try:
+                if not hasattr(self.mw, 'emulator'):
+                    return "Emulator not initialized"
+                self.mw.emulator.push(val)
+                self.mw.safe_call(self.mw.update_emulator_ui)
+                return f"Pushed 0x{val:04X}. SP=0x{self.mw.emulator.sp:04X}"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def emu_pop() -> str:
+            """Pop 16-битное значение со стека эмулятора."""
+            try:
+                if not hasattr(self.mw, 'emulator'):
+                    return "Emulator not initialized"
+                val = self.mw.emulator.pop()
+                self.mw.safe_call(self.mw.update_emulator_ui)
+                return f"Popped 0x{val:04X}. SP=0x{self.mw.emulator.sp:04X}"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        # =============================================
+        # TOOLS: CPU и система
+        # =============================================
+        
+        def get_cpu_type() -> str:
+            """Получить текущий тип CPU (8080 или 8085)."""
+            try:
+                if hasattr(self.mw, 'emulator'):
+                    return self.mw.emulator.cpu_type
+                return "8080"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def set_cpu_type(cpu_type: str) -> str:
+            """Установить тип CPU: 8080 или 8085."""
+            try:
+                cpu_type = cpu_type.upper()
+                if cpu_type not in ('8080', '8085'):
+                    return "Invalid CPU type. Use '8080' or '8085'."
+                self.mw._set_cpu_type(cpu_type)
+                return f"CPU type set to {cpu_type}"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def get_version() -> str:
+            """Получить версию приложения."""
+            try:
+                from version import get_version_string
+                return get_version_string()
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def get_language() -> str:
+            """Получить текущий язык интерфейса."""
+            try:
+                from common.i18n import get_system_language
+                return get_system_language()
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def set_language(lang: str) -> str:
+            """Установить язык интерфейса: en или ru."""
+            try:
+                if lang not in ('en', 'ru'):
+                    return "Invalid language. Use 'en' or 'ru'."
+                from common.i18n import set_language as _set_lang
+                _set_lang(lang)
+                self.mw.current_lang = lang
+                self.mw.settings.setValue("language", lang)
+                self.mw.retranslate_ui()
+                return f"Language set to {lang}"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        # =============================================
+        # TOOLS: Скрипты и автоматизация
+        # =============================================
+        
+        def run_script(script_text: str) -> str:
+            """Выполнить скрипт автоматизации (Python). Доступ к mw (MainWindow)."""
+            try:
+                if not hasattr(self.mw, 'run_script'):
+                    return "Script engine not available"
+                result = self.mw.run_script(script_text)
+                return str(result) if result else "Script executed"
+            except Exception as e:
+                return f"Error: {e}"
+        
+        def get_watch_list() -> list:
+            """Получить список watch-выражений."""
+            try:
+                if not hasattr(self.mw, 'watch_table'):
+                    return []
+                result = []
+                for row in range(self.mw.watch_table.rowCount()):
+                    name = self.mw.watch_table.item(row, 0)
+                    value = self.mw.watch_table.item(row, 1)
+                    if name and value:
+                        result.append(f"{name.text()} = {value.text()}")
+                return result if result else ["No watch expressions"]
+            except Exception as e:
+                return [f"Error: {e}"]
+        
         # РЕГИСТРАЦИЯ TOOLS (явная)
         # =============================================
         
@@ -5225,6 +6301,25 @@ class MCPServerManager:
         mcp.tool()(emu_trace_clear)
         mcp.tool()(emu_trace_get)
         mcp.tool()(emu_trace_export)
+        mcp.tool()(asm_assemble)
+        mcp.tool()(asm_get_source)
+        mcp.tool()(asm_set_source)
+        mcp.tool()(asm_get_errors)
+        mcp.tool()(asm_get_labels)
+        mcp.tool()(emu_set_pc)
+        mcp.tool()(emu_set_interrupts)
+        mcp.tool()(emu_request_interrupt)
+        mcp.tool()(emu_read_word)
+        mcp.tool()(emu_write_word)
+        mcp.tool()(emu_push)
+        mcp.tool()(emu_pop)
+        mcp.tool()(get_cpu_type)
+        mcp.tool()(set_cpu_type)
+        mcp.tool()(get_version)
+        mcp.tool()(get_language)
+        mcp.tool()(set_language)
+        mcp.tool()(run_script)
+        mcp.tool()(get_watch_list)
         
         # =============================================
         # RESOURCES
@@ -5951,6 +7046,22 @@ for f, p, fl, s in results:
 ```
 <!-- END FILE: run_tests.py -->
 
+### `version.py` (9 строк)
+
+<!-- FILE: version.py -->
+```python
+"""Project version and build information."""
+
+__version__ = "2.1.7"
+__build__ = "20261009"
+__app_name__ = "i8080-5 CI"
+
+def get_version_string():
+    """Return formatted version string for display."""
+    return f"{__app_name__} v{__version__} (build {__build__})"
+```
+<!-- END FILE: version.py -->
+
 ### `assemble8080/__init__.py` (28 строк)
 
 <!-- FILE: assemble8080/__init__.py -->
@@ -5986,7 +7097,33 @@ __all__ = [
 ```
 <!-- END FILE: assemble8080/__init__.py -->
 
-### `assemble8080/assembler.py` (1746 строк)
+### `assemble8080/__main__.py` (19 строк)
+
+<!-- FILE: assemble8080/__main__.py -->
+```python
+# -*- coding: utf-8 -*-
+"""Точка входа CLI ассемблера: ``python -m assemble8080 [args]``.
+
+Автономная сборка Intel 8080/8085 без GUI. Полное описание — в
+ASSEMBLER_GUIDE.md (раздел «Командная строка / CLI»).
+"""
+import sys
+
+from .assembler import _cli_main
+
+# Надёжная кодировка вывода: Windows cp1251-консоль не знает эмодзи/UTF-8
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
+if __name__ == "__main__":
+    sys.exit(_cli_main())
+```
+<!-- END FILE: assemble8080/__main__.py -->
+
+### `assemble8080/assembler.py` (1919 строк)
 
 <!-- FILE: assemble8080/assembler.py -->
 ```python
@@ -6592,7 +7729,7 @@ class Assembler:
         if m:
             candidate = m.group(1).upper()
             # Проверяем, что это не мнемоника
-            if candidate not in ALL_MNEMONICS and candidate not in ('ORG', 'DB', 'DW', 'DS', 'EQU', 'END', 'DM', 'BYTE', 'WORD', 'DEFL', 'REPT', 'ENDM', 'XDEF', 'XREF', 'SECTION', 'IF', 'ENDIF', 'ELSE', 'LOCAL', 'ENDLOCAL', 'ERROR', 'MACRO', 'ENDM', 'CPU', 'ASEG', 'TITLE', 'DEF', 'EXPORT', 'IMPORT', 'EXTERN', 'PUBLIC', 'ASM8080', 'ASM8085'):
+            if candidate not in ALL_MNEMONICS and candidate not in ('ORG', 'DB', 'DW', 'DS', 'EQU', 'END', 'DM', 'BYTE', 'WORD', 'DEFL', 'REPT', 'ENDM', 'XDEF', 'XREF', 'SECTION', 'IF', 'ENDIF', 'ELSE', 'LOCAL', 'ENDLOCAL', 'ERROR', 'MACRO', 'ENDM', 'CPU', 'ASEG', 'TITLE', 'DEF', 'EXPORT', 'IMPORT', 'EXTERN', 'PUBLIC', 'ASM8080', 'ASM8085', 'INCBIN', '.INCBIN'):
                 return m.group(1), False, m.group(2)
         # Метки нет
         return None, False, line
@@ -6692,7 +7829,8 @@ class Assembler:
                            'ENDR', 'DATA', 'BLKB', 'DISKDEF', 'IRP', 'ASSERT',
                            'DEFW', '.DATA', '.BLKB', '.DISKDEF', '.IRP', '.ASSERT',
                            '.DEFW', '#DATA', '#ASSERT', 'ASMPC', 'MACRO', 'ALIGN', '.ALIGN',
-                           'BLOCK', '.BLOCK', 'ENDBLOCK', '.ENDBLOCK'):
+                           'BLOCK', '.BLOCK', 'ENDBLOCK', '.ENDBLOCK',
+                            'INCBIN', '.INCBIN'):
                 continue
             # END — конец программы
             if mnemonic in ('END', '.END'):
@@ -7119,6 +8257,29 @@ class Assembler:
                 self.pc = location
                 continue
 
+            # INCBIN — include binary file
+            if mnemonic in ('INCBIN', '.INCBIN'):
+                bin_filename = operand.strip().strip('"').strip("'")
+                if not bin_filename:
+                    self._error(line_num, 'INCBIN: missing filename')
+                    continue
+                # Resolve path relative to source file directory
+                src_dir = os.path.dirname(self._filename) if self._filename else '.'
+                bin_path = bin_filename if os.path.isabs(bin_filename) else os.path.join(src_dir, bin_filename)
+                if not os.path.exists(bin_path):
+                    self._error(line_num, f'INCBIN: file not found: {bin_path}')
+                    continue
+                try:
+                    with open(bin_path, 'rb') as bf:
+                        bin_data = bf.read()
+                    self._write(bytearray(bin_data))
+                    self.listing.append((location, bytes(bin_data), text.strip()))
+                    location += len(bin_data)
+                    self.pc = location
+                except Exception as e:
+                    self._error(line_num, f'INCBIN: error reading {bin_path}: {e}')
+                continue
+
             # XDEF/XREF/SECTION/IF/ENDIF/ELSE/LOCAL/ENDLOCAL/ERROR — no-op
             # Директивы типа процессора: .8080/.8085/.asm8080/.asm8085/CPU
             if mnemonic in ('8080', 'ASM8080'):
@@ -7141,7 +8302,8 @@ class Assembler:
                            'ENDR', 'DATA', 'BLKB', 'DISKDEF', 'IRP', 'ASSERT',
                            'DEFW', '.DATA', '.BLKB', '.DISKDEF', '.IRP', '.ASSERT',
                            '.DEFW', '#DATA', '#ASSERT', 'ASMPC', 'MACRO', 'ALIGN', '.ALIGN',
-                           'BLOCK', '.BLOCK', 'ENDBLOCK', '.ENDBLOCK'):
+                           'BLOCK', '.BLOCK', 'ENDBLOCK', '.ENDBLOCK',
+                            'INCBIN', '.INCBIN'):
                 continue
             # END (optional: END [start])
             if mnemonic in ('END', '.END'):
@@ -7692,33 +8854,52 @@ class Assembler:
 # УДОБНАЯ ФУНКЦИЯ ДЛЯ БЫСТРОГО ИСПОЛЬЗОВАНИЯ
 # =============================================================
 
-def assemble(source: str, filename: str = "", now=None) -> AsmResult:
-    """Быстрая сборка: создать ассемблер и ассемблировать."""
+def assemble(source: str, filename: str = "", now=None, cpu_type: str = "i8080") -> AsmResult:
+    """Ассемблировать исходный код: вернуть результат сборки.
+
+    :param source: исходный текст программы
+    :param filename: имя файла (для сообщений об ошибках и поиска #include)
+    :param now: фиксированная дата для __date__/__time__ (воспроизводимость)
+    :param cpu_type: "i8080" (по умолчанию) или "i8085"; директива CPU в коде может переопределить
+    """
     asm = Assembler(now=now)
+    asm.cpu_type = cpu_type
     return asm.assemble(source, filename)
 
 
 # =============================================================
-# САМОТЕСТ
+# Командная строка (CLI) — автономная сборка без GUI
 # =============================================================
 
-if __name__ == "__main__":
+def _hexdump(data: bytes, start: int = 0, width: int = 16) -> str:
+    """Короткий hexdump для вывода в консоль."""
+    lines = []
+    for off in range(0, len(data), width):
+        chunk = data[off:off + width]
+        hexs = ' '.join(f'{b:02X}' for b in chunk)
+        asc = ''.join(chr(b) if 32 <= b < 127 else '.' for b in chunk)
+        lines.append(f"  {start + off:04X}: {hexs:<{width * 3}}  {asc}")
+    return '\n'.join(lines)
+
+
+def _run_selftest() -> int:
+    """Встроенный самопроверочный тест (запускается без аргументов)."""
     test_source = """
-; Тестовая программа для ассемблера i8080
+; Встроенный самопроверочный тест ассемблера i8080
         ORG 0100H
-START:  MVI A, 55H        ; Загрузить 0x55 в A
-        OUT 01H           ; Вывести в порт 1
+START:  MVI A, 55H        ; записать 0x55 в A
+        OUT 01H           ; вывод на порт 1
         MVI B, 0FFH       ; B = FF
         MVI C, 0AH        ; C = 0A
 LOOP:   DCR B             ; B = B - 1
-        JNZ LOOP          ; Повторить пока B != 0
-        LDA DATA          ; Загрузить из памяти
-        STA DATA+1        ; Сохранить в DATA+1
-        CALL SUBR         ; Вызов подпрограммы
-        HLT               ; Стоп
+        JNZ LOOP          ; повторять, пока B != 0
+        LDA DATA          ; загрузить из памяти
+        STA DATA+1        ; сохранить в DATA+1
+        CALL SUBR         ; вызвать подпрограмму
+        HLT               ; остановка
 
 SUBR:   INR A             ; A = A + 1
-        RET               ; Возврат
+        RET               ; возврат
 
 DATA:   DB 42H, 'A', 10010110B
         DW 1234H
@@ -7727,15 +8908,144 @@ DATA:   DB 42H, 'A', 10010110B
 """
     result = assemble(test_source, "test.asm")
     if result.success:
-        print(f"✅ Сборка успешна: {len(result.binary)} байт")
-        print(f"   Origin: 0x{result.origin:04X}")
-        print(f"   End:    0x{result.end_address:04X}")
-        print(f"   Символы: {result.symbols}")
-        print(f"   Код: {result.binary.hex(' ')}")
-    else:
-        print("❌ Ошибки сборки:")
-        for err in result.errors:
-            print(f"   {err}")
+        print(f"[OK] Self-test assembled: {len(result.binary)} bytes")
+        print(f"     Origin: 0x{result.origin:04X}")
+        print(f"     End:    0x{result.end_address:04X}")
+        print(f"     Symbols: {result.symbols}")
+        print(f"     Binary: {result.binary.hex(' ')}")
+        return 0
+    print("[FAIL] Self-test errors:")
+    for err in result.errors:
+        print(f"     {err}")
+    return 1
+
+
+def _cli_main(argv=None) -> int:
+    """Точка входа CLI ассемблера (автономная сборка без GUI)."""
+    import argparse
+    try:
+        from version import __version__ as _ver
+    except Exception:
+        _ver = "dev"
+
+    parser = argparse.ArgumentParser(
+        prog="assemble8080",
+        description="i8080-5 CI two-pass assembler (Intel 8080/8085) — command-line mode (no GUI).",
+    )
+    parser.add_argument("sources", nargs="*", help="Input .asm/.mac/.s source file(s)")
+    parser.add_argument("-o", "--output", help="Output binary file (default: <input>.bin)")
+    parser.add_argument("-m", "--map", dest="map_file", help="Output map file (default: <input>.map)")
+    parser.add_argument("--obj", help="Output object file (default: <input>.obj)")
+    parser.add_argument("--cpu", choices=["8080", "8085"], default="8080",
+                        help="CPU type (default: 8080)")
+    parser.add_argument("--lnk", help="Link script (.lnk) for multi-file linking")
+    parser.add_argument("--hex", action="store_true", help="Print hexdump of output")
+    parser.add_argument("--list", action="store_true", help="Print listing (address, bytes, source)")
+    parser.add_argument("--symbols", action="store_true", help="Print symbol table")
+    parser.add_argument("-q", "--quiet", action="store_true", help="Quiet mode (only errors)")
+    parser.add_argument("--version", action="version", version=f"i8080-5 CI assembler {_ver}")
+    args = parser.parse_args(argv)
+
+    # Без аргументов (ни файлов, ни --lnk) — самопроверка (назад-совместимо)
+    if not args.sources and not args.lnk:
+        return _run_selftest()
+
+    cpu_type = "i8085" if args.cpu == "8085" else "i8080"
+    exit_code = 0
+
+    # --- Режим линковки по .lnk-скрипту ---
+    if args.lnk:
+        from assemble8080.linker import link_from_script
+        lr = link_from_script(args.lnk)
+        if not lr.success:
+            print("[FAIL] Linking:")
+            for e in lr.errors:
+                print(f"     {e}")
+            return 1
+        out = args.output or (os.path.splitext(args.lnk)[0] + ".bin")
+        with open(out, 'wb') as f:
+            f.write(lr.binary)
+        if not args.quiet:
+            print(f"[OK] Linked {len(lr.binary)} bytes -> {out}")
+        if args.map_file and lr.map_text:
+            from assemble8080.mapfile import save_map_file
+            save_map_file(args.map_file, lr.map_text)
+            if not args.quiet:
+                print(f"     -> {args.map_file}")
+        if args.hex:
+            print(_hexdump(lr.binary, start=lr.origin))
+        return 0
+
+    # --- Режим сборки файлов ---
+    for src in args.sources:
+        if not os.path.isfile(src):
+            print(f"[FAIL] File not found: {src}")
+            exit_code = 1
+            continue
+        with open(src, 'r', encoding='utf-8', errors='replace') as f:
+            source = f.read()
+        result = assemble(source, filename=src, cpu_type=cpu_type)
+
+        if not result.success:
+            print(f"[FAIL] {src}:")
+            for e in result.errors:
+                print(f"     {e}")
+            exit_code = 1
+            continue
+
+        base = os.path.splitext(src)[0]
+        out_bin = args.output or (base + ".bin")
+        with open(out_bin, 'wb') as f:
+            f.write(result.binary)
+
+        if not args.quiet:
+            print(f"[OK] {src}: {len(result.binary)} bytes, "
+                  f"origin=0x{result.origin:04X}, symbols={len(result.symbols)}")
+            for w in result.warnings:
+                print(f"     (warn) {w}")
+            print(f"     -> {out_bin}")
+
+        # map-файл
+        map_out = args.map_file or (base + ".map")
+        if result.map_text:
+            from assemble8080.mapfile import save_map_file
+            save_map_file(map_out, result.map_text)
+            if not args.quiet:
+                print(f"     -> {map_out}")
+
+        # объектный файл
+        if args.obj:
+            from assemble8080.objfile import obj_from_asm_result, save_obj
+            obj = obj_from_asm_result(result, source_name=src)
+            save_obj(args.obj, obj)
+            if not args.quiet:
+                print(f"     -> {args.obj}")
+
+        if args.symbols:
+            print("     Symbols:")
+            for name, addr in sorted(result.symbols.items(), key=lambda kv: kv[1]):
+                print(f"       {name:20s} 0x{addr:04X}")
+
+        if args.list:
+            print("     Listing:")
+            for addr, data, sline in result.listing:
+                print(f"       {addr:04X}: {data.hex(' '):<12} {sline}")
+
+        if args.hex:
+            print(_hexdump(result.binary, start=result.origin))
+
+    return exit_code
+
+
+if __name__ == "__main__":
+    import sys
+    # Надёжная кодировка вывода: Windows cp1251-консоль не знает эмодзи/UTF-8
+    for _stream in (sys.stdout, sys.stderr):
+        try:
+            _stream.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            pass
+    sys.exit(_cli_main())
 ```
 <!-- END FILE: assemble8080/assembler.py -->
 
@@ -8449,7 +9759,7 @@ def obj_from_asm_result(result, source_name: str = "") -> ObjectFile:
 ```
 <!-- END FILE: assemble8080/objfile.py -->
 
-### `assemble8080/preprocessor.py` (626 строк)
+### `assemble8080/preprocessor.py` (630 строк)
 
 <!-- FILE: assemble8080/preprocessor.py -->
 ```python
@@ -8457,6 +9767,7 @@ def obj_from_asm_result(result, source_name: str = "") -> ObjectFile:
 Препроцессор ассемблера.
 Поддерживает:
   - #include "file.inc"  — включение файлов
+  - include "file.inc" / .include "file.inc" — включение файлов (M80-стиль)
   - #define NAME value     — макросы-константы
   - #if / #else / #endif   — условная компиляция
   - Макросы MACRO / ENDM
@@ -8660,8 +9971,11 @@ class Preprocessor:
             if re.match(r'^(XDEF|XREF|SECTION|ASEG|TITLE|\.TITLE|PUBLIC|EXTERN|MODULE)\b', stripped, re.IGNORECASE):
                 i += 1
                 continue
-            # === Обработка M80 include (без #) ===
-            m_inc = re.match(r'^include\s+["\']([^"\']+)["\']', stripped, re.IGNORECASE)
+            # === Обработка M80 include (без #), включая .include ===
+            # Поддерживает: include "file", .include "file", include file, .include file
+            m_inc = re.match(r'^\.?include\s+["\']([^"\']+)["\']', stripped, re.IGNORECASE)
+            if not m_inc:
+                m_inc = re.match(r'^\.?include\s+(\S+)', stripped, re.IGNORECASE)
             if m_inc:
                 inc_file = m_inc.group(1)
                 cur_dir = os.path.dirname(os.path.abspath(filename)) if filename != '<input>' else None
@@ -9660,7 +10974,123 @@ from .themes import THEMES, get_editor_style, get_syntax_colors, ARROW_COLORS, S
 ```
 <!-- END FILE: common/__init__.py -->
 
-### `common/i18n.py` (993 строк)
+### `common/encoding.py` (109 строк)
+
+<!-- FILE: common/encoding.py -->
+```python
+# -*- coding: utf-8 -*-
+"""
+File encoding auto-detection and conversion.
+
+Strategy (same approach as VS Code / Notepad++ / Notepad):
+1. BOM check (UTF-8 / UTF-16 / UTF-32) — authoritative, no guessing.
+2. Strict UTF-8 decode — UTF-8 has a strict byte structure, so if it
+   decodes cleanly the file IS UTF-8 (or plain ASCII, a UTF-8 subset).
+   False positives on real text are practically impossible.
+3. charset_normalizer for everything else (CP1251, KOI8-R, Latin-1, ...).
+4. Heuristic: if the detector falls back to a "catch-all" encoding
+   (latin-1 / iso-8859-1) and the file contains high bytes, prefer
+   CP1251 — the de-facto Windows encoding for Russian text.
+
+All files are saved back as UTF-8 (no BOM), so after the first save
+the file is in a stable, unambiguous encoding.
+"""
+
+import os
+
+try:
+    from charset_normalizer import from_bytes
+    _HAVE_CHARSET_NORMALIZER = True
+except ImportError:  # pragma: no cover
+    _HAVE_CHARSET_NORMALIZER = False
+
+# BOM table: (bom_bytes, python_codec) — order matters (UTF-32 before UTF-16).
+# Use the BOM-stripping codecs (utf-8-sig / utf-16 / utf-32) so the BOM
+# character does not leak into the decoded text.
+_BOMS = (
+    (b'\xef\xbb\xbf', 'utf-8-sig'),
+    (b'\xff\xfe\x00\x00', 'utf-32'),
+    (b'\x00\x00\xfe\xff', 'utf-32'),
+    (b'\xff\xfe', 'utf-16'),
+    (b'\xfe\xff', 'utf-16'),
+)
+
+# "Catch-all" encodings: they can decode ANY byte sequence, so a result
+# of latin-1/iso-8859-1 on a file with high bytes means "couldn't decide".
+_CATCH_ALL = {'latin-1', 'iso-8859-1', 'iso-8859-5'}
+
+
+def detect_encoding(data: bytes) -> str:
+    """Detect the encoding of a byte sequence. Returns a Python codec name."""
+    # 1. BOM — authoritative
+    for bom, codec in _BOMS:
+        if data.startswith(bom):
+            return codec
+
+    if not data:
+        return 'utf-8'
+
+    # 2. Strict UTF-8 — if it decodes cleanly, it's UTF-8
+    try:
+        data.decode('utf-8')
+        return 'utf-8'
+    except UnicodeDecodeError:
+        pass
+
+    # 3. charset_normalizer
+    if _HAVE_CHARSET_NORMALIZER:
+        result = from_bytes(data).best()
+        if result is not None:
+            enc = str(result.encoding).lower()
+            # 4. Heuristic: catch-all result + high bytes → CP1251 (Windows Russian)
+            if enc in _CATCH_ALL and any(b > 0x7F for b in data):
+                return 'cp1251'
+            return enc
+
+    # 5. Fallback (no detector available): assume CP1251 for high-byte files
+    if any(b > 0x7F for b in data):
+        return 'cp1251'
+    return 'utf-8'
+
+
+def read_text_auto(path: str):
+    """
+    Read a text file with automatic encoding detection.
+
+    Returns:
+        (content, encoding_name, converted)
+        - content: decoded text (str)
+        - encoding_name: the encoding the file was actually in
+        - converted: True if the file was NOT UTF-8 (i.e. it will be
+          re-saved as UTF-8, changing the on-disk encoding)
+    """
+    with open(path, 'rb') as f:
+        data = f.read()
+
+    enc = detect_encoding(data)
+    try:
+        content = data.decode(enc)
+    except (UnicodeDecodeError, LookupError):
+        # Last resort: never crash on open, replace undecodable bytes
+        content = data.decode('utf-8', errors='replace')
+        enc = 'utf-8 (replaced)'
+
+    # Defensive: strip a stray BOM char if one slipped through
+    if content.startswith('\ufeff'):
+        content = content[1:]
+
+    converted = not enc.startswith('utf-8')
+    return content, enc, converted
+
+
+def write_text_utf8(path: str, content: str):
+    """Write text as UTF-8 (no BOM)."""
+    with open(path, 'w', encoding='utf-8', newline='') as f:
+        f.write(content)
+```
+<!-- END FILE: common/encoding.py -->
+
+### `common/i18n.py` (969 строк)
 
 <!-- FILE: common/i18n.py -->
 ```python
@@ -9763,17 +11193,11 @@ LANGS = {
         "bp_cond_title":  "Breakpoint Condition ",
         "bp_cond_clear":  "Clear Condition ",  "bp_cond_ok":  "OK ",  "bp_cond_cancel":  "Cancel ",
         "bp_cond_hint":  "Available variables:\n"
-
                          "  Registers: A, B, C, D, E, H, L, BC, DE, HL, SP, PC\n"
-
                          "  Flags: S, Z, AC, P, CY\n"
-
                          "  Memory: mem[0x0100]   Ports: io[0x01]\n"
-
                          "  Cycles: cycles\n"
-
                          "  Operators: ==, !=, <, >, <=, >=, and, or, not ",
-
         "err_addr_mem":  "Enter memory address! ",  "err_syntax":  "Invalid syntax! ",
         "dlg_cancel": "Cancel ", "dlg_ok": "OK ",
         # Статистика эмулятора
@@ -9822,13 +11246,10 @@ LANGS = {
         "bp_preset_saved": "BP preset saved: ",
         "bp_preset_loaded": "BP preset loaded: ",
         "bp_preset_save_err": "Failed to save BP preset:\n",
-
-
         "bp_preset_load_err": "Failed to load BP preset:\n",
-
-
         "bp_cond_err": "Invalid condition syntax!",
         "bp_cond_example": "Example: A == 0x55",
+
         # Диалоги
         "set_pc_title": "Set PC",
         "export_disasm_title": "Export Disassembly",
@@ -9941,12 +11362,15 @@ LANGS = {
         # === Assembler ===
         "asm_tab": "Assembler",
         #"asm_new": "\U0001F4C4 New Program",
-        "asm_load": "\U0001F4C2 Load .asm",
-        "asm_save": "\U0001F4BE Save .asm",
+        #"asm_load": "\U0001F4C2 Load .asm",
+        #"asm_save": "\U0001F4BE Save .asm",
+        "asm_load": "\U0001F4C2 Load file",
+        "asm_save": "\U0001F4BE Save file",
         "asm_assemble": "\U0001F528 Assemble",
         "asm_assemble_load": "\U0001F680 Assemble & Load",
         "asm_assemble_obj": "\U0001F4E6 Assemble \u2192 OBJ",
         "asm_link": "\U0001F517 Link",
+        "asm_processor": "Processor:",
         "asm_obj_title": "Save Object File",
         "asm_obj_filter": "Object (*.obj);;All files (*)",
         "asm_obj_saved": "\U0001F4E6 Object saved: {path}",
@@ -9965,7 +11389,6 @@ LANGS = {
         "asm_map_filter": "Map (*.map);;All files (*)",
         "asm_map_loaded": "\U0001F5FA Map loaded: {path} ({n} symbols)",
         "asm_map_err": "Failed to load map file:\n{e}",
-
         "asm_errors": "Errors",
         "asm_col_line": "Line",
         "asm_col_msg": "Message",
@@ -9973,12 +11396,17 @@ LANGS = {
         "asm_col_label": "Label",
         "asm_col_addr": "Address",
         "asm_col_line2": "Line",
-        "asm_load_title": "Load Assembler File",
-        "asm_save_title": "Save Assembler File",
-        "asm_file_filter": "Assembler (*.asm *.inc *.s);;All files (*)",
-        "asm_file_filter_save": "Assembler (*.asm);;All files (*)",
+        #"asm_load_title": "Load Assembler File",
+        #"asm_save_title": "Save Assembler File",
+        "asm_load_title": "Load File",
+        "asm_save_title": "Save File",
+        #"asm_file_filter": "Assembler (*.asm *.inc *.s);;Linker script (*.lnk);;All files (*)",
+        "asm_file_filter": "All supported (*.asm *.inc *.s *.lnk);;Assembler (*.asm *.inc *.s);;Linker script (*.lnk);;All files (*)",
+        "asm_file_filter_save": "Assembler (*.asm);;Linker script (*.lnk);;All files (*)",
         "asm_loaded": "\U0001F4C2 Loaded: {path}",
         "asm_saved": "\U0001F4BE Saved: {path}",
+        "asm_saved_utf8": "\U0001F4BE Saved as UTF-8: {path}",
+        "asm_encoding_converted": "\U0001F4C4 Opened in {enc} encoding \u2014 will be saved as UTF-8",
         "asm_err_title": "Error",
         "asm_load_err": "Failed to load file:\n{e}",
         "asm_save_err": "Failed to save file:\n{e}",
@@ -9996,35 +11424,21 @@ LANGS = {
         "asm_loaded_mem": "\U0001F680 Loaded {n} bytes at 0x{addr:04X}",
         "asm_load_mem_err": "\u274C Load error:\n{tb}",
         "asm_placeholder": "; Assembler 8080-5 CI\n; Number formats: 0x1A, 1AH, 26, 11010B, 32q\n; Ctrl+wheel \u2014 font size\n\n        ORG 0100H\nSTART:  MVI A, 0x55\n        OUT 01H\n        JMP START\n",
-
-
         "asm_open_ws": "📂 Open Workspace",
-
         "asm_save_ws": "💾 Save Workspace",
-
         "asm_open_ws_title": "Open Workspace File",
-
         "asm_save_ws_title": "Save Workspace File",
-
         "asm_ws_filter": "Workspace (*.ws);;All files (*)",
-
         "asm_ws_filter_save": "Workspace (*.ws);;All files (*)",
-
         "asm_ws_loaded": "📂 Workspace loaded: {path} ({n} files)",
-
         "asm_ws_err": "❌ Failed to load workspace:\n{e}",
-
         "asm_ws_saved": "💾 Workspace saved: {path}",
-
         "asm_ws_save_err": "❌ Failed to save workspace:\n{e}",
-
         "asm_new_tab": "\U0001F4C4 New file",
-
         "asm_untitled": "untitled",
-
         "asm_unsaved_title": "Unsaved Changes",
-
         "asm_unsaved_msg": "File '{file}' has unsaved changes. Save?",
+
         "btn_save": "Save",
         "btn_discard": "Discard",
         "btn_cancel": "Cancel",
@@ -10042,7 +11456,14 @@ LANGS = {
         "help_mcp": "MCP Guide",
         "help_scripts": "Scripts Guide",
         "help_about": "About i8080-5 CI",
-        "help_about_text": "i8080-5 CI\nIntel 8080 Emulator & Debugger\n\nVersion 1.0\n\nFeatures:\n- 8080 CPU emulator (all 256 opcodes)\n- Assembler (M80/zasm formats)\n- Disassembler\n- Memory/IO bus with SLIP protocol\n- 20+ IO device emulators\n- System profiles\n- MCP Server (AI integration)\n- Python automation API",
+        "help_about_text": "i8080-5 CI\nIntel 8080 Emulator & Debugger\n\nFeatures:\n- 8080 CPU emulator (all 256 opcodes)\n- Assembler (M80/zasm formats)\n- Disassembler\n- Memory/IO bus with SLIP protocol\n- 20+ IO device emulators\n- System profiles\n- MCP Server (AI integration)\n- Python automation API",
+        # === Code Folding ===
+        "fold_collapsed_lines": "{n} lines",
+        "fold_collapse_all": "Collapse All",
+        "fold_expand_all": "Expand All",
+        "fold_tip_collapse": "Collapse block",
+        "fold_tip_expand": "Expand block",
+        "fold_locked": "Block is collapsed. Expand to edit.",
         "sel_cycles": "Selected code",
         "help_author": "\n\n Author - Sergey Dorozhkin aka R2AKT",
     },
@@ -10139,17 +11560,11 @@ LANGS = {
         "bp_cond_title":  "Условие точки останова ",
         "bp_cond_clear":  "Очистить условие ",  "bp_cond_ok":  "OK ",  "bp_cond_cancel":  "Отмена ",
         "bp_cond_hint":  "Available variables:\n"
-
                          "  Registers: A, B, C, D, E, H, L, BC, DE, HL, SP, PC\n"
-
                          "  Flags: S, Z, AC, P, CY\n"
-
                          "  Memory: mem[0x0100]   Ports: io[0x01]\n"
-
                          "  Cycles: cycles\n"
-
                          "  Operators: ==, !=, <, >, <=, >=, and, or, not ",
-
         "err_addr_mem":  "Введите адрес памяти! ",  "err_syntax":  "Неверный синтаксис! ",
         "dlg_cancel": "Отмена ", "dlg_ok": "OK ",
         # Статистика эмулятора
@@ -10187,7 +11602,6 @@ LANGS = {
         "watch_err_fmt_title": "Ошибка формата",
         "watch_err_add": "Не удалось добавить Watch:\n",
 
-
         # BP: статусы и пресеты
         "bp_select": "Выберите точку останова",
         "bp_add_title": "Добавить точку останова",
@@ -10198,13 +11612,10 @@ LANGS = {
         "bp_preset_saved": "Пресет BP сохранён: ",
         "bp_preset_loaded": "Пресет BP загружен: ",
         "bp_preset_save_err": "Не удалось сохранить пресет BP:\n",
-
-
         "bp_preset_load_err": "Не удалось загрузить пресет BP:\n",
-
-
         "bp_cond_err": "Неверный синтаксис условия!",
         "bp_cond_example": "Например: A == 0x55",
+
         # Диалоги
         "set_pc_title": "Установить PC",
         "export_disasm_title": "Экспорт дизассемблера",
@@ -10317,12 +11728,15 @@ LANGS = {
         # === Ассемблер ===
         "asm_tab": "Ассемблер",
         #"asm_new": "\U0001F4C4 Новая программа",
-        "asm_load": "\U0001F4C2 Загрузить .asm",
-        "asm_save": "\U0001F4BE Сохранить .asm",
+        #"asm_load": "\U0001F4C2 Загрузить .asm",
+        #"asm_save": "\U0001F4BE Сохранить .asm",
+        "asm_load": "\U0001F4C2 Загрузить файл",
+        "asm_save": "\U0001F4BE Сохранить файл",
         "asm_assemble": "\U0001F528 Ассемблировать",
         "asm_assemble_load": "\U0001F680 Ассемблировать и загрузить",
         "asm_assemble_obj": "\U0001F4E6 Собрать \u2192 OBJ",
         "asm_link": "\U0001F517 Линковка",
+        "asm_processor": "Процессор:",
         "asm_obj_title": "Сохранить объектный файл",
         "asm_obj_filter": "Объектный (*.obj);;Все файлы (*)",
         "asm_obj_saved": "\U0001F4E6 Объект сохранён: {path}",
@@ -10341,7 +11755,6 @@ LANGS = {
         "asm_map_filter": "Map (*.map);;Все файлы (*)",
         "asm_map_loaded": "\U0001F5FA Map загружен: {path} ({n} символов)",
         "asm_map_err": "Не удалось загрузить map-файл:\n{e}",
-
         "asm_errors": "Ошибки",
         "asm_col_line": "Строка",
         "asm_col_msg": "Сообщение",
@@ -10351,10 +11764,13 @@ LANGS = {
         "asm_col_line2": "Строка",
         "asm_load_title": "Загрузить ассемблерный файл",
         "asm_save_title": "Сохранить ассемблерный файл",
-        "asm_file_filter": "Ассемблер (*.asm *.inc *.s);;Все файлы (*)",
-        "asm_file_filter_save": "Ассемблер (*.asm);;Все файлы (*)",
+        #"asm_file_filter": "Ассемблер (*.asm *.inc *.s);;Скрипт линковщика (*.lnk);;Все файлы (*)",
+        "asm_file_filter": "Все поддерживаемые (*.asm *.inc *.s *.lnk);;Ассемблер (*.asm *.inc *.s);;Скрипт линковщика (*.lnk);;Все файлы (*)",
+        "asm_file_filter_save": "Ассемблер (*.asm);;Скрипт линковщика (*.lnk);;Все файлы (*)",
         "asm_loaded": "\U0001F4C2 Загружен: {path}",
         "asm_saved": "\U0001F4BE Сохранено: {path}",
+        "asm_saved_utf8": "\U0001F4BE Сохранено в UTF-8: {path}",
+        "asm_encoding_converted": "\U0001F4C4 Открыт в кодировке {enc} \u2014 будет сохранён в UTF-8",
         "asm_err_title": "Ошибка",
         "asm_load_err": "Не удалось загрузить файл:\n{e}",
         "asm_save_err": "Не удалось сохранить файл:\n{e}",
@@ -10372,41 +11788,26 @@ LANGS = {
         "asm_loaded_mem": "\U0001F680 Загружено {n} байт по адресу 0x{addr:04X}",
         "asm_load_mem_err": "\u274C Ошибка загрузки:\n{tb}",
         "asm_placeholder": "; Ассемблер 8080-5 CI\n; Форматы чисел: 0x1A, 1AH, 26, 11010B, 32q\n; Ctrl+колесо мыши — размер шрифта\n\n        ORG 0100H\nSTART:  MVI A, 0x55\n        OUT 01H\n        JMP START\n",
-
-
         "asm_open_ws": "📂 Открыть Workspace",
-
         "asm_save_ws": "💾 Сохранить Workspace",
-
         "asm_open_ws_title": "Открыть файл Workspace",
-
         "asm_save_ws_title": "Сохранить файл Workspace",
-
         "asm_ws_filter": "Workspace (*.ws);;Все файлы (*)",
-
         "asm_ws_filter_save": "Workspace (*.ws);;Все файлы (*)",
-
         "asm_ws_loaded": "📂 Workspace загружен: {path} ({n} файлов)",
-
         "asm_ws_err": "❌ Ошибка загрузки workspace:\n{e}",
-
         "asm_ws_saved": "💾 Workspace сохранён: {path}",
-
         "asm_ws_save_err": "❌ Ошибка сохранения workspace:\n{e}",
-
         "asm_new_tab": "\U0001F4C4 Новый файл",
-
         "asm_untitled": "без имени",
-
         "asm_unsaved_title": "Несохранённые изменения",
-
         "asm_unsaved_msg": "Файл '{file}' имеет несохранённые изменения. Сохранить?",
+
         "btn_save": "Сохранить",
         "btn_discard": "Отменить",
         "btn_cancel": "Отмена",
 
         "asm_map_auto_loaded": "  Map автозагружен: {n} символов",
-
         "asm_map_auto_err": "  Ошибка автозагрузки map: {e}",
 
         # === Справка ===
@@ -10418,12 +11819,18 @@ LANGS = {
         "help_mcp": "MCP Руководство",
         "help_scripts": "Руководство по скриптам",
         "help_about": "О программе i8080-5 CI",
-        "help_about_text": "i8080-5 CI\nЭмулятор и отладчик Intel 8080\n\nВерсия 1.0\n\nВозможности:\n- Эмулятор CPU 8080 (все 256 команд)\n- Ассемблер (форматы M80/zasm)\n- Дизассемблер\n- Шина памяти/IO с протоколом SLIP\n- 20+ эмуляторов IO-устройств\n- Системные профили\n- MCP Server (интеграция с ИИ)\n- Python API автоматизации",
+        "help_about_text": "i8080-5 CI\nЭмулятор и отладчик Intel 8080\n\nВозможности:\n- Эмулятор CPU 8080 (все 256 команд)\n- Ассемблер (форматы M80/zasm)\n- Дизассемблер\n- Шина памяти/IO с протоколом SLIP\n- 20+ эмуляторов IO-устройств\n- Системные профили\n- MCP Server (интеграция с ИИ)\n- Python API автоматизации",
+        # === Сворачивание кода ===
+        "fold_collapsed_lines": "{n} строк",
+        "fold_collapse_all": "Свернуть все",
+        "fold_expand_all": "Развернуть все",
+        "fold_tip_collapse": "Свернуть блок",
+        "fold_tip_expand": "Развернуть блок",
+        "fold_locked": "Блок свёрнут. Разверните для редактирования.",
         "sel_cycles": "Выделенный код",
         "help_author": "\n\n - Автор - Сергей Дорожкин aka R2AKT",
     }
 }
-
 
 # =============================================================
 # MNEMONIC_INFO: описания мнемоник для hover-подсказок.
@@ -10604,7 +12011,6 @@ MNEMONIC_INFO = {
         "LHLX": ("8085: загрузка HL из [M] со сдвигом", "0x20", 4),
     },
 }
-
 
 # 8085 cycle overrides (instructions with different cycles or 8085-only)
 MNEMONIC_CYCLES_8085 = {
@@ -10808,7 +12214,7 @@ __all__ = [
 ```
 <!-- END FILE: i8080_ci/__init__.py -->
 
-### `i8080_ci/assembler_widget.py` (1736 строк)
+### `i8080_ci/assembler_widget.py` (2037 строк)
 
 <!-- FILE: i8080_ci/assembler_widget.py -->
 ```python
@@ -10837,20 +12243,22 @@ from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QPushButton,
     QFileDialog, QMessageBox, QGroupBox,
     QSplitter, QPlainTextEdit, QTableWidget, QTableWidgetItem,
+    QPlainTextDocumentLayout,
     QHeaderView, QCompleter, QAbstractItemView, QLabel, QComboBox,
     QTabWidget, QToolButton, QToolTip
 )
 from PySide6.QtGui import (
-    QFont, QSyntaxHighlighter, QTextCharFormat, QColor, QPainter,
+    QFont, QFontMetrics, QSyntaxHighlighter, QTextCharFormat, QColor, QPainter,
     QPen, QTextCursor, QTextFormat
 )
-from PySide6.QtCore import Qt, QRegularExpression, QRect, QSize, QStringListModel, QEvent, QTimer
+from PySide6.QtCore import QRectF, QSizeF, Qt, QRegularExpression, QRect, QSize, QStringListModel, QEvent, QTimer
 
 from assemble8080.assembler import Assembler
 from assemble8080.objfile import obj_from_asm_result, save_obj, load_obj
 from assemble8080.linker import link, link_from_script
 from assemble8080.mapfile import parse_map
 from common.i18n import LANGS, get_system_language, get_mnemonic_info
+from common.encoding import read_text_auto
 from common.themes import (
     get_editor_style, get_syntax_colors, ARROW_COLORS,
     EDITOR_DARK, EDITOR_LIGHT,
@@ -10946,6 +12354,55 @@ class LineNumberArea(QWidget):
 # CODE EDITOR WITH LINE NUMBERS, ARROWS, AUTOCOMPLETE, CTRL+CLICK
 # =============================================
 
+class FoldableDocumentLayout(QPlainTextDocumentLayout):
+    """Layout that can hide specific blocks (code folding)."""
+
+    def __init__(self, document):
+        super().__init__(document)
+        self._hidden = set()
+
+    def set_hidden(self, blocks):
+        self._hidden = set(blocks)
+        self.requestUpdate()
+
+    def _lh(self):
+        doc = self.document()
+        if doc is None:
+            return 15.0
+        return QFontMetrics(doc.defaultFont()).height()
+
+    def documentSize(self):
+        base = super().documentSize()
+        if not self._hidden:
+            return base
+        return QSizeF(base.width(), max(0.0, base.height() - len(self._hidden) * self._lh()))
+
+    def draw(self, painter, option):
+        doc = self.document()
+        if doc is None or not self._hidden:
+            super().draw(painter, option)
+            return
+        total = doc.blockCount()
+        segments, start, off = [], 0, 0.0
+        for b in range(total):
+            if b in self._hidden:
+                if b > start:
+                    segments.append((start, b - 1, off))
+                off += self._lh()
+                start = b + 1
+        if start < total:
+            segments.append((start, total - 1, off))
+        for (a, z, o) in segments:
+            painter.save()
+            painter.translate(0, -o)
+            top = self.blockBoundingRect(doc.findBlockByNumber(a)).top()
+            bot = self.blockBoundingRect(doc.findBlockByNumber(z)).bottom()
+            opt = QPlainTextDocumentLayout.PaintContext(option)
+            opt.clip = QRectF(option.clip.left(), top, option.clip.width(), bot - top + 1)
+            super().draw(painter, opt)
+            painter.restore()
+
+
 class CodeEditor(QPlainTextEdit):
     """Assembler editor: line numbers, jump arrows, autocomplete, Ctrl+Click."""
 
@@ -10958,7 +12415,8 @@ class CodeEditor(QPlainTextEdit):
         self._label_lines = {}  # {LABEL: line_number} for Ctrl+Click
         # Folding state
         self._fold_regions = []  # [(start_line, end_line, name), ...]
-        self._collapsed = set()  # indices of collapsed regions
+        self._collapsed = set()  # NAMES of collapsed regions
+        self._fold_saved = {}  # {name: text} saved content of collapsed regions
         # Change tracking
         self._saved_lines = []  # lines at last save/load
         self._changed_lines = set()  # currently modified line numbers
@@ -11018,9 +12476,11 @@ class CodeEditor(QPlainTextEdit):
         cr = self.contentsRect()
         self.folding_area.setGeometry(
             QRect(cr.left(), cr.top(), FoldingArea.WIDTH, cr.height()))
+        self.folding_area.raise_()
         ln_x = cr.left() + FoldingArea.WIDTH
         self.line_number_area.setGeometry(
             QRect(ln_x, cr.top(), self.lineNumberAreaWidth(), cr.height()))
+        self.line_number_area.raise_()
 
     def lineNumberAreaPaintEvent(self, event):
         painter = QPainter(self.line_number_area)
@@ -11114,7 +12574,7 @@ class CodeEditor(QPlainTextEdit):
                 new_size = max(current_size - 1, 8)
             if new_size != current_size:
                 self.setFont(QFont("Consolas", new_size))
-                self._updateLineNumberAreaWidth(0)
+                self._updateMargins(0)
                 self.line_number_area.update()
             event.accept()
         else:
@@ -11158,12 +12618,79 @@ class CodeEditor(QPlainTextEdit):
         tc.insertText(completion)
         self.setTextCursor(tc)
 
+    def _is_collapsed_marker_line(self, line_num: int) -> bool:
+        """Check if the given line is a .block/.endblock marker of a collapsed region."""
+        for st, en, name in self._fold_regions:
+            if name in self._collapsed:
+                if line_num == st or line_num == en:
+                    return True
+        return False
+
     def keyPressEvent(self, event):
+        # Prohibit editing of collapsed block markers
+        cursor = self.textCursor()
+        line_num = cursor.blockNumber()
+        if self._is_collapsed_marker_line(line_num):
+            key = event.key()
+            ctrl = event.modifiers() & Qt.ControlModifier
+            nav_keys = (Qt.Key_Left, Qt.Key_Right, Qt.Key_Up, Qt.Key_Down,
+                        Qt.Key_Home, Qt.Key_End, Qt.Key_PageUp, Qt.Key_PageDown,
+                        Qt.Key_Escape)
+            if key in nav_keys:
+                pass
+            elif ctrl and key == Qt.Key_C:
+                pass
+            elif ctrl and key in (Qt.Key_V, Qt.Key_X):
+                event.accept()
+                return
+            elif event.text() or key in (Qt.Key_Backspace, Qt.Key_Delete,
+                                         Qt.Key_Enter, Qt.Key_Return, Qt.Key_Tab):
+                event.accept()
+                return
+
         if self._completer.popup().isVisible():
             if event.key() in (Qt.Key_Enter, Qt.Key_Return, Qt.Key_Escape,
                                Qt.Key_Tab, Qt.Key_Backtab):
                 event.ignore()
                 return
+
+        # Tab / Shift+Tab: indent/unindent
+        if event.key() == Qt.Key_Tab and not (event.modifiers() & Qt.ShiftModifier):
+            sel = self.textCursor()
+            if sel.hasSelection():
+                # Indent all selected lines
+                start_block = self.document().findBlock(sel.selectionStart()).blockNumber()
+                end_block = self.document().findBlock(sel.selectionEnd()).blockNumber()
+                for block_num in range(start_block, end_block + 1):
+                    c = QTextCursor(self.document().findBlockByNumber(block_num))
+                    c.insertText('\t')
+                event.accept()
+                return
+            # No selection: let default tab behavior happen (insert tab)
+        elif event.key() == Qt.Key_Backtab or (event.key() == Qt.Key_Tab and (event.modifiers() & Qt.ShiftModifier)):
+            # Shift+Tab: unindent
+            sel = self.textCursor()
+            if sel.hasSelection():
+                # Unindent all selected lines
+                start_block = self.document().findBlock(sel.selectionStart()).blockNumber()
+                end_block = self.document().findBlock(sel.selectionEnd()).blockNumber()
+                for block_num in range(start_block, end_block + 1):
+                    c2 = QTextCursor(self.document().findBlockByNumber(block_num))
+                    c2.movePosition(QTextCursor.StartOfLine)
+                    c2.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
+                    if c2.selectedText() == '\t':
+                        c2.removeSelectedText()
+                event.accept()
+                return
+            else:
+                # Single line: remove one leading tab
+                c = self.textCursor()
+                c.movePosition(QTextCursor.StartOfLine)
+                c.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
+                if c.selectedText() == '\t':
+                    c.removeSelectedText()
+                    event.accept()
+                    return
 
         super().keyPressEvent(event)
 
@@ -11198,6 +12725,14 @@ class CodeEditor(QPlainTextEdit):
                     event.accept()
                     return
         super().mousePressEvent(event)
+
+    def insertFromMimeData(self, source):
+        """Block paste on collapsed block marker lines."""
+        cursor = self.textCursor()
+        line_num = cursor.blockNumber()
+        if self._is_collapsed_marker_line(line_num):
+            return  # reject paste
+        super().insertFromMimeData(source)
 
     # ------------------------------------------------------------------
     # Hover: tooltip на мнемонику + такты выделенного блока
@@ -11254,6 +12789,18 @@ class CodeEditor(QPlainTextEdit):
                     start, name = stack.pop()
                     new_regions.append((start, i, name))
                 continue
+
+            # Check for collapsed indicator: 	{N} (replaces .endblock when collapsed)
+            # Only recognized if the block is actually in collapsed state (name in self._collapsed)
+            # This prevents false positives when 	{N} appears as content in expanded blocks
+            m_collapsed = _re.match(r'^\{\d+\}$', code_part.strip()) if line.startswith('\t') else None
+            if m_collapsed and stack:
+                top_start, top_name = stack[-1]
+                if top_name in self._collapsed:
+                    stack.pop()
+                    new_regions.append((top_start, i, top_name))
+                    continue
+                # Otherwise it is just content - fall through
             
             m_blk = re_block.match(code_part)
             if m_blk:
@@ -11267,84 +12814,141 @@ class CodeEditor(QPlainTextEdit):
             start, name = stack.pop()
             new_regions.append((start, len(ln_list) - 1, name))
         
-        old_regions = self._fold_regions
+        # If a saved region's marker was deleted, force-restore its text
+        old_saved = dict(self._fold_saved)
+        for name, saved_text in old_saved.items():
+            # Check if the .block marker still exists in current text
+            import re as _re2
+            pattern = _re2.compile(r'^\s*\.?BLOCK\b\s*' + _re2.escape(name) + r'\b', _re2.IGNORECASE | _re2.MULTILINE)
+            if not pattern.search(self.toPlainText()):
+                # Marker deleted - insert saved text back at end of document
+                cursor = self.textCursor()
+                cursor.movePosition(QTextCursor.End)
+                cursor.insertText(saved_text)
+                del self._fold_saved[name]
+                self._collapsed.discard(name)
+
         self._fold_regions = new_regions
-        new_collapsed = set()
-        for idx2 in self._collapsed:
-            if idx2 < len(old_regions) and idx2 < len(new_regions):
-                if old_regions[idx2] == new_regions[idx2]:
-                    new_collapsed.add(idx2)
-        self._collapsed = new_collapsed
+        # Preserve collapsed state by name (regions that still exist)
+        valid_names = set(r[2] for r in new_regions)
+        self._collapsed = self._collapsed & valid_names
+        # Clean up saved text for regions that no longer exist
+        for name in list(self._fold_saved.keys()):
+            if name not in valid_names:
+                del self._fold_saved[name]
+
+    def _collapse_region(self, region_idx: int):
+        """Physically remove inner lines + .endblock, replace with \t{N}."""
+        st, en, name = self._fold_regions[region_idx]
+        if st + 1 >= en:
+            return  # nothing to hide
+        # Expand any inner collapsed blocks first (so their text is included)
+        for inner_idx in range(len(self._fold_regions) - 1, -1, -1):
+            i_st, i_en, i_name = self._fold_regions[inner_idx]
+            if i_name != name and i_st > st and i_en < en and i_name in self._collapsed:
+                self._expand_region(inner_idx)
+                # Re-parse after expand (line numbers changed)
+                self.parse_fold_regions()
+                # Re-find this region (index may have changed)
+                for ri in range(len(self._fold_regions)):
+                    if self._fold_regions[ri][2] == name:
+                        region_idx = ri
+                        break
+                st, en, name = self._fold_regions[region_idx]
+                if st + 1 >= en:
+                    return
+        # Number of collapsed lines (between .block and .endblock, exclusive)
+        n_lines = en - st - 1
+        # Select from start of line (st+1) to END of line en (including .endblock)
+        cursor = self.textCursor()
+        cursor.movePosition(QTextCursor.Start)
+        for _ in range(st + 1):
+            cursor.movePosition(QTextCursor.Down)
+        start_pos = cursor.position()
+        # Move to start of line en, then to end of that line
+        cursor.movePosition(QTextCursor.Start)
+        for _ in range(en):
+            cursor.movePosition(QTextCursor.Down)
+        cursor.movePosition(QTextCursor.EndOfLine)
+        end_pos = cursor.position()
+        # Select and remove
+        cursor.setPosition(start_pos)
+        cursor.setPosition(end_pos, QTextCursor.KeepAnchor)
+        removed_text = cursor.selectedText()
+        cursor.removeSelectedText()
+        # Insert the collapsed indicator: \t{N}
+        cursor.insertText("\t{" + str(n_lines) + "}")
+        self._fold_saved[name] = removed_text
+        self._collapsed.add(name)
+
+    def _expand_region(self, region_idx: int):
+        """Replace the \t{N} indicator line with saved text (including .endblock)."""
+        st, en, name = self._fold_regions[region_idx]
+        if name not in self._fold_saved:
+            return
+        saved_text = self._fold_saved[name]
+        # Select the \t{N} line (line en) and replace with saved text
+        cursor = self.textCursor()
+        cursor.movePosition(QTextCursor.Start)
+        for _ in range(en):
+            cursor.movePosition(QTextCursor.Down)
+        cursor.movePosition(QTextCursor.StartOfLine)
+        cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+        cursor.insertText(saved_text)
+        del self._fold_saved[name]
+        self._collapsed.discard(name)
 
     def toggle_fold(self, region_idx: int):
-        """Toggle a fold region using setLineHeight(0)."""
+        """Toggle a fold region by physically removing/inserting its inner lines."""
         if region_idx >= len(self._fold_regions):
             return
-        start, end, _ = self._fold_regions[region_idx]
-        doc = self.document()
-        if region_idx in self._collapsed:
-            self._collapsed.discard(region_idx)
-            for ln in range(start + 1, end + 1):
-                block = doc.findBlockByNumber(ln)
-                if block.isValid():
-                    fmt = block.blockFormat()
-                    fmt.setLineHeight(1, 100)  # LengthPercent=1, 100% = normal
-                    cursor = QTextCursor(block)
-                    cursor.setBlockFormat(fmt)
-        else:
-            self._collapsed.add(region_idx)
-            for ln in range(start + 1, end + 1):
-                block = doc.findBlockByNumber(ln)
-                if block.isValid():
-                    fmt = block.blockFormat()
-                    fmt.setLineHeight(0, 0)  # LengthAbsolute=0, height=0 = hidden
-                    cursor = QTextCursor(block)
-                    cursor.setBlockFormat(fmt)
+        st, en, name = self._fold_regions[region_idx]
+        self._suppress_change = True
+        try:
+            if name in self._collapsed:
+                self._expand_region(region_idx)
+            else:
+                self._collapse_region(region_idx)
+        finally:
+            self._suppress_change = False
+        self.document().setModified(False)
+        self.parse_fold_regions()
         self.folding_area.update()
-        self.viewport().update()
 
     def collapse_all(self):
-        for idx in range(len(self._fold_regions)):
-            if idx not in self._collapsed:
-                start, end, _ = self._fold_regions[idx]
-                is_nested = any(
-                    o_start < start and o_end > end
-                    for o_idx, (o_start, o_end, _) in enumerate(self._fold_regions)
-                    if o_idx != idx and o_idx in self._collapsed
-                )
-                if not is_nested:
-                    self.toggle_fold(idx)
+        # Collapse from bottom to top; re-check length each iteration
+        # since toggle_fold() re-parses regions (list shrinks)
+        while self._fold_regions:
+            idx = len(self._fold_regions) - 1
+            _, _, name = self._fold_regions[idx]
+            if name not in self._collapsed:
+                self.toggle_fold(idx)
+            else:
+                break
 
     def expand_all(self):
-        for idx in sorted(self._collapsed, reverse=True):
-            self.toggle_fold(idx)
+        # Expand from top to bottom
+        for idx in range(len(self._fold_regions)):
+            _, _, name = self._fold_regions[idx]
+            if name in self._collapsed:
+                self.toggle_fold(idx)
+
+    def expand_all_folds(self):
+        """Expand all folds (use before saving to restore full text)."""
+        self.expand_all()
 
     def _on_fold_margin_click(self, pos):
-        """Handle click in folding margin."""
-        # pos is in folding_area coordinates; y matches viewport y
+        """Handle click in folding margin - toggle fold at clicked line."""
         y = pos.y()
-        block = self.firstVisibleBlock()
-        top = round(self.blockBoundingGeometry(block).translated(self.contentOffset()).top())
-        bottom = top + round(self.blockBoundingRect(block).height())
-        while block.isValid() and top < y:
-            block = block.next()
-            top = bottom
-            bottom = top + round(self.blockBoundingRect(block).height())
-        if not block.isValid():
-            return
-        line_num = block.blockNumber()
-        # Check if click is within this block's bounds
-        if y >= top and y < bottom:
-            for idx, (start, end, name) in enumerate(self._fold_regions):
-                if start == line_num:
-                    self.toggle_fold(idx)
-                    return
-            # Also check if click is on a line inside a collapsed region
-            # (allow expanding by clicking inside the collapsed area)
-            for idx, (start, end, name) in enumerate(self._fold_regions):
-                if idx in self._collapsed and start < line_num <= end:
-                    self.toggle_fold(idx)
-                    return
+        from PySide6.QtCore import QPoint
+        vp_pos = QPoint(0, y)
+        cursor = self.cursorForPosition(vp_pos)
+        line_num = cursor.blockNumber()
+        # Find fold region starting at this line
+        for idx, (start, end, name) in enumerate(self._fold_regions):
+            if start == line_num:
+                self.toggle_fold(idx)
+                return
 
     def _paint_fold_margin(self, event):
         """Paint folding margin: +/- buttons + change indicators."""
@@ -11378,7 +12982,7 @@ class CodeEditor(QPlainTextEdit):
                         # Always draw horizontal line
                         painter.drawLine(cx - 4, cy, cx + 4, cy)
                         # If collapsed, draw vertical (making +)
-                        if idx in self._collapsed:
+                        if name in self._collapsed:
                             painter.drawLine(cx, cy - 4, cx, cy + 4)
                         break
 
@@ -11401,28 +13005,31 @@ class CodeEditor(QPlainTextEdit):
         self.folding_area.update()
 
     def mark_saved(self):
-        """Call after save. Flash green on changed lines."""
+        """Call after save. Show green on changed lines (persistent until next edit)."""
         self._saved_flash = set(self._changed_lines)
         self._changed_lines = set()
         self._saved_lines = self.toPlainText().split('\n')
         self.folding_area.update()
-        QTimer.singleShot(2000, self._clear_saved_flash)
-
-    def _clear_saved_flash(self):
-        self._saved_flash.clear()
-        self.folding_area.update()
 
     def _on_text_changed(self):
-        """Update change tracking + re-parse folds."""
+        """Update change tracking (difflib-based) + re-parse folds."""
         if self._suppress_change:
             return
+        import difflib
         current_lines = self.toPlainText().split('\n')
+        # Use SequenceMatcher to find only actually changed/added lines
+        sm = difflib.SequenceMatcher(None, self._saved_lines, current_lines, autojunk=False)
         new_changed = set()
-        for i, line in enumerate(current_lines):
-            if i < len(self._saved_lines) and line != self._saved_lines[i]:
-                new_changed.add(i)
-            elif i >= len(self._saved_lines):
-                new_changed.add(i)
+        for tag, i1, i2, j1, j2 in sm.get_opcodes():
+            if tag == 'replace':
+                # Mark lines in the new text that were replaced
+                for j in range(j1, j2):
+                    new_changed.add(j)
+            elif tag == 'insert':
+                # Mark inserted lines
+                for j in range(j1, j2):
+                    new_changed.add(j)
+            # 'delete' and 'equal' - no marking needed
         self._changed_lines = new_changed
         self.parse_fold_regions()
         self.folding_area.update()
@@ -11530,7 +13137,7 @@ class AsmHighlighter(QSyntaxHighlighter):
             r'RET|RNZ|RZ|RNC|RC|RPO|RPE|RP|RM|'
             r'RST|PUSH|POP|IN|OUT|EI|DI|HLT|NOP|PCHL|SPHL|XTHL)\b'
         )
-        directives = r'\b(ORG|DB|DW|DS|EQU|END|INCLUDE)\b'
+        directives = r'\b(ORG|DB|DW|DS|EQU|END|INCLUDE|INPUT|OUTPUT|ORIGIN|SIZE|FILL|BLOCK|ENDBLOCK)\b'
         numbers = r'\b(0[xX][0-9A-Fa-f]+|[0-9][0-9A-Fa-f]*[hH]|[0-9]+[dD]?|[01]+[bB]|[0-7]+[qoQo])\b'
         # Global labels (::) — checked FIRST so they take priority
         global_labels = r'^([A-Za-z_][A-Za-z0-9_$]*)::'
@@ -11648,13 +13255,13 @@ class AssemblerWidget(QWidget):
         ctrl_layout.addWidget(self.btn_link)
 
         ctrl_layout.addSpacing(8)
-        self.btn_collapse_all = QPushButton("\u2212")
-        self.btn_collapse_all.setToolTip("Collapse all blocks")
+        self.btn_collapse_all = QPushButton("⚞")
+        self.btn_collapse_all.setToolTip(_tr("fold_collapse_all"))
         self.btn_collapse_all.setFixedWidth(28)
         self.btn_collapse_all.clicked.connect(self._on_collapse_all)
         ctrl_layout.addWidget(self.btn_collapse_all)
-        self.btn_expand_all = QPushButton("+")
-        self.btn_expand_all.setToolTip("Expand all blocks")
+        self.btn_expand_all = QPushButton("⚟")
+        self.btn_expand_all.setToolTip(_tr("fold_expand_all"))
         self.btn_expand_all.setFixedWidth(28)
         self.btn_expand_all.clicked.connect(self._on_expand_all)
         ctrl_layout.addWidget(self.btn_expand_all)
@@ -11662,7 +13269,7 @@ class AssemblerWidget(QWidget):
 
         # === CPU type selector ===
         ctrl_layout.addSpacing(20)
-        ctrl_layout.addWidget(QLabel("Процессор:"))
+        ctrl_layout.addWidget(QLabel(_tr("asm_processor")))
         self.cpu_combo = QComboBox()
         self.cpu_combo.addItems(["i8080", "i8085"])
         self.cpu_combo.setCurrentText("i8080")
@@ -11743,7 +13350,7 @@ class AssemblerWidget(QWidget):
     # TAB MANAGEMENT
     # =============================================
 
-    def _add_tab(self, file_path=None, content=None):
+    def _add_tab(self, file_path=None, content=None, encoding=None):
         """Add a new tab with optional file path and content."""
         editor = CodeEditor(self)
         editor.setFont(QFont("Consolas", 11))
@@ -11765,6 +13372,7 @@ class AssemblerWidget(QWidget):
             'highlighter': highlighter,
             'file_path': file_path,
             'modified': False,
+            'encoding': encoding,  # original file encoding (None = new/UTF-8)
         }
         
         # Connect modified tracking
@@ -11899,14 +13507,21 @@ class AssemblerWidget(QWidget):
                 return
             tab_info['file_path'] = file_path
         
+        editor.expand_all_folds()
         try:
-            with open(file_path, 'w', encoding='utf-8') as f:
+            # Always save as UTF-8 (no BOM). If the file was opened in
+            # another encoding, this is the moment it gets converted on disk.
+            with open(file_path, 'w', encoding='utf-8', newline='') as f:
                 f.write(editor.toPlainText())
             editor.mark_saved()
             editor.document().setModified(False)
             self.tab_widget.setTabText(index, self._tab_title(file_path, False))
             if self.main_window is not None:
                 self.main_window.log(_tr("asm_saved").format(path=file_path))
+                orig_enc = tab_info.get('encoding')
+                if orig_enc and not orig_enc.startswith('utf-8'):
+                    self.main_window.log(_tr("asm_saved_utf8").format(path=file_path))
+                    tab_info['encoding'] = 'utf-8'
         except Exception as e:
             QMessageBox.critical(self, _tr("asm_err_title"),
                                  _tr("asm_save_err").format(e=e))
@@ -11942,9 +13557,8 @@ class AssemblerWidget(QWidget):
                 full_path = os.path.join(ws_dir, fpath) if not os.path.isabs(fpath) else fpath
                 if os.path.exists(full_path):
                     try:
-                        with open(full_path, 'r', encoding='utf-8') as f:
-                            content = f.read()
-                        self._add_tab(full_path, content)
+                        content, enc, converted = read_text_auto(full_path)
+                        self._add_tab(full_path, content, encoding=enc)
                     except Exception:
                         pass
                 else:
@@ -12110,6 +13724,54 @@ class AssemblerWidget(QWidget):
         """On text change — recompute jumps and update autocomplete."""
         self._update_tab_labels(editor)
 
+        # Real-time validation for .lnk files
+        ti = self._current_tab_info()
+        if ti and (ti.get('file_path') or '').lower().endswith('.lnk'):
+            errors = self._validate_lnk_file(editor)
+            self._update_errors(errors)
+
+    # =============================================
+    # LNK FILE VALIDATION
+    # =============================================
+
+    def _validate_lnk_file(self, editor):
+        """Validate .lnk file in real-time. Returns list of (line, message) errors."""
+        errors = []
+        try:
+            from assemble8080.linker import parse_link_script
+            text = editor.toPlainText()
+            config = parse_link_script(text)
+
+            # Check that INPUT files exist
+            file_path = self._current_tab_info()['file_path'] if self._current_tab_info() else None
+            if file_path:
+                import os
+                script_dir = os.path.dirname(os.path.abspath(file_path))
+                for inp in config.get("inputs", []):
+                    inp_path = inp if os.path.isabs(inp) else os.path.join(script_dir, inp)
+                    if not os.path.exists(inp_path):
+                        # Find the line number
+                        for i, line in enumerate(text.split('\n')):
+                            if line.strip().upper().startswith('INPUT') and inp in line:
+                                errors.append((i + 1, f"Input file not found: {inp}"))
+                                break
+                        else:
+                            errors.append((1, f"Input file not found: {inp}"))
+
+            # Check that OUTPUT is specified (non-default)
+            if config.get("output") == "output.bin":
+                # Check if OUTPUT line exists
+                has_output = False
+                for line in text.split('\n'):
+                    if line.strip().upper().startswith('OUTPUT'):
+                        has_output = True
+                        break
+                if not has_output:
+                    errors.append((1, "OUTPUT not specified"))
+        except Exception:
+            pass
+        return errors
+
     # =============================================
     # ERROR PANEL UPDATE
     # =============================================
@@ -12188,6 +13850,18 @@ class AssemblerWidget(QWidget):
         for ti in getattr(self, '_tab_infos', []):
             ti['editor'].set_cpu_type(cpu_type)
 
+    def retranslate(self):
+        """Update all translatable strings (called on language change)."""
+        self.btn_collapse_all.setToolTip(_tr("fold_collapse_all"))
+        self.btn_expand_all.setToolTip(_tr("fold_expand_all"))
+        self.btn_assemble.setText(_tr("asm_assemble"))
+        self.btn_assemble_load.setText(_tr("asm_assemble_load"))
+        self.btn_assemble_obj.setText(_tr("asm_assemble_obj"))
+        self.btn_link.setText(_tr("asm_link"))
+        # Update folding area tooltips
+        if hasattr(self, 'folding_area'):
+            self.folding_area.update()
+
     def _on_collapse_all(self):
         editor = self._current_editor()
         if editor:
@@ -12214,6 +13888,7 @@ class AssemblerWidget(QWidget):
         editor = self._current_editor()
         if not editor:
             return
+        editor.expand_all_folds()
         source = editor.toPlainText()
         if not source.strip():
             if self.main_window is not None:
@@ -12302,11 +13977,12 @@ class AssemblerWidget(QWidget):
             _tr("asm_file_filter"))
         if path:
             try:
-                with open(path, 'r', encoding='utf-8') as f:
-                    content = f.read()
-                self._add_tab(path, content)
+                content, enc, converted = read_text_auto(path)
+                self._add_tab(path, content, encoding=enc)
                 if self.main_window is not None:
                     self.main_window.log(_tr("asm_loaded").format(path=path))
+                    if converted:
+                        self.main_window.log(_tr("asm_encoding_converted").format(enc=enc))
             except Exception as e:
                 QMessageBox.critical(self, _tr("asm_err_title"),
                                      _tr("asm_load_err").format(e=e))
@@ -12329,6 +14005,7 @@ class AssemblerWidget(QWidget):
         editor = self._current_editor()
         if not editor:
             return
+        editor.expand_all_folds()
         source = editor.toPlainText()
         if not source.strip():
             if self.main_window is not None:
@@ -12336,6 +14013,12 @@ class AssemblerWidget(QWidget):
             return
 
         file_path = self._current_tab_info()['file_path'] if self._current_tab_info() else None
+
+        # Variant D: auto-detect .lnk files
+        if file_path and file_path.lower().endswith('.lnk'):
+            self._do_link_from_current_tab()
+            return
+
         try:
             result = self.assembler.assemble(source, file_path or '')
         except Exception:
@@ -12452,6 +14135,30 @@ class AssemblerWidget(QWidget):
         except Exception as e:
             if self.main_window is not None:
                 self.main_window.log(_tr("asm_map_auto_err").format(e=e))
+
+    def _do_link_from_current_tab(self):
+        """Link using the current .lnk tab as linker script."""
+        editor = self._current_editor()
+        if not editor:
+            return
+        file_path = self._current_tab_info()['file_path']
+        try:
+            from assemble8080.linker import link_from_script
+            result = link_from_script(file_path)
+            if not result.success:
+                if self.main_window is not None:
+                    self.main_window.log(_tr("asm_link_errors").format(n=len(result.errors)))
+                    for err in result.errors:
+                        self.main_window.log(_tr("asm_link_err").format(msg=err.message))
+                return
+            if self.main_window is not None:
+                self.main_window.log(_tr("asm_link_success").format(n=len(result.binary), path=file_path))
+            # Load binary to memory
+            if result.binary:
+                self._load_to_memory(result.binary, result.origin)
+        except Exception as e:
+            if self.main_window is not None:
+                self.main_window.log(_tr("asm_link_fail").format(e=e))
 
     def _load_to_memory(self, binary, origin):
         """Load assembled binary into emulator memory."""
@@ -14178,7 +15885,7 @@ class IntelHex:
 ```
 <!-- END FILE: i8080_ci/intelhex.py -->
 
-### `i8080_ci/main_window.py` (4179 строк)
+### `i8080_ci/main_window.py` (4192 строк)
 
 <!-- FILE: i8080_ci/main_window.py -->
 ```python
@@ -14214,6 +15921,8 @@ except ImportError as e:
     print(f"MCP Server доступен: {e}")
 
 from common.i18n import LANGS, get_system_language, set_language
+from common.encoding import read_text_auto
+from version import get_version_string
 from common.themes import THEMES
 from .slip import (SlipProtocol, _FEND, CMD_NOP, CMD_HOLD, CMD_UNHOLD,
                    CMD_IO_READ_BYTE, CMD_IO_WRITE_BYTE,
@@ -15137,6 +16846,10 @@ class MainWindow(QMainWindow):
         self.tabs.setTabText(8, self.tr("tab_test"))       # Тест Памяти
         self.tabs.setTabText(9, self.tr("tab_io_seq"))     # IO Секвенсор
         self.tabs.setTabText(10, self.tr("tab_compare"))   # Сравнение
+        # Обновляем переводы ассемблера
+        if hasattr(self, 'assembler_widget'):
+            self.assembler_widget.retranslate()
+        
         
         # ============================================================
         # ВКЛАДКА "УПРАВЛЕНИЕ"
@@ -15844,9 +17557,14 @@ class MainWindow(QMainWindow):
     def load_sequence_file(self):
         path, _ = QFileDialog.getOpenFileName(self, self.tr("load_file"), "", "Text Files (*.txt);;All Files (*)")
         if path:
-            with open(path, 'r') as f:
-                self.seq_text.setPlainText(f.read())
-            self.log(f"{self.tr('load_file')}: {path}")
+            try:
+                content, enc, converted = read_text_auto(path)
+                self.seq_text.setPlainText(content)
+                self.log(f"{self.tr('load_file')}: {path}")
+                if converted:
+                    self.log(self.tr("asm_encoding_converted").format(enc=enc))
+            except Exception as e:
+                QMessageBox.critical(self, self.tr("error"), str(e))
 
     def run_io_sequence(self):
         text = self.seq_text.toPlainText()
@@ -15954,7 +17672,7 @@ class MainWindow(QMainWindow):
                 # Заголовок
                 f.write("; ============================================\n")
                 f.write("; i8080 Disassembly\n")
-                f.write("; Generated by i8080-5 CI\n")
+                f.write("; Generated by " + get_version_string() + "\n")
                 f.write(f"; Date: {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
                 f.write("; ============================================\n\n")
                 
@@ -16321,8 +18039,8 @@ class MainWindow(QMainWindow):
         
         loaded_mem = {}
         if path.endswith(".hex"):
-            with open(path, "r") as f:
-                loaded_mem = IntelHex.parse(f.read())
+            content, enc, converted = read_text_auto(path)
+            loaded_mem = IntelHex.parse(content)
         else:
             text, ok = QInputDialog.getText(self, self.tr("base_addr"), self.tr("base_addr_hint"))
             if not ok: return
@@ -16585,9 +18303,11 @@ class MainWindow(QMainWindow):
         )
         if path:
             try:
-                with open(path, 'r', encoding='utf-8') as f:
-                    self.script_editor.setPlainText(f.read())
+                content, enc, converted = read_text_auto(path)
+                self.script_editor.setPlainText(content)
                 self.statusBar.showMessage(f"{self.tr('script_loaded')}{path}", 3000)
+                if converted:
+                    self.log(self.tr("asm_encoding_converted").format(enc=enc))
             except Exception as e:
                 QMessageBox.critical(self, self.tr("error"), str(e))
                 
@@ -17677,8 +19397,8 @@ class MainWindow(QMainWindow):
             return
         
         try:
-            with open(path, 'r', encoding='utf-8') as f:
-                data = json.load(f)
+            content, enc, converted = read_text_auto(path)
+            data = json.loads(content)
             
             # Очищаем текущие BP
             self.emulator.clear_all_breakpoints()
@@ -18332,7 +20052,7 @@ class MainWindow(QMainWindow):
 
     def _show_about(self):
         """Show About dialog."""
-        QMessageBox.about(self, self.tr("help_about"), self.tr("help_about_text")+self.tr("help_author"))
+        QMessageBox.about(self, self.tr("help_about"), self.tr("help_about_text")+"\n\n"+get_version_string()+self.tr("help_author"))
 
     @staticmethod
     def _md_to_html(md_text: str) -> str:
@@ -31425,1181 +33145,2540 @@ def create_terminal_widget(device):
 
 ■ РАЗДЕЛ 4: ИЗМЕНЕНИЯ РЕФАКТОРИНГА
 
-Источник: `CHANGES.md` (1174 строк)
+Источник: `CHANGES.md` (2534 строк)
 
 ```markdown
 # Changelog / Журнал изменений
 
+
+
+
+
+## v2.1.7 (2026-10-09)
+
+### CLI / Command-line assembler (no GUI)
+
+- New `python -m assemble8080` CLI: assemble files, 8080/8085, link via .lnk, hexdump/listing/symbols, quiet mode, exit codes
+
+- Added `assemble8080/__main__.py`; `assemble()` gained `cpu_type` parameter
+
+- Fixed broken `__main__` self-test (UnicodeEncodeError on cp1251 console, RuntimeWarning)
+
+- Fixed `--lnk` logic (was falling through to self-test when no source files given)
+
+### Testing
+
+- New `tests/test_roundtrip_256.py`: assemble->disassemble->re-assemble round-trip for all 256 opcodes (i8080+i8085); 3 consecutive cycles PASS without code changes
+
+### Documentation
+
+- ASSEMBLER_GUIDE.md: new section 11 (CLI) with options table and examples
+
+## v2.1.6 (2026-10-08)
+
+
+
+### Documentation
+
+- **Complete & verified pseudo-command / directive reference** (ASSEMBLER_GUIDE.md, section 10.5):
+
+  - Added the missing `BLOCK` / `.BLOCK` … `ENDBLOCK` / `.ENDBLOCK` (M80 data block)
+
+  - Moved `DATA`, `BLKB`, `DEFW`, `XDEF`/`XREF`, `SECTION`/`ASEG`, `TITLE`/`MODULE`, `LOCAL`/`ENDLOCAL` to the no-op table (recognized but skipped in code)
+
+  - Added `INCBIN` / `.INCBIN` to the data-directives table
+
+  - Note added: `IF`/`ELSE`/`ENDIF`, `MACRO`/`ENDM`, `REPT`, `CPU` are no-op in the assembler but actually processed by the preprocessor
+
+- **USER_GUIDE.md** (sections 8.6 EN/RU, 8.10 EN/RU):
+
+  - Added `INCBIN` to the directives quick reference
+
+  - Added `.include` to the preprocessor include line (all three forms equivalent)
+
+  - Added pointer to the full reference (ASSEMBLER_GUIDE.md 10.5)
+
+
+
+### Verification
+
+- Cross-checked the full no-op list against assembler.py code (47 directives)
+
+- Confirmed `BLKB`, `DEFW`, `DATA` are no-ops (not in the real DS/DB/DW checks)
+
+- Confirmed `INCBIN` is actually processed (binary file insertion)
+
+
+
+## v2.1.5 (2026-10-08)
+
+
+
+### New Features
+
+- **`.include` pseudo-command** now handled identically to `#include` / `include` (M80-style):
+
+  - Supports: `include "file"`, `.include "file"`, `include file`, `.include file`
+
+  - All three forms (#include, include, .include) are equivalent
+
+- **Full pseudo-command & directive reference** added to ASSEMBLER_GUIDE.md (section 10.5):
+
+  - Complete tables: data/address, constants, structure, conditional, macros, file inclusion, CPU type, preprocessor, linker, no-op directives
+
+
+
+### Tests
+
+- 7/7 .include tests passed (quoted, unquoted, M80, #include, full assemble)
+
+
+
+## v2.1.4 (2026-10-08)
+
+
+
+### New Features
+
+- **File encoding auto-detection and conversion** (new module `common/encoding.py`):
+
+  - On open: BOM check (UTF-8/16/32) → strict UTF-8 decode → charset_normalizer detection
+
+  - Heuristic: catch-all result (latin-1/iso-8859-1) + high bytes → CP1251 (Windows Russian)
+
+  - Files opened in non-UTF-8 encoding are automatically converted to UTF-8 on first save
+
+  - Log notification when a file was opened in a different encoding
+
+  - Applied to: assembler files (.asm/.lnk), workspace files, sequence files, script files, .hex compare, breakpoints JSON
+
+- All files are now saved as UTF-8 (no BOM) — stable, unambiguous encoding
+
+
+
+### Bug Fixes
+
+- Fixed `_on_text_changed` AttributeError: `ti.get('file_path', '')` returned `None` for new tabs (key exists with value `None`), crashing `.lower()` — now uses `(ti.get('file_path') or '')`
+
+
+
+### Tests
+
+- 23/23 encoding detection tests passed (UTF-8, ASCII, CP1251, KOI8-R, UTF-16 BOM, UTF-8 BOM, full open/save cycle)
+
+- 921/0 project tests passed
+
+- GUI smoke test passed
+
+
+
+## v2.1.2 (2026-10-06)
+
+
+
+### Bug Fixes
+
+- Fixed fold marker false positive: \t{N} in block content no longer breaks folding
+
+  (marker now only recognized when block is actually in collapsed state via self._collapsed)
+
+
+
+### New Features
+
+- Added .lnk (linker script) file type support:
+
+  - File dialog filters now include *.lnk for open/save
+
+  - Syntax highlighting for linker directives (INPUT, OUTPUT, MAP, ORIGIN, SIZE, FILL)
+
+- MCP Server: added 19 new tools:
+
+  - Assembler: asm_assemble, asm_get_source, asm_set_source, asm_get_errors, asm_get_labels
+
+  - Emulator: emu_set_pc, emu_set_interrupts, emu_request_interrupt, emu_read_word, emu_write_word, emu_push, emu_pop
+
+  - System: get_cpu_type, set_cpu_type, get_version, get_language, set_language
+
+  - Automation: run_script, get_watch_list
+
+
+
+### Improvements
+
+- Fold marker detection: uses self._collapsed set to distinguish real markers from content
+
+- Linker keywords (BLOCK, ENDBLOCK) added to syntax highlighting
+
+
+
+## v2.1.1 (2026-10-06)
+
+
+
+### Bug Fixes
+
+- Fixed runtime language switching: collapse/expand button tooltips now update when language changes
+
+- Fixed fold detection: `{N}` in block content no longer breaks folding (requires leading tab for fold marker)
+
+- Fixed hardcoded "Процессор:" label - now uses i18n
+
+
+
+### Improvements
+
+- Added `retranslate()` method to AssemblerWidget for runtime language updates
+
+- Fold marker protection: only `\t{N}` (tab-prefixed) is recognized as fold indicator
+
+
+
+### Tests
+
+- 921/0 checks passed (3 consecutive clean passes)
+
 ## 2026-09-29 (итерация 6): Верификация ALUS_IMM по документации 8080/8085, авто-размер дизассемблера, чистка мёртвого кода
 
+
+
 ### Дизассемблер (i8080_ci/disassembler.py) — верификация по документации
+
 - **Исправлен `ALUS_IMM`:** был `['ADD','ADC','SUB','SBB','ANA','XRA','ORI','CPI']` (ошибка — использовались регистровые мнемоники). Теперь `['ADI','ACI','SUI','SBI','ANI','XRI','ORI','CPI']` — канонические мнемоники непосредственной адресации, одинаковые для 8080 и 8085 (проверено по документации KR580/8080/8085).
+
   - 0xC6=ADI, 0xCE=ACI, 0xD6=SUI, 0xDE=SBI, 0xE6=ANI, 0xEE=XRI, 0xF6=ORI, 0xFE=CPI
+
 - Регистровая форма (0x80–0xBF) без изменений: `ALUS = ['ADD','ADC','SUB','SBB','ANA','XRA','ORA','CMP']` (там ORA/CMP — корректно).
 
+
+
 ### Ассемблер (assemble8080/assembler.py)
+
 - **`ALU_IMM_OPCODES`:** `'CMP'` → `'CPI'` (fallback-таблица для регистровых мнемоник с immediate-операндом). Теперь `CPI 05H` round-trip'ится, а `CMP 05H` честно отклоняется (CMP — только регистровая).
+
 - **Удалён мёртвый код:** методы `_count_db_bytes()` и `_count_dw_words()` (определены, но нигде не вызывались).
 
+
+
 ### Автозагрузка map + размер дизассемблера (i8080_ci/assembler_widget.py)
+
 - **`_auto_load_map`:** перед `run_disasm()` теперь обновляет поля `disasm_start`/`disasm_len` на реальные `result.origin` и `len(result.binary)`. Раньше дизассемблер показывал только первые 100 байт (значение по умолчанию из поля ручного ввода), а не весь загруженный образ. Теперь поведение совпадает с эмулятором (`update_emu_disasm_view` вычисляет диапазон из `mem_data`).
 
+
+
 ### Чистка мёртвого кода и неиспользуемых импортов
+
 - **i8080_ci/views/disasm_view.py:** удалён метод `set_cursor()` (cursor_addr устанавливается напрямую в обработчиках событий).
+
 - **assemble8080/linker.py:** удалены неиспользуемые импорты `re`, `Optional`, `ObjectFile`, `save_obj`, `MapFile`.
+
 - **assemble8080/mapfile.py:** удалён неиспользуемый импорт `os`.
+
 - **i8080_ci/assembler_widget.py:** удалён неиспользуемый импорт `load_map_file`.
 
+
+
 ### Тесты
+
 - **Исправлены тестовые исходники:**
+
   - `ASM_FOR_TEST/TCB.asm`: опечатка `DC B` → `DCR B` (декремент счётчика цикла).
+
   - `ASM_FOR_TEST/load.asm`: добавлен в `EXCLUDE` (это 8085-файл, использует `SIM`; тест — для 8080-совместимых файлов).
+
   - `tests/test_assembler_linker.py` (Тест 5): обновлена устаревшая проверка — имя текущей метки показывается отдельной строкой (через `set_symbols`), а не встраивается в текст инструкции; target перехода резолвится в тексте.
+
 - **Новые тесты:**
+
   - `tests/test_alus_imm_verify.py` (7 проверок): верификация ALUS_IMM по документации — декодирование 8 immediate ALU, регистровая ORA/CMP, round-trip.
+
   - `tests/test_disasm_range_autoload.py` (4 проверки): авто-обновление диапазона дизассемблера на реальный размер образа (50 и 151 байт).
+
 - **Новая инфраструктура тестирования:**
+
   - `tests/run_api_snippets.py`: harness для интерактивных `api`-сниппетов (ppi_test, kbd_test, font_test, display_test и др.) — создаёт `MainWindow` + профиль `full` и предоставляет глобальный `api`.
+
   - `_run_all_tests.py`: единый раннер полного цикла (автономные тесты + api-сниппеты).
 
+
+
 ### Полный цикл тестирования
+
 - **55 автономных тест-файлов: 0 ошибок.**
+
 - **17 интерактивных api-сниппетов: 0 ошибок.**
+
 - Итого: **56/56 пройдено, 0 провалено.**
+
+
 
 ## 2026-09-29 (итерация 5): Ассемблер v2 — Notepad++ style, глобальные метки, map auto-load
 
+
+
 ### Ядро ассемблера (assemble8080/assembler.py)
+
 - **Глобальные метки `::`:** метки с двойным двоеточием автоматически добавляются в `_exports` и отслеживаются в `global_labels`
+
 - **`AsmResult.global_labels`:** новый поле — множество имён глобальных меток
+
 - **`_parse_label`:** уже возвращал `is_global=True` для `::` меток, теперь используется в `assemble()`
 
+
+
 ### Виджет ассемблера (i8080_ci/assembler_widget.py) — полный редизайн
+
 - **Вкладки файлов (Notepad++ style):** `QTabWidget` с закрываемыми вкладками вместо одного редактора. Каждая вкладка — отдельный `CodeEditor` с собственным файлом
+
 - **Ctrl+Click на метку:** переход к определению метки. `CodeEditor.mousePressEvent` обрабатывает Ctrl+клик, находит слово под курсором и прыгает к строке метки
+
 - **Жирная подсветка глобальных меток:** `AsmHighlighter` различает `::` (глобальные, extra bold + золотой цвет) и `:` (локальные, обычный bold)
+
 - **Workspace (.ws JSON):** открытие/сохранение workspace-файла со списком файлов проекта. Кнопки "Open Workspace" / "Save Workspace"
+
 - **Автозагрузка map-файла:** после успешной сборки map-файл автоматически загружается в дизассемблер (`disasm_view.set_symbols()`)
+
 - **Таблица меток:** глобальные метки отображаются жирным шрифтом
 
+
+
 ### Дизассемблер (i8080_ci/views/disasm_view.py)
+
 - **`set_symbols(map_file)`:** новый метод — принимает `MapFile` и отображает имена символов рядом с адресами в дизассемблере
+
 - **`paintEvent`:** после адреса выводится имя символа из map-файла (если есть)
 
+
+
 ### Main Window (i8080_ci/main_window.py)
+
 - **`self.map_file`:** новый атрибут — хранит текущий `MapFile` для отображения символов
+
 - **`run_disasm`:** передаёт `map_file` в `disasm_view.set_symbols()`
+
 - **`on_load_map`:** обновлён — устанавливает `self.map_file` и передаёт в `disasm_view`
 
+
+
 ### Automation (i8080_ci/automation.py)
+
 - Адаптирован к новой вкладочной структуре: `.editor` → `._current_editor()`
 
+
+
 ### i18n (common/i18n.py)
+
 - Новые ключи: `asm_open_ws`, `asm_save_ws`, `asm_ws_filter`, `asm_ws_loaded`, `asm_ws_err`, `asm_new_tab`, `asm_untitled`, `asm_unsaved_title`, `asm_unsaved_msg`, `asm_map_auto_loaded`, `asm_map_auto_err` (EN + RU)
 
+
+
 ### Тестирование
+
 - Полный прогон: 34 тест-файла, 921 проверка, 0 ошибок
+
 - GUI smoke-тест: пройден
+
 - Ассемблер: 20/20
+
 - test_asm8080-8085.py: 6/6
+
+
 
 ## 2026-09-26 (итерация 4): cpu_type-aware подсветка переходов в трассировке
 
+
+
 ### Дизассемблер (i8080_ci/disassembler.py)
+
 - **Исправлена ошибка подсветки переходов на 8085:** `JUMP_OPCODES` был статическим набором, в который входили все пересекающиеся опкоды (0xCB, 0xD9, 0xDD, 0xED, 0xFD). На 8085 из них переходами являются только `JNK` (0xDD) и `JK` (0xFD), а `RSTV` (0xCB), `SHLX` (0xD9), `LHLX` (0xED) — нет. Теперь:
+
   - `_JUMP_BASE` — базовые переходы (одинаковы для 8080/8085)
+
   - `JUMP_OPCODES` — для 8080 (все пересекающиеся: JMP*/RET*/CALL*)
+
   - `JUMP_OPCODES_8085` — для 8085 (только JNK/JK)
 
+
+
 ### Трассировка (i8080_ci/models/trace_model.py)
+
 - Подсветка переходов теперь выбирает набор опкодов по `emulator.cpu_type`: на 8085 RSTV/SHLX/LHLX больше не подсвечиваются как переходы.
 
+
+
 ### Экспорт (i8080_ci/__init__.py)
+
 - Добавлен `JUMP_OPCODES_8085` в импорт и `__all__`.
 
+
+
 ### Тестирование
+
 - Полный прогон: 34 тест-файла, 921 проверка, 0 ошибок (3 подряд успешных прохода)
+
 - GUI smoke-тест: пройден
+
 - Ассемблер: 20/20
+
 - test_8085.py: 44/44
+
 - test_asm8080-8085.py: 6/6
+
+
 
 ## 2026-09-26 (итерация 3): i18n «Running...», консистентность смены CPU через директиву, очистка run_target_addr
 
+
+
 ### GUI (i8080_ci/main_window.py)
+
 - **i18n:** сообщение статус-бара `"Running..."` при запуске (F5) было захардкожено на английском. Теперь используется ключ `status_running` (EN: "Running...", RU: "Выполнение...")
+
 - **`_set_cpu_type`:** при смене типа CPU теперь очищается `run_target_addr` (цель Run to Cursor) — эмулятор сброшен, PC=0, старая цель неактуальна
 
+
+
 ### Ассемблер (i8080_ci/assembler_widget.py)
+
 - **`_apply_cpu_from_source`:** теперь делегирует в централизованный `main_window._set_cpu_type()` вместо ручного изменения `emulator.cpu_type`. Устраняет несогласованность: при смене CPU через директиву `.8085`/`.8080` эмулятор теперь корректно сбрасывается (как при ручной смене через combo), а не сохраняет старое состояние регистров. Убрано дублирование кода синхронизации.
 
+
+
 ### Тесты
+
 - **test_asm8080-8085.py:** исправлена кодировка (была cp1251 с повреждёнными символами из-за двойной конвертации → теперь UTF-8). Добавлен `sys.stdout.reconfigure(encoding='utf-8')` для корректного вывода ✅/❌ в консоли. Тест снова запускается: 6/6 (NOP/SIM/NOP/RIM для 0x20 и 0x30)
 
+
+
 ### Тестирование
+
 - Полный прогон: 34 тест-файла, 921 проверка, 0 ошибок
+
 - GUI smoke-тест: пройден
+
 - test_8085.py: 44/44
+
 - test_asm8080-8085.py: 6/6
+
+
 
 ## 2026-09-26: Исправление SIM/RIM (8085), i18n метки CPU, стабильность тестов
 
+
+
 ### Эмулятор (i8080_emulator.py)
+
 - **Исправлен баг SIM/RIM:** опкоды 0x20 и 0x30 были перепутаны. Теперь соответствует стандарту Intel 8085:
+
   - 0x20 = SIM (Set Interrupt Mask)
+
   - 0x30 = RIM (Read Interrupt Mask)
+
 - Раньше: 0x20→RIM, 0x30→SIM (несоответствовало ассемблеру, где SIM=0x20, RIM=0x30)
 
+
+
 ### Дизассемблер (i8080_ci/disassembler.py)
+
 - **Исправлен баг SIM/RIM:** таблица опкодов теперь 0x20="SIM", 0x30="RIM" (было перепутано)
+
 - Согласовано с ассемблером и эмулятором
 
+
+
 ### GUI (i8080_ci/main_window.py)
+
 - **i18n:** метка "Процессор:" во вкладке эмулятора была захардкожена на русском. Теперь используется `lbl_emu_cpu` + ключ `cpu_type_label` (переводится в `emulator_retranslate`)
+
 - **`_set_cpu_type`:** при смене типа CPU теперь останавливается `run_timer` (эмулятор сбрасывается, выполнение останавливается сразу, без ложного сообщения "stopped" на следующем тике)
 
+
+
 ### Тесты
+
 - **test_e1.py:** удалён лишний `QApplication` (не использовался, вызывал TIMEOUT 60с). Тест теперь проходит за ~0.3с
+
 - **test_8085.py:**
+
   - добавлено `os.environ['QT_QPA_PLATFORM']='offscreen'` до импорта PySide6 (устраняет зависание QApplication в headless-режиме)
+
   - исправлены опкоды в тестах SIM/RIM (0x20=SIM, 0x30=RIM)
+
   - исправлены ожидания в тестах дизассемблера (0x20="SIM", 0x30="RIM")
 
+
+
 ### Документация
+
 - **ASSEMBLER_GUIDE.md:** исправлено противоречие в таблице пересекающихся опкодов (0x20=SIM, 0x30=RIM) и в описании команд 8085
 
+
+
 ### Тестирование
+
 - Полный прогон: 34 тест-файла, 921 проверка, 0 ошибок (3 подряд успешных прохода)
+
 - Ассемблер: 20/20 (assembler_test_full.py)
+
 - GUI smoke-тест: пройден
+
 - test_8085.py: 43/43
+
+
 
 ## 2026-09-25: Выбор типа CPU в дизассемблере, синхронизация CPU, режим максимальной скорости
 
+
+
 ### GUI (i8080_ci/main_window.py)
 
+
+
 **Выбор типа процессора в дизассемблере:**
+
 - Добавлен combo-выбор `disasm_cpu_combo` (i8080/i8085) во вкладку "Дизассемблер"
+
 - Добавлена метка `lbl_disasm_cpu` ("Процессор:" / "CPU:")
 
+
+
 **Синхронизация выбора типа CPU между вкладками:**
+
 - Добавлен центральный метод `_set_cpu_type(cpu_type, source)` — единая точка смены типа процессора:
+
   - обновляет `emulator.cpu_type` + `emulator.reset()`
+
   - обновляет `disassembler.set_cpu_type()`
+
   - синхронизирует все combo-выборы через `_cpu_combos()` (эмулятор, дизассемблер, ассемблер)
+
   - обновляет UI и пере-дизассемблирует текущие представления
+
 - Добавлены обработчики `_on_emu_cpu_changed`, `_on_disasm_cpu_changed`, `_on_asm_cpu_changed` — все делегируют в `_set_cpu_type`
+
 - Combo ассемблера (`assembler_widget.cpu_combo`) подключён к `_on_asm_cpu_changed` — теперь смена CPU в ассемблере синхронизирует эмулятор и дизассемблер
+
 - `load_profile()`: синхронизация всех combo через `_cpu_combos()` (раньше не обновлялся combo ассемблера)
 
+
+
 **Блокировка выбора CPU при директиве:**
+
 - `_apply_cpu_from_source()` (assembler_widget.py): при наличии директивы `.8085`/`.8080` в исходном коде блокируются (setEnabled(False)) все три combo — ассемблера, эмулятора и дизассемблера
+
 - При отсутствии директивы все combo разблокируются
 
+
+
 **Режим максимальной скорости:**
+
 - Добавлен чек-бокс `chk_max_speed` ("Макс. скорость") во вкладку "Эмулятор"
+
 - В режиме макс. скорости:
+
   - пакет инструкций за тик увеличен с 300 до 10000
+
   - интервал таймера выполнения = 0 (максимальная частота тиков)
+
   - **окна НЕ обновляются** во время выполнения (только при остановке или срабатывании точки останова — условной или безусловной)
+
   - такты tick-устройств масштабируются пропорционально (сохраняется соотношение 1 такт устройства на 300 инструкций)
+
   - периодическая проверка прерываний каждые 1000 инструкций
+
 - Добавлены методы `_run_timer_interval()` и `on_max_speed_toggled()`
+
 - `emulator_run`, `emulator_run_to_cursor`, `emulator_run_from_here` используют динамический интервал таймера
 
+
+
 ### i18n (common/i18n.py)
+
 - Добавлены ключи: `cpu_type_label`, `max_speed`, `max_speed_tip` (en + ru)
 
+
+
 ### Тестирование
+
 - Полный прогон: 34 тест-файла, 921 проверка, 0 ошибок
+
 - Ассемблер: 20/20 (assembler_test_full.py)
+
 - GUI smoke-тест: пройден
+
 - Специализированные тесты (созданы и удалены после прогона):
+
   - Синхронизация CPU: disasm→all, emu→all, asm→all, back — OK
+
   - load_profile: синхронизация всех combo (empty8085 → i8085, empty8080 → i8080) — OK
+
   - Блокировка при директиве: .8085/.8080 блокируют все combo, без директивы разблокируют — OK
+
   - Макс. скорость: 10000 инструкций/тик (66667 тактов), остановка на BP, нормальный режим 300/тик — OK
+
+
 
 ## 2026-09-24: PSW флаги 8085 (UI/V), SIM/RIM IFF1/IFF2, EI/DI 8085, INTR I-регистр
 
+
+
 ### Эмулятор (i8080_emulator.py)
 
+
+
 **PSW (Program Status Word):**
+
 - Добавлены флаги `flag_ui` (бит 5) и `flag_v` (бит 1) — недокументированные, всегда 1
+
 - PUSH PSW: бит 5 теперь `flag_ui` (было 0), бит 1 теперь `flag_v` (было захардкожено 1)
+
 - POP PSW: извлечение `flag_ui` из бита 5, `flag_v` из бита 1
+
 - `get_state()`: добавлены UI и V в словарь флагов
+
 - Контекст BP: добавлены UI и V
+
 - Трассировка: `_get_trace_snapshot` и `_add_trace_record` включают UI и V
 
+
+
 **SIM (Set Interrupt Mask, 0x30):**
+
 - Бит 5: теперь устанавливает IFF2 (было "не используется")
+
 - Бит 4: теперь устанавливает IFF1 (было "сброс прерывания 7.5")
+
 - Убрана некорректная логика сброса `irq_pending`
 
+
+
 **RIM (Read Interrupt Mask, 0x20):**
+
 - Бит 4: исправлено вычисление — теперь `if irq_pending & 0x80: acc |= 0x10` (было `irq_pending >> 4`)
 
+
+
 **EI/DI (8085):**
+
 - DI (0xF3): сбрасывает IFF1 и IFF2 для 8085
+
 - EI (0xFB): копирует IFF2 в IFF1 для 8085
 
+
+
 **request_interrupt:**
+
 - TRAP (0x24): устанавливает `irq_pending |= 0x80`
+
 - RST 7.5 (0x3C): устанавливает `irq_pending |= 0x80`
+
 - RST 6.5 (0x34): устанавливает `irq_pending |= 0x40`
+
 - RST 5.5 (0x2C): устанавливает `irq_pending |= 0x20`
+
 - INTR (0x38): проверяет IFF1, блокирует если IFF1=0
 
+
+
 **_handle_interrupt:**
+
 - INTR (0x38): теперь использует I-регистр как старший байт вектора: `pc = (i_reg << 8) | 0x00`
 
+
+
 ### Тесты (tests/assembler_test.py)
+
 - Тест 6: добавлена директива `.8085` (8085-команды требуют указания CPU)
+
 - Тест 6: `ldei` → `ldsi 0x10` (корректная мнемоника 8085)
 
+
+
 ### Тестирование
+
 - 3 подряд полных цикла тестирования без ошибок и без правок кода
+
 - Все 1009+ тестов пройдены: 921 main, 43 8085, 11 include, 57 linker, 20 full assembler, GUI smoke
+
+
+
 
 
 ## 2026-09-23: Циклы 4-5: Трассировка 8085 (IFF1/IFF2/I), прерывания 8085, reset
 
+
+
 ### EN
+
+
 
 Deep analysis cycles 4-5: 9 bug fixes across trace system, 8085 interrupts, and reset.
 
+
+
 **Cycle 4 — Trace system 8085 support:**
+
+
 
 1. **Trace records now capture IFF1/IFF2/I**: `_add_trace_record()` in the emulator now stores `IFF1`, `IFF2`, and `I` register values in every trace record. This allows full 8085 interrupt state to be inspected in the trace buffer.
 
+
+
 2. **State restoration from trace**: `_restore_trace_state()` in the GUI now restores IFF1, IFF2, and I register when restoring CPU state from a trace record (using `.get()` with defaults for backward compatibility with old records).
+
+
 
 3. **Trace export includes 8085 fields**: TXT, CSV, and JSON trace exports now include IFF1, IFF2, and I columns/fields.
 
+
+
 4. **Automation API trace**: `emu_trace_get()` in the automation API now returns IFF1, IFF2, and I in each record.
+
+
 
 **Cycle 5 — 8085 interrupt handling and reset:**
 
+
+
 5. **RST→8085 vector mapping in `request_interrupt()`**: The system generates interrupts with RST opcodes (0xFF, 0xF7, 0xEF, 0xDF). For 8085, these are now mapped to the correct 8085 interrupt vectors (0x3C=RST 7.5, 0x34=RST 6.5, 0x2C=RST 5.5, 0x24=TRAP) so that the MSE and individual mask bits are checked correctly.
+
+
 
 6. **TRAP is non-maskable**: `_handle_interrupt()` now processes TRAP (0x24) even when IFF1=0, per the Intel 8085 datasheet. All other maskable interrupts still require IFF1=1.
 
+
+
 7. **8085 interrupt vector dispatch**: `_handle_interrupt()` now correctly maps 8085-specific vectors to RST addresses: 0x24→0x18 (RST 3), 0x2C→0x28 (RST 5), 0x34→0x30 (RST 6), 0x3C→0x38 (RST 7), 0x38→0x28 (INTR, simplified).
+
+
 
 8. **Complete 8085 reset**: `reset()` now clears all 8085-specific state: `irq_enabled_85` (MSE), `irq_pending`, `sod`, `sid`, and `_pending_interrupts` buffer. Previously only IFF1, IFF2, I, and irq_mask were reset.
 
+
+
 ### RU
+
+
 
 Глубокий анализ циклов 4-5: 9 исправлений в системе трассировки, прерываниях 8085 и reset.
 
+
+
 **Цикл 4 — поддержка 8085 в трассировке:**
+
+
 
 1. **Записи трассировки захватывают IFF1/IFF2/I**: `_add_trace_record()` теперь сохраняет значения IFF1, IFF2 и I-регистра в каждой записи.
 
+
+
 2. **Восстановление состояния из трассировки**: `_restore_trace_state()` восстанавливает IFF1, IFF2, I при возврате к записи трассировки.
+
+
 
 3. **Экспорт трассировки**: TXT, CSV, JSON экспорт теперь включает IFF1, IFF2, I.
 
+
+
 4. **API автоматизации**: `emu_trace_get()` возвращает IFF1, IFF2, I.
+
+
 
 **Цикл 5 — прерывания 8085 и reset:**
 
+
+
 5. **Маппинг RST→векторы 8085**: `request_interrupt()` теперь мапит RST-опкоды на векторы 8085 для корректной проверки MSE и масок.
+
+
 
 6. **TRAP не маскируется**: `_handle_interrupt()` обрабатывает TRAP (0x24) даже при IFF1=0.
 
+
+
 7. **Диспетчеризация векторов 8085**: 0x24→0x18, 0x2C→0x28, 0x34→0x30, 0x3C→0x38, 0x38→0x28.
+
+
 
 8. **Полный reset 8085**: `reset()` сбрасывает irq_enabled_85, irq_pending, sod, sid, _pending_interrupts.
 
+
+
 ### Тесты
 
+
+
 - 921/921 main suite (34 файла)
+
 - 44/44 test_8085.py
+
 - 11/11 include, 57/57 linker, 20/20 full assembler
+
 - GUI smoke tests PASSED
 
-## 2026-09-23: Глубокий анализ и исправление (номера строк, CPU switch, IFF, автоопределение)
+
 
 ## 2026-09-23: Глубокий анализ и исправление (номера строк, CPU switch, IFF, автоопределение)
+
+
+
+## 2026-09-23: Глубокий анализ и исправление (номера строк, CPU switch, IFF, автоопределение)
+
+
 
 ### EN
+
+
 
 Deep code analysis and 4 bug fixes:
 
+
+
 1. **Assembler line numbers**: Fixed off-by-N error in preprocessor. Removed extra `_line_num += 1` inside the macro expansion loop — all expanded lines from a single source line now share the correct line number.
+
+
 
 2. **Emulator CPU type switching**: Added `QComboBox` (i8080/i8085) to the emulator panel. Switching updates `emulator.cpu_type`, resets the CPU, and regenerates the disassembler table.
 
+
+
 3. **8085 flags (IFF1, IFF2, I register)**: Added `iff1`, `iff2`, `i_reg` fields to the emulator. `get_state()` returns them for 8085 mode. GUI shows IFF1/IFF2/I labels (visible only in 8085 mode). Fixed RIM to include IFF1 (bit 5) and IFF2 (bit 6) in the result.
+
+
 
 4. **Auto-detect CPU from source**: Assembler tracks `cpu_set_by_directive`. After assembly, if a CPU directive (`.8085`, `.asm8085`, `CPU i8085`, etc.) was found in the source, the GUI locks both CPU combo boxes and syncs the emulator/disassembler. Without a directive, the combos remain active for manual selection.
 
+
+
 ### RU
+
+
 
 Глубокий анализ кода и 4 исправления:
 
+
+
 1. **Номера строк в ассемблере**: Убран лишний `_line_num += 1` в цикле развёртывания макросов препроцессора. Все развёрнутые строки из одного исходного рядака теперь имеют корректный номер.
+
+
 
 2. **Переключение CPU в эмуляторе**: Добавлен `QComboBox` (i8080/i8085) в панель эмулятора. При переключении обновляется `emulator.cpu_type`, сбрасывается CPU, регенерируется таблица дизассемблера.
 
+
+
 3. **Флаги 8085 (IFF1, IFF2, I-регистр)**: Добавлены поля `iff1`, `iff2`, `i_reg` в эмулятор. `get_state()` возвращает их для 8085. GUI показывает лейблы IFF1/IFF2/I (видны только в режиме 8085). Исправлен RIM: теперь включает IFF1 (бит 5) и IFF2 (бит 6).
+
+
 
 4. **Автоопределение CPU из исходного кода**: Ассемблер отслеживает `cpu_set_by_directive`. После сборки, если в коде найдена директива CPU, GUI блокирует оба combo и синхронизирует эмулятор/дизассемблер. Без директивы combo активны для ручного выбора.
 
+
+
 ### Тесты
 
+
+
 - 921/921 main suite (34 файла)
+
 - 46/46 глубоких тестов (номера строк, CPU switch, IFF, автоопределение)
+
 - 11/11 include, 57/57 linker, 20/20 full assembler
+
 - GUI smoke tests PASSED
+
+
 
 ## 2026-09-23: Поддержка Intel 8085 (CPU type, пересекающиеся опкоды)
 
+
+
 ### EN
 
+
+
 Added Intel 8085 support. The processor type can now be selected in the system
+
 profile (`cpu = "i8080"` / `cpu = "i8085"`, default `i8080`) and in the assembler
+
 via the new directives `.8080` / `.8085` / `.asm8080` / `.asm8085` / `CPU 8085`.
+
 The 8085 adds two documented instructions (SIM, RIM) and several undocumented
+
 instructions whose opcodes overlap with the 8080 undocumented opcodes. The
+
 emulator, assembler and disassembler now split these overlapping opcodes by
+
 processor type.
+
+
 
 **Overlapping opcodes (8080 vs 8085):**
 
+
+
 | Opcode | 8080 | 8085 |
+
 |---|---|---|
+
 | 0x08 | *NOP | *DSUB (HL = HL - BC) |
+
 | 0x10 | *NOP | *ARHL (arith. right shift HL) |
+
 | 0x18 | *NOP | *RDEL |
+
 | 0x20 | *NOP | RIM (Read Interrupt Mask) |
+
 | 0x28 | *NOP | *LDHI d8 |
+
 | 0x30 | *NOP | SIM (Set Interrupt Mask) |
+
 | 0x38 | *NOP | *LDSI d8 |
+
 | 0xCB | *JMP a16 | *RSTV |
+
 | 0xD9 | *RET | *SHLX ((BC) = HL) |
+
 | 0xDD | *CALL a16 | *JNK a16 |
+
 | 0xED | *CALL a16 | *LHLX (HL = (BC)) |
+
 | 0xFD | *CALL a16 | *JK a16 |
+
+
 
 **Changes:**
 
+
+
 1. **Assembler** (`assemble8080/assembler.py`): split `MNEMONICS` into a common
+
    table plus `MNEMONICS_8080` and `MNEMONICS_8085`. Added `cpu_type` attribute
+
    and `_get_mnemonics()` which returns the cpu-specific table. Added the
+
    `.8080`/`.8085`/`.asm8080`/`.asm8085`/`CPU` directives. Fixed the SIM/RIM
+
    opcodes (SIM=0x20, RIM=0x30) and removed dead code in `_encode_instruction`.
+
    `_parse_label` now checks `ALL_MNEMONICS` so 8085 mnemonics are not treated
+
    as labels.
 
+
+
 2. **Preprocessor** (`assemble8080/preprocessor.py`): no longer strips the
+
    `.8080`/`.asm8080`/`CPU` lines — they are passed through to the assembler.
 
+
+
 3. **Emulator** (`i8080_emulator.py`): all 12 overlapping opcodes are now split
+
    by `cpu_type` via `_execute_overlapping()`. Implemented the 8085 instructions
+
    (SIM, RIM, DSUB, ARHL, SHLX, LHLX); the uncertain ones (RDEL, LDHI, LDSI,
+
    RSTV, JNK, JK) are NOP/skip-operand. On 8080, 0xCB=JMP a16, 0xD9=RET,
+
    0xDD/0xED/0xFD=CALL a16. `_get_cycles` returns cpu-specific cycle counts.
 
+
+
 4. **Disassembler** (`i8080_ci/disassembler.py`): the opcode table is now
+
    cpu_type-aware. Added `cpu_type` attribute and `set_cpu_type()`. Fixed the
+
    overwriting bug where 8085 mnemonics clobbered the 8080 ones.
 
+
+
 5. **GUI** (`i8080_ci/assembler_widget.py`, `i8080_ci/main_window.py`): fixed the
+
    `ctrl_layout` NameError (cpu_combo moved into `_init_ui`), fixed the
+
    `_do_assemble` premature `assemble(source)` call, added `cpu_type` to
+
    `on_assemble_obj`, and the disassembler now follows the profile's cpu type.
+
+
 
 **Verification (all green):**
 
+
+
 | Suite | Result |
+
 |---|---|
+
 | run_tests.py (34 files) | **915/915 PASS** |
+
 | test_8085.py (new) | **44/44 PASS** |
+
 | assembler_test_full.py | **20/20 PASS** |
+
 | test_assembler_linker.py | **57/57 PASS** |
+
 | test_assembler_include.py | **11/11 PASS** |
+
 | build_all.py (4 examples) | **4/4 PASS** |
+
 | test_gui_smoke.py | **PASS** |
+
+
 
 ## 2026-09-22: Full Project Audit — Bug Fixes (Interrupts, Sections, Strings, Escapes)
 
+
+
 ### EN
 
+
+
 A full-project audit was performed (all 160+ Python files reviewed, 871-test suite +
+
 assembler/linker/include/example suites re-run). Seven real defects were found and fixed.
+
 After the fixes the codebase reached a stable state: all test suites pass and a second
+
 analysis pass found no further defects.
+
+
 
 **Fixes applied:**
 
+
+
 1. **Interrupt handler used a non-existent attribute** (`i8080_emulator.py`).
+
    `_handle_interrupt()` referenced `self.int_enabled`, but the emulator attribute is
+
    `interrupts_enabled` (set by EI/DI). Any pending interrupt during a Run raised
+
    `AttributeError`. Fixed to use `interrupts_enabled`. `tests/test_interrupts.py`
+
    updated to set the correct attribute.
 
+
+
 2. **Source filename lost in error messages** (`assemble8080/assembler.py`).
+
    `Assembler.assemble()` never assigned `self._filename = filename`, so every
+
    `AsmError.source` was empty and error lines showed no file. Fixed by setting
+
    `self._filename = filename` at the start of `assemble()`.
 
+
+
 3. **Last `#code` section never closed in pass 1** (`assemble8080/assembler.py`).
+
    Only mid-stream sections were closed, so the final section's `_SIZE` and `_END`
+
    symbols were missing. This broke `EQU X LAST_SEC_SIZE` (resolved to 0) and left
+
    `LAST_SEC_END` undefined. Fixed by closing the last section after the pass-1 loop
+
    (creates `_SIZE` + `_END` and advances `location` for fixed-size sections).
 
+
+
 4. **Inconsistent fill byte in final section close** (`assemble8080/assembler.py`).
+
    The pass-2 final close padded with zero bytes while mid-loop closes used the target
+
    fill byte (`_ds_fill`, 0xFF for ROM / 0x00 for RAM). Fixed to use `_ds_fill` and to
+
    also emit the `_END` symbol.
 
+
+
 5. **Dot-directive normalization corrupted string literals** (`assemble8080/preprocessor.py`).
+
    `_normalize_dot_directives()` replaced `.and`, `.or`, `.not`, etc. anywhere in the
+
    line, including inside quotes: `DB "a.and.b"` became `aand.b`. Fixed to split the
+
    line on quotes and normalize only the unquoted segments.
 
+
+
 6. **`DB` escape sequences not decoded** (`assemble8080/assembler.py`).
+
    `DB '\n'` emitted two bytes (0x5C 0x6E) instead of one (0x0A). Added a
+
    `_decode_string_escapes()` helper (supports `\n \t \r \0 \\ \' \" \xNN`)
+
    and used it in both `_parse_db()` and the pass-1 byte count, so single- and
+
    double-quoted strings decode consistently.
 
+
+
 7. **Map file not saved on the "Assemble → OBJ" path** (`i8080_ci/assembler_widget.py`).
+
    The requirement is that a `.map` file is produced on *any* assembly. The OBJ path
+
    (`on_assemble_obj`) assembled but did not save the map. Fixed to save the map next
+
    to the source file, matching the plain Assemble path.
+
+
 
 **Verification (all green after fixes):**
 
+
+
 | Suite | Result |
+
 |---|---|
+
 | run_tests.py (33 files) | **871/871 PASS** |
+
 | assembler_test_full.py | **20/20 PASS** |
+
 | test_assembler_linker.py | **57/57 PASS** |
+
 | test_assembler_include.py | **11/11 PASS** |
+
 | build_all.py (4 examples) | **4/4 PASS** |
+
 | test_gui_smoke.py | **PASS** |
+
 | py_compile (all .py) | **0 errors** |
+
+
 
 ### RU
 
+
+
 Выполнен полный аудит проекта (проанализировано 160+ Python-файлов, перезапущены
+
 набор из 871 теста + наборы ассемблера/линковщика/включений/примеров). Найдено и
+
 исправлено семь реальных дефектов. После исправлений кодовая база достигла стабильного
+
 состояния: все тестовые наборы проходят, повторный проход анализа новых дефектов не
+
 обнаружил.
+
+
 
 **Внесённые исправления:**
 
+
+
 1. **Обработчик прерываний использовал несуществующий атрибут** (`i8080_emulator.py`).
+
    `_handle_interrupt()` обращался к `self.int_enabled`, тогда как атрибут эмулятора
+
    называется `interrupts_enabled` (устанавливается EI/DI). Любое ожидающее
+
    прерывание во время Run вызывало `AttributeError`. Исправлено на `interrupts_enabled`.
+
    `tests/test_interrupts.py` обновлён на корректный атрибут.
 
+
+
 2. **Имя исходного файла терялось в сообщениях об ошибках** (`assemble8080/assembler.py`).
+
    `Assembler.assemble()` никогда не присваивал `self._filename = filename`, поэтому
+
    `AsmError.source` всегда был пустым и в строках ошибок не было имени файла.
+
    Исправлено: `self._filename = filename` в начале `assemble()`.
 
+
+
 3. **Последняя секция `#code` не закрывалась в проходе 1** (`assemble8080/assembler.py`).
+
    Закрывались только «промежуточные» секции, поэтому у финальной секции не создавались
+
    символы `_SIZE` и `_END`. Это ломало `EQU X LAST_SEC_SIZE` (давало 0) и оставляло
+
    `LAST_SEC_END` неопределённым. Исправлено: после цикла прохода 1 последняя секция
+
    закрывается (создаются `_SIZE` + `_END`, для фиксированного размера `location`
+
    сдвигается).
 
+
+
 4. **Несогласованный байт заполнения при финальном закрытии секции**
+
    (`assemble8080/assembler.py`). Финальное закрытие в проходе 2 дополняло секцию
+
    нулевыми байтами, тогда как промежуточные закрытия использовали целевой байт
+
    заполнения (`_ds_fill`: 0xFF для ROM / 0x00 для RAM). Исправлено на `_ds_fill`,
+
    добавлено создание символа `_END`.
 
+
+
 5. **Нормализация dot-директив повреждала строковые литералы**
+
    (`assemble8080/preprocessor.py`). `_normalize_dot_directives()` заменял `.and`, `.or`,
+
    `.not` и т.д. в любом месте строки, включая кавычки: `DB "a.and.b"` превращался в
+
    `aand.b`. Исправлено: строка разбивается по кавычкам, нормализация применяется только
+
    к некавычным сегментам.
 
+
+
 6. **Escape-последовательности в `DB` не декодировались** (`assemble8080/assembler.py`).
+
    `DB '\n'` выдавал два байта (0x5C 0x6E) вместо одного (0x0A). Добавлен helper
+
    `_decode_string_escapes()` (поддерживает `\n \t \r \0 \\ \' \" \xNN`),
+
    используется в `_parse_db()` и в подсчёте байтов прохода 1 — одинарные и двойные
+
    кавычки декодируются согласованно.
 
+
+
 7. **Map-файл не сохранялся на пути «Assemble → OBJ»** (`i8080_ci/assembler_widget.py`).
+
    Требование: `.map`-файл создаётся при *любом* ассемблировании. Путь OBJ
+
    (`on_assemble_obj`) ассемблировал, но map не сохранял. Исправлено: map сохраняется
+
    рядом с исходным файлом, как и на обычном пути Assemble.
+
+
 
 **Верификация (всё зелёное после исправлений):**
 
+
+
 | Набор | Результат |
+
 |---|---|
+
 | run_tests.py (33 файла) | **871/871 PASS** |
+
 | assembler_test_full.py | **20/20 PASS** |
+
 | test_assembler_linker.py | **57/57 PASS** |
+
 | test_assembler_include.py | **11/11 PASS** |
+
 | build_all.py (4 примера) | **4/4 PASS** |
+
 | test_gui_smoke.py | **PASS** |
+
 | py_compile (все .py) | **0 ошибок** |
+
+
+
 
 
 ## 2026-09-19 (re-audit pass 7): Explicit Public API via `__all__` + Stability Verification
 
+
+
 ### EN
 
+
+
 A third audit pass was performed to verify the previous audit (pass 6) and drive the
+
 codebase to a stable state (two consecutive clean cycles).
 
+
+
 **Static analysis:** py_compile **142/142 files, 0 errors**. pyflakes initially reported
+
 177 findings; every one was triaged and confirmed to fall into a known benign category
+
 (package re-exports, string-annotation forward references, the runtime `api` global in
+
 MCP test scripts, and intentional GUI smoke imports).
 
+
+
 **Fix applied — explicit public API via `__all__`:**
+
 The six package `__init__.py` re-export modules did not declare `__all__`, so their
+
 public API was implicit and pyflakes flagged all 82 re-exported names as "imported but
+
 unused". `__all__` was added (names extracted via AST) to:
+
 - `common/__init__.py` (8 names)
+
 - `modules/__init__.py` (36 names)
+
 - `modules/config/__init__.py` (5 names)
+
 - `modules/io/__init__.py` (20 names)
+
 - `modules/memory/__init__.py` (11 names)
+
 - `ui/__init__.py` (2 names)
 
+
+
 This makes the public API explicit and reduces pyflakes findings from **177 → 95**.
+
 `i8080_ci/i18n.py` (a backward-compatibility re-export using `from common.i18n import *`)
+
 is intentionally left as-is: its 6 findings are the star-import + re-export pattern,
+
 already annotated `# noqa` for flake8.
+
+
 
 **Convergence (stability verification):**
 
+
+
 | Cycle | pyflakes | Tests | Fixes |
+
 |---|---|---|---|
+
 | 1 | 177 → 95 | all PASS | `__all__` added to 6 `__init__.py` |
+
 | 2 | 95 | all PASS | none |
+
 | 3 | 95 | all PASS | none |
+
+
 
 Two consecutive clean cycles (2 and 3) confirm the codebase is stable.
 
+
+
 **Full test cycle results (re-confirmed in all 3 cycles):**
 
+
+
 | Suite | Result |
+
 |---|---|
+
 | run_tests.py (33 files) | **871/871 PASS** |
+
 | test_bin_compare.py (zasm reference) | **15/15 byte-identical** |
+
 | test_asm_for_test.py (69 files) | **69/69 PASS** |
+
 | test_gui_smoke.py | **7/7 PASS** |
+
+
 
 **Remaining pyflakes findings (all intentional / benign):**
 
+
+
 | Category | Count | Note |
+
 |---|---|---|
+
 | `i8080_ci/i18n.py` re-exports | 6 | backward-compat star import (`# noqa`) |
+
 | `undefined name 'api'` in MCP test scripts | 83 | global MCP client, set at runtime |
+
 | string annotations (forward refs) | 3 | `I8080Emulator`, `IODevice`, `MainWindow` |
+
 | `test_gui_smoke.py` smoke imports | 2 | intentional (marked `# noqa`) |
+
+
 
 ### RU
 
+
+
 Третий проход аудита выполнен для верификации предыдущего аудита (pass 6) и приведения
+
 кодовой базы к стабильному состоянию (два последовательных чистых цикла).
 
+
+
 **Статический анализ:** py_compile **142/142 файла, 0 ошибок**. pyflakes изначально
+
 сообщил о 177 замечаниях; каждое было проанализировано и подтверждено как относящееся
+
 к известной безвредной категории (re-экспорты пакетов, forward-ссылки в строковых
+
 аннотациях, рантайм-глобал `api` в MCP-тестовых скриптах, намеренные GUI smoke-импорты).
 
+
+
 **Внесённая правка — явный публичный API через `__all__`:**
+
 Шесть пакетных `__init__.py` (re-экспортные модули) не объявляли `__all__`, поэтому их
+
 публичный API был неявным, и pyflakes помечал все 82 re-экспортированных имени как
+
 "импортировано, но не используется". Добавлен `__all__` (имена извлечены через AST) в:
+
 - `common/__init__.py` (8 имён)
+
 - `modules/__init__.py` (36 имён)
+
 - `modules/config/__init__.py` (5 имён)
+
 - `modules/io/__init__.py` (20 имён)
+
 - `modules/memory/__init__.py` (11 имён)
+
 - `ui/__init__.py` (2 имени)
 
+
+
 Это делает публичный API явным и снижает число замечаний pyflakes с **177 → 95**.
+
 `i8080_ci/i18n.py` (backward-compat re-экспорт через `from common.i18n import *`)
+
 намеренно оставлен без изменений: его 6 замечаний — это паттерн star-импорта +
+
 re-экспорта, уже помеченный `# noqa` для flake8.
+
+
 
 **Сходимость (верификация стабильности):**
 
+
+
 | Цикл | pyflakes | Тесты | Правки |
+
 |---|---|---|---|
+
 | 1 | 177 → 95 | все PASS | `__all__` в 6 `__init__.py` |
+
 | 2 | 95 | все PASS | нет |
+
 | 3 | 95 | все PASS | нет |
+
+
 
 Два последовательных чистых цикла (2 и 3) подтверждают стабильность кодовой базы.
 
+
+
 **Результаты полного цикла тестирования (перепроверены во всех 3 циклах):**
 
+
+
 | Набор | Результат |
+
 |---|---|
+
 | run_tests.py (33 файла) | **871/871 PASS** |
+
 | test_bin_compare.py (эталон zasm) | **15/15 побайтово идентичны** |
+
 | test_asm_for_test.py (69 файлов) | **69/69 PASS** |
+
 | test_gui_smoke.py | **7/7 PASS** |
+
+
 
 **Оставшиеся замечания pyflakes (все намеренные / безвредные):**
 
+
+
 | Категория | Кол-во | Примечание |
+
 |---|---|---|
+
 | re-экспорты `i8080_ci/i18n.py` | 6 | backward-compat star-импорт (`# noqa`) |
+
 | `undefined name 'api'` в MCP-тестовых скриптах | 83 | глобальный MCP-клиент, задаётся в рантайме |
+
 | строковые аннотации (forward-ссылки) | 3 | `I8080Emulator`, `IODevice`, `MainWindow` |
+
 | smoke-импорты `test_gui_smoke.py` | 2 | намеренные (помечены `# noqa`) |
+
+
 
 ## 2026-09-19 (re-audit): Project-wide pyflakes Cleanup + SyntaxWarning Suppression
 
+
+
 ### EN
 
+
+
 A second, project-wide static-analysis pass (py_compile + pyflakes on all 149 Python
+
 files) was performed to verify the previous audit and catch anything missed.
+
 py_compile: **149/149 files, 0 errors**. pyflakes surfaced a set of minor code smells
+
 across the codebase (beyond `assembler.py`, which was already clean). All were fixed;
+
 the full test cycle re-confirmed 100% pass.
 
+
+
 **1. Unused imports removed (project-wide)**
+
 - `i8080_ci/{automation,bus_worker,main_window}.py`: trimmed the multi-line
+
   `from .slip import (...)` blocks to only the constants actually referenced
+
   (verified via AST name analysis).
+
 - `modules/memory/{banked,paged,segmented,segmentedpaged,shadow}.py`: import reduced
+
   to `from .memory_bus import MemoryRegion` (only the base class is used).
+
 - `modules/io/{i8275,i8276}.py`: removed unused `from .chargen import get_char_generator`.
+
 - `modules/io/{ch376s,tft8080}.py`: removed unused `from collections import deque`.
+
 - `ui/{device_window,gpio_widget,serial_terminal}.py`: removed unused Qt imports
+
   (QGroupBox, QHBoxLayout, Qt, QColor).
+
 - `gen_refs.py`, `run_tests.py`: removed unused `import re`.
+
 - Test files: removed unused imports (`traceback`, `NumberParser`, `random`, `json`,
+
   `time`, `SYSTEM_PROFILES`, `IODevice`/`I8257`, `IOBus`/`ShadowROMRegion`, `RAMRegion`,
+
   `I8253`, `LCD1602`, `get_profile_names`, `Preprocessor`).
 
+
+
 **2. Unused local variables removed**
+
 - `modules/config/device_config.py`, `modules/io/chargen.py`: `except Exception as e:`
+
   → `except Exception:` (variable never used).
+
 - `modules/io/i8275.py`: removed dead `cmd = value & 0x7F` in `_write_command`.
+
 - `ui/display_widgets.py`: removed unused `bg = QColor(0,0,0)` (only `fg` is used).
 
+
+
 **3. f-strings without placeholders**
+
 Removed the redundant `f` prefix from f-strings with no placeholders in
+
 `i8080_ci/main_window.py` (5), `mcp_server.py` (2), and several test scripts
+
 (`mmio_test.py`, `PPI_3D_*`, `crt_font_test.py`, `kbd_test.py`, `ppi_test.py`,
+
 `device_access_test.py`, `test_banked.py`, `test_system_integration.py`).
 
+
+
 **4. SyntaxWarning suppression in the assembler (Python 3.12)**
+
 `test_asm_for_test.py` emitted `SyntaxWarning: 'int' object is not callable` (3×) from
+
 the expression evaluator when a sanitized number expression looked like `123(456)`. The
+
 `eval()` calls in `assemble8080/assembler.py` and `assemble8080/preprocessor.py` are
+
 already wrapped in try/except (returning 0), so the warning was harmless noise. Both
+
 `eval()` calls are now wrapped in `warnings.catch_warnings()` with `SyntaxWarning`
+
 ignored. Warning count: 3 → **0**.
+
+
 
 **Remaining pyflakes findings (all intentional / benign):**
 
+
+
 | Category / Категория | Count | Note |
+
 |---|---|---|
+
 | `__init__.py` / `i18n.py` re-exports | 88 | intentional public API |
+
 | `undefined name 'api'` in MCP test scripts | 83 | global MCP client, set at runtime |
+
 | string annotations (forward refs) | 3 | `I8080Emulator`, `IODevice`, `MainWindow` |
+
 | `test_gui_smoke.py` smoke imports | 2 | intentional (marked `# noqa`) |
+
+
 
 **Full test cycle results (re-confirmed):**
 
+
+
 | Suite / Набор | Result / Результат |
+
 |---|---|
+
 | `run_tests.py` (33 files) | **871/871 PASS** |
+
 | `test_bin_compare.py` (zasm reference) | **15/15 byte-identical** |
+
 | `test_asm_for_test.py` (69 files) | **69/69 PASS** (0 SyntaxWarnings) |
+
 | `assembler_test_full.py` | **20/20 PASS** |
+
 | `test_config.py` | **49/49 PASS** |
+
 | `test_system_profiles.py` | **54/54 PASS** |
+
 | `test_system.py` | **53/53 PASS** |
+
 | `test_gui_smoke.py` | **ALL PASS** |
+
+
 
 ### RU
 
+
+
 **Повторный полный аудит проекта** (py_compile + pyflakes по всем 149 Python-файлам)
+
 для верификации предыдущего аудита и поиска упущенного. py_compile: **149/149 файлов,
+
 0 ошибок**. pyflakes выявил набор мелких code smells по всему коду (помимо
+
 `assembler.py`, который уже был чист). Всё исправлено; полный цикл тестов повторно
+
 подтвердил 100% pass.
 
+
+
 **1. Удалены неиспользуемые импорты (по всему проекту)**
+
 - `i8080_ci/{automation,bus_worker,main_window}.py`: многострочные блоки
+
   `from .slip import (...)` сокращены до реально используемых констант
+
   (проверено AST-анализом имён).
+
 - `modules/memory/{banked,paged,segmented,segmentedpaged,shadow}.py`: импорт сокращён
+
   до `from .memory_bus import MemoryRegion` (используется только базовый класс).
+
 - `modules/io/{i8275,i8276}.py`: удалён неиспользуемый
+
   `from .chargen import get_char_generator`.
+
 - `modules/io/{ch376s,tft8080}.py`: удалён неиспользуемый `from collections import deque`.
+
 - `ui/{device_window,gpio_widget,serial_terminal}.py`: удалены неиспользуемые Qt-импорты
+
   (QGroupBox, QHBoxLayout, Qt, QColor).
+
 - `gen_refs.py`, `run_tests.py`: удалён неиспользуемый `import re`.
+
 - Тестовые файлы: удалены неиспользуемые импорты (`traceback`, `NumberParser`, `random`,
+
   `json`, `time`, `SYSTEM_PROFILES`, `IODevice`/`I8257`, `IOBus`/`ShadowROMRegion`,
+
   `RAMRegion`, `I8253`, `LCD1602`, `get_profile_names`, `Preprocessor`).
 
+
+
 **2. Удалены неиспользуемые локальные переменные**
+
 - `modules/config/device_config.py`, `modules/io/chargen.py`: `except Exception as e:`
+
   → `except Exception:` (переменная не используется).
+
 - `modules/io/i8275.py`: удалена мёртвая `cmd = value & 0x7F` в `_write_command`.
+
 - `ui/display_widgets.py`: удалена неиспользуемая `bg = QColor(0,0,0)` (используется
+
   только `fg`).
 
+
+
 **3. f-строки без плейсхолдеров**
+
 Убран избыточный префикс `f` у f-строк без плейсхолдеров в `i8080_ci/main_window.py`
+
 (5), `mcp_server.py` (2) и нескольких тестовых скриптов (`mmio_test.py`, `PPI_3D_*`,
+
 `crt_font_test.py`, `kbd_test.py`, `ppi_test.py`, `device_access_test.py`,
+
 `test_banked.py`, `test_system_integration.py`).
 
+
+
 **4. Подавление SyntaxWarning в ассемблере (Python 3.12)**
+
 `test_asm_for_test.py` выдавал `SyntaxWarning: 'int' object is not callable` (3×) из
+
 парсера выражений, когда санитизированное числовое выражение выглядело как `123(456)`.
+
 Вызовы `eval()` в `assemble8080/assembler.py` и `assemble8080/preprocessor.py` уже
+
 обёрнуты в try/except (возвращают 0), поэтому предупреждение было безвредным шумом.
+
 Оба вызова `eval()` теперь обёрнуты в `warnings.catch_warnings()` с игнорированием
+
 `SyntaxWarning`. Количество предупреждений: 3 → **0**.
+
+
 
 **Оставшиеся замечания pyflakes (все осознанные / безвредные):**
 
+
+
 | Категория | Кол-во | Примечание |
+
 |---|---|---|
+
 | re-экспорты в `__init__.py` / `i18n.py` | 88 | осознанный публичный API |
+
 | `undefined name 'api'` в MCP-тестах | 83 | глобальный MCP-клиент, задаётся в рантайме |
+
 | строковые аннотации (forward refs) | 3 | `I8080Emulator`, `IODevice`, `MainWindow` |
+
 | smoke-импорты в `test_gui_smoke.py` | 2 | осознанно (помечены `# noqa`) |
+
+
 
 **Результаты полного цикла тестирования (повторно подтверждено):**
 
+
+
 | Набор | Результат |
+
 |---|---|
+
 | `run_tests.py` (33 файла) | **871/871 PASS** |
+
 | `test_bin_compare.py` (эталон zasm) | **15/15 побайтово** |
+
 | `test_asm_for_test.py` (69 файлов) | **69/69 PASS** (0 SyntaxWarning) |
+
 | `assembler_test_full.py` | **20/20 PASS** |
+
 | `test_config.py` | **49/49 PASS** |
+
 | `test_system_profiles.py` | **54/54 PASS** |
+
 | `test_system.py` | **53/53 PASS** |
+
 | `test_gui_smoke.py` | **ВСЕ PASS** |
 
+
+
 ---
+
+
 
 ## 2026-09-19: Full Project Audit, ORG/#code Layout Fix, Test Suite Repair
 
+
+
 ### EN
 
+
+
 **Full project audit** (pyflakes + py_compile on all modules) and a complete test
+
 cycle were performed. The audit revealed a real layout bug in the assembler and a
+
 set of outdated tests.
+
+
 
 **1. ORG / #code binary layout inconsistency (critical)**
 
+
+
 The `ORG` directive padded the binary from address 0 to the origin (full image),
+
 while the `#code` section directive produced a code-only image starting at the
+
 section address (matching zasm). This inconsistency broke every consumer that loads
+
 the image at `origin + i` (emulator integration test, GUI widget, smoke test).
 
+
+
 Fix: introduced `self._base_offset` — the logical address that corresponds to byte 0
+
 of the binary image. The first `ORG` / first `#code` section now sets `_base_offset`
+
 to the start address and leaves `_write_pos = 0`, so the binary always starts at
+
 `origin` (zasm-compatible). Subsequent `ORG` jumps still fill gaps correctly using
+
 the base offset. Also added `self._write_pos = 0` reset in the pass-2 setup so a
+
 reused `Assembler` instance does not carry state between `assemble()` calls.
 
+
+
 Result: `test_emu_integration.py` went from 0/21 to **21/21 PASS**; zasm reference
+
 comparison stays **15/15 byte-identical**.
+
+
 
 **2. Outdated `test_config.py` (profile structure + values)**
 
+
+
 Tests 6-9 referenced the old built-in profile layout (`profile["toml"]` string) and
+
 stale hardware values. External TOML profiles now store a `config` dict. Updated:
+
 - Test 6 (Микро-80): 1.78 MHz, 3 memory regions, 3 devices, RAM 0x0000-0x3FFF, ROM 0xF800-0xFFFF
+
 - Test 7 (Вектор-06Ц): 2 devices (i8255, i8253)
+
 - Test 8: 3 registered memory regions (ram + rom + mmio)
+
 - Test 9: 2 created devices
+
+
 
 Result: `test_config.py` went from 41/53 to **49/49 PASS**.
 
+
+
 **3. pyflakes cleanup in `assemble8080/assembler.py`**
 
+
+
 - Removed 4 redundant `import re as _re` statements inside loops/handlers (shadowed
+
   the module-level `import re`); now uses the module-level `re`.
+
 - Removed unused exception variable `e` in the expression parser fallback.
+
+
 
 `assemble8080/assembler.py` is now pyflakes-clean.
 
+
+
 **Full test cycle results:**
 
+
+
 | Suite / Набор | Result / Результат |
+
 |---|---|
+
 | `run_tests.py` (33 files) | **871/871 PASS** |
+
 | `test_bin_compare.py` (zasm reference) | **15/15 byte-identical** |
+
 | `test_asm_for_test.py` (69 files) | **69/69 PASS** |
+
 | `assembler_test_full.py` | **20/20 PASS** |
+
 | `test_config.py` | **49/49 PASS** |
+
 | `test_system_profiles.py` | **54/54 PASS** |
+
 | `test_gui_smoke.py` | **ALL PASS** |
+
+
 
 ### RU
 
+
+
 **Полный аудит проекта** (pyflakes + py_compile по всем модулям) и полный цикл
+
 тестирования. Аудит выявил реальную ошибку компоновки в ассемблере и набор
+
 устаревших тестов.
+
+
 
 **1. Несоответствие компоновки ORG / #code (критическая)**
 
+
+
 Директива `ORG` дополняла бинарный образ нулями от адреса 0 до origin (полный
+
 образ), тогда как директива секций `#code` формировала образ только с кода,
+
 начинаясь с адреса секции (как в zasm). Это несоответствие ломало всех
+
 потребителей, загружающих образ по `origin + i` (интеграционный тест эмулятора,
+
 GUI-виджет, smoke-тест).
 
+
+
 Исправление: введено `self._base_offset` — логический адрес, соответствующий байту 0
+
 бинарного образа. Первый `ORG` / первая секция `#code` теперь устанавливают
+
 `_base_offset` на адрес начала и оставляют `_write_pos = 0`, поэтому бинарный образ
+
 всегда начинается с `origin` (совместимо с zasm). Последующие переходы `ORG`
+
 по-прежнему корректно заполняют разрывы с учётом базового смещения. Также добавлен
+
 сброс `self._write_pos = 0` в настройке прохода 2, чтобы переиспользуемый экземпляр
+
 `Assembler` не переносил состояние между вызовами `assemble()`.
 
+
+
 Результат: `test_emu_integration.py` — с 0/21 до **21/21 PASS**; сравнение с
+
 эталонами zasm остаётся **15/15 побайтово**.
+
+
 
 **2. Устаревший `test_config.py` (структура профилей + значения)**
 
+
+
 Тесты 6-9 ссылались на старую структуру встроенных профилей (`profile["toml"]` —
+
 строка) и на устаревшие аппаратные значения. Внешние TOML-профили теперь хранят dict
+
 `config`. Обновлено:
+
 - Тест 6 (Микро-80): 1.78 МГц, 3 региона памяти, 3 устройства, RAM 0x0000-0x3FFF, ROM 0xF800-0xFFFF
+
 - Тест 7 (Вектор-06Ц): 2 устройства (i8255, i8253)
+
 - Тест 8: 3 зарегистрированных региона памяти (ram + rom + mmio)
+
 - Тест 9: 2 созданных устройства
+
+
 
 Результат: `test_config.py` — с 41/53 до **49/49 PASS**.
 
+
+
 **3. Уборка pyflakes-замечаний в `assemble8080/assembler.py`**
 
+
+
 - Удалены 4 избыточных `import re as _re` внутри циклов/обработчиков (затеняли
+
   модульный `import re`); теперь используется модульный `re`.
+
 - Удалена неиспользуемая переменная исключения `e` в fallback парсера выражений.
+
+
 
 `assemble8080/assembler.py` теперь чист по pyflakes.
 
+
+
 **Результаты полного цикла тестирования:**
 
+
+
 | Набор | Результат |
+
 |---|---|
+
 | `run_tests.py` (33 файла) | **871/871 PASS** |
+
 | `test_bin_compare.py` (эталон zasm) | **15/15 побайтово** |
+
 | `test_asm_for_test.py` (69 файлов) | **69/69 PASS** |
+
 | `assembler_test_full.py` | **20/20 PASS** |
+
 | `test_config.py` | **49/49 PASS** |
+
 | `test_system_profiles.py` | **54/54 PASS** |
+
 | `test_gui_smoke.py` | **ВСЕ PASS** |
 
+
+
 ---
+
+
+
+
 
 
 
 ## 2026-09-19: Full zasm Reference Validation (15/15 PASS)
 
+
+
 ### EN
+
 All 15 test sources now produce byte-identical output to the real zasm compiler (v4.4.x).
+
 Reference files generated with `zasm.exe --date=2026-09-19,11:06:55`.
 
+
+
 **Fixes applied:**
+
 1. **DS fill rule**: `rom` → 0xFF, `bin`/`ram` → 0x00 (per zasm docs: "bin" is old name for "ram")
+
 2. **ORG gap fill**: uses target fill byte instead of zeros
+
 3. **ORG backwards (paging)**: `_write` method overwrites bytes at `_write_pos`
+
 4. **Section `_end` symbols**: created when section is closed
+
 5. **Pending EQU mechanism**: forward references to section symbols resolved after pass 1
+
 6. **Section address pre-computation**: after pending EQU resolution, all `#code` addresses re-evaluated
+
 7. **Section-aware label tracking**: labels in sections with corrected addresses get delta adjustment
+
 8. **Pass 2 #code handler**: new section symbol set BEFORE closing previous section (fixes size expressions referencing next section)
+
 9. **DB `'X'+80H` expressions**: single-quoted chars with arithmetic now evaluated correctly
+
 10. **Pass 1 DB byte counting**: quoted strings counted by actual char count, not `len(part)-2`
+
 11. **#if/#elif/#else logic**: `elif_accepted` stack prevents re-evaluation after a branch is accepted
+
 12. **#define substitution parentheses**: expression values wrapped in `()` to preserve operator precedence
+
 13. **Multi-pass #define substitution**: handles chained defines (A→B→C)
+
 14. **#define in strings**: substitution skips quoted string literals
 
+
+
 **Test results:**
+
 | File | Size | Status |
+
 |------|------|--------|
+
 | 8080TonePlayer.asm | 2042 B | OK |
+
 | bf.asm | 429 B | OK |
+
 | CPU_test.asm | 1008 B | OK |
+
 | ESC_DeESC.asm | 115 B | OK |
+
 | fifo_a16.asm | 364 B | OK |
+
 | ImperialMarch.asm | 1656 B | OK |
+
 | IMSAI8080.asm | 4135 B | OK |
+
 | kernel.asm | 36933 B | OK |
+
 | main_boot.asm | 959 B | OK |
+
 | Mega-80.asm | 1718 B | OK |
+
 | mon85-v13.asm | 4187 B | OK |
+
 | rtty.asm | 616 B | OK |
+
 | shell.asm | 228 B | OK |
+
 | Smyk_player.asm | 52 B | OK |
+
 | SW_IO.asm | 111 B | OK |
 
+
+
 ### RU
+
 Все 15 тестовых источников теперь дают побайтовое совпадение с реальным компилятором zasm (v4.4.x).
+
 Референсные файлы сгенерированы командой `zasm.exe --date=2026-09-19,11:06:55`.
 
+
+
 **Внесённые исправления:**
+
 1. **Правило заполнения DS**: `rom` → 0xFF, `bin`/`ram` → 0x00
+
 2. **Заполнение разрыва ORG**: байт заполнения целевого типа
+
 3. **ORG назад (paging)**: метод `_write` перезаписывает байты
+
 4. **Символы `_end` секций**: создаются при закрытии секции
+
 5. **Механизм pending EQU**: пересылки на символы секций разрешаются после прохода 1
+
 6. **Предвычисление адресов секций**: после разрешения pending EQU все адреса `#code` пересчитываются
+
 7. **Отслеживание меток по секциям**: метки в секциях с исправленными адресами получают дельту
+
 8. **Обработчик #code в проходе 2**: символ новой секции устанавливается ДО закрытия предыдущей
+
 9. **DB `'X'+80H`**: выражения с кавычками и арифметикой вычисляются корректно
+
 10. **Подсчёт байтов DB в проходе 1**: строки в кавычках считаются по реальному числу символов
+
 11. **Логика #if/#elif/#else**: стек `elif_accepted` предотвращает повторную оценку
+
 12. **Скобки при подстановке #define**: значения-выражения оборачиваются в `()`
+
 13. **Многопроходная подстановка #define**: цепочки определений (A→B→C)
+
 14. **#define в строках**: подстановка пропускает строковые литералы в кавычках
 
+
+
 ---
+
+
+
 
 
 ## 2026-09-19: Assembler Bug Fixes / Исправление ошибок ассемблера
 
+
+
 ### Critical Fixes / Критические исправления
+
+
 
 **EN:** Fixed 6 critical assembler bugs found via reference binary comparison:
 
+
+
 1. **Bitwise AND/OR in expressions** — `AND`/`OR` were mapped to Python logical `and`/`or` instead of bitwise `&`/`|`. `20 AND 255` gave 255 instead of 20.
+
 2. **Integer division** — `/` used Python float division. `20/256` gave 0.078 (truthy) instead of 0. Now uses `//`.
+
 3. **Expression parser PC sync** — `expr_parser.pc` was not synchronized with assembler `location` in EQU/ORG/DS handlers. `STACK EQU $` gave wrong value.
+
 4. **ORG padding in pass 2** — ORG forward jumps didn't generate zero-fill bytes.
+
 5. **Character literals** — `'A'` in operands (MVI, CPI, etc.) not converted to ASCII value. Added to both `_parse_operand` and `ExpressionParser`.
+
 6. **Preprocessor `=` operator** — `#if X = 45` (C-style) not handled. `=` was stripped by regex, all conditions evaluated to False.
+
 7. **Section state reset** — `_current_section` not cleared between pass 1 and pass 2, causing phantom section padding.
+
+
 
 **RU:** Исправлено 6 критических ошибок ассемблера, найденных сравнением с референсными .bin файлами:
 
+
+
 1. **Битовые AND/OR** — `AND`/`OR` заменялись на логические `and`/`or` Python вместо битовых `&`/`|`.
+
 2. **Целочисленное деление** — `/` давал float. `20/256 = 0.078` (truthy) вместо `0`. Теперь `//`.
+
 3. **Синхронизация PC** — `expr_parser.pc` не обновлялся в обработчиках EQU/ORG/DS.
+
 4. **ORG padding** — переходы вперёд не генерировали нулевые байты.
+
 5. **Символьные литералы** — `'A'` в операндах не конвертировался в ASCII.
+
 6. **Оператор `=` в #if** — C-стиль `#if X = 45` не работал, все условия были False.
+
 7. **Сброс секций** — `_current_section` не очищался между pass 1 и pass 2.
+
+
 
 ### Results / Результаты
 
+
+
 | File | Before | After |
+
 |------|--------|-------|
+
 | CPU_test.asm | ❌ (832 vs 1008) | ✅ 1008 bytes |
+
 | ESC_DeESC.asm | ✅ | ✅ 115 bytes |
+
 | mon85-v13.asm | ❌ (MVI B=0) | ⚠️ size OK, 1 byte diff |
+
 | test_580.asm | ❌ (1507 vs 1584) | ⚠️ size OK, values diff |
+
 | IMSAI8080.asm | ❌ (unresolved labels) | ⚠️ size OK, 1 byte diff |
+
 | Mega-80.asm | ❌ (1851 vs 1844) | ⚠️ 1855 vs 1844 |
+
 | rtty.asm | ❌ (613 vs 616) | ⚠️ 613 vs 616 |
+
 | bf.asm | ⚠️ date string | ⚠️ date string (not a bug) |
+
 | ImperialMarch.asm | ⚠️ date string | ⚠️ date string (not a bug) |
+
+
 
 **All 69 ASM_FOR_TEST files assemble without errors.**
 
+
+
 ---
+
+
+
 
 
 ## 2026-09-19: Help Menu (F1) + Refactoring / Меню Справка + Рефакторинг
 
+
+
 ### Help Menu / Меню Справка
 
+
+
 **EN:** Added "Help" menu (F1 hotkey) with links to all documentation files:
+
 - User Guide (USER_GUIDE.md)
+
 - README (README.md)
+
 - Changelog (CHANGES.md)
+
 - Project Analysis (ANALYSIS.md)
+
 - MCP Guide (MCP_GUIDE.md)
+
 - Scripts Guide (SCRIPTS_GUIDE.md)
+
 - About dialog
 
+
+
 Documentation is displayed in a QTextBrowser dialog with basic markdown→HTML rendering.
+
 Menu title and items update on language switch.
 
+
+
 **RU:** Добавлено меню «Справка» (горячая клавиша F1) со ссылками на все файлы документации:
+
 - Руководство пользователя (USER_GUIDE.md)
+
 - README (README.md)
+
 - Журнал изменений (CHANGES.md)
+
 - Анализ проекта (ANALYSIS.md)
+
 - MCP Руководство (MCP_GUIDE.md)
+
 - Руководство по скриптам (SCRIPTS_GUIDE.md)
+
 - О программе
 
+
+
 Документация отображается в диалоге QTextBrowser с базовым markdown→HTML рендерингом.
+
 Заголовок меню и пункты обновляются при смене языка.
+
+
 
 ### Refactoring: Themes, i18n, Dead Code / Рефакторинг
 
+
+
 **EN:** Extracted all theme/color definitions into `common/themes.py`. Added full i18n support to the assembler widget (30+ hardcoded strings → translation keys). Removed unused imports across 10 files. Removed dead code. Updated module structure.
+
+
 
 **RU:** Все определения тем/цветов вынесены в `common/themes.py`. Добавлена полная i18n поддержка в виджет ассемблера. Удалены неиспользуемые импорты в 10 файлах. Удалён мёртвый код. Обновлена структура модулей.
 
+
+
 ### Test results / Результаты тестов
 
+
+
 | Suite / Набор | Result / Результат |
+
 |---|---|
+
 | `run_tests.py` (33 files) | **871/871 PASS** |
+
 | `test_asm_for_test.py` (69 files) | **69/69 PASS** |
+
 | `test_gui_smoke.py` | **ALL PASS** |
+
+
 
 ---
 
 
+
+
+
 ## 2026-09-18: M80 Assembler Format Support
+
+
 
 ### Summary / Обзор
 
+
+
 **EN:** Extracted all theme/color definitions into `common/themes.py`. Added full i18n support to the assembler widget (30+ hardcoded Russian strings → translation keys). Removed unused imports across 9 files. Removed dead code (commented-out `_load_to_memory` in assembler_widget.py). Updated `common/__init__.py` and `i8080_ci/__init__.py` for new module structure. All 871 test checks pass.
+
+
 
 **RU:** Все определения тем/цветов вынесены в `common/themes.py`. Добавлена полная i18n поддержка в виджет ассемблера (30+ жёстко заданных русских строк → ключи перевода). Удалены неиспользуемые импорты в 9 файлах. Удалён мёртвый код (закомментированный `_load_to_memory` в assembler_widget.py). Обновлены `common/__init__.py` и `i8080_ci/__init__.py` под новую структуру модулей. Все 871 проверок тестов пройдены.
 
+
+
 ### Changes / Изменения
+
+
 
 #### 1. New file: `common/themes.py` / Новый файл
 
+
+
 **EN:** Centralized all color constants and QSS stylesheets:
+
 - `THEMES` — application QSS (Light/Dark) moved from `i18n.py`
+
 - `EDITOR_DARK` / `EDITOR_LIGHT` — code editor colors (background, foreground, line numbers, current line, error line)
+
 - `SYNTAX_DARK` / `SYNTAX_LIGHT` — syntax highlighting colors (comment, mnemonic, directive, number, label, register)
+
 - `ARROW_COLORS` — 6-color palette for jump/branch arrows
+
 - `STATUS_COLORS` — status indicator colors (warning, success, error, flags, trace)
+
 - Helper functions: `get_editor_style(is_dark)`, `get_syntax_colors(is_dark)`
 
+
+
 **RU:** Централизованы все цветовые константы и QSS-стили:
+
 - `THEMES` — QSS приложения (Light/Dark), перенесено из `i18n.py`
+
 - `EDITOR_DARK` / `EDITOR_LIGHT` — цвета редактора кода
+
 - `SYNTAX_DARK` / `SYNTAX_LIGHT` — цвета подсветки синтаксиса
+
 - `ARROW_COLORS` — 6-цветная палитра для стрелок переходов
+
 - `STATUS_COLORS` — цвета индикаторов состояния
+
 - Вспомогательные функции: `get_editor_style(is_dark)`, `get_syntax_colors(is_dark)`
+
+
 
 #### 2. i18n: Assembler widget / Виджет ассемблера
 
+
+
 **EN:** All 30+ hardcoded Russian strings in `assembler_widget.py` replaced with i18n keys:
+
 - Button labels: `asm_new`, `asm_load`, `asm_save`, `asm_assemble`, `asm_assemble_load`
+
 - Group boxes: `asm_errors`, `asm_labels`
+
 - Table headers: `asm_col_line`, `asm_col_msg`, `asm_col_label`, `asm_col_addr`, `asm_col_line2`
+
 - Dialog titles: `asm_load_title`, `asm_save_title`
+
 - File filters: `asm_file_filter`, `asm_file_filter_save`
+
 - Log messages: `asm_loaded`, `asm_saved`, `asm_assembling`, `asm_no_code`, `asm_exception`, `asm_errors_found`, `asm_err_line`, `asm_warning`, `asm_success`, `asm_origin`, `asm_symbols`, `asm_loaded_mem`, `asm_load_mem_err`
+
 - Error dialogs: `asm_err_title`, `asm_load_err`, `asm_save_err`
+
 - Placeholder text: `asm_placeholder`
+
 - `set_theme()` now also updates all labels on language/theme change
 
+
+
 **RU:** Все 30+ жёстко заданных русских строк в `assembler_widget.py` заменены на ключи i18n:
+
 - Подписи кнопок, заголовки групп, заголовки таблиц
+
 - Заголовки диалогов, фильтры файлов
+
 - Сообщения в лог, диалоги ошибок
+
 - Текст-заполнитель редактора
+
 - `set_theme()` теперь также обновляет все подписи при смене языка/темы
+
+
 
 #### 3. Unused imports removed / Удалены неиспользуемые импорты
 
+
+
 | File / Файл | Removed / Удалено |
+
 |---|---|
+
 | `main_window.py` | `sys`, `json`, `traceback` (top-level, kept as local), `QToolTip`, `QStyle`, `QStatusBar`, `QObject`, `Signal`, `QAbstractTableModel`, `QModelIndex`, `QEvent`, `QLocale`, `QRect`, `QPainter`, `QPen`, `QBrush`, `QActionGroup`, 18 `.slip` constants |
+
 | `automation.py` | 16 `.slip` constants |
+
 | `bus_worker.py` | 24 `.slip` constants |
+
 | `models/bp_model.py` | `QModelIndex` |
+
 | `models/trace_model.py` | `QModelIndex` |
+
 | `views/disasm_view.py` | `QEvent`, `QBrush`, `JUMP_OPCODES` |
+
 | `views/hex_view.py` | `Qt` (top-level), `QApplication` (re-added where needed) |
+
 | `views/search.py` | `Qt` |
+
 | `mcp_server.py` | `asyncio` |
+
 | `assembler_widget.py` | `QLabel`, `QSpinBox`, `QCheckBox`, `QStyle`, `NumberParser` |
+
+
 
 #### 4. Dead code removed / Мёртвый код
 
+
+
 - `assembler_widget.py`: removed 20-line commented-out `_load_to_memory` (old implementation)
+
 - `assembler_widget.py`: removed commented-out listing output block in `_do_assemble`
+
 - `assembler_widget.py`: `on_new()` now clears error/label tables (was referencing non-existent `self.log`)
+
+
 
 #### 5. Module structure / Структура модулей
 
+
+
 - `common/__init__.py`: imports `THEMES` from `.themes` (not `.i18n`)
+
 - `i8080_ci/__init__.py`: imports `THEMES` from `common.themes`
+
 - `i8080_ci/i18n.py`: backward-compatible re-export updated
+
 - `main_window.py`: `from common.themes import THEMES`
+
+
 
 ### Test results / Результаты тестов
 
+
+
 | Suite / Набор | Result / Результат |
+
 |---|---|
+
 | `run_tests.py` (33 files) | **871/871 PASS** |
+
 | `test_asm_for_test.py` (69 files) | **69/69 PASS** |
+
 | `test_gui_smoke.py` | **ALL PASS** |
+
 | `test_alu_8080.py` | **56/56 PASS** |
+
 | `test_emu_integration.py` | **21/21 PASS** |
+
+
 
 ---
 
 
+
+
+
 ## 2026-09-18: M80 Assembler Format Support
+
+
 
 ### Added M80 (.mac) format support to the assembler
 
+
+
 **Preprocessor changes:**
+
 - Shebang lines (`#!/...`) treated as comments
+
 - `CPU`, `ASEG`, `TITLE` directives handled as no-op
+
 - `PUBLIC`, `EXTERN`, `MODULE` directives handled as no-op
+
 - M80-style `include "file"` (without `#`) support
+
 - `.macro`/`.endm` macro definition format support
+
 - Case-insensitive macro name matching
+
 - Nested macro expansion (up to 10 levels)
+
 - UTF-8 encoding errors handled gracefully
 
+
+
 **Assembler changes:**
+
 - `DB N dup(value)` — M80 duplicate byte syntax
+
 - `DS N,fill` — DS with fill value
+
 - `DEF` as alias for `EQU` (M80 variable definition)
+
 - `<>` operator (not-equal) in expressions
+
 - `NOT` → bitwise NOT (`~`) instead of logical NOT
+
 - `$` allowed in label names (CP/M style: `RD$TRK`)
+
 - Extended no-op directives: `ENDR`, `DATA`, `BLKB`, `DISKDEF`,
+
   `IRP`, `ASSERT`, `DEFW`, `ASMPC`, `MACRO`, `ALIGN`, `#DATA`, `#ASSERT`
+
 - `END [start]` — optional start address (informational)
 
+
+
 **Test script updated:**
+
 - Now uses `ASM_FOR_TEST/` directory (replaces `c:\zasm\`)
+
 - Includes both `.asm` and `.mac` files
+
 - 21 non-8080 files excluded (Z80/8085/Apple II)
+
 - **Result: 69/69 PASS, 0 FAIL**
+
+
 
 ### Test results
 
+
+
 | File | Format | Size | Status |
+
 |------|--------|------|--------|
+
 | 8080EX1.MAC | M80 | 6,527,535 B | PASS |
+
 | 8080EXER.MAC | M80 | 6,527,507 B | PASS |
+
 | 8080EXM.MAC | M80 | 6,527,527 B | PASS |
+
 | 8080PRE.MAC | M80 | 932 B | PASS |
+
 | 8080PRE.asm | M80/zasm | 932 B | PASS |
+
 | CPU_test_full.asm | zasm | 6,555,084 B | PASS |
+
 | OS_kernel.asm | zasm | 55,694 B | PASS |
+
 | kernel.asm | zasm | 37,771 B | PASS |
+
 | Altair8800_Monitor.asm | M80 | 1,605 B | PASS |
+
 | Comm.asm | M80 | 1,695 B | PASS |
+
 | DD30.asm | M80 | 4,090 B | PASS |
+
 | ... and 58 more | mixed | — | PASS |
+
+
 
 **Unit tests: 871/871 PASS**
 ```
@@ -32608,7 +35687,7 @@ Menu title and items update on language switch.
 
 ■ РАЗДЕЛ 5: ТЕСТЫ
 
-Всего тестовых файлов: 73, строк: 11634
+Всего тестовых файлов: 74, строк: 11719
 
 ### `tests/PPI_3D_8x8x8_Flame.py` (224 строк)
 
@@ -43399,6 +46478,98 @@ else:
 ```
 <!-- END FILE: tests/test_port_invert.py -->
 
+### `tests/test_roundtrip_256.py` (85 строк)
+
+<!-- FILE: tests/test_roundtrip_256.py -->
+```python
+# -*- coding: utf-8 -*-
+"""Round-trip test: assemble -> disassemble -> re-assemble -> compare, all 256 opcodes.
+
+Проверяет согласованность ассемблера и дизассемблера для обоих CPU (i8080/i8085):
+  A) ПОКРЫТИЕ: все 256 значений старшего байта дизассемблируются в непустой текст.
+  B) ROUND-TRIP: программа из ВСЕХ documented-опкодов -> дизассемблер -> ассемблер
+     -> байты совпадают с исходными (undocumented NOP*/RET*/CALL*/JMP* не являются
+     реальными инструкциями и в byte-сравнение не входят).
+
+Запуск: python tests/test_roundtrip_256.py [N]   (N = число циклов, по умолчанию 3)
+"""
+import sys
+import os
+
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from i8080_ci.disassembler import I8080Disassembler
+from assemble8080.assembler import assemble
+
+OP = 0x11
+
+
+def build_program(dis, documented_only):
+    prog = bytearray()
+    for op in range(256):
+        if op not in dis.table:
+            continue
+        size, fmt = dis.table[op]
+        if documented_only and ("NOP*" in fmt or "RET*" in fmt or "CALL*" in fmt or "JMP*" in fmt):
+            continue
+        prog.append(op)
+        for _ in range(size - 1):
+            prog.append(OP)
+    return bytes(prog)
+
+
+def run_cycle(cpu_type):
+    dis = I8080Disassembler(cpu_type=cpu_type)
+
+    # A) Покрытие: все 256 дизассемблируются в непустой текст
+    full = build_program(dis, documented_only=False)
+    mem = {i: b for i, b in enumerate(full)}
+    lines = dis.disassemble(mem, 0, len(full))
+    n_ops = len(lines)
+    empty = sum(1 for _, _, asm, _, _ in lines if not asm.strip())
+    coverage_ok = (n_ops == 256 and empty == 0)
+
+    # B) Round-trip только documented
+    prog = build_program(dis, documented_only=True)
+    mem2 = {i: b for i, b in enumerate(prog)}
+    lines2 = dis.disassemble(mem2, 0, len(prog))
+    src = ["ORG 0"] + [asm for _, _, asm, undoc, _ in lines2] + ["END"]
+    res = assemble("\n".join(src), cpu_type=cpu_type)
+    rt_ok = res.success and bytes(res.binary) == prog
+    return coverage_ok, n_ops, empty, len(prog), rt_ok, list(res.errors)
+
+
+def main():
+    cycles = int(sys.argv[1]) if len(sys.argv) > 1 else 3
+    all_ok = True
+    for c in range(1, cycles + 1):
+        print(f"=== Цикл {c}/{cycles} ===")
+        cycle_ok = True
+        for cpu in ("i8080", "i8085"):
+            cov_ok, n_ops, empty, n_doc, rt_ok, errors = run_cycle(cpu)
+            ok = cov_ok and rt_ok
+            status = "OK  " if ok else "FAIL"
+            print(f"  [{status}] {cpu}: покрытие {n_ops}/256 (пустых {empty}), "
+                  f"round-trip {n_doc} documented байт {'совпал' if rt_ok else 'НЕ совпал'}")
+            if not ok:
+                cycle_ok = False
+                for e in errors[:5]:
+                    print(f"         {e}")
+        print(f"  ИТОГ цикла {c}: {'PASS' if cycle_ok else 'FAIL'}")
+        if not cycle_ok:
+            all_ok = False
+            break
+    print("=" * 50)
+    print(f"ВСЕ {cycles} ЦИКЛА: {'PASS' if all_ok else 'FAIL'}")
+    return 0 if all_ok else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+```
+<!-- END FILE: tests/test_roundtrip_256.py -->
+
 ### `tests/test_set_symbols_check.py` (52 строк)
 
 <!-- FILE: tests/test_set_symbols_check.py -->
@@ -45762,7 +48933,7 @@ end = 0xFFFF
 
 ■ РАЗДЕЛ 7: ГЛАВНОЕ ОКНО И ВКЛАДКИ
 
-Файл: `i8080_ci/main_window.py` (4179 строк)
+Файл: `i8080_ci/main_window.py` (4192 строк)
 
 **Вкладки (11):**
 | 0 | `create_tab_assembler()` |
@@ -45895,14 +49066,14 @@ This supplementary agreement (hereinafter referred to as the "Supplementary Agre
 4.3. Любые изменения и дополнения к настоящему Соглашению действительны с момента их публикации.
 ```
 
-### `ANALYSIS.md` (309 строк)
+### `ANALYSIS.md` (536 строк)
 
 ```markdown
 # i8080-5 CI — Project Analysis / Анализ проекта
 
-**Date / Дата:** 2026-09-14
-**Scope / Объём:** Full codebase (94 Python files, ~29,000 lines)
-**Session / Сессия:** Re-audit pass 7 (explicit public API via `__all__` + stability verification)
+**Date / Дата:** 2026-10-09
+**Scope / Объём:** Full codebase (~160 Python files, ~41,500 lines) + VS Code plugin
+**Session / Сессия:** Full re-analysis (architecture, dual-CPU, CLI assembler, MCP server, VS Code plugin)
 
 ---
 
@@ -45910,20 +49081,237 @@ This supplementary agreement (hereinafter referred to as the "Supplementary Agre
 
 | Metric / Метрика | Value / Значение |
 |--------|-------|
-| Python files / Файлов Python | 104 |
-| Total lines / Всего строк | ~26,700 |
-| GUI package / GUI-пакет | i8080_ci/ (18 modules, main_window.py ~3,790 lines) |
-| Emulator / Эмулятор | i8080_emulator.py (1,761 lines) |
-| MCP Server / MCP-сервер | mcp_server.py (949 lines) |
-| IO modules / Модули IO | 25+ devices in modules/io/ |
-| Memory modules / Модули памяти | 7 types in modules/memory/ |
-| Profiles / Профили | 12 TOML profiles |
-| Tests / Тесты | 33 test files, 871 checks (100% PASS) + zasm reference 15/15 |
-| i18n keys / Клавиши i18n | 378 per language (EN + RU) |
+| Python files / Файлов Python | ~160 (core project, без разовых root-скриптов аудита) |
+| Total lines / Всего строк | ~41,500 |
+| GUI package / GUI-пакет | i8080_ci/ (19 модулей, main_window.py 4 192 строки) |
+| Emulator / Эмулятор | i8080_emulator.py (2 000 строк, dual-CPU i8080/i8085) |
+| Assembler / Ассемблер | assemble8080/ (10 модулей, assembler.py 1 919 строк, CLI) |
+| MCP Server / MCP-сервер | mcp_server.py (1 213 строк, 70 tools + 6 resources + 9 prompts) |
+| IO modules / Модули IO | 23 device-модуля в modules/io/ |
+| Memory modules / Модули памяти | 7 типов в modules/memory/ |
+| Profiles / Профили | 12 TOML-профилей (+ 9 шаблонов в template/) |
+| Tests / Тесты | 66 test-файлов, 921 checks (100% PASS) + zasm reference 15/15 |
+| i18n keys / Клавиши i18n | ~330 UI-ключей на язык (LANGS) + ~85–91 описания мнемоник (MNEMONIC_INFO) |
+| VS Code plugin / Плагин VS Code | v0.2.1 (TypeScript, MCP-клиент) |
+
+---
+
+## Architecture / Module Overview / Архитектура и обзор модулей
+
+**EN:**
+
+The project is a dual-CPU (i8080 + i8085) hardware CI/debugger with three independent entry
+points: a PySide6 GUI, a headless MCP server, and a standalone CLI assembler. The CPU emulator
+is a `QObject` that exposes Qt signals, so the same core drives the GUI, the headless host, and
+the MCP server.
+
+**Top-level entry points / Точ входа верхнего уровня:**
+
+| File / Файл | Lines / Строк | Role / Роль |
+|-------|-------|--------|
+| `i8080_CI.py` | 15 | GUI entry point — thin wrapper (`QApplication` + `MainWindow`) |
+| `i8080_emulator.py` | 2 000 | i8080/i8085 CPU emulator, `QObject` + Qt signals, dual-CPU via `cpu_type` |
+| `mcp_server.py` | 1 213 | FastMCP MCP server, SSE transport, port 8000; 70 tools + 6 resources + 9 prompts |
+| `mcp_headless.py` | 108 | Headless MCP entry (`python mcp_headless.py --profile full --port 8000`), `HeadlessHost` + `MCPServerManager` |
+| `version.py` | 9 | `__version__=2.1.7`, `__build__=20261009`, `__app_name__="i8080-5 CI"` |
+
+**`assemble8080/` — assembler package (10 modules, 3 348 lines) / Пакет ассемблера:**
+
+| File / Файл | Lines / Строк | Role / Роль |
+|-------|-------|--------|
+| `assembler.py` | 1 919 | Two-pass assembler (pass 1 labels, pass 2 code); CLI via `__main__.py` / `_cli_main`; `assemble(source, filename, now, cpu_type) -> AsmResult` |
+| `preprocessor.py` | 630 | `MACRO/ENDM`, `REPT/ENDM`, `#include`/`include`/`.include`, `#define`, `#if/#elif/#else/#endif`, `IF/ENDIF/ELSE`, `#path`/`.path`, `#target`, `#charset` |
+| `linker.py` | 255 | `.lnk` script: `INPUT/OUTPUT/MAP/ORIGIN/SIZE/FILL` |
+| `mapfile.py` | 162 | MAP-file generation |
+| `objfile.py` | 137 | `.obj` intermediate format |
+| `numbers.py` | 84 | Numeric parsing (hex/bin/dec/oct) |
+| `symbols.py` | 77 | Symbol table |
+| `errors.py` | 37 | Error types |
+| `__main__.py` | 19 | CLI entry point |
+| `__init__.py` | 28 | Package exports |
+
+The assembler is a **standalone CLI** (no GUI dependency) and is CPU-aware (`cpu_type` selects
+i8080 vs i8085 opcode set).
+
+**`i8080_ci/` — application package (19 modules, 9 221 lines) / Пакет приложения:**
+
+| File / Файл | Lines / Строк | Role / Роль |
+|-------|-------|--------|
+| `main_window.py` | 4 192 | `MainWindow` (monolithic) |
+| `assembler_widget.py` | 2 037 | `CodeEditor`, tabs, `.ws` workspace, Ctrl+Click labels, `::` global highlight |
+| `automation.py` | 736 | `AutomationAPI` |
+| `headless_host.py` | 316 | `HeadlessHost` (GUI-less system host) |
+| `bus_worker.py` | 249 | `QThread` serial bus worker |
+| `disassembler.py` | 233 | Disassembler, `cpu_type`-aware |
+| `slip.py` | 61 | SLIP protocol (real hardware over COM) |
+| `intelhex.py` | 51 | Intel HEX read/write |
+| `i18n.py` | 4 | i18n re-export shim |
+| `models/` | — | `hex_model`, `watch_model`, `bp_model`, `trace_model` (4) |
+| `views/` | — | `disasm_view`, `hex_view`, `search` (3) |
+
+**`common/` — shared utilities (4 modules, 1 198 lines) / Общие утилиты:**
+
+| File / Файл | Lines / Строк | Role / Роль |
+|-------|-------|--------|
+| `i18n.py` | 969 | `LANGS` (en/ru) + `MNEMONIC_INFO`, `set_language()` |
+| `encoding.py` | 109 | File-encoding auto-detection: BOM → UTF-8 → `charset_normalizer` → CP1251 |
+| `themes.py` | 115 | Light/dark themes |
+
+**`modules/` — hardware model (38 modules, 9 492 lines) / Модель железа:**
+
+| File / Файл | Lines / Строк | Role / Роль |
+|-------|-------|--------|
+| `system.py` | 496 | `ComputerSystem` — integration hub (CPU + MemoryBus + IO) |
+| `memory/` | — | 7 types: `banked`, `paged`, `shadow`, `segmented`, `segmentedpaged`, `mmio`, `memory_bus` |
+| `io/` | — | 23 device modules + `iodevice` base: `i8255`, `i8253`, `i8251`, `i8259`, `i8257`, `i8272`, `i8275`, `i8276`, `i8279`, `i16550`, `i512vi1`, `cf_ide`, `ch376s`, `am9511`, `lcd1602`, `lcd2004`, `tft8080`, `keyboard8x8`, `keyboard8279_adapter`, `cube3d`, `discrete_video`, `bitmap_video`, `chargen` |
+| `config/` | — | `device_config` (469), `system_profiles` (115) |
+
+**`ui/` — Qt widgets (8 modules, 1 802 lines) / Qt-виджеты:**
+`cube3d_widget`, `device_manager`, `device_window`, `display_widgets`, `gpio_widget`,
+`keyboard_widget`, `serial_terminal`.
+
+**`profiles/` — TOML system profiles / TOML-профили системы:**
+12 profiles: `micro80`, `microsha`, `radio86rk`, `apogey`, `orion128`, `vector06c`,
+`specialist`, `full`, `empty8080`, `empty8085`, `lvovpk01`, `display_test`; plus 9 templates in
+`template/`.
+
+**`tests/` — test suite (74 files, 11 719 lines) / Тесты:**
+66 test files + 8 helpers. `run_tests.py` = **921 passed / 0 failed**. `test_bin_compare.py` =
+**15 zasm references byte-identical**. `test_roundtrip_256.py` = **3 cycles PASS**. Includes
+`test_8085.py`, `test_asm8080-8085.py`, and a GUI smoke test.
+
+**`Plugins/i8080_ci-vscode/` — VS Code plugin v0.2.1 / Плагин VS Code:**
+TypeScript extension acting as an MCP client for the headless server (`src/`, `tsconfig.json`,
+`build.js`, `e2e_test.js`).
+
+**RU:**
+
+Проект — dual-CPU (i8080 + i8085) аппаратный CI/отладчик с тремя независимыми точками входа:
+PySide6 GUI, headless MCP-сервер и автономный CLI-ассемблер. Эмулятор CPU — это `QObject` с
+Qt-сигналами, поэтому одно ядро управляет GUI, headless-хостом и MCP-сервером.
+
+**Точки входа верхнего уровня:**
+
+| Файл | Строк | Роль |
+|-------|-------|--------|
+| `i8080_CI.py` | 15 | Точка входа GUI — тонкая обёртка (`QApplication` + `MainWindow`) |
+| `i8080_emulator.py` | 2 000 | Эмулятор i8080/i8085, `QObject` + Qt-сигналы, dual-CPU через `cpu_type` |
+| `mcp_server.py` | 1 213 | FastMCP MCP-сервер, SSE-транспорт, порт 8000; 70 tools + 6 resources + 9 prompts |
+| `mcp_headless.py` | 108 | Headless MCP-вход (`python mcp_headless.py --profile full --port 8080`), `HeadlessHost` + `MCPServerManager` |
+| `version.py` | 9 | `__version__=2.1.7`, `__build__=20261009`, `__app_name__="i8080-5 CI"` |
+
+**`assemble8080/` — пакет ассемблера (10 модулей, 3 348 строк):**
+
+| Файл | Строк | Роль |
+|-------|-------|--------|
+| `assembler.py` | 1 919 | Двухпроходный ассемблер (pass 1 — метки, pass 2 — код); CLI через `__main__.py` / `_cli_main`; `assemble(source, filename, now, cpu_type) -> AsmResult` |
+| `preprocessor.py` | 630 | `MACRO/ENDM`, `REPT/ENDM`, `#include`/`include`/`.include`, `#define`, `#if/#elif/#else/#endif`, `IF/ENDIF/ELSE`, `#path`/`.path`, `#target`, `#charset` |
+| `linker.py` | 255 | `.lnk`-скрипт: `INPUT/OUTPUT/MAP/ORIGIN/SIZE/FILL` |
+| `mapfile.py` | 162 | Генерация MAP-файла |
+| `objfile.py` | 137 | Промежуточный формат `.obj` |
+| `numbers.py` | 84 | Разбор чисел (hex/bin/dec/oct) |
+| `symbols.py` | 77 | Таблица символов |
+| `errors.py` | 37 | Типы ошибок |
+| `__main__.py` | 19 | Точка входа CLI |
+| `__init__.py` | 28 | Экспорты пакета |
+
+Ассемблер — **автономный CLI** (без зависимости от GUI) и CPU-aware (`cpu_type` выбирает набор
+опкодов i8080 или i8085).
+
+**`i8080_ci/` — пакет приложения (19 модулей, 9 221 строка):**
+
+| Файл | Строк | Роль |
+|-------|-------|--------|
+| `main_window.py` | 4 192 | `MainWindow` (монолит) |
+| `assembler_widget.py` | 2 037 | `CodeEditor`, вкладки, `.ws`-workspace, Ctrl+Click по меткам, `::` глобальная подсветка |
+| `automation.py` | 736 | `AutomationAPI` |
+| `headless_host.py` | 316 | `HeadlessHost` (хост системы без GUI) |
+| `bus_worker.py` | 249 | `QThread`-worker последовательной шины |
+| `disassembler.py` | 233 | Дизассемблер, `cpu_type`-aware |
+| `slip.py` | 61 | SLIP-протокол (реальное железо через COM) |
+| `intelhex.py` | 51 | Чтение/запись Intel HEX |
+| `i18n.py` | 4 | Shim реэкспорта i18n |
+| `models/` | — | `hex_model`, `watch_model`, `bp_model`, `trace_model` (4) |
+| `views/` | — | `disasm_view`, `hex_view`, `search` (3) |
+
+**`common/` — общие утилиты (4 модуля, 1 198 строк):**
+
+| Файл | Строк | Роль |
+|-------|-------|--------|
+| `i18n.py` | 969 | `LANGS` (en/ru) + `MNEMONIC_INFO`, `set_language()` |
+| `encoding.py` | 109 | Автоопределение кодировки: BOM → UTF-8 → `charset_normalizer` → CP1251 |
+| `themes.py` | 115 | Светлая/тёмная темы |
+
+**`modules/` — модель железа (38 модулей, 9 492 строки):**
+
+| Файл | Строк | Роль |
+|-------|-------|--------|
+| `system.py` | 496 | `ComputerSystem` — интеграционный хаб (CPU + MemoryBus + IO) |
+| `memory/` | — | 7 типов: `banked`, `paged`, `shadow`, `segmented`, `segmentedpaged`, `mmio`, `memory_bus` |
+| `io/` | — | 23 device-модуля + базовый `iodevice`: `i8255`, `i8253`, `i8251`, `i8259`, `i8257`, `i8272`, `i8275`, `i8276`, `i8279`, `i16550`, `i512vi1`, `cf_ide`, `ch376s`, `am9511`, `lcd1602`, `lcd2004`, `tft8080`, `keyboard8x8`, `keyboard8279_adapter`, `cube3d`, `discrete_video`, `bitmap_video`, `chargen` |
+| `config/` | — | `device_config` (469), `system_profiles` (115) |
+
+**`ui/` — Qt-виджеты (8 модулей, 1 802 строки):**
+`cube3d_widget`, `device_manager`, `device_window`, `display_widgets`, `gpio_widget`,
+`keyboard_widget`, `serial_terminal`.
+
+**`profiles/` — TOML-профили системы:**
+12 профилей: `micro80`, `microsha`, `radio86rk`, `apogey`, `orion128`, `vector06c`,
+`specialist`, `full`, `empty8080`, `empty8085`, `lvovpk01`, `display_test`; плюс 9 шаблонов в
+`template/`.
+
+**`tests/` — тестовый набор (74 файла, 11 719 строк):**
+66 test-файлов + 8 helpers. `run_tests.py` = **921 passed / 0 failed**. `test_bin_compare.py` =
+**15 zasm-ссылок побайтово идентичны**. `test_roundtrip_256.py` = **3 цикла PASS**. Включает
+`test_8085.py`, `test_asm8080-8085.py` и GUI smoke-тест.
+
+**`Plugins/i8080_ci-vscode/` — плагин VS Code v0.2.1:**
+TypeScript-расширение, работающее как MCP-клиент для headless-сервера (`src/`, `tsconfig.json`,
+`build.js`, `e2e_test.js`).
+
+---
+
+## Design Decisions / Ключевые решения по дизайну
+
+**EN:**
+
+- **Two-pass assembler** — pass 1 collects labels, pass 2 emits code; enables forward references.
+- **Dual-CPU core** — a single `i8080_emulator.py` handles both i8080 and i8085 via `cpu_type`;
+  the 8085 adds `SIM/RIM/DSUB/ARHL/RDEL/LDHI/LDSI/RSTV/SHLX/JNK/LHLX/JK`.
+- **SLIP protocol** — real-hardware communication over COM ports (`slip.py`, `bus_worker.py`).
+- **TOML system profiles** — declarative hardware configuration (`profiles/`), loaded by
+  `system_profiles.py` / `device_config.py`.
+- **FastMCP with SSE transport** — the MCP server (`mcp_server.py`) exposes 70 tools over SSE on
+  port 8000; a separate headless entry (`mcp_headless.py`) runs it without the GUI.
+- **PySide6 GUI** — RU/EN i18n and light/dark themes; `MainWindow` remains monolithic.
+- **File-encoding auto-detection** — BOM → UTF-8 → `charset_normalizer` → CP1251 fallback
+  (`common/encoding.py`).
+- **VS Code plugin** — TypeScript extension (v0.2.1) that talks to the headless MCP server.
+
+**RU:**
+
+- **Двухпроходный ассемблер** — pass 1 собирает метки, pass 2 выдаёт код; позволяет вперёд-ссылки.
+- **Dual-CPU ядро** — единый `i8080_emulator.py` обрабатывает и i8080, и i8085 через `cpu_type`;
+  8085 добавляет `SIM/RIM/DSUB/ARHL/RDEL/LDHI/LDSI/RSTV/SHLX/JNK/LHLX/JK`.
+- **SLIP-протокол** — связь с реальным железом через COM-порты (`slip.py`, `bus_worker.py`).
+- **TOML-профили системы** — декларативная конфигурация железа (`profiles/`), загружается
+  `system_profiles.py` / `device_config.py`.
+- **FastMCP с SSE-транспортом** — MCP-сервер (`mcp_server.py`) отдаёт 70 tools по SSE на порту
+  8000; отдельный headless-вход (`mcp_headless.py`) запускает его без GUI.
+- **PySide6 GUI** — RU/EN i18n и светлая/тёмная темы; `MainWindow` остаётся монолитным.
+- **Автоопределение кодировки файлов** — BOM → UTF-8 → `charset_normalizer` → fallback CP1251
+  (`common/encoding.py`).
+- **Плагин VS Code** — TypeScript-расширение (v0.2.1), общающееся с headless MCP-сервером.
 
 ---
 
 ## Issues Found & Status / Найденные проблемы и статус
+
+> Note / Примечание: the tables below record the 2026-09-14 audit (passes 1–7). Line numbers may
+> have shifted since the codebase grew (emulator 1 761 → 2 000 lines, `main_window.py` 3 790 →
+> 4 192 lines). / Таблицы ниже фиксируют аудит от 2026-09-14 (проходы 1–7). Номера строк могли
+> сдвинуться после роста кодовой базы (эмулятор 1 761 → 2 000 строк, `main_window.py` 3 790 →
+> 4 192 строки).
 
 ### P0 — Critical / Критические
 
@@ -46022,7 +49410,7 @@ This supplementary agreement (hereinafter referred to as the "Supplementary Agre
 - `tests/` — 8 occurrences in test helper functions
 
 **Emulator (Intentional):**
-- `i8080_emulator.py:916` — `except Exception` around `eval()` for breakpoint conditions
+- `i8080_emulator.py` — `except Exception` around `eval()` for breakpoint conditions
   - Rationale: User-supplied conditions can raise any exception type; broad catch prevents debugger crash
 
 **RU:**
@@ -46040,7 +49428,7 @@ This supplementary agreement (hereinafter referred to as the "Supplementary Agre
 - `tests/` — 8 вхождений в helper-функциях тестов
 
 **Эмулятор (осознанно):**
-- `i8080_emulator.py:916` — `except Exception` вокруг `eval()` для условий точек останова
+- `i8080_emulator.py` — `except Exception` вокруг `eval()` для условий точек останова
   - Обоснование: Пользовательские условия могут бросить любой тип исключения; широкий catch предотвращает крах отладчика
 
 ---
@@ -46145,23 +49533,25 @@ Implemented via `_port_invert_map` in `MemoryBus`:
 
 **EN:**
 - `memory_bus.py` uses lazy `from .shadow import ShadowROMRegion` inside methods — **INTENTIONAL** to avoid circular imports
-- `device_config.py` uses lazy imports in `_create_instance` to avoid loading all 25+ device modules at startup
-- `i8080_emulator.py` inherits from `QObject` and uses Qt Signals for UI communication
-- MCP server runs in a daemon thread with SSE transport
+- `device_config.py` uses lazy imports in `_create_instance` to avoid loading all 23+ device modules at startup
+- `i8080_emulator.py` inherits from `QObject` and uses Qt Signals for UI communication; the same core is reused by the headless host and the MCP server
+- MCP server runs in a daemon thread with SSE transport (port 8000)
 - `ComputerSystem` acts as the integration hub connecting CPU, MemoryBus, and IO devices
 - `_IOPortsAdapter` bridges the emulator's dict-based `io_ports` interface to the MemoryBus
-- **Module split (Pass 3):** Original monolithic `i8080_CI.py` (6,517 lines) split into `i8080_ci/` package (18 modules). `MainWindow` remains monolithic (3,790 lines).
-- **i18n (Pass 4):** 378 keys per language, global `set_language()` for cross-dialog propagation
+- **Module split (Pass 3):** Original monolithic `i8080_CI.py` (6,517 lines) split into `i8080_ci/` package (19 modules). `MainWindow` remains monolithic (4,192 lines).
+- **Assembler split:** The assembler now lives in the standalone `assemble8080/` package (CLI, no GUI dependency), separate from the GUI's `assembler_widget.py`.
+- **i18n (Pass 4):** ~330 UI keys per language in `LANGS` plus `MNEMONIC_INFO` tables; global `set_language()` for cross-dialog propagation
 
 **RU:**
 - `memory_bus.py` использует lazy import `from .shadow import ShadowROMRegion` внутри методов — **ОСОЗНАННО** для избежания циклических импортов
-- `device_config.py` использует lazy imports в `_create_instance` для избежания загрузки всех 25+ модулей при старте
-- `i8080_emulator.py` наследуется от `QObject` и использует Qt Signals для UI-коммуникации
-- MCP-сервер работает в daemon-потоке с SSE-транспортом
+- `device_config.py` использует lazy imports в `_create_instance` для избежания загрузки всех 23+ модулей при старте
+- `i8080_emulator.py` наследуется от `QObject` и использует Qt Signals для UI-коммуникации; то же ядро переиспользуется headless-хостом и MCP-сервером
+- MCP-сервер работает в daemon-потоке с SSE-транспортом (порт 8000)
 - `ComputerSystem` — интеграционный хаб, связывающий CPU, MemoryBus и IO-устройства
 - `_IOPortsAdapter` связывает dict-based интерфейс `io_ports` эмулятора с MemoryBus
-- **Разбиение модулей (Pass 3):** Монолитный `i8080_CI.py` (6 517 строк) разбит на пакет `i8080_ci/` (18 модулей). `MainWindow` остался монолитным (3 790 строк).
-- **i18n (Pass 4):** 378 ключей на язык, глобальный `set_language()` для меж-диалоговой передачи
+- **Разбиение модулей (Pass 3):** Монолитный `i8080_CI.py` (6 517 строк) разбит на пакет `i8080_ci/` (19 модулей). `MainWindow` остался монолитным (4 192 строки).
+- **Разбиение ассемблера:** Ассемблер теперь в автономном пакете `assemble8080/` (CLI, без зависимости от GUI), отдельно от GUI-`assembler_widget.py`.
+- **i18n (Pass 4):** ~330 UI-ключей на язык в `LANGS` плюс таблицы `MNEMONIC_INFO`; глобальный `set_language()` для меж-диалоговой передачи
 
 ---
 
@@ -46175,8 +49565,8 @@ Implemented via `_port_invert_map` in `MemoryBus`:
 | TODO/FIXME comments / TODO/FIXME комментарии | 0 |
 | DRY violations / DRY-нарушения | 0 (helper extracted) |
 | Thread-unsafe shared state / Непотокобезопасное общее состояние | 0 |
-| Test coverage / Покрытие тестами | 33 files, 871 checks, 100% + zasm 15/15 |
-| i18n coverage / Покрытие i18n | 378 keys × 2 languages |
+| Test coverage / Покрытие тестами | 66 files, 921 checks, 100% + zasm 15/15 |
+| i18n coverage / Покрытие i18n | ~330 UI keys × 2 languages + MNEMONIC_INFO |
 
 ---
 
@@ -46190,6 +49580,7 @@ Implemented via `_port_invert_map` in `MemoryBus`:
 4. **Consider** adding a `conftest.py` with shared fixtures to reduce test boilerplate
 5. ✅ ~~**Consider** splitting i8080_CI.py~~ — DONE (Pass 3: split into `i8080_ci/` package)
 6. **Consider** extracting `_port_invert_map` setup into a `bus.set_port_inversion(base, num_ports)` method for encapsulation
+7. **Consider** closing the 1-key i18n gap (LANGS: 332 EN vs 331 RU) and aligning `MNEMONIC_INFO` counts (85 EN vs 91 RU)
 
 **RU:**
 
@@ -46199,14 +49590,21 @@ Implemented via `_port_invert_map` in `MemoryBus`:
 4. **Рассмотреть** добавление `conftest.py` с общими fixtures для уменьшения бойлплейта тестов
 5. ✅ ~~**Рассмотреть** разбиение i8080_CI.py~~ — ГОТОВО (Pass 3: разбит на `i8080_ci/` пакет)
 6. **Рассмотреть** вынесение настройки `_port_invert_map` в метод `bus.set_port_inversion(base, num_ports)` для инкапсуляции
+7. **Рассмотреть** закрытие 1-ключевого разрыва i18n (LANGS: 332 EN vs 331 RU) и выравнивание счётчиков `MNEMONIC_INFO` (85 EN vs 91 RU)
 
 ---
 
 ## i18n Status / Статус i18n
 
-**EN:** ✅ Complete (Pass 4 + Pass 5, 2026-09-14). All 378 UI strings support RU/EN switching. Device Manager, Device Window, and Search Dialog fully translated.
+**EN:** ✅ Complete (Pass 4 + Pass 5, 2026-09-14). `LANGS` holds ~330 UI strings per language
+(332 EN / 331 RU) with RU/EN switching; `MNEMONIC_INFO` adds per-mnemonic descriptions (85 EN /
+91 RU). Device Manager, Device Window, and Search Dialog fully translated. One-key gap between
+EN and RU remains in `LANGS`.
 
-**RU:** ✅ Завершено (Pass 4 + Pass 5, 2026-09-14). Все 378 UI-строк поддерживают переключение RU/EN. Диспетчер устройств, Окно устройств и Диалог поиска полностью переведены.
+**RU:** ✅ Завершено (Pass 4 + Pass 5, 2026-09-14). `LANGS` содержит ~330 UI-строк на язык
+(332 EN / 331 RU) с переключением RU/EN; `MNEMONIC_INFO` добавляет описания по мнемоникам
+(85 EN / 91 RU). Диспетчер устройств, Окно устройств и Диалог поиска полностью переведены.
+Одноключевой разрыв между EN и RU в `LANGS` сохраняется.
 ```
 
 ---
@@ -46220,15 +49618,84 @@ Implemented via `_port_invert_map` in `MemoryBus`:
 
 ## i8080-5 CI
 
-**STATUS: ✅ ALL ISSUES FIXED / ВСЕ ПРОБЛЕМЫ ИСПРАВЛЕНЫ**
+**STATUS: ✅ FULL PARITY — 477 KEYS PER LANGUAGE / ПОЛНОЕ СООТВЕТСТВИЕ — 477 КЛЮЧЕЙ НА ЯЗЫК**
 
 Pass 4 (2026-09-08) + Pass 5 (2026-09-14) — all 26 issues resolved plus additional dm_* / dw_* keys added.
+Re-audit (2026-10-09) — key count re-verified from `common/i18n.py`: **477 keys per language, full EN/RU parity, no gaps**.
 
 ---
 
-**Date / Дата:** 2026-09-08 (audit), 2026-09-14 (final fix)
-**Files / Файлы:** `i8080_ci/main_window.py`, `i8080_ci/views/search.py`, `ui/device_manager.py`, `ui/device_window.py`
-**i18n System / Система i18n:** `i8080_ci/i18n.py` → `LANGS["en"]` / `LANGS["ru"]` (378 keys per language)
+**Date / Дата:** 2026-09-08 (audit), 2026-09-14 (final fix), 2026-10-09 (re-audit)
+**Files / Файлы:** `common/i18n.py`, `i8080_ci/i18n.py`, `i8080_ci/main_window.py`, `i8080_ci/assembler_widget.py`, `i8080_ci/views/search.py`, `ui/device_manager.py`, `ui/device_window.py`, `common/encoding.py`, `mcp_server.py`
+**i18n System / Система i18n:** `common/i18n.py` → `LANGS["en"]` / `LANGS["ru"]` (477 keys per language, full parity)
+
+---
+
+## Current State — Re-audit 2026-10-09 / Текущее состояние — повторный аудит 2026-10-09
+
+**EN:** The key counts below were re-verified by parsing the actual `LANGS` dictionary in `common/i18n.py` (AST parse of the real file, not a guess).
+
+**RU:** Количество ключей ниже перепроверено разбором фактического словаря `LANGS` в `common/i18n.py` (AST-разбор реального файла, не оценка).
+
+### Key Count & Parity / Количество ключей и соответствие
+
+| Language / Язык | Keys / Ключей | Source / Источник |
+|--------|--------|---------|
+| EN | **477** | `common/i18n.py` → `LANGS["en"]` |
+| RU | **477** | `common/i18n.py` → `LANGS["ru"]` |
+
+**Parity / Соответствие:** ✅ **FULL PARITY** — every key in `en` has a matching key in `ru`, and vice versa.
+
+**Gaps / Разрывы:** **None / Нет** — keys only in `en`: **0**; keys only in `ru`: **0**.
+
+> **Note / Примечание:** The previous audit (2026-09-14) reported **378** keys per language. Since then **+99** keys were added, mostly for Assembler v2 (`asm_*`), trace, watch, breakpoints, compare, scripts, and help features.
+
+### Assembler v2 Keys / Ключи Assembler v2
+
+**EN:** The Assembler v2 feature set is covered by **74** `asm_*` keys (present in both `en` and `ru`). The workspace / tabs / labels sub-features map to the following keys:
+
+**RU:** Функционал Assembler v2 покрывается **74** ключами `asm_*` (присутствуют и в `en`, и в `ru`). Подфункции workspace / tabs / labels соответствуют следующим ключам:
+
+| Feature / Функция | Keys / Ключи |
+|---------|------|
+| Workspace (open/save) / Workspace (открыть/сохранить) | `asm_open_ws`, `asm_save_ws`, `asm_open_ws_title`, `asm_save_ws_title`, `asm_ws_filter`, `asm_ws_filter_save`, `asm_ws_loaded`, `asm_ws_saved`, `asm_ws_err`, `asm_ws_save_err` (10) |
+| Tabs / Вкладки | `asm_new_tab`, `asm_tab` (2) |
+| Labels / Метки | `asm_labels`, `asm_col_label` (2) |
+| Assemble / Link / Load / Save / Map / Obj / Errors / Прочее | the remaining 60 `asm_*` keys (e.g. `asm_assemble`, `asm_link`, `asm_load`, `asm_save`, `asm_map_saved`, `asm_obj_title`, `asm_errors`, `asm_placeholder`) |
+
+> **Honesty note / Примечание о точности:** There are **no** literal keys named `workspace`, `tabs`, or `global_label` in `LANGS`. Those Assembler v2 features are represented by the `asm_ws_*`, `asm_new_tab`/`asm_tab`, and `asm_labels`/`asm_col_label` key families listed above.
+
+### i18n Mechanism / Механизм i18n
+
+**EN:**
+
+- **`LANGS` dict** — defined in `common/i18n.py` (969 lines). A flat dictionary with two sections: `LANGS["en"]` and `LANGS["ru"]`, each mapping `key -> string`. No nested sub-dictionaries.
+- **`i8080_ci/i18n.py`** — a backward-compatible re-export: `from common.i18n import LANGS, get_system_language, set_language` (plus `THEMES` from `common.themes`).
+- **`self.tr(key)`** — the widget-level lookup, implemented in `i8080_ci/main_window.py` (line 261), `i8080_ci/bus_worker.py` (line 32), `i8080_ci/views/hex_view.py` (line 16), and `i8080_ci/views/search.py` (line 62). It resolves the key against the active language's `LANGS` section.
+- **`assembler_widget.py`** — does **not** use `self.tr()`; instead it defines a module-level `_tr(key)` helper (line 78) that reads `LANGS.get(lang, LANGS["en"]).get(key, key)`.
+- **Language switching / Переключение языка:**
+  - **GUI:** `MainWindow.lang_combo` is a `QComboBox` with items `["Русский", "English"]`. `on_lang_changed()` sets `self.current_lang`, calls `set_language(...)`, persists to settings, and calls `retranslate_ui()`.
+  - **MCP tools:** `get_language()` (returns `get_system_language()`) and `set_language(lang)` (validates `en`/`ru`, calls `common.i18n.set_language`, sets `mw.current_lang`, saves settings, calls `retranslate_ui()`). Registered in `mcp_server.py` (lines 969–970).
+- **`set_language` / `get_system_language`** — in `common/i18n.py`. `set_language(lang)` stores the choice in a module global `_current_lang`; `get_system_language()` returns `_current_lang` if set, otherwise falls back to `QLocale`-based detection (`ru`/`en`), defaulting to `en`.
+- **Supported languages / Поддерживаемые языки:** **Russian (`ru`)** and **English (`en`)** — two languages only.
+
+**RU:**
+
+- **Словарь `LANGS`** — определён в `common/i18n.py` (969 строк). Плоский словарь с двумя секциями: `LANGS["en"]` и `LANGS["ru"]`, каждая отображает `ключ -> строка`. Вложенных подсловарей нет.
+- **`i8080_ci/i18n.py`** — backward-compatible реэкспорт: `from common.i18n import LANGS, get_system_language, set_language` (плюс `THEMES` из `common.themes`).
+- **`self.tr(key)`** — виджетный поиск, реализован в `i8080_ci/main_window.py` (строка 261), `i8080_ci/bus_worker.py` (строка 32), `i8080_ci/views/hex_view.py` (строка 16) и `i8080_ci/views/search.py` (строка 62). Разрешает ключ по активной секции `LANGS`.
+- **`assembler_widget.py`** — **не** использует `self.tr()`; вместо этого определяет модульный хелпер `_tr(key)` (строка 78), читающий `LANGS.get(lang, LANGS["en"]).get(key, key)`.
+- **Переключение языка:**
+  - **GUI:** `MainWindow.lang_combo` — `QComboBox` с элементами `["Русский", "English"]`. `on_lang_changed()` устанавливает `self.current_lang`, вызывает `set_language(...)`, сохраняет в настройки и вызывает `retranslate_ui()`.
+  - **MCP-инструменты:** `get_language()` (возвращает `get_system_language()`) и `set_language(lang)` (валидирует `en`/`ru`, вызывает `common.i18n.set_language`, устанавливает `mw.current_lang`, сохраняет настройки, вызывает `retranslate_ui()`). Зарегистрированы в `mcp_server.py` (строки 969–970).
+- **`set_language` / `get_system_language`** — в `common/i18n.py`. `set_language(lang)` сохраняет выбор в модульную глобальную `_current_lang`; `get_system_language()` возвращает `_current_lang`, если задан, иначе fallback на детект через `QLocale` (`ru`/`en`), по умолчанию `en`.
+- **Поддерживаемые языки:** **Русский (`ru`)** и **Английский (`en`)** — только два языка.
+
+### File Encoding Auto-Detection (i18n-related) / Автоопределение кодировки файлов (связано с i18n)
+
+**EN:** `common/encoding.py` (109 lines) auto-detects file encoding so Russian (CP1251) source files open correctly. Strategy: (1) BOM check (UTF-8/16/32) — authoritative; (2) strict UTF-8 decode; (3) `charset_normalizer` for the rest (CP1251, KOI8-R, Latin-1, …); (4) heuristic — if the detector falls back to a catch-all (latin-1/iso-8859-1) and the file has high bytes, prefer **CP1251** (the de-facto Windows encoding for Russian text). All files are saved back as **UTF-8 (no BOM)**, so after the first save the encoding is stable and unambiguous.
+
+**RU:** `common/encoding.py` (109 строк) автоматически определяет кодировку файлов, чтобы русские (CP1251) исходники открывались корректно. Стратегия: (1) проверка BOM (UTF-8/16/32) — авторитетно; (2) строгий UTF-8 decode; (3) `charset_normalizer` для остального (CP1251, KOI8-R, Latin-1, …); (4) эвристика — если детектор откатывается на «универсальную» кодировку (latin-1/iso-8859-1), а в файле есть старшие байты, предпочитать **CP1251** (де-факто Windows-кодировка русского текста). Все файлы сохраняются обратно как **UTF-8 (без BOM)**, поэтому после первого сохранения кодировка стабильна и однозначна.
 
 ---
 
@@ -46461,8 +49928,8 @@ After fixes, verified / После исправлений, верифициро�
 
 ### TODO/FIXME в коде (2):
 
-- `i8080_ci/main_window.py:3183` — return "mem_XXXX"
-- `i8080_ci/main_window.py:3190` — return "word_XXXX"
+- `i8080_ci/main_window.py:3196` — return "mem_XXXX"
+- `i8080_ci/main_window.py:3203` — return "word_XXXX"
 
 ---
 
@@ -46626,6 +50093,11 @@ ALU_IMM_OPCODES = {'ADD': 0xC6, 'ADC': 0xCE, 'SUB': 0xD6, 'SBB': 0xDE,
                                'ANA': 0xE6, 'XRA': 0xEE, 'ORI': 0xF6, 'CPI': 0xFE}
 ```
 
+**_CATCH_ALL** (из `common/encoding.py`):
+```python
+_CATCH_ALL = {'latin-1', 'iso-8859-1', 'iso-8859-5'}
+```
+
 **LANGS** (из `common/i18n.py`):
 ```python
 LANGS = {"en": {
@@ -46722,17 +50194,11 @@ LANGS = {"en": {
         "bp_cond_title":  "Breakpoint Condition ",
         "bp_cond_clear":  "Clear Condition ",  "bp_cond_ok":  "OK ",  "bp_cond_cancel":  "Cancel ",
         "bp_cond_hint":  "Available variables:\n"
-
                          "  Registers: A, B, C, D, E, H, L, BC, DE, HL, SP, PC\n"
-
                          "  Flags: S, Z, AC, P, CY\n"
-
                          "  Memory: mem[0x0100]   Ports: io[0x01]\n"
-
                          "  Cycles: cycles\n"
-
                          "  Operators: ==, !=, <, >, <=, >=, and, or, not ",
-
         "err_addr_mem":  "Enter memory address! ",  "err_syntax":  "Invalid syntax! ",
         "dlg_cancel": "Cancel ", "dlg_ok": "OK ",
         # Статистика эмулятора
@@ -46781,13 +50247,10 @@ LANGS = {"en": {
         "bp_preset_saved": "BP preset saved: ",
         "bp_preset_loaded": "BP preset loaded: ",
         "bp_preset_save_err": "Failed to save BP preset:\n",
-
-
         "bp_preset_load_err": "Failed to load BP preset:\n",
-
-
         "bp_cond_err": "Invalid condition syntax!",
         "bp_cond_example": "Example: A == 0x55",
+
         # Диалоги
         "set_pc_title": "Set PC",
         "export_disasm_title": "Export Disassembly",
@@ -47142,6 +50605,8 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 ### C. Конфигурационные файлы
 
 - `Addendum.txt` (81 строк)
+- `_tools.json` (352 строк)
+- `_utf8test.txt` (1 строк)
 - `claude_desktop_config.json` (7 строк)
 - `config.json` (10 строк)
 - `micro-80_bp_preset.json` (77 строк)
@@ -47160,7 +50625,7 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 
 ### D. HTML-документы
 
-- `USER_GUIDE.html` (1465 строк)
+- `USER_GUIDE.html` (1471 строк)
 
 ### E. Ресурсы (изображения, шрифты, ROM)
 
@@ -47201,10 +50666,10 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 
 ### F. Прочие файлы
 
+- `.gitignore` (, 10 строк)
 - `Doxyfile` (, 2970 строк)
 - `LICENSE` (, 21 строк)
 - `i8080_CI.spec` (.spec, 39 строк)
-- `i8080_emulator.py.BAD roll` (.bad roll, 2003 строк)
 - `make.cmd` (.cmd, 1 строк)
 - `ASM_FOR_TEST/4KBAS.ASM` (.asm, 2300 строк)
 - `ASM_FOR_TEST/8080EX1.MAC` (.mac, 1367 строк)
@@ -47321,6 +50786,7 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 - `Plugins/i8080_ci-vscode/dev_mode.bat` (.bat, 42 строк)
 - `Plugins/i8080_ci-vscode/e2e_test.js` (.js, 120 строк)
 - `Plugins/i8080_ci-vscode/i8080-ci-vscode-0.2.0.vsix` (.vsix, 325 строк)
+- `Plugins/i8080_ci-vscode/i8080-ci-vscode-0.2.1.vsix` (.vsix, 327 строк)
 - `Plugins/i8080_ci-vscode/install.bat` (.bat, 43 строк)
 - `Plugins/i8080_ci-vscode/typecheck.js` (.js, 56 строк)
 - `Plugins/i8080_ci-vscode/out/assembler.js` (.js, 206 строк)
@@ -47356,19 +50822,20 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 - `assembler_example/01_hello/hello.map` (.map, 13 строк)
 - `assembler_example/02_directives/defs.inc` (.inc, 7 строк)
 - `assembler_example/02_directives/directives.asm` (.asm, 66 строк)
-- `assembler_example/02_directives/directives.map` (.map, 16 строк)
+- `assembler_example/02_directives/directives.map` (.map, 10 строк)
 - `assembler_example/02_directives/inc/extra.inc` (.inc, 6 строк)
 - `assembler_example/03_macros/macros.asm` (.asm, 60 строк)
 - `assembler_example/03_macros/macros.map` (.map, 8 строк)
 - `assembler_example/04_multifile/app.lnk` (.lnk, 12 строк)
 - `assembler_example/04_multifile/app.map` (.map, 10 строк)
 - `assembler_example/04_multifile/helper.asm` (.asm, 13 строк)
+- `assembler_example/04_multifile/helper.map` (.map, 9 строк)
 - `assembler_example/04_multifile/helper.obj` (.obj, 16 строк)
 - `assembler_example/04_multifile/main.asm` (.asm, 15 строк)
+- `assembler_example/04_multifile/main.map` (.map, 10 строк)
 - `assembler_example/04_multifile/main.obj` (.obj, 24 строк)
 - `tests/test_all.cmd` (.cmd, 33 строк)
-- `tests/test_alu_8080.py.BAD roll` (.bad roll, 159 строк)
 
 ---
 
-*Конец среза. Сгенерировано 2026-10-05 12:47:05.*
+*Конец среза. Сгенерировано 2026-10-09 15:01:21.*

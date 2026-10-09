@@ -101,6 +101,13 @@ asyncio.run(main())
 | `emu_run` | `max_instructions=10000` | Запуск до BP / HLT / лимита |
 | `emu_run_to` | `addr` | Выполнять до адреса |
 | `emu_stop` | — | Остановить выполнение |
+| `emu_set_pc` | `addr` | Установить PC |
+| `emu_set_interrupts` | `mode` | Режим прерываний (0–3) |
+| `emu_request_interrupt` | `vector=0` | Запросить прерывание |
+| `emu_read_word` | `addr` | Прочитать 16-битное слово |
+| `emu_write_word` | `addr, val` | Записать 16-битное слово |
+| `emu_push` | `val` | Push на стек |
+| `emu_pop` | — | Pop со стека |
 
 Пример:
 
@@ -242,10 +249,27 @@ HL > 0x1000 and Z == 0
 | `get_status` | — | connected, bus_active, mem_size |
 | `refresh` | — | Обновить GUI |
 
-> **Ассемблер:** Функции `asm_get_source`, `asm_set_source`, `asm_load_file`,
-> `asm_assemble`, `asm_get_binary`, `asm_get_symbols`, `asm_assemble_obj`,
-> `asm_link`, `asm_load_map` доступны через скрипты (вкладка «Скрипты»),
-> но не как MCP-tools. См. SCRIPTS_GUIDE.md, раздел 4.
+### Ассемблер (MCP-tools)
+
+| Tool | Параметры | Описание |
+|---|---|---|
+| `asm_assemble` | — | Собрать текущий исходный код (binary, errors, labels) |
+| `asm_get_source` | — | Получить исходный код из редактора |
+| `asm_set_source` | `source` | Установить исходный код в редактор |
+| `asm_get_errors` | — | Список ошибок последней сборки |
+| `asm_get_labels` | — | Таблица меток/символов (dict) |
+
+### Система / CPU / язык
+
+| Tool | Параметры | Описание |
+|---|---|---|
+| `get_cpu_type` | — | Текущий тип CPU (i8080 / i8085) |
+| `set_cpu_type` | `cpu_type` | Переключить CPU: `i8080` / `i8085` |
+| `get_version` | — | Версия приложения |
+| `get_language` | — | Текущий язык интерфейса |
+| `set_language` | `lang` | Сменить язык (`ru` / `en`) |
+| `run_script` | `script_text` | Выполнить Python-скрипт автоматизации |
+| `get_watch_list` | — | Список watch-выражений |
 
 ---
 

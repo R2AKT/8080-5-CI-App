@@ -2,15 +2,84 @@
 
 ## i8080-5 CI
 
-**STATUS: ✅ ALL ISSUES FIXED / ВСЕ ПРОБЛЕМЫ ИСПРАВЛЕНЫ**
+**STATUS: ✅ FULL PARITY — 477 KEYS PER LANGUAGE / ПОЛНОЕ СООТВЕТСТВИЕ — 477 КЛЮЧЕЙ НА ЯЗЫК**
 
 Pass 4 (2026-09-08) + Pass 5 (2026-09-14) — all 26 issues resolved plus additional dm_* / dw_* keys added.
+Re-audit (2026-10-09) — key count re-verified from `common/i18n.py`: **477 keys per language, full EN/RU parity, no gaps**.
 
 ---
 
-**Date / Дата:** 2026-09-08 (audit), 2026-09-14 (final fix)
-**Files / Файлы:** `i8080_ci/main_window.py`, `i8080_ci/views/search.py`, `ui/device_manager.py`, `ui/device_window.py`
-**i18n System / Система i18n:** `i8080_ci/i18n.py` → `LANGS["en"]` / `LANGS["ru"]` (378 keys per language)
+**Date / Дата:** 2026-09-08 (audit), 2026-09-14 (final fix), 2026-10-09 (re-audit)
+**Files / Файлы:** `common/i18n.py`, `i8080_ci/i18n.py`, `i8080_ci/main_window.py`, `i8080_ci/assembler_widget.py`, `i8080_ci/views/search.py`, `ui/device_manager.py`, `ui/device_window.py`, `common/encoding.py`, `mcp_server.py`
+**i18n System / Система i18n:** `common/i18n.py` → `LANGS["en"]` / `LANGS["ru"]` (477 keys per language, full parity)
+
+---
+
+## Current State — Re-audit 2026-10-09 / Текущее состояние — повторный аудит 2026-10-09
+
+**EN:** The key counts below were re-verified by parsing the actual `LANGS` dictionary in `common/i18n.py` (AST parse of the real file, not a guess).
+
+**RU:** Количество ключей ниже перепроверено разбором фактического словаря `LANGS` в `common/i18n.py` (AST-разбор реального файла, не оценка).
+
+### Key Count & Parity / Количество ключей и соответствие
+
+| Language / Язык | Keys / Ключей | Source / Источник |
+|--------|--------|---------|
+| EN | **477** | `common/i18n.py` → `LANGS["en"]` |
+| RU | **477** | `common/i18n.py` → `LANGS["ru"]` |
+
+**Parity / Соответствие:** ✅ **FULL PARITY** — every key in `en` has a matching key in `ru`, and vice versa.
+
+**Gaps / Разрывы:** **None / Нет** — keys only in `en`: **0**; keys only in `ru`: **0**.
+
+> **Note / Примечание:** The previous audit (2026-09-14) reported **378** keys per language. Since then **+99** keys were added, mostly for Assembler v2 (`asm_*`), trace, watch, breakpoints, compare, scripts, and help features.
+
+### Assembler v2 Keys / Ключи Assembler v2
+
+**EN:** The Assembler v2 feature set is covered by **74** `asm_*` keys (present in both `en` and `ru`). The workspace / tabs / labels sub-features map to the following keys:
+
+**RU:** Функционал Assembler v2 покрывается **74** ключами `asm_*` (присутствуют и в `en`, и в `ru`). Подфункции workspace / tabs / labels соответствуют следующим ключам:
+
+| Feature / Функция | Keys / Ключи |
+|---------|------|
+| Workspace (open/save) / Workspace (открыть/сохранить) | `asm_open_ws`, `asm_save_ws`, `asm_open_ws_title`, `asm_save_ws_title`, `asm_ws_filter`, `asm_ws_filter_save`, `asm_ws_loaded`, `asm_ws_saved`, `asm_ws_err`, `asm_ws_save_err` (10) |
+| Tabs / Вкладки | `asm_new_tab`, `asm_tab` (2) |
+| Labels / Метки | `asm_labels`, `asm_col_label` (2) |
+| Assemble / Link / Load / Save / Map / Obj / Errors / Прочее | the remaining 60 `asm_*` keys (e.g. `asm_assemble`, `asm_link`, `asm_load`, `asm_save`, `asm_map_saved`, `asm_obj_title`, `asm_errors`, `asm_placeholder`) |
+
+> **Honesty note / Примечание о точности:** There are **no** literal keys named `workspace`, `tabs`, or `global_label` in `LANGS`. Those Assembler v2 features are represented by the `asm_ws_*`, `asm_new_tab`/`asm_tab`, and `asm_labels`/`asm_col_label` key families listed above.
+
+### i18n Mechanism / Механизм i18n
+
+**EN:**
+
+- **`LANGS` dict** — defined in `common/i18n.py` (969 lines). A flat dictionary with two sections: `LANGS["en"]` and `LANGS["ru"]`, each mapping `key -> string`. No nested sub-dictionaries.
+- **`i8080_ci/i18n.py`** — a backward-compatible re-export: `from common.i18n import LANGS, get_system_language, set_language` (plus `THEMES` from `common.themes`).
+- **`self.tr(key)`** — the widget-level lookup, implemented in `i8080_ci/main_window.py` (line 261), `i8080_ci/bus_worker.py` (line 32), `i8080_ci/views/hex_view.py` (line 16), and `i8080_ci/views/search.py` (line 62). It resolves the key against the active language's `LANGS` section.
+- **`assembler_widget.py`** — does **not** use `self.tr()`; instead it defines a module-level `_tr(key)` helper (line 78) that reads `LANGS.get(lang, LANGS["en"]).get(key, key)`.
+- **Language switching / Переключение языка:**
+  - **GUI:** `MainWindow.lang_combo` is a `QComboBox` with items `["Русский", "English"]`. `on_lang_changed()` sets `self.current_lang`, calls `set_language(...)`, persists to settings, and calls `retranslate_ui()`.
+  - **MCP tools:** `get_language()` (returns `get_system_language()`) and `set_language(lang)` (validates `en`/`ru`, calls `common.i18n.set_language`, sets `mw.current_lang`, saves settings, calls `retranslate_ui()`). Registered in `mcp_server.py` (lines 969–970).
+- **`set_language` / `get_system_language`** — in `common/i18n.py`. `set_language(lang)` stores the choice in a module global `_current_lang`; `get_system_language()` returns `_current_lang` if set, otherwise falls back to `QLocale`-based detection (`ru`/`en`), defaulting to `en`.
+- **Supported languages / Поддерживаемые языки:** **Russian (`ru`)** and **English (`en`)** — two languages only.
+
+**RU:**
+
+- **Словарь `LANGS`** — определён в `common/i18n.py` (969 строк). Плоский словарь с двумя секциями: `LANGS["en"]` и `LANGS["ru"]`, каждая отображает `ключ -> строка`. Вложенных подсловарей нет.
+- **`i8080_ci/i18n.py`** — backward-compatible реэкспорт: `from common.i18n import LANGS, get_system_language, set_language` (плюс `THEMES` из `common.themes`).
+- **`self.tr(key)`** — виджетный поиск, реализован в `i8080_ci/main_window.py` (строка 261), `i8080_ci/bus_worker.py` (строка 32), `i8080_ci/views/hex_view.py` (строка 16) и `i8080_ci/views/search.py` (строка 62). Разрешает ключ по активной секции `LANGS`.
+- **`assembler_widget.py`** — **не** использует `self.tr()`; вместо этого определяет модульный хелпер `_tr(key)` (строка 78), читающий `LANGS.get(lang, LANGS["en"]).get(key, key)`.
+- **Переключение языка:**
+  - **GUI:** `MainWindow.lang_combo` — `QComboBox` с элементами `["Русский", "English"]`. `on_lang_changed()` устанавливает `self.current_lang`, вызывает `set_language(...)`, сохраняет в настройки и вызывает `retranslate_ui()`.
+  - **MCP-инструменты:** `get_language()` (возвращает `get_system_language()`) и `set_language(lang)` (валидирует `en`/`ru`, вызывает `common.i18n.set_language`, устанавливает `mw.current_lang`, сохраняет настройки, вызывает `retranslate_ui()`). Зарегистрированы в `mcp_server.py` (строки 969–970).
+- **`set_language` / `get_system_language`** — в `common/i18n.py`. `set_language(lang)` сохраняет выбор в модульную глобальную `_current_lang`; `get_system_language()` возвращает `_current_lang`, если задан, иначе fallback на детект через `QLocale` (`ru`/`en`), по умолчанию `en`.
+- **Поддерживаемые языки:** **Русский (`ru`)** и **Английский (`en`)** — только два языка.
+
+### File Encoding Auto-Detection (i18n-related) / Автоопределение кодировки файлов (связано с i18n)
+
+**EN:** `common/encoding.py` (109 lines) auto-detects file encoding so Russian (CP1251) source files open correctly. Strategy: (1) BOM check (UTF-8/16/32) — authoritative; (2) strict UTF-8 decode; (3) `charset_normalizer` for the rest (CP1251, KOI8-R, Latin-1, …); (4) heuristic — if the detector falls back to a catch-all (latin-1/iso-8859-1) and the file has high bytes, prefer **CP1251** (the de-facto Windows encoding for Russian text). All files are saved back as **UTF-8 (no BOM)**, so after the first save the encoding is stable and unambiguous.
+
+**RU:** `common/encoding.py` (109 строк) автоматически определяет кодировку файлов, чтобы русские (CP1251) исходники открывались корректно. Стратегия: (1) проверка BOM (UTF-8/16/32) — авторитетно; (2) строгий UTF-8 decode; (3) `charset_normalizer` для остального (CP1251, KOI8-R, Latin-1, …); (4) эвристика — если детектор откатывается на «универсальную» кодировку (latin-1/iso-8859-1), а в файле есть старшие байты, предпочитать **CP1251** (де-факто Windows-кодировка русского текста). Все файлы сохраняются обратно как **UTF-8 (без BOM)**, поэтому после первого сохранения кодировка стабильна и однозначна.
 
 ---
 
