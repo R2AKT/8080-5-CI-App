@@ -1,0 +1,9 @@
+; i8080-5 CI map file v1
+; source: C:/zasm\..\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis\assembler_example\04_multifile\helper.asm
+; date: 2026-10-08 13:23:40
+; org: 0x0200
+; size: 2
+; symbols: 1
+
+ADDRESS   SIZE  TYPE    NAME
+0200      0002  CODE    HELPER

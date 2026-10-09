@@ -1725,33 +1725,52 @@ class Assembler:
 # УДОБНАЯ ФУНКЦИЯ ДЛЯ БЫСТРОГО ИСПОЛЬЗОВАНИЯ
 # =============================================================
 
-def assemble(source: str, filename: str = "", now=None) -> AsmResult:
-    """Быстрая сборка: создать ассемблер и ассемблировать."""
+def assemble(source: str, filename: str = "", now=None, cpu_type: str = "i8080") -> AsmResult:
+    """Ассемблировать исходный код: вернуть результат сборки.
+
+    :param source: исходный текст программы
+    :param filename: имя файла (для сообщений об ошибках и поиска #include)
+    :param now: фиксированная дата для __date__/__time__ (воспроизводимость)
+    :param cpu_type: "i8080" (по умолчанию) или "i8085"; директива CPU в коде может переопределить
+    """
     asm = Assembler(now=now)
+    asm.cpu_type = cpu_type
     return asm.assemble(source, filename)
 
 
 # =============================================================
-# САМОТЕСТ
+# Командная строка (CLI) — автономная сборка без GUI
 # =============================================================
 
-if __name__ == "__main__":
+def _hexdump(data: bytes, start: int = 0, width: int = 16) -> str:
+    """Короткий hexdump для вывода в консоль."""
+    lines = []
+    for off in range(0, len(data), width):
+        chunk = data[off:off + width]
+        hexs = ' '.join(f'{b:02X}' for b in chunk)
+        asc = ''.join(chr(b) if 32 <= b < 127 else '.' for b in chunk)
+        lines.append(f"  {start + off:04X}: {hexs:<{width * 3}}  {asc}")
+    return '\n'.join(lines)
+
+
+def _run_selftest() -> int:
+    """Встроенный самопроверочный тест (запускается без аргументов)."""
     test_source = """
-; Тестовая программа для ассемблера i8080
+; Встроенный самопроверочный тест ассемблера i8080
         ORG 0100H
-START:  MVI A, 55H        ; Загрузить 0x55 в A
-        OUT 01H           ; Вывести в порт 1
+START:  MVI A, 55H        ; записать 0x55 в A
+        OUT 01H           ; вывод на порт 1
         MVI B, 0FFH       ; B = FF
         MVI C, 0AH        ; C = 0A
 LOOP:   DCR B             ; B = B - 1
-        JNZ LOOP          ; Повторить пока B != 0
-        LDA DATA          ; Загрузить из памяти
-        STA DATA+1        ; Сохранить в DATA+1
-        CALL SUBR         ; Вызов подпрограммы
-        HLT               ; Стоп
+        JNZ LOOP          ; повторять, пока B != 0
+        LDA DATA          ; загрузить из памяти
+        STA DATA+1        ; сохранить в DATA+1
+        CALL SUBR         ; вызвать подпрограмму
+        HLT               ; остановка
 
 SUBR:   INR A             ; A = A + 1
-        RET               ; Возврат
+        RET               ; возврат
 
 DATA:   DB 42H, 'A', 10010110B
         DW 1234H
@@ -1760,12 +1779,141 @@ DATA:   DB 42H, 'A', 10010110B
 """
     result = assemble(test_source, "test.asm")
     if result.success:
-        print(f"✅ Сборка успешна: {len(result.binary)} байт")
-        print(f"   Origin: 0x{result.origin:04X}")
-        print(f"   End:    0x{result.end_address:04X}")
-        print(f"   Символы: {result.symbols}")
-        print(f"   Код: {result.binary.hex(' ')}")
-    else:
-        print("❌ Ошибки сборки:")
-        for err in result.errors:
-            print(f"   {err}")
+        print(f"[OK] Self-test assembled: {len(result.binary)} bytes")
+        print(f"     Origin: 0x{result.origin:04X}")
+        print(f"     End:    0x{result.end_address:04X}")
+        print(f"     Symbols: {result.symbols}")
+        print(f"     Binary: {result.binary.hex(' ')}")
+        return 0
+    print("[FAIL] Self-test errors:")
+    for err in result.errors:
+        print(f"     {err}")
+    return 1
+
+
+def _cli_main(argv=None) -> int:
+    """Точка входа CLI ассемблера (автономная сборка без GUI)."""
+    import argparse
+    try:
+        from version import __version__ as _ver
+    except Exception:
+        _ver = "dev"
+
+    parser = argparse.ArgumentParser(
+        prog="assemble8080",
+        description="i8080-5 CI two-pass assembler (Intel 8080/8085) — command-line mode (no GUI).",
+    )
+    parser.add_argument("sources", nargs="*", help="Input .asm/.mac/.s source file(s)")
+    parser.add_argument("-o", "--output", help="Output binary file (default: <input>.bin)")
+    parser.add_argument("-m", "--map", dest="map_file", help="Output map file (default: <input>.map)")
+    parser.add_argument("--obj", help="Output object file (default: <input>.obj)")
+    parser.add_argument("--cpu", choices=["8080", "8085"], default="8080",
+                        help="CPU type (default: 8080)")
+    parser.add_argument("--lnk", help="Link script (.lnk) for multi-file linking")
+    parser.add_argument("--hex", action="store_true", help="Print hexdump of output")
+    parser.add_argument("--list", action="store_true", help="Print listing (address, bytes, source)")
+    parser.add_argument("--symbols", action="store_true", help="Print symbol table")
+    parser.add_argument("-q", "--quiet", action="store_true", help="Quiet mode (only errors)")
+    parser.add_argument("--version", action="version", version=f"i8080-5 CI assembler {_ver}")
+    args = parser.parse_args(argv)
+
+    # Без аргументов (ни файлов, ни --lnk) — самопроверка (назад-совместимо)
+    if not args.sources and not args.lnk:
+        return _run_selftest()
+
+    cpu_type = "i8085" if args.cpu == "8085" else "i8080"
+    exit_code = 0
+
+    # --- Режим линковки по .lnk-скрипту ---
+    if args.lnk:
+        from assemble8080.linker import link_from_script
+        lr = link_from_script(args.lnk)
+        if not lr.success:
+            print("[FAIL] Linking:")
+            for e in lr.errors:
+                print(f"     {e}")
+            return 1
+        out = args.output or (os.path.splitext(args.lnk)[0] + ".bin")
+        with open(out, 'wb') as f:
+            f.write(lr.binary)
+        if not args.quiet:
+            print(f"[OK] Linked {len(lr.binary)} bytes -> {out}")
+        if args.map_file and lr.map_text:
+            from assemble8080.mapfile import save_map_file
+            save_map_file(args.map_file, lr.map_text)
+            if not args.quiet:
+                print(f"     -> {args.map_file}")
+        if args.hex:
+            print(_hexdump(lr.binary, start=lr.origin))
+        return 0
+
+    # --- Режим сборки файлов ---
+    for src in args.sources:
+        if not os.path.isfile(src):
+            print(f"[FAIL] File not found: {src}")
+            exit_code = 1
+            continue
+        with open(src, 'r', encoding='utf-8', errors='replace') as f:
+            source = f.read()
+        result = assemble(source, filename=src, cpu_type=cpu_type)
+
+        if not result.success:
+            print(f"[FAIL] {src}:")
+            for e in result.errors:
+                print(f"     {e}")
+            exit_code = 1
+            continue
+
+        base = os.path.splitext(src)[0]
+        out_bin = args.output or (base + ".bin")
+        with open(out_bin, 'wb') as f:
+            f.write(result.binary)
+
+        if not args.quiet:
+            print(f"[OK] {src}: {len(result.binary)} bytes, "
+                  f"origin=0x{result.origin:04X}, symbols={len(result.symbols)}")
+            for w in result.warnings:
+                print(f"     (warn) {w}")
+            print(f"     -> {out_bin}")
+
+        # map-файл
+        map_out = args.map_file or (base + ".map")
+        if result.map_text:
+            from assemble8080.mapfile import save_map_file
+            save_map_file(map_out, result.map_text)
+            if not args.quiet:
+                print(f"     -> {map_out}")
+
+        # объектный файл
+        if args.obj:
+            from assemble8080.objfile import obj_from_asm_result, save_obj
+            obj = obj_from_asm_result(result, source_name=src)
+            save_obj(args.obj, obj)
+            if not args.quiet:
+                print(f"     -> {args.obj}")
+
+        if args.symbols:
+            print("     Symbols:")
+            for name, addr in sorted(result.symbols.items(), key=lambda kv: kv[1]):
+                print(f"       {name:20s} 0x{addr:04X}")
+
+        if args.list:
+            print("     Listing:")
+            for addr, data, sline in result.listing:
+                print(f"       {addr:04X}: {data.hex(' '):<12} {sline}")
+
+        if args.hex:
+            print(_hexdump(result.binary, start=result.origin))
+
+    return exit_code
+
+
+if __name__ == "__main__":
+    import sys
+    # Надёжная кодировка вывода: Windows cp1251-консоль не знает эмодзи/UTF-8
+    for _stream in (sys.stdout, sys.stderr):
+        try:
+            _stream.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            pass
+    sys.exit(_cli_main())

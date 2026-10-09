@@ -1,7 +1,7 @@
 {
   "format": "i8080-obj-v1",
   "name": "helper",
-  "source": "helper.asm",
+  "source": "C:/\u041c\u0435\u0433\u0430-80/8080-5 CI/i8080-5_CI-AI-analysis/assembler_example/04_multifile/helper.asm",
   "org": 512,
   "size": 2,
   "data": "80c9",
