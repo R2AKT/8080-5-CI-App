@@ -248,8 +248,7 @@ MNEMONICS_8085 = {
     # Задокументированные 8085
     'SIM':   (0x20, '', 1),   # Set Interrupt Mask
     'RIM':   (0x30, '', 1),   # Read Interrupt Mask
-    'MUL':   (0x68, 'r', 1),  # Multiply A by register
-    'DIV':   (0x78, 'r', 1),  # Divide A by register
+
     # Недокументированные 8085
     'DSUB':  (0x08, '', 1),   # HL = HL - BC
     'ARHL':  (0x10, '', 1),   # Арифметический сдвиг HL вправо
