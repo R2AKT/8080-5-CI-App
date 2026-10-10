@@ -11,6 +11,23 @@
 - New `tests/test_roundtrip_256.py`: assemble->disassemble->re-assemble round-trip for all 256 opcodes (i8080+i8085); 3 consecutive cycles PASS without code changes
 ### Documentation
 - ASSEMBLER_GUIDE.md: new section 11 (CLI) with options table and examples
+
+### ASxxxx format support (native SmallC 8080)
+
+- Assembler now natively understands the ASxxxx format emitted by the SmallC 8080 compiler — no converter needed
+
+  - Numbers: `#N` decimal prefix (e.g. `#62915`), plus existing `0xNN`/`NNH`/`NB`/`NQ`
+  - Local labels `$N:` / `$N` (e.g. `jz $1`); fixed a bug where `$N` was mis-parsed as the `$` current-address operator
+  - Directives: `.area`, `.module`, `.list`, `.nlist` (no-op), `.globl` (exports), `.end` (stop)
+  - Mnemonic aliases: `or`/`and`/`xor` (register), `orai`/`andi`/`xori` (immediate)
+  - Two-operand ALU forms: `cmp a,#5` -> CPI, `mov a,#5` -> MVI
+  - `d16`/`rp,d16` operands: auto-import of undefined symbols + relocation tracking for the linker
+  - 8085 `mul`/`div` in `MNEMONICS_8085`
+  - All internal imports made relative (`.mapfile`, `.objfile`, `.linker`, `.preprocessor`)
+
+- Verified: `t42.s` (140 bytes, 11 relocations, 4 imports) and `crun8080lib.asm` (4017 bytes, 202 symbols) assemble cleanly; linker resolves all relocations (CCPLONG=0x11BE, CCGFLOAT=0x11CA, CCFNE=0x18D0)
+- Removed obsolete `convert_asm.py` and `link_simple.py` workarounds
+
 ## v2.1.6 (2026-10-08)
 
 ### Documentation

@@ -152,6 +152,14 @@ MNEMONICS = {
     # DAD
     'DAD':   (0x09, 'rp', 1),
 
+    # ASxxxx aliases
+    'OR':    (0xB0, 'r', 1),    # = ORA
+    'AND':   (0xA0, 'r', 1),    # = ANA
+    'XOR':   (0xA8, 'r', 1),    # = XRA
+    'ORAI':  (0xF6, 'd8', 2),   # = ORI
+    'ANDI':  (0xE6, 'd8', 2),   # = ANI
+    'XORI':  (0xEE, 'd8', 2),   # = XRI
+
     # ALU r
     'ADD':   (0x80, 'r', 1),
     'ADC':   (0x88, 'r', 1),
@@ -240,6 +248,8 @@ MNEMONICS_8085 = {
     # Задокументированные 8085
     'SIM':   (0x20, '', 1),   # Set Interrupt Mask
     'RIM':   (0x30, '', 1),   # Read Interrupt Mask
+    'MUL':   (0x68, 'r', 1),  # Multiply A by register
+    'DIV':   (0x78, 'r', 1),  # Divide A by register
     # Недокументированные 8085
     'DSUB':  (0x08, '', 1),   # HL = HL - BC
     'ARHL':  (0x10, '', 1),   # Арифметический сдвиг HL вправо
@@ -283,6 +293,14 @@ def parse_number(text: str) -> int | None:
     text = text.strip()
     if not text:
         return None
+
+    # ASxxxx: #N = decimal
+    if text.startswith('#'):
+        text = text[1:]
+        try:
+            return int(text, 10)
+        except ValueError:
+            return None
 
     m = _RE_HEX_PREFIX.match(text)
     if m:
@@ -595,6 +613,14 @@ class Assembler:
         m = re.match(r'^([A-Za-z_][A-Za-z0-9_$]*)\s*:\s*(.*)', line)
         if m:
             return m.group(1), False, m.group(2)
+        # ASxxxx: $N local label (with colon)
+        m = re.match(r'^\$(\d+)\s*:\s*(.*)', line)
+        if m:
+            return f'${m.group(1)}', False, m.group(2)
+        # ASxxxx: $N local label (without colon, followed by instruction)
+        m = re.match(r'^\$(\d+)\s+(.*)', line)
+        if m:
+            return f'${m.group(1)}', False, m.group(2)
         # Метка без двоеточия (для совместимости)
         m = re.match(r'^([A-Za-z_][A-Za-z0-9_$]*)\s+(.*)', line)
         if m:
@@ -693,6 +719,17 @@ class Assembler:
                 self.cpu_set_by_directive = True
                 continue
             # XDEF/XREF/SECTION/IF/ENDIF/ELSE/LOCAL/ENDLOCAL/ERROR — no-op
+            # ASxxxx directives: .area, .module, .list, .nlist, .globl
+            if mnemonic in ('AREA', 'MODULE', 'LIST', 'NLIST'):
+                continue
+            if mnemonic == 'GLOBL':
+                if operand:
+                    for name in self._split_operands(operand):
+                        name = name.strip().upper()
+                        if name:
+                            self._global_labels.add(name)
+                            self._exports.add(name)
+                continue
             if mnemonic in ('XDEF', 'XREF', 'SECTION', '.XDEF', '.XREF', '.SECTION',
                            'IF', 'ENDIF', 'ELSE', 'LOCAL', 'ENDLOCAL', 'ERROR',
                            '.IF', '.ENDIF', '.ELSE', '.LOCAL', '.ENDLOCAL', '.ERROR',
@@ -1008,6 +1045,12 @@ class Assembler:
                     self._write_pos = location - self._base_offset
                 continue
 
+            # ASxxxx directives: .area, .module, .list, .nlist, .globl
+            if mnemonic in ('AREA', 'MODULE', 'LIST', 'NLIST'):
+                continue
+            if mnemonic == 'GLOBL':
+                continue
+
             # EXPORT / PUBLIC (pass 2: no-op)
             if mnemonic in ('EXPORT', 'PUBLIC', '.EXPORT', '.PUBLIC'):
                 continue
@@ -1281,6 +1324,17 @@ class Assembler:
             if len(operands) < 1:
                 self._error(line_num, f"{mnemonic}: ожидается регистр")
                 return bytearray([opcode])
+            # ASxxxx 2-operand form: "cmp a, #5" -> CPI 5
+            if len(operands) >= 2:
+                op2_upper = operands[1].strip().upper()
+                if op2_upper not in REGISTERS and op2_upper not in ('BC', 'DE', 'HL', 'PSW'):
+                    ALU_IMM2 = {'CMP': 0xFE, 'ADD': 0xC6, 'ADC': 0xCE, 'SUB': 0xD6,
+                                'SBB': 0xDE, 'ANA': 0xE6, 'XRA': 0xEE, 'ORA': 0xF6,
+                                'OR': 0xF6, 'AND': 0xE6, 'XOR': 0xEE}
+                    if mnemonic in ALU_IMM2:
+                        val = self._parse_operand(operands[1], line_num, allow_current=True)
+                        if val is not None:
+                            return bytearray([ALU_IMM2[mnemonic], val & 0xFF])
             # Check if operand is a valid register; if not, try immediate (ALU ops)
             op_upper = operands[0].strip().upper()
             if op_upper in REGISTERS or op_upper in ('BC', 'DE', 'HL', 'PSW'):
@@ -1290,7 +1344,8 @@ class Assembler:
                 return bytearray([opcode | reg_code])
             # Not a register — try as immediate value (ALU d8 forms)
             ALU_IMM_OPCODES = {'ADD': 0xC6, 'ADC': 0xCE, 'SUB': 0xD6, 'SBB': 0xDE,
-                               'ANA': 0xE6, 'XRA': 0xEE, 'ORI': 0xF6, 'CPI': 0xFE}
+                               'ANA': 0xE6, 'XRA': 0xEE, 'ORA': 0xF6, 'CPI': 0xFE,
+                               'CMP': 0xFE, 'OR': 0xF6, 'AND': 0xE6, 'XOR': 0xEE}
             if mnemonic in ALU_IMM_OPCODES:
                 val = self._parse_operand(operands[0], line_num, allow_current=True)
                 if val is not None:
@@ -1305,6 +1360,13 @@ class Assembler:
             if len(operands) < 2:
                 self._error(line_num, f"{mnemonic}: ожидается два регистра")
                 return bytearray([opcode])
+            # ASxxxx: mov a, #5 -> MVI A, 5
+            src_upper = operands[1].strip().upper()
+            if mnemonic == 'MOV' and src_upper not in REGISTERS and src_upper not in ('BC', 'DE', 'HL', 'PSW'):
+                dst_code = self._get_reg_code(operands[0], line_num)
+                val = self._parse_operand(operands[1], line_num, allow_current=True)
+                if val is not None:
+                    return bytearray([0x06 | (dst_code << 3), val & 0xFF])
             dst = self._get_reg_code(operands[0], line_num)
             src = self._get_reg_code(operands[1], line_num)
             return bytearray([opcode | (dst << 3) | src])
@@ -1349,7 +1411,15 @@ class Assembler:
                 self._error(line_num, f"Невозможно вычислить: {operands[0]}")
                 val = 0
             sym = self._is_import_symbol(operands[0])
-            if sym is not None:
+            if sym is None:
+                # Check if operand is an undefined symbol
+                op_str = operands[0].strip()
+                if re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', op_str):
+                    upper = op_str.upper()
+                    if upper not in self.symbols:
+                        self._imports.add(upper)
+                        self._track_relocation(self._write_pos + 1, 2, upper)
+            else:
                 self._track_relocation(self._write_pos + 1, 2, sym)
             return bytearray([opcode, val & 0xFF, (val >> 8) & 0xFF])
 
@@ -1458,6 +1528,13 @@ class Assembler:
         # Пробуем как число или выражение через ExpressionParser
         # Подставляем $ текущим адресом
         expr_str = operand_str
+        # ASxxxx: $N — локальная метка (НЕ текущий адрес). Резолвим напрямую,
+        # чтобы не подставлять pc вместо '$'.
+        if re.match(r'^\$\d+$', expr_str):
+            if expr_str in self.symbols:
+                return self.symbols[expr_str]
+            self.warnings.append(f"L{line_num}: Неопределённая метка: {expr_str}")
+            return 0
         if allow_current and '$' in expr_str:
             expr_str = expr_str.replace('$', str(self.pc))
         # Простой идентификатор без операторов — предупреждение если не определён
@@ -1826,7 +1903,7 @@ def _cli_main(argv=None) -> int:
 
     # --- Режим линковки по .lnk-скрипту ---
     if args.lnk:
-        from assemble8080.linker import link_from_script
+        from .linker import link_from_script
         lr = link_from_script(args.lnk)
         if not lr.success:
             print("[FAIL] Linking:")
@@ -1839,7 +1916,7 @@ def _cli_main(argv=None) -> int:
         if not args.quiet:
             print(f"[OK] Linked {len(lr.binary)} bytes -> {out}")
         if args.map_file and lr.map_text:
-            from assemble8080.mapfile import save_map_file
+            from .mapfile import save_map_file
             save_map_file(args.map_file, lr.map_text)
             if not args.quiet:
                 print(f"     -> {args.map_file}")
@@ -1879,14 +1956,14 @@ def _cli_main(argv=None) -> int:
         # map-файл
         map_out = args.map_file or (base + ".map")
         if result.map_text:
-            from assemble8080.mapfile import save_map_file
+            from .mapfile import save_map_file
             save_map_file(map_out, result.map_text)
             if not args.quiet:
                 print(f"     -> {map_out}")
 
         # объектный файл
         if args.obj:
-            from assemble8080.objfile import obj_from_asm_result, save_obj
+            from .objfile import obj_from_asm_result, save_obj
             obj = obj_from_asm_result(result, source_name=src)
             save_obj(args.obj, obj)
             if not args.quiet:
