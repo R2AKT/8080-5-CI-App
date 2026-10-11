@@ -552,6 +552,8 @@ class Assembler:
         self.expr_parser = ExpressionParser(self.symbols, self.defines)
         # Тип процессора: "i8080" (по умолчанию) или "i8085"
         self.cpu_type = "i8080"
+        # Relocatable mode: True if no .org directive (org=0)
+        self._relocatable = True
 
     def _get_mnemonics(self) -> dict:
         """Вернуть таблицу мнемоник с учётом типа процессора.
@@ -645,6 +647,7 @@ class Assembler:
         self._global_labels = set()
 
         self._relocations = []
+        self._relocatable = True
         self.cpu_set_by_directive = False
         self.errors = []
         self.warnings = []
@@ -742,6 +745,7 @@ class Assembler:
                 if not origin_set:
                     self.origin = location & 0xFFFF
                     origin_set = True
+                self._relocatable = False
                 self.pc = location
                 continue
 
@@ -1401,16 +1405,19 @@ class Assembler:
                 self._error(line_num, f"Невозможно вычислить: {operands[0]}")
                 val = 0
             sym = self._is_import_symbol(operands[0])
-            if sym is None:
-                # Check if operand is an undefined symbol
+            if sym is not None:
+                self._track_relocation(self._write_pos + 1, 2, sym)
+            else:
                 op_str = operands[0].strip()
                 if re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', op_str):
                     upper = op_str.upper()
                     if upper not in self.symbols:
+                        # Undefined symbol → import
                         self._imports.add(upper)
                         self._track_relocation(self._write_pos + 1, 2, upper)
-            else:
-                self._track_relocation(self._write_pos + 1, 2, sym)
+                    elif self._relocatable:
+                        # Defined local symbol in relocatable mode → relocation
+                        self._track_relocation(self._write_pos + 1, 2, upper)
             return bytearray([opcode, val & 0xFF, (val >> 8) & 0xFF])
 
         if fmt == 'r,d8':
@@ -1444,6 +1451,12 @@ class Assembler:
             sym = self._is_import_symbol(operands[1])
             if sym is not None:
                 self._track_relocation(self._write_pos + 1, 2, sym)
+            else:
+                op_str = operands[1].strip()
+                if re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', op_str):
+                    upper = op_str.upper()
+                    if upper in self.symbols and self._relocatable:
+                        self._track_relocation(self._write_pos + 1, 2, upper)
             return bytearray([opcode | (rp_code << 4), val & 0xFF, (val >> 8) & 0xFF])
 
         if fmt == 'rst':
@@ -1688,6 +1701,12 @@ class Assembler:
             sym = self._is_import_symbol(part)
             if sym is not None:
                 self._track_relocation(self._write_pos + len(result) - 2, 2, sym)
+            else:
+                part_str = part.strip()
+                if re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', part_str):
+                    upper = part_str.upper()
+                    if upper in self.symbols and self._relocatable:
+                        self._track_relocation(self._write_pos + len(result) - 2, 2, upper)
         return result
 
     # ---------------------------------------------------------

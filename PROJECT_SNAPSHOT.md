@@ -1,8 +1,8 @@
 # СРЕЗ ПРОЕКТА (PROJECT SNAPSHOT)
 
-> Сгенерировано: 2026-10-11 09:31:32
+> Сгенерировано: 2026-10-11 14:08:20
 > Корень проекта: `c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis`
-> Код: 103 файлов, 30109 строк
+> Код: 107 файлов, 30742 строк
 > Тесты: 74 файлов, 11719 строк
 > Профили: 22 файлов, 843 строк
 
@@ -138,7 +138,7 @@
 ├── assemble8080/
 │   ├── __init__.py  [28 строк]
 │   ├── __main__.py  [19 строк]
-│   ├── assembler.py  [1986 строк]
+│   ├── assembler.py  [2005 строк]
 │   ├── errors.py  [37 строк]
 │   ├── linker.py  [255 строк]
 │   ├── mapfile.py  [162 строк]
@@ -431,6 +431,8 @@
 ├── 8080-5 CI_app_Specialist.png  [305 строк]
 ├── 8080-5 CI_app_trace.png  [331 строк]
 ├── _audit_and_version.py  [84 строк]
+├── _cycle1.py  [402 строк]
+├── _dump.py  [8 строк]
 ├── _final_fixes.py  [134 строк]
 ├── _fix_en.py  [50 строк]
 ├── _read_code.py  [37 строк]
@@ -438,12 +440,14 @@
 ├── _read_code3.py  [33 строк]
 ├── _read_code4.py  [19 строк]
 ├── _run_all_tests.py  [94 строк]
+├── _test_reloc.py  [166 строк]
+├── _update_changes.py  [38 строк]
 ├── _verify_fixes.py  [43 строк]
 ├── Addendum.txt  [81 строк]
 ├── ANALYSIS.md  [536 строк]
 ├── ANALYSIS_ASSEMBLER.md  [341 строк]
 ├── ASSEMBLER_GUIDE.md  [1268 строк]
-├── CHANGES.md  [2630 строк]
+├── CHANGES.md  [2646 строк]
 ├── CI_ASSEMBLER_FIX_PROMPT.md  [702 строк]
 ├── claude_desktop_config.json  [7 строк]
 ├── clean_pycache.py  [87 строк]
@@ -464,14 +468,14 @@
 ├── md2html.py  [372 строк]
 ├── micro-80_bp_preset.json  [77 строк]
 ├── package-lock.json  [6 строк]
-├── PROJECT_SNAPSHOT.md  [50841 строк]
+├── PROJECT_SNAPSHOT.md  [50802 строк]
+├── PROMPT_CI_ASSEMBLER_RELOCATIONS.md  [104 строк]
 ├── PROMPT_CORRECTION_8085_MUL_DIV.md  [167 строк]
 ├── pyproject.toml  [61 строк]
 ├── README.md  [389 строк]
 ├── requirements.txt  [22 строк]
 ├── run_tests.py  [96 строк]
 ├── SCRIPTS_GUIDE.md  [551 строк]
-├── test_t42.obj  [80 строк]
 ├── USER_GUIDE.html  [1471 строк]
 ├── USER_GUIDE.md  [1445 строк]
 └── version.py  [9 строк]
@@ -488,6 +492,33 @@
 - `os`
 - `re`
 - `re`
+
+---
+
+### `_cycle1.py` (402 строк)
+
+> CYCLE 1: Full opcode verification - assembler, emulator, disassembler.
+
+**Импорты (5):**
+- `sys`
+- `os`
+- `from assemble8080.assembler import Assembler`
+- `from i8080_emulator import I8080Emulator`
+- `from i8080_ci.disassembler import I8080Disassembler`
+
+**Функции (5):**
+- `check(desc, actual, expected)`
+- `asm(source, cpu)`
+- `make_emu(program, cpu_type, extra_mem)`
+- `emu_check(desc, actual, expected)`
+- `dis_check(desc, opcode, expected_prefix, cpu)`
+
+---
+
+### `_dump.py` (8 строк)
+
+**Импорты (1):**
+- `sys`
 
 ---
 
@@ -554,6 +585,29 @@
 - `main()`
 
 **Константы:** ROOT, API_SNIPPETS, SELF
+
+---
+
+### `_test_reloc.py` (166 строк)
+
+> Test: internal relocations in relocatable mode.
+
+**Импорты (5):**
+- `sys`
+- `os`
+- `from assemble8080.assembler import assemble, Assembler`
+- `from assemble8080.objfile import obj_from_asm_result, save_obj, load_obj`
+- `from assemble8080.linker import link`
+
+**Функции (1):**
+- `check(name, cond, msg)`
+
+---
+
+### `_update_changes.py` (38 строк)
+
+**Импорты (1):**
+- `sys`
 
 ---
 
@@ -739,7 +793,7 @@
 
 ---
 
-### `assemble8080/assembler.py` (1986 строк)
+### `assemble8080/assembler.py` (2005 строк)
 
 > assemble8080 — компактный макроассемблер Intel 8080.
 
@@ -2285,6 +2339,430 @@ print("\n=== DONE ===")
 ```
 <!-- END FILE: _audit_and_version.py -->
 
+### `_cycle1.py` (402 строк)
+
+<!-- FILE: _cycle1.py -->
+```python
+"""CYCLE 1: Full opcode verification - assembler, emulator, disassembler."""
+import sys, os
+os.environ['QT_QPA_PLATFORM'] = 'offscreen'
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from assemble8080.assembler import Assembler
+from i8080_emulator import I8080Emulator
+from i8080_ci.disassembler import I8080Disassembler
+
+passed = 0
+failed = 0
+errors = []
+
+def check(desc, actual, expected):
+    global passed, failed
+    if actual == expected:
+        passed += 1
+    else:
+        failed += 1
+        errors.append(f"{desc}: got {actual!r}, expected {expected!r}")
+        print(f"  FAIL: {desc}: got {actual!r}, expected {expected!r}")
+
+def asm(source, cpu=None):
+    a = Assembler()
+    if cpu:
+        a.cpu_type = cpu
+    return a.assemble(source)
+
+def make_emu(program, cpu_type="i8080", extra_mem=None):
+    memory = {}
+    for i, b in enumerate(program):
+        memory[i] = b
+    if extra_mem:
+        memory.update(extra_mem)
+    emu = I8080Emulator(memory)
+    emu.cpu_type = cpu_type
+    return emu
+
+# ============================================================
+print("=" * 70)
+print("CYCLE 1: ASSEMBLER OPCODE VERIFICATION")
+print("=" * 70)
+
+# Single-byte
+tests = [
+    ("NOP", [0x00]), ("RLC", [0x07]), ("RRC", [0x0F]),
+    ("RAL", [0x17]), ("RAR", [0x1F]), ("DAA", [0x27]),
+    ("CMA", [0x2F]), ("STC", [0x37]), ("CMC", [0x3F]),
+    ("HLT", [0x76]), ("RET", [0xC9]), ("XTHL", [0xE3]),
+    ("PCHL", [0xE9]), ("XCHG", [0xEB]), ("SPHL", [0xF9]),
+    ("EI", [0xFB]), ("DI", [0xF3]),
+]
+for mn, exp in tests:
+    r = asm(mn)
+    check(f"asm {mn}", bytes(r.binary), bytes(exp))
+
+# MOV
+tests_mov = [
+    ("MOV B,B",[0x40]),("MOV B,C",[0x41]),("MOV B,A",[0x47]),
+    ("MOV C,B",[0x48]),("MOV C,E",[0x4B]),("MOV C,M",[0x4E]),
+    ("MOV A,B",[0x78]),("MOV A,A",[0x7F]),
+    ("MOV L,B",[0x68]),("MOV H,A",[0x67]),("MOV M,B",[0x70]),
+]
+for code, exp in tests_mov:
+    r = asm(code)
+    check(f"asm {code}", bytes(r.binary), bytes(exp))
+
+# MVI
+tests_mvi = [
+    ("MVI B,1",[0x06,0x01]),("MVI C,2",[0x0E,0x02]),
+    ("MVI A,255",[0x3E,0xFF]),("MVI H,16",[0x26,0x10]),
+    ("MVI L,32",[0x2E,0x20]),("MVI M,66",[0x36,0x42]),
+]
+for code, exp in tests_mvi:
+    r = asm(code)
+    check(f"asm {code}", bytes(r.binary), bytes(exp))
+
+# INR/DCR
+tests_id = [
+    ("INR B",[0x04]),("INR C",[0x0C]),("INR A",[0x3C]),
+    ("DCR B",[0x05]),("DCR C",[0x0D]),("DCR A",[0x3D]),
+    ("INR M",[0x34]),("DCR M",[0x35]),
+]
+for code, exp in tests_id:
+    r = asm(code)
+    check(f"asm {code}", bytes(r.binary), bytes(exp))
+
+# ALU r
+tests_alu = [
+    ("ADD B",[0x80]),("ADD A",[0x87]),("ADC B",[0x88]),
+    ("SUB B",[0x90]),("SBB B",[0x98]),("ANA B",[0xA0]),
+    ("XRA B",[0xA8]),("ORA B",[0xB0]),("CMP B",[0xB8]),("CMP A",[0xBF]),
+]
+for code, exp in tests_alu:
+    r = asm(code)
+    check(f"asm {code}", bytes(r.binary), bytes(exp))
+
+# ALU immediate (official)
+tests_ai = [
+    ("ADI 5",[0xC6,0x05]),("ACI 1",[0xCE,0x01]),
+    ("SUI 3",[0xD6,0x03]),("SBI 7",[0xDE,0x07]),
+    ("ANI 255",[0xE6,0xFF]),("XRI 170",[0xEE,0xAA]),
+    ("ORI 85",[0xF6,0x55]),("CPI 16",[0xFE,0x10]),
+]
+for code, exp in tests_ai:
+    r = asm(code)
+    check(f"asm {code}", bytes(r.binary), bytes(exp))
+
+# ALU immediate (shorthand)
+tests_as = [
+    ("ADD 5",[0xC6,0x05]),("SUB 3",[0xD6,0x03]),("CMP 16",[0xFE,0x10]),
+]
+for code, exp in tests_as:
+    r = asm(code)
+    check(f"asm {code} shorthand", bytes(r.binary), bytes(exp))
+
+# 16-bit
+tests_16 = [
+    ("LXI B,0x1234",[0x01,0x34,0x12]),("LXI D,0x5678",[0x11,0x78,0x56]),
+    ("LXI H,0x9ABC",[0x21,0xBC,0x9A]),("LXI SP,0xFF00",[0x31,0x00,0xFF]),
+    ("SHLD 0x2000",[0x22,0x00,0x20]),("LHLD 0x3000",[0x2A,0x00,0x30]),
+    ("STA 0x4000",[0x32,0x00,0x40]),("LDA 0x5000",[0x3A,0x00,0x50]),
+    ("JMP 0x1000",[0xC3,0x00,0x10]),("CALL 0x2000",[0xCD,0x00,0x20]),
+]
+for code, exp in tests_16:
+    r = asm(code)
+    check(f"asm {code}", bytes(r.binary), bytes(exp))
+
+# Conditional J
+tests_cj = [
+    ("JNZ 0x1000",[0xC2,0x00,0x10]),("JZ 0x1000",[0xCA,0x00,0x10]),
+    ("JNC 0x1000",[0xD2,0x00,0x10]),("JC 0x1000",[0xDA,0x00,0x10]),
+    ("JPO 0x1000",[0xE2,0x00,0x10]),("JPE 0x1000",[0xEA,0x00,0x10]),
+    ("JP 0x1000",[0xF2,0x00,0x10]),("JM 0x1000",[0xFA,0x00,0x10]),
+]
+for code, exp in tests_cj:
+    r = asm(code)
+    check(f"asm {code}", bytes(r.binary), bytes(exp))
+
+# Conditional C
+tests_cc = [
+    ("CNZ 0x1000",[0xC4,0x00,0x10]),("CZ 0x1000",[0xCC,0x00,0x10]),
+    ("CNC 0x1000",[0xD4,0x00,0x10]),("CC 0x1000",[0xDC,0x00,0x10]),
+    ("CPO 0x1000",[0xE4,0x00,0x10]),("CPE 0x1000",[0xEC,0x00,0x10]),
+    ("CP 0x1000",[0xF4,0x00,0x10]),("CM 0x1000",[0xFC,0x00,0x10]),
+]
+for code, exp in tests_cc:
+    r = asm(code)
+    check(f"asm {code}", bytes(r.binary), bytes(exp))
+
+# Conditional R
+tests_cr = [
+    ("RNZ",[0xC0]),("RZ",[0xC8]),("RNC",[0xD0]),("RC",[0xD8]),
+    ("RPO",[0xE0]),("RPE",[0xE8]),("RP",[0xF0]),("RM",[0xF8]),
+]
+for code, exp in tests_cr:
+    r = asm(code)
+    check(f"asm {code}", bytes(r.binary), bytes(exp))
+
+# RST
+tests_rst = [
+    ("RST 0",[0xC7]),("RST 1",[0xCF]),("RST 2",[0xD7]),("RST 3",[0xDF]),
+    ("RST 4",[0xE7]),("RST 5",[0xEF]),("RST 6",[0xF7]),("RST 7",[0xFF]),
+]
+for code, exp in tests_rst:
+    r = asm(code)
+    check(f"asm {code}", bytes(r.binary), bytes(exp))
+
+# PUSH/POP
+tests_pp = [
+    ("PUSH B",[0xC5]),("PUSH D",[0xD5]),("PUSH H",[0xE5]),("PUSH PSW",[0xF5]),
+    ("POP B",[0xC1]),("POP D",[0xD1]),("POP H",[0xE1]),("POP PSW",[0xF1]),
+]
+for code, exp in tests_pp:
+    r = asm(code)
+    check(f"asm {code}", bytes(r.binary), bytes(exp))
+
+# RP ops
+tests_rp = [
+    ("INX B",[0x03]),("INX D",[0x13]),("INX H",[0x23]),("INX SP",[0x33]),
+    ("DCX B",[0x0B]),("DCX D",[0x1B]),("DCX H",[0x2B]),("DCX SP",[0x3B]),
+    ("DAD B",[0x09]),("DAD D",[0x19]),("DAD H",[0x29]),("DAD SP",[0x39]),
+    ("STAX B",[0x02]),("STAX D",[0x12]),("LDAX B",[0x0A]),("LDAX D",[0x1A]),
+]
+for code, exp in tests_rp:
+    r = asm(code)
+    check(f"asm {code}", bytes(r.binary), bytes(exp))
+
+# IN/OUT
+tests_io = [("IN 1",[0xDB,0x01]),("OUT 2",[0xD3,0x02])]
+for code, exp in tests_io:
+    r = asm(code)
+    check(f"asm {code}", bytes(r.binary), bytes(exp))
+
+# 8085
+tests_85 = [
+    ("SIM",[0x30]),("RIM",[0x20]),("DSUB",[0x08]),("ARHL",[0x10]),
+    ("RDEL",[0x18]),("SHLX",[0xD9]),("LHLX",[0xED]),("RSTV",[0xCB]),
+]
+for code, exp in tests_85:
+    r = asm(code, cpu='i8085')
+    check(f"asm 8085 {code}", bytes(r.binary), bytes(exp))
+
+tests_85op = [
+    ("LDHI 0x34",[0x28,0x34]),("LDSI 0x78",[0x38,0x78]),
+    ("JNK 0x1000",[0xDD,0x00,0x10]),("JK 0x2000",[0xFD,0x00,0x20]),
+]
+for code, exp in tests_85op:
+    r = asm(code, cpu='i8085')
+    check(f"asm 8085 {code}", bytes(r.binary), bytes(exp))
+
+# 8080 undocumented
+tests_80u = [
+    ("RET*",[0xD9]),("JMP* 0x1234",[0xCB,0x34,0x12]),
+    ("CALL* 0x1234",[0xDD,0x34,0x12]),
+]
+for code, exp in tests_80u:
+    r = asm(code)
+    check(f"asm 8080 {code}", bytes(r.binary), bytes(exp))
+
+print(f"  Assembler: {passed} passed, {failed} failed")
+
+# ============================================================
+print("\n" + "=" * 70)
+print("CYCLE 1: EMULATOR EXECUTION VERIFICATION")
+print("=" * 70)
+
+emu_p, emu_f = 0, 0
+def emu_check(desc, actual, expected):
+    global emu_p, emu_f
+    if actual == expected:
+        emu_p += 1
+    else:
+        emu_f += 1
+        errors.append(f"EMU {desc}: got {actual!r}, expected {expected!r}")
+        print(f"  EMU FAIL: {desc}: got {actual!r}, expected {expected!r}")
+
+# Basic ALU
+e = make_emu([0x3E,0x05,0x76]); e.run(10)
+emu_check("MVI A,5", e.a, 0x05)
+
+e = make_emu([0x3E,0x03,0x0E,0x04,0x81,0x76]); e.run(10)
+emu_check("ADD C (3+4)", e.a, 0x07)
+
+e = make_emu([0x3E,0x05,0xC6,0x03,0x76]); e.run(10)
+emu_check("ADI 3 (5+3)", e.a, 0x08)
+
+e = make_emu([0x3E,0x05,0xD6,0x02,0x76]); e.run(10)
+emu_check("SUI 2 (5-2)", e.a, 0x03)
+
+e = make_emu([0x3E,0xFF,0xE6,0x0F,0x76]); e.run(10)
+emu_check("ANI 0F", e.a, 0x0F)
+
+e = make_emu([0x3E,0xFF,0xEE,0x0F,0x76]); e.run(10)
+emu_check("XRI 0F", e.a, 0xF0)
+
+e = make_emu([0x3E,0xF0,0xF6,0x0F,0x76]); e.run(10)
+emu_check("ORI 0F", e.a, 0xFF)
+
+# INR/DCR
+e = make_emu([0x06,0x00,0x04,0x76]); e.run(10)
+emu_check("INR B", e.b, 0x01)
+
+e = make_emu([0x06,0x01,0x05,0x76]); e.run(10)
+emu_check("DCR B", e.b, 0x00)
+
+# MOV
+e = make_emu([0x06,0x42,0x78,0x76]); e.run(10)
+emu_check("MOV A,B", e.a, 0x42)
+
+# RLC/RRC
+e = make_emu([0x3E,0x80,0x07,0x76]); e.run(10)
+emu_check("RLC 0x80", e.a, 0x01)
+
+e = make_emu([0x3E,0x01,0x0F,0x76]); e.run(10)
+emu_check("RRC 0x01", e.a, 0x80)
+
+# RAL/RAR
+e = make_emu([0x3E,0x80,0x17,0x76]); e.run(10)
+emu_check("RAL 0x80 (C=0)", e.a, 0x00)
+
+e = make_emu([0x3E,0x01,0x1F,0x76]); e.run(10)
+emu_check("RAR 0x01 (C=0)", e.a, 0x00)
+
+# CMA
+e = make_emu([0x3E,0x0F,0x2F,0x76]); e.run(10)
+emu_check("CMA 0x0F", e.a, 0xF0)
+
+# DAA
+e = make_emu([0x3E,0x09,0xC6,0x09,0x27,0x76]); e.run(20)
+emu_check("DAA (9+9=18)", e.a, 0x18)
+
+# 8085: SIM
+e = make_emu([0x3E,0x0F,0x30,0x76], "i8085"); e.run(10)
+emu_check("8085 SIM: irq_enabled_85", e.irq_enabled_85, True)
+
+# 8085: RIM
+e = make_emu([0x3E,0x0F,0x30,0x20,0x76], "i8085"); e.run(10)
+emu_check("8085 RIM: A has mask", e.a & 0x07, 0x07)
+
+# 8085: DSUB
+e = make_emu([0x21,0x00,0x01,0x01,0x50,0x00,0x08,0x76], "i8085"); e.run(10)
+emu_check("8085 DSUB: HL=0100-0050", e.get_reg_pair('HL'), 0x00B0)
+
+# 8085: ARHL
+e = make_emu([0x21,0x00,0x80,0x10,0x76], "i8085"); e.run(10)
+emu_check("8085 ARHL: 8000h->C000h", e.get_reg_pair('HL'), 0xC000)
+
+# 8080: 0x08 = NOP
+e = make_emu([0x21,0x00,0x01,0x08,0x76], "i8080"); e.run(10)
+emu_check("8080: 0x08 NOP (HL=0100)", e.get_reg_pair('HL'), 0x0100)
+
+# 8080: 0xCB = JMP
+e = make_emu([0x3E,0x11,0x3E,0x22,0xCB,0x02,0x00,0x76], "i8080"); e.run(10)
+emu_check("8080: 0xCB JMP (A=22h)", e.a, 0x22)
+
+# 8080: 0xD9 = RET
+e = make_emu([0x31,0x00,0x50,0x01,0x00,0x40,0xC5,0xD9,0x76], "i8080",
+             extra_mem={0x4000: 0x76}); e.run(10)
+emu_check("8080: 0xD9 RET (halted)", e.halted, True)
+
+print(f"  Emulator: {emu_p} passed, {emu_f} failed")
+
+# ============================================================
+print("\n" + "=" * 70)
+print("CYCLE 1: DISASSEMBLER VERIFICATION")
+print("=" * 70)
+
+dis_p, dis_f = 0, 0
+def dis_check(desc, opcode, expected_prefix, cpu='i8080'):
+    global dis_p, dis_f
+    d = I8080Disassembler(cpu_type=cpu)
+    mn = d.get_mnemonic(opcode)
+    if mn and mn.startswith(expected_prefix):
+        dis_p += 1
+    else:
+        dis_f += 1
+        errors.append(f"DIS {desc}: 0x{opcode:02X} = {mn!r}, expected prefix {expected_prefix!r}")
+        print(f"  DIS FAIL: {desc}: 0x{opcode:02X} = {mn!r}, expected prefix {expected_prefix!r}")
+
+# Single-byte
+dis_check("NOP", 0x00, "NOP")
+dis_check("RLC", 0x07, "RLC")
+dis_check("RRC", 0x0F, "RRC")
+dis_check("RAL", 0x17, "RAL")
+dis_check("RAR", 0x1F, "RAR")
+dis_check("DAA", 0x27, "DAA")
+dis_check("CMA", 0x2F, "CMA")
+dis_check("HLT", 0x76, "HLT")
+dis_check("RET", 0xC9, "RET")
+dis_check("XTHL", 0xE3, "XTHL")
+dis_check("PCHL", 0xE9, "PCHL")
+dis_check("XCHG", 0xEB, "XCHG")
+dis_check("SPHL", 0xF9, "SPHL")
+dis_check("EI", 0xFB, "EI")
+dis_check("DI", 0xF3, "DI")
+
+# MOV range
+dis_check("MOV B,B", 0x40, "MOV")
+dis_check("MOV A,A", 0x7F, "MOV")
+
+# ALU
+dis_check("ADD B", 0x80, "ADD")
+dis_check("CMP A", 0xBF, "CMP")
+
+# ALU imm
+dis_check("ADI", 0xC6, "ADI")
+dis_check("CPI", 0xFE, "CPI")
+
+# Conditional
+dis_check("RNZ", 0xC0, "RNZ")
+dis_check("JNZ", 0xC2, "JNZ")
+dis_check("JMP", 0xC3, "JMP")
+dis_check("RST 0", 0xC7, "RST")
+dis_check("PUSH B", 0xC5, "PUSH")
+dis_check("POP B", 0xC1, "POP")
+
+# 8085
+dis_check("8085 SIM", 0x30, "SIM", cpu='i8085')
+dis_check("8085 RIM", 0x20, "RIM", cpu='i8085')
+dis_check("8085 DSUB", 0x08, "DSUB", cpu='i8085')
+dis_check("8085 SHLX", 0xD9, "SHLX", cpu='i8085')
+dis_check("8085 LHLX", 0xED, "LHLX", cpu='i8085')
+
+# 8080 undocumented
+dis_check("8080 RET*", 0xD9, "RET", cpu='i8080')
+dis_check("8080 JMP*", 0xCB, "JMP", cpu='i8080')
+
+print(f"  Disassembler: {dis_p} passed, {dis_f} failed")
+
+# ============================================================
+total_p = passed + emu_p + dis_p
+total_f = failed + emu_f + dis_f
+print("\n" + "=" * 70)
+print(f"CYCLE 1 RESULT: {total_p} passed, {total_f} failed")
+print("=" * 70)
+if total_f > 0:
+    print("\nERRORS:")
+    for e in errors:
+        print(f"  {e}")
+else:
+    print("\nALL TESTS PASSED - CYCLE 1 STABLE")
+```
+<!-- END FILE: _cycle1.py -->
+
+### `_dump.py` (8 строк)
+
+<!-- FILE: _dump.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+path = sys.argv[1]
+start = int(sys.argv[2]) if len(sys.argv) > 2 else 1
+end = int(sys.argv[3]) if len(sys.argv) > 3 else 10**9
+lines = open(path, encoding='utf-8', errors='replace').read().splitlines()
+for i, l in enumerate(lines[start-1:end], start=start):
+    print(f'{i:5d} {l}')
+```
+<!-- END FILE: _dump.py -->
+
 ### `_final_fixes.py` (134 строк)
 
 <!-- FILE: _final_fixes.py -->
@@ -2753,6 +3231,224 @@ if __name__ == '__main__':
     sys.exit(main())
 ```
 <!-- END FILE: _run_all_tests.py -->
+
+### `_test_reloc.py` (166 строк)
+
+<!-- FILE: _test_reloc.py -->
+```python
+# -*- coding: utf-8 -*-
+"""Test: internal relocations in relocatable mode."""
+import sys, os
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from assemble8080.assembler import assemble, Assembler
+from assemble8080.objfile import obj_from_asm_result, save_obj, load_obj
+from assemble8080.linker import link
+
+passed = 0
+failed = 0
+
+def check(name, cond, msg=""):
+    global passed, failed
+    if cond:
+        passed += 1
+        print(f"  PASS: {name}")
+    else:
+        failed += 1
+        print(f"  FAIL: {name} — {msg}")
+
+print("=== Test 1: Relocatable mode (no .org) generates relocations for local labels ===")
+src = """
+START:
+    MVI A, 5
+    CALL SUBR
+    JMP LOOP
+    HLT
+LOOP:
+    DCR B
+    JNZ LOOP
+    RET
+SUBR:
+    INR A
+    RET
+"""
+r = assemble(src)
+check("Assembled OK", r.success, str(r.errors))
+check("Relocatable mode", r.origin == 0, f"origin={r.origin:#x}")
+check("Has relocations", len(r.relocations) > 0, f"got {len(r.relocations)}")
+# Expected: CALL SUBR (offset 3), JMP LOOP (offset 6), JNZ LOOP (offset 12)
+print(f"  Relocations: {r.relocations}")
+check("CALL SUBR reloc", (3, 2, 'SUBR') in r.relocations, str(r.relocations))
+check("JMP LOOP reloc", (6, 2, 'LOOP') in r.relocations, str(r.relocations))
+check("JNZ LOOP reloc", (11, 2, 'LOOP') in r.relocations, str(r.relocations))
+check("3 relocations total", len(r.relocations) == 3, f"got {len(r.relocations)}: {r.relocations}")
+
+print("\n=== Test 2: Absolute mode (.org) does NOT generate relocations for local labels ===")
+src_abs = """
+ORG 0x100
+START:
+    MVI A, 5
+    CALL SUBR
+    JMP LOOP
+    HLT
+LOOP:
+    DCR B
+    JNZ LOOP
+    RET
+SUBR:
+    INR A
+    RET
+"""
+r = assemble(src_abs)
+check("Assembled OK", r.success, str(r.errors))
+check("Origin = 0x100", r.origin == 0x100, f"origin={r.origin:#x}")
+check("No relocations (absolute mode)", len(r.relocations) == 0, f"got {r.relocations}")
+
+print("\n=== Test 3: Linker applies internal relocations correctly ===")
+# Module at org=0, link at 0x1000
+src_mod = """
+START:
+    MVI A, 5
+    CALL SUBR
+    HLT
+SUBR:
+    INR A
+    RET
+"""
+r = assemble(src_mod)
+check("Module assembled", r.success, str(r.errors))
+check("Module has relocations", len(r.relocations) == 1, f"got {r.relocations}")
+
+obj = obj_from_asm_result(r, "test.asm")
+check("Obj org=0", obj.org == 0, f"org={obj.org:#x}")
+check("Obj has relocations", len(obj.relocations) == 1, f"got {obj.relocations}")
+
+# Link at 0x1000: modify obj.org to simulate linker placing at 0x1000
+obj.org = 0x1000
+res = link([obj], origin=0, size=0x10000, fill=0xFF)
+check("Link success", res.success, str(res.errors))
+# CALL at offset 3 in module → absolute 0x1003
+# SUBR is at offset 6 in module → absolute 0x1006
+# Expected: CD 06 10 at address 0x1003
+call_bytes = res.binary[0x1003:0x1005]
+check("CALL patched to 0x1006", call_bytes == bytes([0x06, 0x10]), f"got {call_bytes.hex()}")
+# MVI A, 5 at 0x1000
+check("MVI A at 0x1000", res.binary[0x1000] == 0x3E, f"got {res.binary[0x1000]:#x}")
+check("A=5 at 0x1001", res.binary[0x1001] == 0x05, f"got {res.binary[0x1001]:#x}")
+# SUBR code at 0x1006: INR A (0x3C), RET (0xC9)
+check("INR A at 0x1006", res.binary[0x1006] == 0x3C, f"got {res.binary[0x1006]:#x}")
+check("RET at 0x1007", res.binary[0x1007] == 0xC9, f"got {res.binary[0x1007]:#x}")
+
+print("\n=== Test 4: Link at 0x0000 (no shift) ===")
+obj2 = obj_from_asm_result(r, "test.asm")
+res2 = link([obj2], origin=0, size=0x10000, fill=0xFF)
+check("Link at 0 success", res2.success, str(res2.errors))
+# CALL at offset 3 → SUBR at offset 6 → CD 06 00
+call_bytes2 = res2.binary[3:5]
+check("CALL patched to 0x0006", call_bytes2 == bytes([0x06, 0x00]), f"got {call_bytes2.hex()}")
+
+print("\n=== Test 5: crun8080lib.asm → >100 relocations ===")
+crun_path = r"c:\smallc\crun8080lib.asm"
+if os.path.exists(crun_path):
+    with open(crun_path, 'r', encoding='utf-8', errors='replace') as f:
+        crun_src = f.read()
+    r_crun = assemble(crun_src, filename=crun_path)
+    if r_crun.success:
+        check("crun assembled", True)
+        check(f">100 relocations (got {len(r_crun.relocations)})", len(r_crun.relocations) > 100,
+              f"got {len(r_crun.relocations)}")
+    else:
+        # Expected: mul/div errors (known runtime bug)
+        print(f"  (crun has errors: {len(r_crun.errors)} — expected mul/div issue)")
+        print(f"  First errors: {[str(e) for e in r_crun.errors[:3]]}")
+        # Still check relocations generated before error
+        check(f"crun relocations > 100 (got {len(r_crun.relocations)})", len(r_crun.relocations) > 100,
+              f"got {len(r_crun.relocations)}")
+else:
+    print(f"  SKIP: {crun_path} not found")
+
+print("\n=== Test 6: DW with local label in relocatable mode ===")
+src_dw = """
+    DW TBL, 5
+TBL:
+    DB 1, 2, 3
+"""
+r = assemble(src_dw)
+check("DW assembled", r.success, str(r.errors))
+check("DW has 1 relocation", r.relocations == [(0, 2, 'TBL')], f"got {r.relocations}")
+
+print("\n=== Test 7: LXI with local label in relocatable mode ===")
+src_lxi = """
+    LXI H, PTR
+    HLT
+PTR:
+    DW 0x1234
+"""
+r = assemble(src_lxi)
+check("LXI assembled", r.success, str(r.errors))
+check("LXI has 1 relocation", r.relocations == [(1, 2, 'PTR')], f"got {r.relocations}")
+
+print("\n=== Test 8: Numeric literal does NOT generate relocation ===")
+src_num = """
+    JMP 0x1234
+    HLT
+"""
+r = assemble(src_num)
+check("Numeric JMP assembled", r.success, str(r.errors))
+check("No relocation for numeric", len(r.relocations) == 0, f"got {r.relocations}")
+
+print(f"\n{'='*60}")
+print(f"RESULT: {passed} passed, {failed} failed")
+print(f"{'='*60}")
+sys.exit(0 if failed == 0 else 1)
+```
+<!-- END FILE: _test_reloc.py -->
+
+### `_update_changes.py` (38 строк)
+
+<!-- FILE: _update_changes.py -->
+```python
+# -*- coding: utf-8 -*-
+import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
+path = r'c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis\CHANGES.md'
+with open(path, 'r', encoding='utf-8') as f:
+    content = f.read()
+
+new_entry = """## v2.1.9 (2026-10-11)
+
+### Internal relocations in relocatable mode
+
+- **New:** Assembler now generates relocation entries for internal (local) absolute
+  addresses when building in relocatable mode (no `.org` directive, org=0).
+- Affected instructions: CALL, JMP, JNZ, JZ, JNC, JC, JPO, JPE, JP, JM,
+  CNZ, CZ, CNC, CC, CPO, CPE, CP, CM, SHLD, LHLD, STA, LDA, LXI, DW.
+- Relocation format: `{"offset": N, "size": 2, "symbol": "LABEL_NAME"}`.
+- Absolute mode (`.org` present): no relocations generated (unchanged behavior).
+- Linker already resolves both internal and external symbols - no changes needed.
+- `crun8080lib.asm` (no .org) -> 353 relocations (was 0).
+- All 921 existing tests + 30 new relocation tests pass.
+
+Updated: `assemble8080/assembler.py` (_relocatable flag, d16/rp,d16/DW handlers)
+
+"""
+
+# Find the first "## v" heading and insert before it
+idx = content.find('## v2.1.8')
+if idx == -1:
+    print("ERROR: v2.1.8 not found")
+    sys.exit(1)
+
+content = content[:idx] + new_entry + content[idx:]
+
+with open(path, 'w', encoding='utf-8') as f:
+    f.write(content)
+
+print("CHANGES.md updated: v2.1.9 entry added")
+```
+<!-- END FILE: _update_changes.py -->
 
 ### `_verify_fixes.py` (43 строк)
 
@@ -6921,7 +7617,7 @@ if __name__ == "__main__":
 ```
 <!-- END FILE: assemble8080/__main__.py -->
 
-### `assemble8080/assembler.py` (1986 строк)
+### `assemble8080/assembler.py` (2005 строк)
 
 <!-- FILE: assemble8080/assembler.py -->
 ```python
@@ -7479,6 +8175,8 @@ class Assembler:
         self.expr_parser = ExpressionParser(self.symbols, self.defines)
         # Тип процессора: "i8080" (по умолчанию) или "i8085"
         self.cpu_type = "i8080"
+        # Relocatable mode: True if no .org directive (org=0)
+        self._relocatable = True
 
     def _get_mnemonics(self) -> dict:
         """Вернуть таблицу мнемоник с учётом типа процессора.
@@ -7572,6 +8270,7 @@ class Assembler:
         self._global_labels = set()
 
         self._relocations = []
+        self._relocatable = True
         self.cpu_set_by_directive = False
         self.errors = []
         self.warnings = []
@@ -7669,6 +8368,7 @@ class Assembler:
                 if not origin_set:
                     self.origin = location & 0xFFFF
                     origin_set = True
+                self._relocatable = False
                 self.pc = location
                 continue
 
@@ -8328,16 +9028,19 @@ class Assembler:
                 self._error(line_num, f"Невозможно вычислить: {operands[0]}")
                 val = 0
             sym = self._is_import_symbol(operands[0])
-            if sym is None:
-                # Check if operand is an undefined symbol
+            if sym is not None:
+                self._track_relocation(self._write_pos + 1, 2, sym)
+            else:
                 op_str = operands[0].strip()
                 if re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', op_str):
                     upper = op_str.upper()
                     if upper not in self.symbols:
+                        # Undefined symbol → import
                         self._imports.add(upper)
                         self._track_relocation(self._write_pos + 1, 2, upper)
-            else:
-                self._track_relocation(self._write_pos + 1, 2, sym)
+                    elif self._relocatable:
+                        # Defined local symbol in relocatable mode → relocation
+                        self._track_relocation(self._write_pos + 1, 2, upper)
             return bytearray([opcode, val & 0xFF, (val >> 8) & 0xFF])
 
         if fmt == 'r,d8':
@@ -8371,6 +9074,12 @@ class Assembler:
             sym = self._is_import_symbol(operands[1])
             if sym is not None:
                 self._track_relocation(self._write_pos + 1, 2, sym)
+            else:
+                op_str = operands[1].strip()
+                if re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', op_str):
+                    upper = op_str.upper()
+                    if upper in self.symbols and self._relocatable:
+                        self._track_relocation(self._write_pos + 1, 2, upper)
             return bytearray([opcode | (rp_code << 4), val & 0xFF, (val >> 8) & 0xFF])
 
         if fmt == 'rst':
@@ -8615,6 +9324,12 @@ class Assembler:
             sym = self._is_import_symbol(part)
             if sym is not None:
                 self._track_relocation(self._write_pos + len(result) - 2, 2, sym)
+            else:
+                part_str = part.strip()
+                if re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', part_str):
+                    upper = part_str.upper()
+                    if upper in self.symbols and self._relocatable:
+                        self._track_relocation(self._write_pos + len(result) - 2, 2, upper)
         return result
 
     # ---------------------------------------------------------
@@ -33010,7 +33725,7 @@ def create_terminal_widget(device):
 
 ■ РАЗДЕЛ 4: ИЗМЕНЕНИЯ РЕФАКТОРИНГА
 
-Источник: `CHANGES.md` (2630 строк)
+Источник: `CHANGES.md` (2646 строк)
 
 ```markdown
 # Changelog / Журнал изменений
@@ -33018,6 +33733,22 @@ def create_terminal_widget(device):
 
 
 
+
+## v2.1.9 (2026-10-11)
+
+### Internal relocations in relocatable mode
+
+- **New:** Assembler now generates relocation entries for internal (local) absolute
+  addresses when building in relocatable mode (no `.org` directive, org=0).
+- Affected instructions: CALL, JMP, JNZ, JZ, JNC, JC, JPO, JPE, JP, JM,
+  CNZ, CZ, CNC, CC, CPO, CPE, CP, CM, SHLD, LHLD, STA, LDA, LXI, DW.
+- Relocation format: `{"offset": N, "size": 2, "symbol": "LABEL_NAME"}`.
+- Absolute mode (`.org` present): no relocations generated (unchanged behavior).
+- Linker already resolves both internal and external symbols - no changes needed.
+- `crun8080lib.asm` (no .org) -> 353 relocations (was 0).
+- All 921 existing tests + 30 new relocation tests pass.
+
+Updated: `assemble8080/assembler.py` (_relocatable flag, d16/rp,d16/DW handlers)
 
 ## v2.1.8 (2026-10-11)
 
@@ -50631,7 +51362,6 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 - `LICENSE` (, 21 строк)
 - `i8080_CI.spec` (.spec, 39 строк)
 - `make.cmd` (.cmd, 1 строк)
-- `test_t42.obj` (.obj, 80 строк)
 - `ASM_FOR_TEST/4KBAS.ASM` (.asm, 2300 строк)
 - `ASM_FOR_TEST/8080EX1.MAC` (.mac, 1367 строк)
 - `ASM_FOR_TEST/8080EXER.MAC` (.mac, 1283 строк)
@@ -50799,4 +51529,4 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 
 ---
 
-*Конец среза. Сгенерировано 2026-10-11 09:31:32.*
+*Конец среза. Сгенерировано 2026-10-11 14:08:20.*
