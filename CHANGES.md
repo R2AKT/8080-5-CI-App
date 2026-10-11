@@ -4,6 +4,21 @@
 
 
 
+## v2.1.10 (2026-10-11)
+
+### $-label relocations fix
+
+- **Fixed:** ASxxxx local labels (`$0`, `$1`, `$2`, etc.) now correctly generate
+  relocation entries in relocatable mode.
+- Root cause: the "pure symbol" regex `^[A-Za-z_][A-Za-z0-9_]*$` did not match
+  strings starting with `$`. Replaced with `^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$`
+  in 5 locations: `_is_import_symbol`, `d16` handler, `rp,d16` handler,
+  `_parse_operand`, `_parse_dw`.
+- Linker requires no changes (resolves `$N` symbols by name from obj.symbols).
+- All 921 existing tests + 11 new $-label tests pass.
+
+Updated: `assemble8080/assembler.py` (5 regex replacements)
+
 ## v2.1.9 (2026-10-11)
 
 ### Internal relocations in relocatable mode

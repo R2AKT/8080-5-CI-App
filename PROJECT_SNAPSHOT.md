@@ -1,8 +1,8 @@
 # СРЕЗ ПРОЕКТА (PROJECT SNAPSHOT)
 
-> Сгенерировано: 2026-10-11 14:08:20
+> Сгенерировано: 2026-10-11 19:04:08
 > Корень проекта: `c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis`
-> Код: 107 файлов, 30742 строк
+> Код: 108 файлов, 30832 строк
 > Тесты: 74 файлов, 11719 строк
 > Профили: 22 файлов, 843 строк
 
@@ -432,23 +432,23 @@
 ├── 8080-5 CI_app_trace.png  [331 строк]
 ├── _audit_and_version.py  [84 строк]
 ├── _cycle1.py  [402 строк]
-├── _dump.py  [8 строк]
 ├── _final_fixes.py  [134 строк]
+├── _fix_dollar.py  [27 строк]
 ├── _fix_en.py  [50 строк]
 ├── _read_code.py  [37 строк]
 ├── _read_code2.py  [53 строк]
 ├── _read_code3.py  [33 строк]
 ├── _read_code4.py  [19 строк]
 ├── _run_all_tests.py  [94 строк]
+├── _test_dollar.py  [73 строк]
 ├── _test_reloc.py  [166 строк]
-├── _update_changes.py  [38 строк]
+├── _upd.py  [36 строк]
 ├── _verify_fixes.py  [43 строк]
 ├── Addendum.txt  [81 строк]
 ├── ANALYSIS.md  [536 строк]
 ├── ANALYSIS_ASSEMBLER.md  [341 строк]
 ├── ASSEMBLER_GUIDE.md  [1268 строк]
-├── CHANGES.md  [2646 строк]
-├── CI_ASSEMBLER_FIX_PROMPT.md  [702 строк]
+├── CHANGES.md  [2661 строк]
 ├── claude_desktop_config.json  [7 строк]
 ├── clean_pycache.py  [87 строк]
 ├── config.json  [10 строк]
@@ -468,9 +468,8 @@
 ├── md2html.py  [372 строк]
 ├── micro-80_bp_preset.json  [77 строк]
 ├── package-lock.json  [6 строк]
-├── PROJECT_SNAPSHOT.md  [50802 строк]
-├── PROMPT_CI_ASSEMBLER_RELOCATIONS.md  [104 строк]
-├── PROMPT_CORRECTION_8085_MUL_DIV.md  [167 строк]
+├── PROJECT_SNAPSHOT.md  [51532 строк]
+├── PROMPT_CI_ASSEMBLER_DOLLAR_LABELS.md  [106 строк]
 ├── pyproject.toml  [61 строк]
 ├── README.md  [389 строк]
 ├── requirements.txt  [22 строк]
@@ -515,19 +514,21 @@
 
 ---
 
-### `_dump.py` (8 строк)
-
-**Импорты (1):**
-- `sys`
-
----
-
 ### `_final_fixes.py` (134 строк)
 
 **Импорты (3):**
 - `sys`
 - `os`
 - `re`
+
+---
+
+### `_fix_dollar.py` (27 строк)
+
+> Fix: $-labels don't get relocations. Replace regex in 5 locations.
+
+**Импорты (1):**
+- `sys`
 
 ---
 
@@ -588,6 +589,22 @@
 
 ---
 
+### `_test_dollar.py` (73 строк)
+
+> Test: $-labels get relocations in relocatable mode.
+
+**Импорты (5):**
+- `sys`
+- `os`
+- `from assemble8080.assembler import assemble`
+- `from assemble8080.objfile import obj_from_asm_result`
+- `from assemble8080.linker import link`
+
+**Функции (1):**
+- `check(name, cond, msg)`
+
+---
+
 ### `_test_reloc.py` (166 строк)
 
 > Test: internal relocations in relocatable mode.
@@ -604,7 +621,7 @@
 
 ---
 
-### `_update_changes.py` (38 строк)
+### `_upd.py` (36 строк)
 
 **Импорты (1):**
 - `sys`
@@ -2748,21 +2765,6 @@ else:
 ```
 <!-- END FILE: _cycle1.py -->
 
-### `_dump.py` (8 строк)
-
-<!-- FILE: _dump.py -->
-```python
-import sys
-sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-path = sys.argv[1]
-start = int(sys.argv[2]) if len(sys.argv) > 2 else 1
-end = int(sys.argv[3]) if len(sys.argv) > 3 else 10**9
-lines = open(path, encoding='utf-8', errors='replace').read().splitlines()
-for i, l in enumerate(lines[start-1:end], start=start):
-    print(f'{i:5d} {l}')
-```
-<!-- END FILE: _dump.py -->
-
 ### `_final_fixes.py` (134 строк)
 
 <!-- FILE: _final_fixes.py -->
@@ -2903,6 +2905,40 @@ else:
 print("\n=== ALL DONE ===")
 ```
 <!-- END FILE: _final_fixes.py -->
+
+### `_fix_dollar.py` (27 строк)
+
+<!-- FILE: _fix_dollar.py -->
+```python
+# -*- coding: utf-8 -*-
+"""Fix: $-labels don't get relocations. Replace regex in 5 locations."""
+import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
+path = r'c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis\assemble8080\assembler.py'
+with open(path, 'r', encoding='utf-8') as f:
+    content = f.read()
+
+old = r"r'^[A-Za-z_][A-Za-z0-9_]*$'"
+new = r"r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$'"
+
+count = content.count(old)
+print(f"Found {count} occurrences of the old regex")
+
+# We need to replace only the 5 that are anchored ^...$ (pure symbol check)
+# Lines 1301, 1412, 1456, 1544, 1706
+# All 5 use the exact same string: r'^[A-Za-z_][A-Za-z0-9_]*$'
+# The other occurrences use \b...\b or are part of larger patterns
+
+content = content.replace(old, new)
+
+with open(path, 'w', encoding='utf-8') as f:
+    f.write(content)
+
+print(f"Replaced {count} occurrences")
+print("Done.")
+```
+<!-- END FILE: _fix_dollar.py -->
 
 ### `_fix_en.py` (50 строк)
 
@@ -3232,6 +3268,86 @@ if __name__ == '__main__':
 ```
 <!-- END FILE: _run_all_tests.py -->
 
+### `_test_dollar.py` (73 строк)
+
+<!-- FILE: _test_dollar.py -->
+```python
+# -*- coding: utf-8 -*-
+"""Test: $-labels get relocations in relocatable mode."""
+import sys, os
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from assemble8080.assembler import assemble
+from assemble8080.objfile import obj_from_asm_result
+from assemble8080.linker import link
+
+passed = 0
+failed = 0
+
+def check(name, cond, msg=""):
+    global passed, failed
+    if cond:
+        passed += 1
+        print(f"  PASS: {name}")
+    else:
+        failed += 1
+        print(f"  FAIL: {name} — {msg}")
+
+print("=== Test 1: $-labels generate relocations ===")
+src = """
+$0:
+    MVI A, 5
+    JZ $1
+    JMP $0
+    HLT
+$1:
+    DCR B
+    JNZ $1
+    RET
+"""
+r = assemble(src)
+check("Assembled OK", r.success, str(r.errors))
+check("Has relocations", len(r.relocations) >= 3, f"got {len(r.relocations)}: {r.relocations}")
+# JZ $1 at offset 3, JMP $0 at offset 6, JNZ $1 at offset 11
+check("JZ $1 reloc", (3, 2, '$1') in r.relocations, str(r.relocations))
+check("JMP $0 reloc", (6, 2, '$0') in r.relocations, str(r.relocations))
+check("JNZ $1 reloc", (11, 2, '$1') in r.relocations, str(r.relocations))
+
+print("\n=== Test 2: Linker resolves $-labels correctly ===")
+obj = obj_from_asm_result(r, "test.asm")
+check("Obj has $0 symbol", '$0' in obj.symbols, f"symbols={list(obj.symbols.keys())}")
+check("Obj has $1 symbol", '$1' in obj.symbols, f"symbols={list(obj.symbols.keys())}")
+
+# Link at 0x0100
+obj.org = 0x0100
+res = link([obj], origin=0, size=0x10000, fill=0xFF)
+check("Link success", res.success, str(res.errors))
+# $0 is at offset 0 → 0x0100
+# $1 is at offset 9 → 0x0109
+# JZ $1: opcode at 0x0102, address field at 0x0103-0x0104 → should be 0x0109
+jz_target = res.binary[0x0103] | (res.binary[0x0104] << 8)
+check(f"JZ $1 → 0x0109 (got 0x{jz_target:04X})", jz_target == 0x0109, f"got 0x{jz_target:04X}")
+# JMP $0: opcode at 0x0105, address field at 0x0106-0x0107 → should be 0x0100
+jmp_target = res.binary[0x0106] | (res.binary[0x0107] << 8)
+check(f"JMP $0 → 0x0100 (got 0x{jmp_target:04X})", jmp_target == 0x0100, f"got 0x{jmp_target:04X}")
+
+print("\n=== Test 3: crun8080lib.asm still 353 relocations ===")
+crun_path = r"c:\smallc\crun8080lib.asm"
+if os.path.exists(crun_path):
+    with open(crun_path, 'r', encoding='utf-8', errors='replace') as f:
+        crun_src = f.read()
+    r_crun = assemble(crun_src, filename=crun_path)
+    check(f"crun: {len(r_crun.relocations)} relocations (expect 353)", len(r_crun.relocations) == 353,
+          f"got {len(r_crun.relocations)}")
+
+print(f"\n{'='*60}")
+print(f"RESULT: {passed} passed, {failed} failed")
+print(f"{'='*60}")
+sys.exit(0 if failed == 0 else 1)
+```
+<!-- END FILE: _test_dollar.py -->
+
 ### `_test_reloc.py` (166 строк)
 
 <!-- FILE: _test_reloc.py -->
@@ -3405,9 +3521,9 @@ sys.exit(0 if failed == 0 else 1)
 ```
 <!-- END FILE: _test_reloc.py -->
 
-### `_update_changes.py` (38 строк)
+### `_upd.py` (36 строк)
 
-<!-- FILE: _update_changes.py -->
+<!-- FILE: _upd.py -->
 ```python
 # -*- coding: utf-8 -*-
 import sys
@@ -3417,28 +3533,26 @@ path = r'c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis\CHANGES.md'
 with open(path, 'r', encoding='utf-8') as f:
     content = f.read()
 
-new_entry = """## v2.1.9 (2026-10-11)
+new_entry = """## v2.1.10 (2026-10-11)
 
-### Internal relocations in relocatable mode
+### $-label relocations fix
 
-- **New:** Assembler now generates relocation entries for internal (local) absolute
-  addresses when building in relocatable mode (no `.org` directive, org=0).
-- Affected instructions: CALL, JMP, JNZ, JZ, JNC, JC, JPO, JPE, JP, JM,
-  CNZ, CZ, CNC, CC, CPO, CPE, CP, CM, SHLD, LHLD, STA, LDA, LXI, DW.
-- Relocation format: `{"offset": N, "size": 2, "symbol": "LABEL_NAME"}`.
-- Absolute mode (`.org` present): no relocations generated (unchanged behavior).
-- Linker already resolves both internal and external symbols - no changes needed.
-- `crun8080lib.asm` (no .org) -> 353 relocations (was 0).
-- All 921 existing tests + 30 new relocation tests pass.
+- **Fixed:** ASxxxx local labels (`$0`, `$1`, `$2`, etc.) now correctly generate
+  relocation entries in relocatable mode.
+- Root cause: the "pure symbol" regex `^[A-Za-z_][A-Za-z0-9_]*$` did not match
+  strings starting with `$`. Replaced with `^(?:\\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$`
+  in 5 locations: `_is_import_symbol`, `d16` handler, `rp,d16` handler,
+  `_parse_operand`, `_parse_dw`.
+- Linker requires no changes (resolves `$N` symbols by name from obj.symbols).
+- All 921 existing tests + 11 new $-label tests pass.
 
-Updated: `assemble8080/assembler.py` (_relocatable flag, d16/rp,d16/DW handlers)
+Updated: `assemble8080/assembler.py` (5 regex replacements)
 
 """
 
-# Find the first "## v" heading and insert before it
-idx = content.find('## v2.1.8')
+idx = content.find('## v2.1.9')
 if idx == -1:
-    print("ERROR: v2.1.8 not found")
+    print("ERROR: v2.1.9 not found")
     sys.exit(1)
 
 content = content[:idx] + new_entry + content[idx:]
@@ -3446,9 +3560,9 @@ content = content[:idx] + new_entry + content[idx:]
 with open(path, 'w', encoding='utf-8') as f:
     f.write(content)
 
-print("CHANGES.md updated: v2.1.9 entry added")
+print("CHANGES.md updated: v2.1.10 entry added")
 ```
-<!-- END FILE: _update_changes.py -->
+<!-- END FILE: _upd.py -->
 
 ### `_verify_fixes.py` (43 строк)
 
@@ -8921,7 +9035,7 @@ class Assembler:
     def _is_import_symbol(self, operand_str: str) -> str | None:
         """Если операнд — чистая ссылка на импортированный символ, вернуть его имя (UPPER)."""
         t = operand_str.strip()
-        if re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', t):
+        if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', t):
             upper = t.upper()
             if upper in self._imports:
                 return upper
@@ -9032,7 +9146,7 @@ class Assembler:
                 self._track_relocation(self._write_pos + 1, 2, sym)
             else:
                 op_str = operands[0].strip()
-                if re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', op_str):
+                if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', op_str):
                     upper = op_str.upper()
                     if upper not in self.symbols:
                         # Undefined symbol → import
@@ -9076,7 +9190,7 @@ class Assembler:
                 self._track_relocation(self._write_pos + 1, 2, sym)
             else:
                 op_str = operands[1].strip()
-                if re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', op_str):
+                if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', op_str):
                     upper = op_str.upper()
                     if upper in self.symbols and self._relocatable:
                         self._track_relocation(self._write_pos + 1, 2, upper)
@@ -9164,7 +9278,7 @@ class Assembler:
         if allow_current and '$' in expr_str:
             expr_str = expr_str.replace('$', str(self.pc))
         # Простой идентификатор без операторов — предупреждение если не определён
-        if re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', expr_str):
+        if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', expr_str):
             in_defines = any(expr_str.lower() == d.lower() for d in self.defines)
             if expr_str.upper() not in self.symbols and not in_defines:
                 # Warning, не error: файл может быть "нижним" (включается в другой)
@@ -9326,7 +9440,7 @@ class Assembler:
                 self._track_relocation(self._write_pos + len(result) - 2, 2, sym)
             else:
                 part_str = part.strip()
-                if re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', part_str):
+                if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', part_str):
                     upper = part_str.upper()
                     if upper in self.symbols and self._relocatable:
                         self._track_relocation(self._write_pos + len(result) - 2, 2, upper)
@@ -33725,7 +33839,7 @@ def create_terminal_widget(device):
 
 ■ РАЗДЕЛ 4: ИЗМЕНЕНИЯ РЕФАКТОРИНГА
 
-Источник: `CHANGES.md` (2646 строк)
+Источник: `CHANGES.md` (2661 строк)
 
 ```markdown
 # Changelog / Журнал изменений
@@ -33733,6 +33847,21 @@ def create_terminal_widget(device):
 
 
 
+
+## v2.1.10 (2026-10-11)
+
+### $-label relocations fix
+
+- **Fixed:** ASxxxx local labels (`$0`, `$1`, `$2`, etc.) now correctly generate
+  relocation entries in relocatable mode.
+- Root cause: the "pure symbol" regex `^[A-Za-z_][A-Za-z0-9_]*$` did not match
+  strings starting with `$`. Replaced with `^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$`
+  in 5 locations: `_is_import_symbol`, `d16` handler, `rp,d16` handler,
+  `_parse_operand`, `_parse_dw`.
+- Linker requires no changes (resolves `$N` symbols by name from obj.symbols).
+- All 921 existing tests + 11 new $-label tests pass.
+
+Updated: `assemble8080/assembler.py` (5 regex replacements)
 
 ## v2.1.9 (2026-10-11)
 
@@ -51529,4 +51658,4 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 
 ---
 
-*Конец среза. Сгенерировано 2026-10-11 14:08:20.*
+*Конец среза. Сгенерировано 2026-10-11 19:04:08.*

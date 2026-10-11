@@ -1298,7 +1298,7 @@ class Assembler:
     def _is_import_symbol(self, operand_str: str) -> str | None:
         """Если операнд — чистая ссылка на импортированный символ, вернуть его имя (UPPER)."""
         t = operand_str.strip()
-        if re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', t):
+        if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', t):
             upper = t.upper()
             if upper in self._imports:
                 return upper
@@ -1409,7 +1409,7 @@ class Assembler:
                 self._track_relocation(self._write_pos + 1, 2, sym)
             else:
                 op_str = operands[0].strip()
-                if re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', op_str):
+                if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', op_str):
                     upper = op_str.upper()
                     if upper not in self.symbols:
                         # Undefined symbol → import
@@ -1453,7 +1453,7 @@ class Assembler:
                 self._track_relocation(self._write_pos + 1, 2, sym)
             else:
                 op_str = operands[1].strip()
-                if re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', op_str):
+                if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', op_str):
                     upper = op_str.upper()
                     if upper in self.symbols and self._relocatable:
                         self._track_relocation(self._write_pos + 1, 2, upper)
@@ -1541,7 +1541,7 @@ class Assembler:
         if allow_current and '$' in expr_str:
             expr_str = expr_str.replace('$', str(self.pc))
         # Простой идентификатор без операторов — предупреждение если не определён
-        if re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', expr_str):
+        if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', expr_str):
             in_defines = any(expr_str.lower() == d.lower() for d in self.defines)
             if expr_str.upper() not in self.symbols and not in_defines:
                 # Warning, не error: файл может быть "нижним" (включается в другой)
@@ -1703,7 +1703,7 @@ class Assembler:
                 self._track_relocation(self._write_pos + len(result) - 2, 2, sym)
             else:
                 part_str = part.strip()
-                if re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', part_str):
+                if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', part_str):
                     upper = part_str.upper()
                     if upper in self.symbols and self._relocatable:
                         self._track_relocation(self._write_pos + len(result) - 2, 2, upper)
