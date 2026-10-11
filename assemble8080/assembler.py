@@ -152,14 +152,6 @@ MNEMONICS = {
     # DAD
     'DAD':   (0x09, 'rp', 1),
 
-    # ASxxxx aliases
-    'OR':    (0xB0, 'r', 1),    # = ORA
-    'AND':   (0xA0, 'r', 1),    # = ANA
-    'XOR':   (0xA8, 'r', 1),    # = XRA
-    'ORAI':  (0xF6, 'd8', 2),   # = ORI
-    'ANDI':  (0xE6, 'd8', 2),   # = ANI
-    'XORI':  (0xEE, 'd8', 2),   # = XRI
-
     # ALU r
     'ADD':   (0x80, 'r', 1),
     'ADC':   (0x88, 'r', 1),
@@ -246,8 +238,8 @@ MNEMONICS_8080 = {
 # =============================================================
 MNEMONICS_8085 = {
     # Задокументированные 8085
-    'SIM':   (0x20, '', 1),   # Set Interrupt Mask
-    'RIM':   (0x30, '', 1),   # Read Interrupt Mask
+    'SIM':   (0x30, '', 1),   # Set Interrupt Mask
+    'RIM':   (0x20, '', 1),   # Read Interrupt Machine
 
     # Недокументированные 8085
     'DSUB':  (0x08, '', 1),   # HL = HL - BC
@@ -1328,8 +1320,7 @@ class Assembler:
                 op2_upper = operands[1].strip().upper()
                 if op2_upper not in REGISTERS and op2_upper not in ('BC', 'DE', 'HL', 'PSW'):
                     ALU_IMM2 = {'CMP': 0xFE, 'ADD': 0xC6, 'ADC': 0xCE, 'SUB': 0xD6,
-                                'SBB': 0xDE, 'ANA': 0xE6, 'XRA': 0xEE, 'ORA': 0xF6,
-                                'OR': 0xF6, 'AND': 0xE6, 'XOR': 0xEE}
+                                'SBB': 0xDE, 'ANA': 0xE6, 'XRA': 0xEE, 'ORA': 0xF6}
                     if mnemonic in ALU_IMM2:
                         val = self._parse_operand(operands[1], line_num, allow_current=True)
                         if val is not None:
@@ -1344,7 +1335,7 @@ class Assembler:
             # Not a register — try as immediate value (ALU d8 forms)
             ALU_IMM_OPCODES = {'ADD': 0xC6, 'ADC': 0xCE, 'SUB': 0xD6, 'SBB': 0xDE,
                                'ANA': 0xE6, 'XRA': 0xEE, 'ORA': 0xF6, 'CPI': 0xFE,
-                               'CMP': 0xFE, 'OR': 0xF6, 'AND': 0xE6, 'XOR': 0xEE}
+                               'CMP': 0xFE}
             if mnemonic in ALU_IMM_OPCODES:
                 val = self._parse_operand(operands[0], line_num, allow_current=True)
                 if val is not None:

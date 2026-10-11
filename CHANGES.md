@@ -1,6 +1,37 @@
 # Changelog / Журнал изменений
 
 
+## v2.1.8 (2026-10-11)
+
+### SIM/RIM opcode correction (8085)
+
+- **Fixed SIM/RIM swap:** opcodes were swapped in assembler, emulator, and disassembler.
+  Per official Intel 8085 documentation: **SIM = 0x30**, **RIM = 0x20**.
+  Previously: SIM=0x20, RIM=0x30 (incorrect).
+- Updated: `assembler.py` (MNEMONICS_8085), `i8080_emulator.py` (_execute_overlapping_8085),
+  `disassembler.py` (_generate_table), `tests/test_8085.py`
+- All 921 tests pass
+
+### Removed ASxxxx aliases (OR, AND, XOR, ORAI, ANDI, XORI)
+
+- Removed non-canonical aliases from `MNEMONICS` and `ALU_IMM2`/`ALU_IMM_OPCODES`.
+  Assembler now uses only official 8080/8085 mnemonics: ORA, ANA, XRA, ORI, ANI, XRI.
+- Rationale: the prompt that introduced these aliases (CI_ASSEMBLER_FIX_PROMPT.md)
+  contained a hallucination (MUL/DIV as 8085 instructions). For consistency,
+  only canonical mnemonics are kept.
+
+### Removed hallucinated MUL/DIV from 8085
+
+- Removed `MUL` (0x68) and `DIV` (0x78) from `MNEMONICS_8085`.
+  8080/8085 do NOT have hardware multiply/divide instructions.
+  0x68 = MOV L,B and 0x78 = MOV A,B (standard 8080 data transfer).
+- Note: `crun8080lib.asm` uses `mul b`/`div b` (lines 2414,2421,2455) —
+  this is a bug in the runtime library, not the assembler.
+
+### Documentation
+
+- Updated ASSEMBLER_GUIDE.md, USER_GUIDE.md with correct SIM/RIM opcodes
+- Added PROMPT_CORRECTION_8085_MUL_DIV.md documenting the hallucination errors
 ## v2.1.7 (2026-10-09)
 ### CLI / Command-line assembler (no GUI)
 - New `python -m assemble8080` CLI: assemble files, 8080/8085, link via .lnk, hexdump/listing/symbols, quiet mode, exit codes

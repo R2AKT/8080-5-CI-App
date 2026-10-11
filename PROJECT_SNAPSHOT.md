@@ -1,8 +1,8 @@
 # СРЕЗ ПРОЕКТА (PROJECT SNAPSHOT)
 
-> Сгенерировано: 2026-10-09 15:01:21
+> Сгенерировано: 2026-10-11 09:31:32
 > Корень проекта: `c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis`
-> Код: 106 файлов, 30199 строк
+> Код: 103 файлов, 30109 строк
 > Тесты: 74 файлов, 11719 строк
 > Профили: 22 файлов, 843 строк
 
@@ -138,7 +138,7 @@
 ├── assemble8080/
 │   ├── __init__.py  [28 строк]
 │   ├── __main__.py  [19 строк]
-│   ├── assembler.py  [1919 строк]
+│   ├── assembler.py  [1986 строк]
 │   ├── errors.py  [37 строк]
 │   ├── linker.py  [255 строк]
 │   ├── mapfile.py  [162 строк]
@@ -430,25 +430,21 @@
 ├── 8080-5 CI_app_Micro-80.png  [530 строк]
 ├── 8080-5 CI_app_Specialist.png  [305 строк]
 ├── 8080-5 CI_app_trace.png  [331 строк]
-├── _apply_fixes.py  [115 строк]
 ├── _audit_and_version.py  [84 строк]
-├── _check_le.py  [7 строк]
 ├── _final_fixes.py  [134 строк]
 ├── _fix_en.py  [50 строк]
-├── _helper.py  [35 строк]
 ├── _read_code.py  [37 строк]
 ├── _read_code2.py  [53 строк]
 ├── _read_code3.py  [33 строк]
 ├── _read_code4.py  [19 строк]
 ├── _run_all_tests.py  [94 строк]
-├── _tools.json  [352 строк]
-├── _utf8test.txt  [1 строк]
 ├── _verify_fixes.py  [43 строк]
 ├── Addendum.txt  [81 строк]
 ├── ANALYSIS.md  [536 строк]
 ├── ANALYSIS_ASSEMBLER.md  [341 строк]
 ├── ASSEMBLER_GUIDE.md  [1268 строк]
-├── CHANGES.md  [2534 строк]
+├── CHANGES.md  [2630 строк]
+├── CI_ASSEMBLER_FIX_PROMPT.md  [702 строк]
 ├── claude_desktop_config.json  [7 строк]
 ├── clean_pycache.py  [87 строк]
 ├── config.json  [10 строк]
@@ -468,12 +464,14 @@
 ├── md2html.py  [372 строк]
 ├── micro-80_bp_preset.json  [77 строк]
 ├── package-lock.json  [6 строк]
-├── PROJECT_SNAPSHOT.md  [47374 строк]
+├── PROJECT_SNAPSHOT.md  [50841 строк]
+├── PROMPT_CORRECTION_8085_MUL_DIV.md  [167 строк]
 ├── pyproject.toml  [61 строк]
 ├── README.md  [389 строк]
 ├── requirements.txt  [22 строк]
 ├── run_tests.py  [96 строк]
 ├── SCRIPTS_GUIDE.md  [551 строк]
+├── test_t42.obj  [80 строк]
 ├── USER_GUIDE.html  [1471 строк]
 ├── USER_GUIDE.md  [1445 строк]
 └── version.py  [9 строк]
@@ -483,13 +481,6 @@
 
 ■ РАЗДЕЛ 2: ОПИСАНИЕ МОДУЛЕЙ
 
-### `_apply_fixes.py` (115 строк)
-
-**Импорты (1):**
-- `sys`
-
----
-
 ### `_audit_and_version.py` (84 строк)
 
 **Импорты (4):**
@@ -497,13 +488,6 @@
 - `os`
 - `re`
 - `re`
-
----
-
-### `_check_le.py` (7 строк)
-
-**Импорты (1):**
-- `sys`
 
 ---
 
@@ -523,14 +507,6 @@
 - `os`
 - `re`
 - `py_compile`
-
----
-
-### `_helper.py` (35 строк)
-
-**Импорты (2):**
-- `re`
-- `json`
 
 ---
 
@@ -763,7 +739,7 @@
 
 ---
 
-### `assemble8080/assembler.py` (1919 строк)
+### `assemble8080/assembler.py` (1986 строк)
 
 > assemble8080 — компактный макроассемблер Intel 8080.
 
@@ -2218,128 +2194,6 @@
 
 ■ РАЗДЕЛ 3: ПОЛНЫЙ КОД КЛЮЧЕВЫХ ФАЙЛОВ
 
-### `_apply_fixes.py` (115 строк)
-
-<!-- FILE: _apply_fixes.py -->
-```python
-import sys
-sys.stdout.reconfigure(encoding='utf-8')
-
-# ============================================================
-# FIX 1: Add retranslate() method to AssemblerWidget
-# FIX 2: Protect fold marker from { } in content (require leading tab)
-# ============================================================
-
-path = r'c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis\i8080_ci\assembler_widget.py'
-f = open(path, 'r', encoding='utf-8')
-content = f.read()
-f.close()
-
-# --- FIX 2: Protect fold marker regex ---
-# Current: m_collapsed = _re.match(r'^\{\d+\}$', code_part.strip())
-# Problem: matches ANY line that is just {number} after stripping
-# Fix: Only match if the ORIGINAL line starts with a tab character
-old_regex = "m_collapsed = _re.match(r'^\\{\\d+\\}$', code_part.strip())"
-new_regex = "m_collapsed = _re.match(r'^\\{\\d+\\}$', code_part.strip()) if line.startswith('\\t') else None"
-
-if old_regex in content:
-    content = content.replace(old_regex, new_regex)
-    print("FIX 2: Fold marker regex protected (requires leading tab)")
-else:
-    print("FIX 2: WARNING - old regex not found, trying alternate...")
-    # Try with different quote style
-    old_regex2 = "m_collapsed = _re.match(r'^\\{\\d+\\}$', code_part.strip())"
-    if old_regex2 in content:
-        content = content.replace(old_regex2, new_regex)
-        print("FIX 2: Applied with alternate pattern")
-    else:
-        # Search for the actual line
-        for i, line in enumerate(content.split('\n')):
-            if 'm_collapsed' in line and '_re.match' in line:
-                print(f"  Found at line {i+1}: {line.strip()}")
-                break
-
-# --- FIX 1: Add retranslate() method to AssemblerWidget ---
-# Find the end of __init__ or a good place to add the method
-# We'll add it after the set_theme method of AssemblerWidget (if exists) or before the first method after __init__
-
-# Find a good insertion point - after the _on_expand_all method or similar
-# Let's find "def _on_collapse_all" and add retranslate before it
-insert_marker = "    def _on_collapse_all(self):"
-retranslate_method = '''    def retranslate(self):
-        """Update all translatable strings (called on language change)."""
-        self.btn_collapse_all.setToolTip(_tr("fold_collapse_all"))
-        self.btn_expand_all.setToolTip(_tr("fold_expand_all"))
-        self.btn_assemble.setText(_tr("asm_assemble"))
-        self.btn_assemble_load.setText(_tr("asm_assemble_load"))
-        self.btn_assemble_obj.setText(_tr("asm_assemble_obj"))
-        self.btn_link.setText(_tr("asm_link"))
-        # Update folding area tooltips
-        if hasattr(self, 'folding_area'):
-            self.folding_area.update()
-
-'''
-
-if insert_marker in content:
-    content = content.replace(insert_marker, retranslate_method + insert_marker)
-    print("FIX 1: Added retranslate() method to AssemblerWidget")
-else:
-    print("FIX 1: WARNING - insert marker not found")
-    # Try alternate
-    alt_marker = "    def _on_expand_all(self):"
-    if alt_marker in content:
-        content = content.replace(alt_marker, retranslate_method + alt_marker)
-        print("FIX 1: Added retranslate() before _on_expand_all")
-    else:
-        print("FIX 1: ERROR - could not find insertion point")
-
-# Write back
-f = open(path, 'w', encoding='utf-8')
-f.write(content)
-f.close()
-print("assembler_widget.py saved")
-
-# ============================================================
-# FIX 3: Call retranslate() from main_window.retranslate_ui()
-# ============================================================
-path2 = r'c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis\i8080_ci\main_window.py'
-f = open(path2, 'r', encoding='utf-8')
-mw = f.read()
-f.close()
-
-# Find the end of retranslate_ui and add assembler widget retranslate call
-# We'll add it after the tab text updates
-# Look for a good spot - after "self.tabs.setTabText(10, ..."
-marker = 'self.tabs.setTabText(10, self.tr("tab_compare"))   # Сравнение'
-if marker in mw:
-    insert_after = marker + '\n        '
-    new_code = insert_after + '# Обновляем переводы ассемблера\n        if hasattr(self, \'assembler_widget\'):\n            self.assembler_widget.retranslate()\n        '
-    mw = mw.replace(marker, new_code)
-    print("FIX 3: Added assembler_widget.retranslate() to retranslate_ui()")
-else:
-    print("FIX 3: WARNING - marker not found, trying alternate")
-    # Try to find the last setTabText
-    last_tab = mw.rfind('self.tabs.setTabText(')
-    if last_tab != -1:
-        # Find end of that line
-        eol = mw.find('\n', last_tab)
-        line = mw[last_tab:eol]
-        print(f"  Last setTabText: {line.strip()}")
-        # Insert after it
-        mw = mw[:eol] + '\n        # Обновляем переводы ассемблера\n        if hasattr(self, \'assembler_widget\'):\n            self.assembler_widget.retranslate()' + mw[eol:]
-        print("FIX 3: Added after last setTabText")
-    else:
-        print("FIX 3: ERROR - could not find insertion point")
-
-f = open(path2, 'w', encoding='utf-8')
-f.write(mw)
-f.close()
-print("main_window.py saved")
-
-print("\n=== ALL FIXES APPLIED ===")
-```
-<!-- END FILE: _apply_fixes.py -->
-
 ### `_audit_and_version.py` (84 строк)
 
 <!-- FILE: _audit_and_version.py -->
@@ -2430,20 +2284,6 @@ if m:
 print("\n=== DONE ===")
 ```
 <!-- END FILE: _audit_and_version.py -->
-
-### `_check_le.py` (7 строк)
-
-<!-- FILE: _check_le.py -->
-```python
-import sys
-sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-for f in ["README.md","MCP_GUIDE.md","SCRIPTS_GUIDE.md","ANALYSIS.md","ANALYSIS_ASSEMBLER.md","I18N_AUDIT.md","CHANGES.md","ASSEMBLER_GUIDE.md","USER_GUIDE.md"]:
-    b = open(f, "rb").read()
-    crlf = b.count(b"\r\n")
-    lf = b.count(b"\n") - crlf
-    print(f, "CRLF=", crlf, "LF=", lf, "LINES=", b.count(b"\n"))
-```
-<!-- END FILE: _check_le.py -->
 
 ### `_final_fixes.py` (134 строк)
 
@@ -2642,48 +2482,6 @@ except py_compile.PyCompileError as e:
 print("Done")
 ```
 <!-- END FILE: _fix_en.py -->
-
-### `_helper.py` (35 строк)
-
-<!-- FILE: _helper.py -->
-```python
-import re, json
-
-with open("MCP_GUIDE.md", "rb") as f:
-    data = f.read()
-text = data.decode("utf-8")
-lines = text.split("\n")
-
-# Find all '## ' header line indices (0-based)
-header_idx = []
-for i, ln in enumerate(lines):
-    if re.match(r'^##\s', ln):
-        header_idx.append(i)
-
-# Build sections: for each header, body = lines after header until next header
-sections = {}  # header_line -> body (list of lines, cleaned)
-for k, hi in enumerate(header_idx):
-    end = header_idx[k+1] if k+1 < len(header_idx) else len(lines)
-    body = lines[hi+1:end]
-    # strip trailing blank lines and a trailing '---'
-    while body and body[-1].strip() == "":
-        body.pop()
-    if body and body[-1].strip() == "---":
-        body.pop()
-    while body and body[-1].strip() == "":
-        body.pop()
-    sections[lines[hi]] = body
-
-# Print sections 1, 9, 10, 11, 12 bodies
-for key in ["## 1. ", "## 9. ", "## 10. ", "## 11. ", "## 12. "]:
-    for h, body in sections.items():
-        if h.startswith(key):
-            print("##### SECTION: %s (body lines=%d) #####" % (h, len(body)))
-            for bl in body:
-                print("   | %s" % bl)
-            print()
-```
-<!-- END FILE: _helper.py -->
 
 ### `_read_code.py` (37 строк)
 
@@ -4207,12 +4005,12 @@ class I8080Emulator(QObject):
 
     def _execute_overlapping_8085(self, opcode) -> None:
         """Пересекающиеся опкоды на 8085 (2 задокументированные + недокументированные)."""
-        # 0x20 — SIM (Set Interrupt Mask)
-        if opcode == 0x20:
+        # 0x30 — SIM (Set Interrupt Mask)
+        if opcode == 0x30:
             self._execute_sim()
             return
-        # 0x30 — RIM (Read Interrupt Mask)
-        if opcode == 0x30:
+        # 0x20 — RIM (Read Interrupt Mask)
+        if opcode == 0x20:
             self._execute_rim()
             return
         # 0x08 — DSUB: HL = HL - BC
@@ -7123,7 +6921,7 @@ if __name__ == "__main__":
 ```
 <!-- END FILE: assemble8080/__main__.py -->
 
-### `assemble8080/assembler.py` (1919 строк)
+### `assemble8080/assembler.py` (1986 строк)
 
 <!-- FILE: assemble8080/assembler.py -->
 ```python
@@ -7367,8 +7165,9 @@ MNEMONICS_8080 = {
 # =============================================================
 MNEMONICS_8085 = {
     # Задокументированные 8085
-    'SIM':   (0x20, '', 1),   # Set Interrupt Mask
-    'RIM':   (0x30, '', 1),   # Read Interrupt Mask
+    'SIM':   (0x30, '', 1),   # Set Interrupt Mask
+    'RIM':   (0x20, '', 1),   # Read Interrupt Machine
+
     # Недокументированные 8085
     'DSUB':  (0x08, '', 1),   # HL = HL - BC
     'ARHL':  (0x10, '', 1),   # Арифметический сдвиг HL вправо
@@ -7412,6 +7211,14 @@ def parse_number(text: str) -> int | None:
     text = text.strip()
     if not text:
         return None
+
+    # ASxxxx: #N = decimal
+    if text.startswith('#'):
+        text = text[1:]
+        try:
+            return int(text, 10)
+        except ValueError:
+            return None
 
     m = _RE_HEX_PREFIX.match(text)
     if m:
@@ -7724,6 +7531,14 @@ class Assembler:
         m = re.match(r'^([A-Za-z_][A-Za-z0-9_$]*)\s*:\s*(.*)', line)
         if m:
             return m.group(1), False, m.group(2)
+        # ASxxxx: $N local label (with colon)
+        m = re.match(r'^\$(\d+)\s*:\s*(.*)', line)
+        if m:
+            return f'${m.group(1)}', False, m.group(2)
+        # ASxxxx: $N local label (without colon, followed by instruction)
+        m = re.match(r'^\$(\d+)\s+(.*)', line)
+        if m:
+            return f'${m.group(1)}', False, m.group(2)
         # Метка без двоеточия (для совместимости)
         m = re.match(r'^([A-Za-z_][A-Za-z0-9_$]*)\s+(.*)', line)
         if m:
@@ -7822,6 +7637,17 @@ class Assembler:
                 self.cpu_set_by_directive = True
                 continue
             # XDEF/XREF/SECTION/IF/ENDIF/ELSE/LOCAL/ENDLOCAL/ERROR — no-op
+            # ASxxxx directives: .area, .module, .list, .nlist, .globl
+            if mnemonic in ('AREA', 'MODULE', 'LIST', 'NLIST'):
+                continue
+            if mnemonic == 'GLOBL':
+                if operand:
+                    for name in self._split_operands(operand):
+                        name = name.strip().upper()
+                        if name:
+                            self._global_labels.add(name)
+                            self._exports.add(name)
+                continue
             if mnemonic in ('XDEF', 'XREF', 'SECTION', '.XDEF', '.XREF', '.SECTION',
                            'IF', 'ENDIF', 'ELSE', 'LOCAL', 'ENDLOCAL', 'ERROR',
                            '.IF', '.ENDIF', '.ELSE', '.LOCAL', '.ENDLOCAL', '.ERROR',
@@ -8137,6 +7963,12 @@ class Assembler:
                     self._write_pos = location - self._base_offset
                 continue
 
+            # ASxxxx directives: .area, .module, .list, .nlist, .globl
+            if mnemonic in ('AREA', 'MODULE', 'LIST', 'NLIST'):
+                continue
+            if mnemonic == 'GLOBL':
+                continue
+
             # EXPORT / PUBLIC (pass 2: no-op)
             if mnemonic in ('EXPORT', 'PUBLIC', '.EXPORT', '.PUBLIC'):
                 continue
@@ -8410,6 +8242,16 @@ class Assembler:
             if len(operands) < 1:
                 self._error(line_num, f"{mnemonic}: ожидается регистр")
                 return bytearray([opcode])
+            # ASxxxx 2-operand form: "cmp a, #5" -> CPI 5
+            if len(operands) >= 2:
+                op2_upper = operands[1].strip().upper()
+                if op2_upper not in REGISTERS and op2_upper not in ('BC', 'DE', 'HL', 'PSW'):
+                    ALU_IMM2 = {'CMP': 0xFE, 'ADD': 0xC6, 'ADC': 0xCE, 'SUB': 0xD6,
+                                'SBB': 0xDE, 'ANA': 0xE6, 'XRA': 0xEE, 'ORA': 0xF6}
+                    if mnemonic in ALU_IMM2:
+                        val = self._parse_operand(operands[1], line_num, allow_current=True)
+                        if val is not None:
+                            return bytearray([ALU_IMM2[mnemonic], val & 0xFF])
             # Check if operand is a valid register; if not, try immediate (ALU ops)
             op_upper = operands[0].strip().upper()
             if op_upper in REGISTERS or op_upper in ('BC', 'DE', 'HL', 'PSW'):
@@ -8419,7 +8261,8 @@ class Assembler:
                 return bytearray([opcode | reg_code])
             # Not a register — try as immediate value (ALU d8 forms)
             ALU_IMM_OPCODES = {'ADD': 0xC6, 'ADC': 0xCE, 'SUB': 0xD6, 'SBB': 0xDE,
-                               'ANA': 0xE6, 'XRA': 0xEE, 'ORI': 0xF6, 'CPI': 0xFE}
+                               'ANA': 0xE6, 'XRA': 0xEE, 'ORA': 0xF6, 'CPI': 0xFE,
+                               'CMP': 0xFE}
             if mnemonic in ALU_IMM_OPCODES:
                 val = self._parse_operand(operands[0], line_num, allow_current=True)
                 if val is not None:
@@ -8434,6 +8277,13 @@ class Assembler:
             if len(operands) < 2:
                 self._error(line_num, f"{mnemonic}: ожидается два регистра")
                 return bytearray([opcode])
+            # ASxxxx: mov a, #5 -> MVI A, 5
+            src_upper = operands[1].strip().upper()
+            if mnemonic == 'MOV' and src_upper not in REGISTERS and src_upper not in ('BC', 'DE', 'HL', 'PSW'):
+                dst_code = self._get_reg_code(operands[0], line_num)
+                val = self._parse_operand(operands[1], line_num, allow_current=True)
+                if val is not None:
+                    return bytearray([0x06 | (dst_code << 3), val & 0xFF])
             dst = self._get_reg_code(operands[0], line_num)
             src = self._get_reg_code(operands[1], line_num)
             return bytearray([opcode | (dst << 3) | src])
@@ -8478,7 +8328,15 @@ class Assembler:
                 self._error(line_num, f"Невозможно вычислить: {operands[0]}")
                 val = 0
             sym = self._is_import_symbol(operands[0])
-            if sym is not None:
+            if sym is None:
+                # Check if operand is an undefined symbol
+                op_str = operands[0].strip()
+                if re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', op_str):
+                    upper = op_str.upper()
+                    if upper not in self.symbols:
+                        self._imports.add(upper)
+                        self._track_relocation(self._write_pos + 1, 2, upper)
+            else:
                 self._track_relocation(self._write_pos + 1, 2, sym)
             return bytearray([opcode, val & 0xFF, (val >> 8) & 0xFF])
 
@@ -8587,6 +8445,13 @@ class Assembler:
         # Пробуем как число или выражение через ExpressionParser
         # Подставляем $ текущим адресом
         expr_str = operand_str
+        # ASxxxx: $N — локальная метка (НЕ текущий адрес). Резолвим напрямую,
+        # чтобы не подставлять pc вместо '$'.
+        if re.match(r'^\$\d+$', expr_str):
+            if expr_str in self.symbols:
+                return self.symbols[expr_str]
+            self.warnings.append(f"L{line_num}: Неопределённая метка: {expr_str}")
+            return 0
         if allow_current and '$' in expr_str:
             expr_str = expr_str.replace('$', str(self.pc))
         # Простой идентификатор без операторов — предупреждение если не определён
@@ -8955,7 +8820,7 @@ def _cli_main(argv=None) -> int:
 
     # --- Режим линковки по .lnk-скрипту ---
     if args.lnk:
-        from assemble8080.linker import link_from_script
+        from .linker import link_from_script
         lr = link_from_script(args.lnk)
         if not lr.success:
             print("[FAIL] Linking:")
@@ -8968,7 +8833,7 @@ def _cli_main(argv=None) -> int:
         if not args.quiet:
             print(f"[OK] Linked {len(lr.binary)} bytes -> {out}")
         if args.map_file and lr.map_text:
-            from assemble8080.mapfile import save_map_file
+            from .mapfile import save_map_file
             save_map_file(args.map_file, lr.map_text)
             if not args.quiet:
                 print(f"     -> {args.map_file}")
@@ -9008,14 +8873,14 @@ def _cli_main(argv=None) -> int:
         # map-файл
         map_out = args.map_file or (base + ".map")
         if result.map_text:
-            from assemble8080.mapfile import save_map_file
+            from .mapfile import save_map_file
             save_map_file(map_out, result.map_text)
             if not args.quiet:
                 print(f"     -> {map_out}")
 
         # объектный файл
         if args.obj:
-            from assemble8080.objfile import obj_from_asm_result, save_obj
+            from .objfile import obj_from_asm_result, save_obj
             obj = obj_from_asm_result(result, source_name=src)
             save_obj(args.obj, obj)
             if not args.quiet:
@@ -15366,8 +15231,8 @@ class I8080Disassembler:
         # === ПЕРЕСЕКАЮЩИЕСЯ ОПКОДЫ 8080/8085 ===
         if self.cpu_type == "i8085":
             # 8085: 2 задокументированные (SIM, RIM) + недокументированные
-            t[0x20] = (1, "SIM")
-            t[0x30] = (1, "RIM")
+            t[0x30] = (1, "SIM")
+            t[0x20] = (1, "RIM")
             t[0x08] = (1, "DSUB")
             t[0x10] = (1, "ARHL")
             t[0x18] = (1, "RDEL")
@@ -33145,7 +33010,7 @@ def create_terminal_widget(device):
 
 ■ РАЗДЕЛ 4: ИЗМЕНЕНИЯ РЕФАКТОРИНГА
 
-Источник: `CHANGES.md` (2534 строк)
+Источник: `CHANGES.md` (2630 строк)
 
 ```markdown
 # Changelog / Журнал изменений
@@ -33153,6 +33018,68 @@ def create_terminal_widget(device):
 
 
 
+
+## v2.1.8 (2026-10-11)
+
+
+
+### SIM/RIM opcode correction (8085)
+
+
+
+- **Fixed SIM/RIM swap:** opcodes were swapped in assembler, emulator, and disassembler.
+
+  Per official Intel 8085 documentation: **SIM = 0x30**, **RIM = 0x20**.
+
+  Previously: SIM=0x20, RIM=0x30 (incorrect).
+
+- Updated: `assembler.py` (MNEMONICS_8085), `i8080_emulator.py` (_execute_overlapping_8085),
+
+  `disassembler.py` (_generate_table), `tests/test_8085.py`
+
+- All 921 tests pass
+
+
+
+### Removed ASxxxx aliases (OR, AND, XOR, ORAI, ANDI, XORI)
+
+
+
+- Removed non-canonical aliases from `MNEMONICS` and `ALU_IMM2`/`ALU_IMM_OPCODES`.
+
+  Assembler now uses only official 8080/8085 mnemonics: ORA, ANA, XRA, ORI, ANI, XRI.
+
+- Rationale: the prompt that introduced these aliases (CI_ASSEMBLER_FIX_PROMPT.md)
+
+  contained a hallucination (MUL/DIV as 8085 instructions). For consistency,
+
+  only canonical mnemonics are kept.
+
+
+
+### Removed hallucinated MUL/DIV from 8085
+
+
+
+- Removed `MUL` (0x68) and `DIV` (0x78) from `MNEMONICS_8085`.
+
+  8080/8085 do NOT have hardware multiply/divide instructions.
+
+  0x68 = MOV L,B and 0x78 = MOV A,B (standard 8080 data transfer).
+
+- Note: `crun8080lib.asm` uses `mul b`/`div b` (lines 2414,2421,2455) —
+
+  this is a bug in the runtime library, not the assembler.
+
+
+
+### Documentation
+
+
+
+- Updated ASSEMBLER_GUIDE.md, USER_GUIDE.md with correct SIM/RIM opcodes
+
+- Added PROMPT_CORRECTION_8085_MUL_DIV.md documenting the hallucination errors
 
 ## v2.1.7 (2026-10-09)
 
@@ -33173,6 +33100,40 @@ def create_terminal_widget(device):
 ### Documentation
 
 - ASSEMBLER_GUIDE.md: new section 11 (CLI) with options table and examples
+
+
+
+### ASxxxx format support (native SmallC 8080)
+
+
+
+- Assembler now natively understands the ASxxxx format emitted by the SmallC 8080 compiler — no converter needed
+
+
+
+  - Numbers: `#N` decimal prefix (e.g. `#62915`), plus existing `0xNN`/`NNH`/`NB`/`NQ`
+
+  - Local labels `$N:` / `$N` (e.g. `jz $1`); fixed a bug where `$N` was mis-parsed as the `$` current-address operator
+
+  - Directives: `.area`, `.module`, `.list`, `.nlist` (no-op), `.globl` (exports), `.end` (stop)
+
+  - Mnemonic aliases: `or`/`and`/`xor` (register), `orai`/`andi`/`xori` (immediate)
+
+  - Two-operand ALU forms: `cmp a,#5` -> CPI, `mov a,#5` -> MVI
+
+  - `d16`/`rp,d16` operands: auto-import of undefined symbols + relocation tracking for the linker
+
+  - 8085 `mul`/`div` in `MNEMONICS_8085`
+
+  - All internal imports made relative (`.mapfile`, `.objfile`, `.linker`, `.preprocessor`)
+
+
+
+- Verified: `t42.s` (140 bytes, 11 relocations, 4 imports) and `crun8080lib.asm` (4017 bytes, 202 symbols) assemble cleanly; linker resolves all relocations (CCPLONG=0x11BE, CCGFLOAT=0x11CA, CCFNE=0x18D0)
+
+- Removed obsolete `convert_asm.py` and `link_simple.py` workarounds
+
+
 
 ## v2.1.6 (2026-10-08)
 
@@ -38666,13 +38627,13 @@ print("=" * 60)
 
 r = asm(".8085\nSIM")
 check(".8085: SIM собирается", r.success, True)
-check(".8085: SIM = 0x20", bytes(r.binary), bytes([0x20]))
+check(".8085: SIM = 0x30", bytes(r.binary), bytes([0x30]))
 
 r = asm(".8085\nRIM")
-check(".8085: RIM = 0x30", bytes(r.binary), bytes([0x30]))
+check(".8085: RIM = 0x20", bytes(r.binary), bytes([0x20]))
 
 r = asm(".asm8085\nSIM")
-check(".asm8085: SIM = 0x20", bytes(r.binary), bytes([0x20]))
+check(".asm8085: SIM = 0x30", bytes(r.binary), bytes([0x30]))
 
 r = asm("SIM")
 check("по умолчанию (i8080): SIM неизвестна", r.success, False)
@@ -38684,7 +38645,7 @@ r = asm(".8080\nNOP*")
 check(".8080: NOP* = 0x08", bytes(r.binary), bytes([0x08]))
 
 r = asm("CPU 8085\nSIM")
-check("CPU 8085: SIM = 0x20", bytes(r.binary), bytes([0x20]))
+check("CPU 8085: SIM = 0x30", bytes(r.binary), bytes([0x30]))
 
 # ============================================================
 # ЧАСТЬ 2: АССЕМБЛЕР — недокументированные 8085
@@ -38761,14 +38722,14 @@ def make_emu(program, cpu_type="i8080", extra_mem=None):
     return emu
 
 
-# 8085: SIM (0x20)
-emu = make_emu([0x3E, 0x0F, 0x20], "i8085")
+# 8085: SIM (0x30)
+emu = make_emu([0x3E, 0x0F, 0x30], "i8085")
 emu.run(10)
 check("8085: SIM: irq_enabled_85", emu.irq_enabled_85, True)
 check("8085: SIM: irq_mask", emu.irq_mask, 0x07)
 
-# 8085: RIM (0x30)
-emu = make_emu([0x3E, 0x0F, 0x20, 0x30], "i8085")
+# 8085: RIM (0x20)
+emu = make_emu([0x3E, 0x0F, 0x30, 0x20], "i8085")
 emu.run(10)
 check("8085: RIM: MSE bit", emu.a & 0x08, 0x08)
 check("8085: RIM: mask bits", emu.a & 0x07, 0x07)
@@ -38835,8 +38796,8 @@ check("8080 disasm: 0x20 = NOP*", d80.table[0x20][1], "NOP*")
 check("8080 disasm: 0xD9 = RET*", d80.table[0xD9][1], "RET*")
 
 d85 = I8080Disassembler(cpu_type="i8085")
-check("8085 disasm: 0x20 = SIM", d85.table[0x20][1], "SIM")
-check("8085 disasm: 0x30 = RIM", d85.table[0x30][1], "RIM")
+check("8085 disasm: 0x30 = SIM", d85.table[0x30][1], "SIM")
+check("8085 disasm: 0x20 = RIM", d85.table[0x20][1], "RIM")
 check("8085 disasm: 0x08 = DSUB", d85.table[0x08][1], "DSUB")
 check("8085 disasm: 0xD9 = SHLX", d85.table[0xD9][1], "SHLX")
 check("8085 disasm: 0xED = LHLX", d85.table[0xED][1], "LHLX")
@@ -38844,7 +38805,7 @@ check("8085 disasm: 0xED = LHLX", d85.table[0xED][1], "LHLX")
 # set_cpu_type
 d = I8080Disassembler(cpu_type="i8080")
 d.set_cpu_type("i8085")
-check("disasm set_cpu_type: 0x20 = SIM", d.table[0x20][1], "SIM")
+check("disasm set_cpu_type: 0x30 = SIM", d.table[0x30][1], "SIM")
 d.set_cpu_type("i8080")
 check("disasm set_cpu_type back: 0x20 = NOP*", d.table[0x20][1], "NOP*")
 
@@ -50090,7 +50051,8 @@ MNEMONICS = {# Без операндов
 **ALU_IMM_OPCODES** (из `assemble8080/assembler.py`):
 ```python
 ALU_IMM_OPCODES = {'ADD': 0xC6, 'ADC': 0xCE, 'SUB': 0xD6, 'SBB': 0xDE,
-                               'ANA': 0xE6, 'XRA': 0xEE, 'ORI': 0xF6, 'CPI': 0xFE}
+                               'ANA': 0xE6, 'XRA': 0xEE, 'ORA': 0xF6, 'CPI': 0xFE,
+                               'CMP': 0xFE}
 ```
 
 **_CATCH_ALL** (из `common/encoding.py`):
@@ -50605,8 +50567,6 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 ### C. Конфигурационные файлы
 
 - `Addendum.txt` (81 строк)
-- `_tools.json` (352 строк)
-- `_utf8test.txt` (1 строк)
 - `claude_desktop_config.json` (7 строк)
 - `config.json` (10 строк)
 - `micro-80_bp_preset.json` (77 строк)
@@ -50671,6 +50631,7 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 - `LICENSE` (, 21 строк)
 - `i8080_CI.spec` (.spec, 39 строк)
 - `make.cmd` (.cmd, 1 строк)
+- `test_t42.obj` (.obj, 80 строк)
 - `ASM_FOR_TEST/4KBAS.ASM` (.asm, 2300 строк)
 - `ASM_FOR_TEST/8080EX1.MAC` (.mac, 1367 строк)
 - `ASM_FOR_TEST/8080EXER.MAC` (.mac, 1283 строк)
@@ -50838,4 +50799,4 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 
 ---
 
-*Конец среза. Сгенерировано 2026-10-09 15:01:21.*
+*Конец среза. Сгенерировано 2026-10-11 09:31:32.*
