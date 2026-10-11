@@ -1455,7 +1455,12 @@ class Assembler:
                 op_str = operands[1].strip()
                 if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', op_str):
                     upper = op_str.upper()
-                    if upper in self.symbols and self._relocatable:
+                    if upper not in self.symbols:
+                        # Undefined symbol → import
+                        self._imports.add(upper)
+                        self._track_relocation(self._write_pos + 1, 2, upper)
+                    elif self._relocatable:
+                        # Defined local symbol in relocatable mode → relocation
                         self._track_relocation(self._write_pos + 1, 2, upper)
             return bytearray([opcode | (rp_code << 4), val & 0xFF, (val >> 8) & 0xFF])
 
@@ -1705,7 +1710,12 @@ class Assembler:
                 part_str = part.strip()
                 if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', part_str):
                     upper = part_str.upper()
-                    if upper in self.symbols and self._relocatable:
+                    if upper not in self.symbols:
+                        # Undefined symbol → import
+                        self._imports.add(upper)
+                        self._track_relocation(self._write_pos + len(result) - 2, 2, upper)
+                    elif self._relocatable:
+                        # Defined local symbol in relocatable mode → relocation
                         self._track_relocation(self._write_pos + len(result) - 2, 2, upper)
         return result
 

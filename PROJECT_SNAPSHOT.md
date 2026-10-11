@@ -1,8 +1,8 @@
 # СРЕЗ ПРОЕКТА (PROJECT SNAPSHOT)
 
-> Сгенерировано: 2026-10-11 19:04:08
+> Сгенерировано: 2026-10-11 19:47:42
 > Корень проекта: `c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis`
-> Код: 108 файлов, 30832 строк
+> Код: 113 файлов, 31113 строк
 > Тесты: 74 файлов, 11719 строк
 > Профили: 22 файлов, 843 строк
 
@@ -138,7 +138,7 @@
 ├── assemble8080/
 │   ├── __init__.py  [28 строк]
 │   ├── __main__.py  [19 строк]
-│   ├── assembler.py  [2005 строк]
+│   ├── assembler.py  [2015 строк]
 │   ├── errors.py  [37 строк]
 │   ├── linker.py  [255 строк]
 │   ├── mapfile.py  [162 строк]
@@ -433,22 +433,28 @@
 ├── _audit_and_version.py  [84 строк]
 ├── _cycle1.py  [402 строк]
 ├── _final_fixes.py  [134 строк]
-├── _fix_dollar.py  [27 строк]
 ├── _fix_en.py  [50 строк]
+├── _fix_reloc.py  [63 строк]
 ├── _read_code.py  [37 строк]
 ├── _read_code2.py  [53 строк]
 ├── _read_code3.py  [33 строк]
 ├── _read_code4.py  [19 строк]
+├── _review1.py  [13 строк]
+├── _review2.py  [14 строк]
+├── _review3.py  [10 строк]
+├── _review4.py  [20 строк]
 ├── _run_all_tests.py  [94 строк]
 ├── _test_dollar.py  [73 строк]
+├── _test_out.txt  [45 строк]
 ├── _test_reloc.py  [166 строк]
-├── _upd.py  [36 строк]
+├── _test_reloc_undefined.py  [177 строк]
+├── _update_changes.py  [37 строк]
 ├── _verify_fixes.py  [43 строк]
 ├── Addendum.txt  [81 строк]
 ├── ANALYSIS.md  [536 строк]
 ├── ANALYSIS_ASSEMBLER.md  [341 строк]
 ├── ASSEMBLER_GUIDE.md  [1268 строк]
-├── CHANGES.md  [2661 строк]
+├── CHANGES.md  [2679 строк]
 ├── claude_desktop_config.json  [7 строк]
 ├── clean_pycache.py  [87 строк]
 ├── config.json  [10 строк]
@@ -468,7 +474,7 @@
 ├── md2html.py  [372 строк]
 ├── micro-80_bp_preset.json  [77 строк]
 ├── package-lock.json  [6 строк]
-├── PROJECT_SNAPSHOT.md  [51532 строк]
+├── PROJECT_SNAPSHOT.md  [52050 строк]
 ├── PROMPT_CI_ASSEMBLER_DOLLAR_LABELS.md  [106 строк]
 ├── pyproject.toml  [61 строк]
 ├── README.md  [389 строк]
@@ -523,15 +529,6 @@
 
 ---
 
-### `_fix_dollar.py` (27 строк)
-
-> Fix: $-labels don't get relocations. Replace regex in 5 locations.
-
-**Импорты (1):**
-- `sys`
-
----
-
 ### `_fix_en.py` (50 строк)
 
 **Импорты (4):**
@@ -539,6 +536,13 @@
 - `os`
 - `re`
 - `py_compile`
+
+---
+
+### `_fix_reloc.py` (63 строк)
+
+**Импорты (1):**
+- `sys`
 
 ---
 
@@ -564,6 +568,41 @@
 ---
 
 ### `_read_code4.py` (19 строк)
+
+**Импорты (1):**
+- `sys`
+
+---
+
+### `_review1.py` (13 строк)
+
+**Импорты (2):**
+- `sys`
+- `re`
+
+---
+
+### `_review2.py` (14 строк)
+
+**Импорты (1):**
+- `sys`
+
+**Функции (1):**
+- `dump(start, end, title)`
+
+---
+
+### `_review3.py` (10 строк)
+
+**Импорты (1):**
+- `sys`
+
+**Функции (1):**
+- `dump(start, end, title)`
+
+---
+
+### `_review4.py` (20 строк)
 
 **Импорты (1):**
 - `sys`
@@ -621,7 +660,22 @@
 
 ---
 
-### `_upd.py` (36 строк)
+### `_test_reloc_undefined.py` (177 строк)
+
+> Test: undefined symbols in LXI and DW generate relocations (v2.1.11 fix).
+
+**Импорты (4):**
+- `sys`
+- `from assemble8080.assembler import assemble`
+- `from assemble8080.objfile import obj_from_asm_result`
+- `from assemble8080.linker import link`
+
+**Функции (1):**
+- `check(name, cond)`
+
+---
+
+### `_update_changes.py` (37 строк)
 
 **Импорты (1):**
 - `sys`
@@ -810,7 +864,7 @@
 
 ---
 
-### `assemble8080/assembler.py` (2005 строк)
+### `assemble8080/assembler.py` (2015 строк)
 
 > assemble8080 — компактный макроассемблер Intel 8080.
 
@@ -2906,40 +2960,6 @@ print("\n=== ALL DONE ===")
 ```
 <!-- END FILE: _final_fixes.py -->
 
-### `_fix_dollar.py` (27 строк)
-
-<!-- FILE: _fix_dollar.py -->
-```python
-# -*- coding: utf-8 -*-
-"""Fix: $-labels don't get relocations. Replace regex in 5 locations."""
-import sys
-sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-
-path = r'c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis\assemble8080\assembler.py'
-with open(path, 'r', encoding='utf-8') as f:
-    content = f.read()
-
-old = r"r'^[A-Za-z_][A-Za-z0-9_]*$'"
-new = r"r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$'"
-
-count = content.count(old)
-print(f"Found {count} occurrences of the old regex")
-
-# We need to replace only the 5 that are anchored ^...$ (pure symbol check)
-# Lines 1301, 1412, 1456, 1544, 1706
-# All 5 use the exact same string: r'^[A-Za-z_][A-Za-z0-9_]*$'
-# The other occurrences use \b...\b or are part of larger patterns
-
-content = content.replace(old, new)
-
-with open(path, 'w', encoding='utf-8') as f:
-    f.write(content)
-
-print(f"Replaced {count} occurrences")
-print("Done.")
-```
-<!-- END FILE: _fix_dollar.py -->
-
 ### `_fix_en.py` (50 строк)
 
 <!-- FILE: _fix_en.py -->
@@ -2996,6 +3016,76 @@ except py_compile.PyCompileError as e:
 print("Done")
 ```
 <!-- END FILE: _fix_en.py -->
+
+### `_fix_reloc.py` (63 строк)
+
+<!-- FILE: _fix_reloc.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
+path = 'assemble8080/assembler.py'
+src = open(path, encoding='utf-8').read()
+
+# Fix 1: rp,d16 handler - add undefined symbol → import
+old1 = """                    upper = op_str.upper()
+                    if upper in self.symbols and self._relocatable:
+                        self._track_relocation(self._write_pos + 1, 2, upper)
+            return bytearray([opcode | (rp_code << 4), val & 0xFF, (val >> 8) & 0xFF])"""
+
+new1 = """                    upper = op_str.upper()
+                    if upper not in self.symbols:
+                        # Undefined symbol → import
+                        self._imports.add(upper)
+                        self._track_relocation(self._write_pos + 1, 2, upper)
+                    elif self._relocatable:
+                        # Defined local symbol in relocatable mode → relocation
+                        self._track_relocation(self._write_pos + 1, 2, upper)
+            return bytearray([opcode | (rp_code << 4), val & 0xFF, (val >> 8) & 0xFF])"""
+
+if old1 in src:
+    src = src.replace(old1, new1)
+    print("Fix 1 (rp,d16): APPLIED")
+else:
+    print("Fix 1 (rp,d16): NOT FOUND")
+    # Debug: find the actual text
+    lines = src.split('\n')
+    for i, line in enumerate(lines):
+        if 'upper in self.symbols and self._relocatable' in line:
+            print(f"  Found at line {i+1}: {repr(line)}")
+            print(f"  Context: {repr(lines[i-1:i+3])}")
+
+# Fix 2: _parse_dw - add undefined symbol → import
+old2 = """                    upper = part_str.upper()
+                    if upper in self.symbols and self._relocatable:
+                        self._track_relocation(self._write_pos + len(result) - 2, 2, upper)
+        return result"""
+
+new2 = """                    upper = part_str.upper()
+                    if upper not in self.symbols:
+                        # Undefined symbol → import
+                        self._imports.add(upper)
+                        self._track_relocation(self._write_pos + len(result) - 2, 2, upper)
+                    elif self._relocatable:
+                        # Defined local symbol in relocatable mode → relocation
+                        self._track_relocation(self._write_pos + len(result) - 2, 2, upper)
+        return result"""
+
+if old2 in src:
+    src = src.replace(old2, new2)
+    print("Fix 2 (_parse_dw): APPLIED")
+else:
+    print("Fix 2 (_parse_dw): NOT FOUND")
+    lines = src.split('\n')
+    for i, line in enumerate(lines):
+        if 'upper in self.symbols and self._relocatable' in line:
+            print(f"  Found at line {i+1}: {repr(line)}")
+            print(f"  Context: {repr(lines[i-1:i+3])}")
+
+open(path, 'w', encoding='utf-8').write(src)
+print("File saved.")
+```
+<!-- END FILE: _fix_reloc.py -->
 
 ### `_read_code.py` (37 строк)
 
@@ -3166,6 +3256,91 @@ print("=== RETRANSLATE ===")
 print(mw[max(0,idx2-50):idx2+2000])
 ```
 <!-- END FILE: _read_code4.py -->
+
+### `_review1.py` (13 строк)
+
+<!-- FILE: _review1.py -->
+```python
+import sys, re
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+src = open('assemble8080/assembler.py', encoding='utf-8').read()
+lines = src.split('\n')
+print(f"TOTAL LINES: {len(lines)}")
+print()
+# Find all lines with key markers
+markers = ['_relocatable', '_track_relocation', '_is_import_symbol', '_parse_dw', '_parse_operand', 'self._imports', 'def assemble', 'pass 1', 'pass 2', 'PASS 1', 'PASS 2', 'self.symbols']
+for i, line in enumerate(lines, 1):
+    for m in markers:
+        if m in line:
+            print(f"{i:5d}: {line.rstrip()}")
+            break
+```
+<!-- END FILE: _review1.py -->
+
+### `_review2.py` (14 строк)
+
+<!-- FILE: _review2.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+lines = open('assemble8080/assembler.py', encoding='utf-8').read().split('\n')
+
+def dump(start, end, title):
+    print(f"\n{'='*70}\n### {title} (lines {start}-{end})\n{'='*70}")
+    for i in range(start-1, min(end, len(lines))):
+        print(f"{i+1:5d}: {lines[i]}")
+
+dump(1298, 1330, "_is_import_symbol + _track_relocation")
+dump(1395, 1470, "d16 handler + rp,d16 handler")
+dump(1693, 1725, "_parse_dw")
+dump(630, 680, "assemble() pass 1 setup")
+dump(740, 775, ".org + IMPORT handling")
+```
+<!-- END FILE: _review2.py -->
+
+### `_review3.py` (10 строк)
+
+<!-- FILE: _review3.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+lines = open('assemble8080/assembler.py', encoding='utf-8').read().split('\n')
+
+def dump(start, end, title):
+    print(f"\n{'='*70}\n### {title} (lines {start}-{end})\n{'='*70}")
+    for i in range(start-1, min(end, len(lines))):
+        print(f"{i+1:5d}: {lines[i]}")
+
+dump(1482, 1600, "_parse_operand")
+```
+<!-- END FILE: _review3.py -->
+
+### `_review4.py` (20 строк)
+
+<!-- FILE: _review4.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
+# Read linker.py
+print("=" * 70)
+print("LINKER.PY - Relocation handling")
+print("=" * 70)
+lines = open('assemble8080/linker.py', encoding='utf-8').read().split('\n')
+for i, line in enumerate(lines, 1):
+    if 'reloc' in line.lower() or 'symbol' in line.lower():
+        print(f"{i:5d}: {line.rstrip()}")
+
+print()
+print("=" * 70)
+print("OBJFILE.PY - Relocation conversion")
+print("=" * 70)
+lines2 = open('assemble8080/objfile.py', encoding='utf-8').read().split('\n')
+for i, line in enumerate(lines2, 1):
+    if 'reloc' in line.lower() or 'symbol' in line.lower() or 'import' in line.lower():
+        print(f"{i:5d}: {line.rstrip()}")
+```
+<!-- END FILE: _review4.py -->
 
 ### `_run_all_tests.py` (94 строк)
 
@@ -3521,48 +3696,233 @@ sys.exit(0 if failed == 0 else 1)
 ```
 <!-- END FILE: _test_reloc.py -->
 
-### `_upd.py` (36 строк)
+### `_test_reloc_undefined.py` (177 строк)
 
-<!-- FILE: _upd.py -->
+<!-- FILE: _test_reloc_undefined.py -->
 ```python
-# -*- coding: utf-8 -*-
+"""Test: undefined symbols in LXI and DW generate relocations (v2.1.11 fix)."""
 import sys
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
-path = r'c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis\CHANGES.md'
-with open(path, 'r', encoding='utf-8') as f:
-    content = f.read()
+from assemble8080.assembler import assemble
+from assemble8080.objfile import obj_from_asm_result
+from assemble8080.linker import link
 
-new_entry = """## v2.1.10 (2026-10-11)
+passed = 0
+failed = 0
 
-### $-label relocations fix
+def check(name, cond):
+    global passed, failed
+    if cond:
+        passed += 1
+        print(f"  PASS: {name}")
+    else:
+        failed += 1
+        print(f"  FAIL: {name}")
 
-- **Fixed:** ASxxxx local labels (`$0`, `$1`, `$2`, etc.) now correctly generate
-  relocation entries in relocatable mode.
-- Root cause: the "pure symbol" regex `^[A-Za-z_][A-Za-z0-9_]*$` did not match
-  strings starting with `$`. Replaced with `^(?:\\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$`
-  in 5 locations: `_is_import_symbol`, `d16` handler, `rp,d16` handler,
-  `_parse_operand`, `_parse_dw`.
-- Linker requires no changes (resolves `$N` symbols by name from obj.symbols).
-- All 921 existing tests + 11 new $-label tests pass.
+print("=" * 60)
+print("TEST: Undefined symbols in LXI and DW (v2.1.11)")
+print("=" * 60)
 
-Updated: `assemble8080/assembler.py` (5 regex replacements)
+# Test 1: LXI with undefined symbol → import + relocation
+src1 = """
+    MVI A, 5
+    LXI H, UNDEFINED_SYM
+    HLT
+"""
+r1 = assemble(src1)
+check("LXI undefined: assembled OK", r1.success)
+check("LXI undefined: has relocations", len(r1.relocations) == 1)
+check("LXI undefined: relocation symbol", r1.relocations[0][2] == 'UNDEFINED_SYM')
+check("LXI undefined: symbol in imports", 'UNDEFINED_SYM' in r1.imports)
+
+# Test 2: DW with undefined symbol → import + relocation
+src2 = """
+    MVI A, 5
+    DW UNDEFINED_SYM
+    HLT
+"""
+r2 = assemble(src2)
+check("DW undefined: assembled OK", r2.success)
+check("DW undefined: has relocations", len(r2.relocations) == 1)
+check("DW undefined: relocation symbol", r2.relocations[0][2] == 'UNDEFINED_SYM')
+check("DW undefined: symbol in imports", 'UNDEFINED_SYM' in r2.imports)
+
+# Test 3: LXI with $-label undefined → import + relocation
+src3 = """
+    MVI A, 5
+    LXI H, $99
+    HLT
+"""
+r3 = assemble(src3)
+check("LXI $99 undefined: assembled OK", r3.success)
+check("LXI $99 undefined: has relocations", len(r3.relocations) == 1)
+check("LXI $99 undefined: relocation symbol", r3.relocations[0][2] == '$99')
+check("LXI $99 undefined: symbol in imports", '$99' in r3.imports)
+
+# Test 4: DW with $-label undefined → import + relocation
+src4 = """
+    MVI A, 5
+    DW $99
+    HLT
+"""
+r4 = assemble(src4)
+check("DW $99 undefined: assembled OK", r4.success)
+check("DW $99 undefined: has relocations", len(r4.relocations) == 1)
+check("DW $99 undefined: relocation symbol", r4.relocations[0][2] == '$99')
+check("DW $99 undefined: symbol in imports", '$99' in r4.imports)
+
+# Test 5: Linker resolves undefined LXI symbol from global_symbols
+src5 = """
+    MVI A, 5
+    LXI H, EXTERNAL
+    HLT
+"""
+r5 = assemble(src5)
+obj5 = obj_from_asm_result(r5, "test5.asm")
+obj5.org = 0x0100
+
+# Create a second object that defines EXTERNAL
+src5b = """
+EXTERNAL:
+    NOP
+    RET
+"""
+r5b = assemble(src5b)
+obj5b = obj_from_asm_result(r5b, "test5b.asm")
+obj5b.org = 0x0200
+obj5b.exports = {'EXTERNAL'}
+
+res5 = link([obj5, obj5b], origin=0, size=0x10000, fill=0xFF)
+check("Link LXI external: success", res5.success)
+# LXI H at 0x0102: opcode 0x21, then address at 0x0103-0x0104
+# EXTERNAL is at 0x0200, so address should be 0x00, 0x02
+addr_lo = res5.binary[0x0103]
+addr_hi = res5.binary[0x0104]
+check("Link LXI external: address = 0x0200", addr_lo == 0x00 and addr_hi == 0x02)
+
+# Test 6: Linker resolves undefined DW symbol from global_symbols
+src6 = """
+    MVI A, 5
+    DW EXTERNAL
+    HLT
+"""
+r6 = assemble(src6)
+obj6 = obj_from_asm_result(r6, "test6.asm")
+obj6.org = 0x0100
+
+res6 = link([obj6, obj5b], origin=0, size=0x10000, fill=0xFF)
+check("Link DW external: success", res6.success)
+# DW at 0x0102: address at 0x0102-0x0103
+# EXTERNAL is at 0x0200, so address should be 0x00, 0x02
+addr_lo = res6.binary[0x0102]
+addr_hi = res6.binary[0x0103]
+check("Link DW external: address = 0x0200", addr_lo == 0x00 and addr_hi == 0x02)
+
+# Test 7: Absolute mode - undefined symbol in LXI → relocation (linker resolves)
+src7 = """
+ORG 0x100
+    MVI A, 5
+    LXI H, UNDEFINED_SYM
+    HLT
+"""
+r7 = assemble(src7)
+check("LXI undefined absolute: assembled OK", r7.success)
+check("LXI undefined absolute: has relocation (linker resolves)", len(r7.relocations) == 1)
+
+# Test 8: Absolute mode - undefined symbol in DW → relocation (linker resolves)
+src8 = """
+ORG 0x100
+    MVI A, 5
+    DW UNDEFINED_SYM
+    HLT
+"""
+r8 = assemble(src8)
+check("DW undefined absolute: assembled OK", r8.success)
+check("DW undefined absolute: has relocation (linker resolves)", len(r8.relocations) == 1)
+
+# Test 9: Absolute mode - defined local symbol in LXI → no relocation
+src9 = """
+ORG 0x100
+    MVI A, 5
+    LXI H, LOCAL
+    HLT
+LOCAL:
+    NOP
+"""
+r9 = assemble(src9)
+check("LXI local absolute: assembled OK", r9.success)
+check("LXI local absolute: no relocations", len(r9.relocations) == 0)
+
+# Test 10: Absolute mode - defined local symbol in DW → no relocation
+src10 = """
+ORG 0x100
+    MVI A, 5
+    DW LOCAL
+    HLT
+LOCAL:
+    NOP
+"""
+r10 = assemble(src10)
+check("DW local absolute: assembled OK", r10.success)
+check("DW local absolute: no relocations", len(r10.relocations) == 0)
+
+print()
+print("=" * 60)
+print(f"RESULTS: {passed} passed, {failed} failed")
+print("=" * 60)
+
+if failed == 0:
+    print("ALL TESTS PASSED")
+else:
+    print("SOME TESTS FAILED")
+    sys.exit(1)
+```
+<!-- END FILE: _test_reloc_undefined.py -->
+
+### `_update_changes.py` (37 строк)
+
+<!-- FILE: _update_changes.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
+path = 'CHANGES.md'
+src = open(path, encoding='utf-8').read()
+
+new_entry = """## v2.1.11 (2026-10-11)
+
+### Undefined symbol relocations in LXI and DW
+
+- **Fixed:** Inconsistent handling of undefined symbols in `rp,d16` (LXI) and `DW`
+  handlers. Previously, undefined symbols in these contexts were silently ignored
+  (value 0, no import, no relocation), while the `d16` handler (CALL/JMP/J*/C*/LHLD/SHLD)
+  correctly added them to imports and tracked relocations.
+- Now all three handlers (d16, rp,d16, DW) consistently treat undefined symbols as
+  imports and generate relocation entries, allowing the linker to resolve them from
+  other modules.
+- Behavior in absolute mode: undefined symbols still generate relocations (linker
+  resolves them); defined local symbols do not (address already known).
+- 28 new tests added (`_test_reloc_undefined.py`), all pass.
+- All 921 existing tests + 30 relocation tests + 11 $-label tests pass.
+
+Updated: `assemble8080/assembler.py` (rp,d16 handler, _parse_dw)
 
 """
 
-idx = content.find('## v2.1.9')
+# Find the v2.1.10 entry and insert before it
+marker = "## v2.1.10"
+idx = src.find(marker)
 if idx == -1:
-    print("ERROR: v2.1.9 not found")
+    print("ERROR: v2.1.10 marker not found")
     sys.exit(1)
 
-content = content[:idx] + new_entry + content[idx:]
-
-with open(path, 'w', encoding='utf-8') as f:
-    f.write(content)
-
-print("CHANGES.md updated: v2.1.10 entry added")
+# Insert before the marker
+src = src[:idx] + new_entry + src[idx:]
+open(path, 'w', encoding='utf-8').write(src)
+print("CHANGES.md updated with v2.1.11 entry")
 ```
-<!-- END FILE: _upd.py -->
+<!-- END FILE: _update_changes.py -->
 
 ### `_verify_fixes.py` (43 строк)
 
@@ -7731,7 +8091,7 @@ if __name__ == "__main__":
 ```
 <!-- END FILE: assemble8080/__main__.py -->
 
-### `assemble8080/assembler.py` (2005 строк)
+### `assemble8080/assembler.py` (2015 строк)
 
 <!-- FILE: assemble8080/assembler.py -->
 ```python
@@ -9192,7 +9552,12 @@ class Assembler:
                 op_str = operands[1].strip()
                 if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', op_str):
                     upper = op_str.upper()
-                    if upper in self.symbols and self._relocatable:
+                    if upper not in self.symbols:
+                        # Undefined symbol → import
+                        self._imports.add(upper)
+                        self._track_relocation(self._write_pos + 1, 2, upper)
+                    elif self._relocatable:
+                        # Defined local symbol in relocatable mode → relocation
                         self._track_relocation(self._write_pos + 1, 2, upper)
             return bytearray([opcode | (rp_code << 4), val & 0xFF, (val >> 8) & 0xFF])
 
@@ -9442,7 +9807,12 @@ class Assembler:
                 part_str = part.strip()
                 if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', part_str):
                     upper = part_str.upper()
-                    if upper in self.symbols and self._relocatable:
+                    if upper not in self.symbols:
+                        # Undefined symbol → import
+                        self._imports.add(upper)
+                        self._track_relocation(self._write_pos + len(result) - 2, 2, upper)
+                    elif self._relocatable:
+                        # Defined local symbol in relocatable mode → relocation
                         self._track_relocation(self._write_pos + len(result) - 2, 2, upper)
         return result
 
@@ -33839,7 +34209,7 @@ def create_terminal_widget(device):
 
 ■ РАЗДЕЛ 4: ИЗМЕНЕНИЯ РЕФАКТОРИНГА
 
-Источник: `CHANGES.md` (2661 строк)
+Источник: `CHANGES.md` (2679 строк)
 
 ```markdown
 # Changelog / Журнал изменений
@@ -33847,6 +34217,24 @@ def create_terminal_widget(device):
 
 
 
+
+## v2.1.11 (2026-10-11)
+
+### Undefined symbol relocations in LXI and DW
+
+- **Fixed:** Inconsistent handling of undefined symbols in `rp,d16` (LXI) and `DW`
+  handlers. Previously, undefined symbols in these contexts were silently ignored
+  (value 0, no import, no relocation), while the `d16` handler (CALL/JMP/J*/C*/LHLD/SHLD)
+  correctly added them to imports and tracked relocations.
+- Now all three handlers (d16, rp,d16, DW) consistently treat undefined symbols as
+  imports and generate relocation entries, allowing the linker to resolve them from
+  other modules.
+- Behavior in absolute mode: undefined symbols still generate relocations (linker
+  resolves them); defined local symbols do not (address already known).
+- 28 new tests added (`_test_reloc_undefined.py`), all pass.
+- All 921 existing tests + 30 relocation tests + 11 $-label tests pass.
+
+Updated: `assemble8080/assembler.py` (rp,d16 handler, _parse_dw)
 
 ## v2.1.10 (2026-10-11)
 
@@ -51427,6 +51815,7 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 ### C. Конфигурационные файлы
 
 - `Addendum.txt` (81 строк)
+- `_test_out.txt` (45 строк)
 - `claude_desktop_config.json` (7 строк)
 - `config.json` (10 строк)
 - `micro-80_bp_preset.json` (77 строк)
@@ -51658,4 +52047,4 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 
 ---
 
-*Конец среза. Сгенерировано 2026-10-11 19:04:08.*
+*Конец среза. Сгенерировано 2026-10-11 19:47:42.*

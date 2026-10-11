@@ -4,6 +4,24 @@
 
 
 
+## v2.1.11 (2026-10-11)
+
+### Undefined symbol relocations in LXI and DW
+
+- **Fixed:** Inconsistent handling of undefined symbols in `rp,d16` (LXI) and `DW`
+  handlers. Previously, undefined symbols in these contexts were silently ignored
+  (value 0, no import, no relocation), while the `d16` handler (CALL/JMP/J*/C*/LHLD/SHLD)
+  correctly added them to imports and tracked relocations.
+- Now all three handlers (d16, rp,d16, DW) consistently treat undefined symbols as
+  imports and generate relocation entries, allowing the linker to resolve them from
+  other modules.
+- Behavior in absolute mode: undefined symbols still generate relocations (linker
+  resolves them); defined local symbols do not (address already known).
+- 28 new tests added (`_test_reloc_undefined.py`), all pass.
+- All 921 existing tests + 30 relocation tests + 11 $-label tests pass.
+
+Updated: `assemble8080/assembler.py` (rp,d16 handler, _parse_dw)
+
 ## v2.1.10 (2026-10-11)
 
 ### $-label relocations fix
