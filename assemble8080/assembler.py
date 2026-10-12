@@ -63,6 +63,7 @@ class AsmResult:
     map_text: str = ""                                 # текст map-файла (генерируется при успехе)
     global_labels: set = field(default_factory=set)    # метки с :: (глобальные/экспортные)
     equ_symbols: set = field(default_factory=set)      # имена EQU/DEF констант (не адреса)
+    case_sensitive: bool = False                       # True = регистр лейблов значим
 
 
 # =============================================================
@@ -1319,7 +1320,8 @@ class Assembler:
             global_labels={self._symbol_case.get(_k, _k) for _k in self._global_labels},
 
             relocations=list(self._relocations),
-            end_address=location
+            end_address=location,
+            case_sensitive=self.case_sensitive
         )
         # Генерация map-файла при успешной сборке
         if result.success:

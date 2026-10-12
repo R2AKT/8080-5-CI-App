@@ -111,29 +111,38 @@ def link(objects: list, origin: int = 0, size: int = 0x10000, fill: int = 0xFF) 
         return LinkResult(success=False, errors=errors)
     
     # Step 2: Build global symbol table
+    # Case-insensitive mode (default): normalize keys to UPPER so that
+    # relocations/imports (UPPER) match symbols (original case).
+    # Case-sensitive mode: exact matching (no normalization).
+    def _norm(obj, name):
+        return name if obj.case_sensitive else name.upper()
+    
     # First pass: collect all exported symbols
     global_symbols = {}  # {name: absolute_address}
     for obj in objects:
         for name in obj.exports:
             if name in obj.symbols:
                 addr = obj.org + obj.symbols[name]
-                if name in global_symbols:
+                key = _norm(obj, name)
+                if key in global_symbols:
                     warnings.append(f"Duplicate export: {name} (in {obj.name})")
                 else:
-                    global_symbols[name] = addr
+                    global_symbols[key] = addr
     
     # Also add all symbols (for local resolution within same object)
     all_symbols = {}
     for obj in objects:
         for name, offset in obj.symbols.items():
             addr = obj.org + offset
-            if name not in all_symbols:
-                all_symbols[name] = addr
+            key = _norm(obj, name)
+            if key not in all_symbols:
+                all_symbols[key] = addr
     
     # Step 3: Check for unresolved imports
     for obj in objects:
         for imp in obj.imports:
-            if imp not in global_symbols and imp not in all_symbols:
+            imp_key = _norm(obj, imp)
+            if imp_key not in global_symbols and imp_key not in all_symbols:
                 errors.append(LinkError(
                     f"Unresolved symbol: {imp} (imported by {obj.name})",
                     file=obj.name
@@ -156,7 +165,8 @@ def link(objects: list, origin: int = 0, size: int = 0x10000, fill: int = 0xFF) 
     # Step 6: Apply relocations
     for obj in objects:
         for reloc in obj.relocations:
-            sym_addr = global_symbols.get(reloc.symbol) or all_symbols.get(reloc.symbol)
+            sym_key = _norm(obj, reloc.symbol)
+            sym_addr = global_symbols.get(sym_key) or all_symbols.get(sym_key)
             if sym_addr is None:
                 warnings.append(f"Relocation: symbol '{reloc.symbol}' not found (in {obj.name})")
                 continue

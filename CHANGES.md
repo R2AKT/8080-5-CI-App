@@ -4,6 +4,35 @@
 
 
 
+## v2.1.13 (2026-10-12)
+
+### Cross-module case-mismatch linking fix (linker normalizes case)
+
+**Критический баг пайплайна:** в режиме case-insensitive (по умолчанию) ассемблер
+выводил в `.obj` несогласованный регистр: `symbols` — в исходном регистре
+(`main`, `helper`), а `relocations`/`imports` — в UPPER-ключе (`MAIN`, `HELPER`).
+Линкер делал точное сопоставление, поэтому кросс-модульная ссылка не разрешалась:
+`Unresolved symbol: HELPER` хотя `helper` определён в другом модуле. В пайплайне
+SmallC это ломало линковку всех тестов с `main` (56 из 97).
+
+**Фикс (рекомендованный вариант из промпта):**
+- **Линкер нормализует регистр при сопоставлении** в case-insensitive режиме:
+  при построении `global_symbols`/`all_symbols` и при проверке imports / применении
+  relocations имена приводятся к UPPER (per-object, по флагу `obj.case_sensitive`).
+  Тогда `HELPER` (relocation/import) находит `helper` (symbol).
+- **Флаг `case_sensitive` в `.obj`:** добавлено поле `case_sensitive: bool`
+  (по умолчанию `False`) в `ObjectFile`, сериализуется/десериализуется в JSON
+  (старые `.obj` без поля загружаются с `False`). Ассемблер выставляет его по
+  `Assembler.case_sensitive` через `AsmResult.case_sensitive`.
+- **Режим `--case-sensitive`:** линкер делает точное сопоставление (без
+  нормализации) — `i` и `I` остаются разными символами.
+- Минимальный кросс-модульный кейс из промпта: `A(main→call helper) + B(helper)`
+  линкуется, `call helper` патчится на адрес `helper` в B.
+- 14 новых тестов (`_test_linker_case.py`), все pass.
+
+Updated: `assemble8080/linker.py` (case normalization), `assemble8080/objfile.py`
+(case_sensitive field), `assemble8080/assembler.py` (AsmResult.case_sensitive)
+
 ## v2.1.12 (2026-10-12)
 
 ### ALU immediate size fix (pass 1) + label case sensitivity

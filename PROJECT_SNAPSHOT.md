@@ -1,8 +1,8 @@
 # СРЕЗ ПРОЕКТА (PROJECT SNAPSHOT)
 
-> Сгенерировано: 2026-10-12 12:17:31
+> Сгенерировано: 2026-10-12 17:29:04
 > Корень проекта: `c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis`
-> Код: 125 файлов, 31805 строк
+> Код: 114 файлов, 31711 строк
 > Тесты: 74 файлов, 11719 строк
 > Профили: 22 файлов, 843 строк
 
@@ -138,12 +138,12 @@
 ├── assemble8080/
 │   ├── __init__.py  [28 строк]
 │   ├── __main__.py  [19 строк]
-│   ├── assembler.py  [2063 строк]
+│   ├── assembler.py  [2065 строк]
 │   ├── errors.py  [37 строк]
-│   ├── linker.py  [255 строк]
+│   ├── linker.py  [265 строк]
 │   ├── mapfile.py  [162 строк]
 │   ├── numbers.py  [84 строк]
-│   ├── objfile.py  [137 строк]
+│   ├── objfile.py  [141 строк]
 │   ├── preprocessor.py  [630 строк]
 │   └── symbols.py  [77 строк]
 ├── assembler_example/
@@ -433,40 +433,29 @@
 ├── _audit_and_version.py  [84 строк]
 ├── _cycle1.py  [402 строк]
 ├── _final_fixes.py  [134 строк]
-├── _fix_alu.py  [45 строк]
-├── _fix_case.py  [115 строк]
-├── _fix_case2.py  [109 строк]
+├── _fix_asmresult.py  [19 строк]
 ├── _fix_en.py  [50 строк]
-├── _fix_guide.py  [57 строк]
-├── _fix_import.py  [23 строк]
-├── _investigate_reloc.py  [30 строк]
+├── _fix_guide2.py  [32 строк]
+├── _fix_linker_case.py  [189 строк]
 ├── _read_code.py  [37 строк]
 ├── _read_code2.py  [53 строк]
 ├── _read_code3.py  [33 строк]
 ├── _read_code4.py  [19 строк]
-├── _review5.py  [13 строк]
-├── _review6.py  [11 строк]
-├── _review7.py  [9 строк]
-├── _review8.py  [16 строк]
-├── _review9.py  [11 строк]
-├── _review_case.py  [13 строк]
-├── _review_cli.py  [22 строк]
-├── _review_cli2.py  [12 строк]
-├── _review_guide.py  [10 строк]
 ├── _run_all_tests.py  [94 строк]
 ├── _test_alu_imm.py  [131 строк]
 ├── _test_case.py  [125 строк]
 ├── _test_dollar.py  [73 строк]
+├── _test_linker_case.py  [150 строк]
 ├── _test_out.txt  [45 строк]
 ├── _test_reloc.py  [166 строк]
 ├── _test_reloc_undefined.py  [177 строк]
-├── _update_changes2.py  [49 строк]
+├── _update_changes3.py  [45 строк]
 ├── _verify_fixes.py  [43 строк]
 ├── Addendum.txt  [81 строк]
 ├── ANALYSIS.md  [536 строк]
 ├── ANALYSIS_ASSEMBLER.md  [341 строк]
-├── ASSEMBLER_GUIDE.md  [1294 строк]
-├── CHANGES.md  [2712 строк]
+├── ASSEMBLER_GUIDE.md  [1304 строк]
+├── CHANGES.md  [2741 строк]
 ├── claude_desktop_config.json  [7 строк]
 ├── clean_pycache.py  [87 строк]
 ├── config.json  [10 строк]
@@ -486,8 +475,8 @@
 ├── md2html.py  [372 строк]
 ├── micro-80_bp_preset.json  [77 строк]
 ├── package-lock.json  [6 строк]
-├── PROJECT_SNAPSHOT.md  [52050 строк]
-├── PROMPT_i8080_ci_fix.md  [116 строк]
+├── PROJECT_SNAPSHOT.md  [52991 строк]
+├── PROMPT_i8080_ci_case_fix.md  [113 строк]
 ├── pyproject.toml  [61 строк]
 ├── README.md  [389 строк]
 ├── requirements.txt  [22 строк]
@@ -541,30 +530,10 @@
 
 ---
 
-### `_fix_alu.py` (45 строк)
+### `_fix_asmresult.py` (19 строк)
 
 **Импорты (1):**
 - `sys`
-
----
-
-### `_fix_case.py` (115 строк)
-
-**Импорты (1):**
-- `sys`
-
-**Функции (1):**
-- `rep(old, new, tag)`
-
----
-
-### `_fix_case2.py` (109 строк)
-
-**Импорты (1):**
-- `sys`
-
-**Функции (1):**
-- `rep(old, new, tag, count)`
 
 ---
 
@@ -578,29 +547,20 @@
 
 ---
 
-### `_fix_guide.py` (57 строк)
+### `_fix_guide2.py` (32 строк)
+
+**Импорты (1):**
+- `sys`
+
+---
+
+### `_fix_linker_case.py` (189 строк)
 
 **Импорты (1):**
 - `sys`
 
 **Функции (1):**
-- `rep(old, new, tag)`
-
----
-
-### `_fix_import.py` (23 строк)
-
-**Импорты (1):**
-- `sys`
-
----
-
-### `_investigate_reloc.py` (30 строк)
-
-**Импорты (3):**
-- `sys`
-- `from assemble8080.assembler import assemble`
-- `from collections import Counter`
+- `rep(path, old, new, tag)`
 
 ---
 
@@ -629,89 +589,6 @@
 
 **Импорты (1):**
 - `sys`
-
----
-
-### `_review5.py` (13 строк)
-
-**Импорты (1):**
-- `sys`
-
-**Функции (1):**
-- `dump(start, end, title)`
-
----
-
-### `_review6.py` (11 строк)
-
-**Импорты (1):**
-- `sys`
-
-**Функции (1):**
-- `dump(start, end, title)`
-
----
-
-### `_review7.py` (9 строк)
-
-**Импорты (2):**
-- `sys`
-- `re`
-
----
-
-### `_review8.py` (16 строк)
-
-**Импорты (1):**
-- `sys`
-
-**Функции (1):**
-- `dump(start, end, title)`
-
----
-
-### `_review9.py` (11 строк)
-
-**Импорты (1):**
-- `sys`
-
-**Функции (1):**
-- `dump(start, end, title)`
-
----
-
-### `_review_case.py` (13 строк)
-
-**Импорты (1):**
-- `sys`
-
-**Функции (1):**
-- `dump(start, end, title)`
-
----
-
-### `_review_cli.py` (22 строк)
-
-**Импорты (1):**
-- `sys`
-
----
-
-### `_review_cli2.py` (12 строк)
-
-**Импорты (2):**
-- `sys`
-- `re`
-
----
-
-### `_review_guide.py` (10 строк)
-
-**Импорты (1):**
-- `sys`
-
-**Функции (1):**
-- `dump(start, end, title)`
 
 ---
 
@@ -776,6 +653,24 @@
 
 ---
 
+### `_test_linker_case.py` (150 строк)
+
+> Test: cross-module case-mismatch linking (PROMPT_i8080_ci_case_fix.md).
+
+**Импорты (7):**
+- `sys`
+- `from assemble8080.assembler import assemble`
+- `from assemble8080.objfile import obj_from_asm_result, save_obj, load_obj`
+- `from assemble8080.linker import link`
+- `tempfile`
+- `os`
+- `json`
+
+**Функции (1):**
+- `check(name, cond, detail)`
+
+---
+
 ### `_test_reloc.py` (166 строк)
 
 > Test: internal relocations in relocatable mode.
@@ -807,7 +702,7 @@
 
 ---
 
-### `_update_changes2.py` (49 строк)
+### `_update_changes3.py` (45 строк)
 
 **Импорты (1):**
 - `sys`
@@ -996,7 +891,7 @@
 
 ---
 
-### `assemble8080/assembler.py` (2063 строк)
+### `assemble8080/assembler.py` (2065 строк)
 
 > assemble8080 — компактный макроассемблер Intel 8080.
 
@@ -1050,7 +945,7 @@
 
 ---
 
-### `assemble8080/linker.py` (255 строк)
+### `assemble8080/linker.py` (265 строк)
 
 > Linker for i8080-5 CI.
 
@@ -1112,7 +1007,7 @@
 
 ---
 
-### `assemble8080/objfile.py` (137 строк)
+### `assemble8080/objfile.py` (141 строк)
 
 > Object file format for i8080-5 CI linker.
 
@@ -3092,9 +2987,9 @@ print("\n=== ALL DONE ===")
 ```
 <!-- END FILE: _final_fixes.py -->
 
-### `_fix_alu.py` (45 строк)
+### `_fix_asmresult.py` (19 строк)
 
-<!-- FILE: _fix_alu.py -->
+<!-- FILE: _fix_asmresult.py -->
 ```python
 import sys
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -3102,285 +2997,21 @@ sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 path = 'assemble8080/assembler.py'
 src = open(path, encoding='utf-8').read()
 
-old = """            # Обычная инструкция — используем полную таблицу и кодирование
-            _mnemonics = self._get_mnemonics()
-            if mnemonic in _mnemonics:
-                opcode, fmt, size = _mnemonics[mnemonic]
-                location += size
-                self.pc = location"""
+# Find the equ_symbols line and add case_sensitive after it
+anchor = "    equ_symbols: set = field(default_factory=set)"
+idx = src.find(anchor)
+if idx == -1:
+    print("NOT FOUND: equ_symbols anchor")
+    sys.exit(1)
 
-new = """            # Обычная инструкция — используем полную таблицу и кодирование
-            _mnemonics = self._get_mnemonics()
-            if mnemonic in _mnemonics:
-                opcode, fmt, size = _mnemonics[mnemonic]
-                # БАГ #1: ALU-команды формата 'r' с immediate-операндом — 2 байта,
-                # а не 1 (в таблице size=1 для reg-формы). Без этого pass 1
-                # занижает смещения всех последующих символов.
-                if fmt == 'r' and operand:
-                    op_u = operand.strip().upper()
-                    if ',' in op_u:
-                        # ASxxxx 2-операндная форма "cmp a, #5" -> immediate
-                        size = 2
-                    else:
-                        op_clean = op_u.lstrip('#').strip()
-                        _REG_OPS = ('A', 'B', 'C', 'D', 'E', 'H', 'L', 'M',
-                                    'BC', 'DE', 'HL', 'PSW')
-                        if op_clean not in _REG_OPS:
-                            size = 2
-                location += size
-                self.pc = location"""
-
-if old in src:
-    src = src.replace(old, new)
-    open(path, 'w', encoding='utf-8').write(src)
-    print("ALU imm size fix (pass 1): APPLIED")
-else:
-    print("ALU imm size fix (pass 1): NOT FOUND")
-    # debug
-    lines = src.split('\n')
-    for i, line in enumerate(lines):
-        if 'location += size' in line and 'self.pc = location' in lines[i+1] if i+1 < len(lines) else False:
-            print(f"  candidate at {i+1}: {repr(line)}")
-```
-<!-- END FILE: _fix_alu.py -->
-
-### `_fix_case.py` (115 строк)
-
-<!-- FILE: _fix_case.py -->
-```python
-import sys
-sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-
-path = 'assemble8080/assembler.py'
-src = open(path, encoding='utf-8').read()
-applied = []
-
-def rep(old, new, tag):
-    global src
-    if old in src:
-        src = src.replace(old, new)
-        applied.append(tag)
-    else:
-        print(f"NOT FOUND: {tag}")
-
-# 1. __init__: add case_sensitive + _symbol_case
-rep('''        # Relocatable mode: True if no .org directive (org=0)
-        self._relocatable = True
-''',
-'''        # Relocatable mode: True if no .org directive (org=0)
-        self._relocatable = True
-        # Case sensitivity for labels: False (default) = case-insensitive,
-        # True = case-sensitive. Original case is always preserved in output.
-        self.case_sensitive = False
-        # Remember original case of each symbol: {KEY: original_name}
-        self._symbol_case: dict = {}
-''', "init: case_sensitive + _symbol_case")
-
-# 2. Add _sym_key + _store_symbol helpers before _get_mnemonics
-rep('''    def _get_mnemonics(self) -> dict:''',
-'''    def _sym_key(self, name: str) -> str:
-        """Ключ для имени символа с учётом case_sensitive.
-
-        case_sensitive=False (по умолчанию) -> UPPER (case-insensitive match).
-        case_sensitive=True -> исходный регистр (exact match).
-        """
-        if self.case_sensitive:
-            return name
-        return name.upper()
-
-    def _store_symbol(self, name: str, value: int):
-        """Сохранить символ, запоминая исходный регистр для вывода."""
-        key = self._sym_key(name)
-        self.symbols[key] = value
-        # Запоминаем исходный регистр (первое определение побеждает)
-        if key not in self._symbol_case:
-            self._symbol_case[key] = name
-
-    def _get_mnemonics(self) -> dict:''', "helper: _sym_key + _store_symbol")
-
-# 3. Pass 1 label storage: use _store_symbol
-rep('''            if label:
-                label_upper = label.upper()
-                # Разрешаем переопределение (последнее значение побеждает)
-                self.symbols[label_upper] = location
-''',
-'''            if label:
-                label_upper = self._sym_key(label)
-                # Разрешаем переопределение (последнее значение побеждает)
-                self._store_symbol(label, location)
-''', "pass1 label storage: _store_symbol")
-
-# 4. Output: use original case in AsmResult.symbols
-rep('''        result = AsmResult(
-            success=len(self.errors) == 0,
-            binary=bytes(self.binary[:self._write_pos]) if self._write_pos < len(self.binary) else bytes(self.binary),
-            symbols=dict(self.symbols),
-''',
-'''        # Таблица символов в исходном регистре (не UPPER) для вывода
-        _symbols_out = {}
-        for _k, _v in self.symbols.items():
-            _symbols_out[self._symbol_case.get(_k, _k)] = _v
-        result = AsmResult(
-            success=len(self.errors) == 0,
-            binary=bytes(self.binary[:self._write_pos]) if self._write_pos < len(self.binary) else bytes(self.binary),
-            symbols=_symbols_out,
-''', "output: original case symbols")
-
-# 5. assemble() function: add case_sensitive param
-rep('''def assemble(source: str, filename: str = "", now=None, cpu_type: str = "i8080") -> AsmResult:''',
-'''def assemble(source: str, filename: str = "", now=None, cpu_type: str = "i8080",
-             case_sensitive: bool = False) -> AsmResult:''', "assemble(): signature")
-
-rep('''    asm = Assembler(now=now)
-    asm.cpu_type = cpu_type
-    return asm.assemble(source, filename)
-''',
-'''    asm = Assembler(now=now)
-    asm.cpu_type = cpu_type
-    asm.case_sensitive = case_sensitive
-    return asm.assemble(source, filename)
-''', "assemble(): set case_sensitive")
-
-# 6. CLI: add --case-sensitive flag
-rep('''    parser.add_argument("--cpu", choices=["8080", "8085"], default="8080",
-                        help="CPU type (default: 8080)")
-''',
-'''    parser.add_argument("--cpu", choices=["8080", "8085"], default="8080",
-                        help="CPU type (default: 8080)")
-    parser.add_argument("--case-sensitive", action="store_true",
-                        help="Label names are case-sensitive (i and I are different). "
-                             "Default: case-insensitive (original case preserved in output).")
-''', "CLI: --case-sensitive flag")
-
-# 7. CLI: pass case_sensitive to assemble()
-rep('''        result = assemble(source, filename=src, cpu_type=cpu_type)
-''',
-'''        result = assemble(source, filename=src, cpu_type=cpu_type,
-                          case_sensitive=args.case_sensitive)
-''', "CLI: pass case_sensitive")
-
+# Find end of that line
+eol = src.find('\n', idx)
+new_field = "\n    case_sensitive: bool = False                       # True = регистр лейблов значим"
+src = src[:eol] + new_field + src[eol:]
 open(path, 'w', encoding='utf-8').write(src)
-print(f"APPLIED: {len(applied)} changes")
-for a in applied:
-    print(f"  - {a}")
+print("AsmResult: case_sensitive field ADDED")
 ```
-<!-- END FILE: _fix_case.py -->
-
-### `_fix_case2.py` (109 строк)
-
-<!-- FILE: _fix_case2.py -->
-```python
-import sys
-sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-
-path = 'assemble8080/assembler.py'
-src = open(path, encoding='utf-8').read()
-applied = []
-
-def rep(old, new, tag, count=1):
-    global src
-    if old in src:
-        src = src.replace(old, new, count)
-        applied.append(tag)
-    else:
-        print(f"NOT FOUND: {tag}")
-
-# 1. _parse_operand: expr_str.upper() -> _sym_key
-rep('''            if expr_str.upper() not in self.symbols and not in_defines:''',
-'''            if self._sym_key(expr_str) not in self.symbols and not in_defines:''',
-"_parse_operand: expr_str lookup")
-
-# 2. _parse_operand: label = m.group(1).upper() -> _sym_key
-rep('''            label = m.group(1).upper()
-            op = m.group(2)''',
-'''            label = self._sym_key(m.group(1))
-            op = m.group(2)''',
-"_parse_operand: label +/- lookup")
-
-# 3. _parse_operand: label = operand_str.upper() -> _sym_key
-rep('''        # Пробуем как метку
-        label = operand_str.upper()
-        if label in self.symbols:
-            return self.symbols[label]''',
-'''        # Пробуем как метку
-        label = self._sym_key(operand_str)
-        if label in self.symbols:
-            return self.symbols[label]''',
-"_parse_operand: label lookup")
-
-# 4. d16 relocation handler: upper = op_str.upper() -> _sym_key
-rep('''                op_str = operands[0].strip()
-                if re.match(r'^(?:\\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', op_str):
-                    upper = op_str.upper()
-                    if upper not in self.symbols:''',
-'''                op_str = operands[0].strip()
-                if re.match(r'^(?:\\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', op_str):
-                    upper = self._sym_key(op_str)
-                    if upper not in self.symbols:''',
-"d16 reloc: _sym_key")
-
-# 5. rp,d16 relocation handler: upper = op_str.upper() -> _sym_key
-rep('''                op_str = operands[1].strip()
-                if re.match(r'^(?:\\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', op_str):
-                    upper = op_str.upper()
-                    if upper not in self.symbols:''',
-'''                op_str = operands[1].strip()
-                if re.match(r'^(?:\\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', op_str):
-                    upper = self._sym_key(op_str)
-                    if upper not in self.symbols:''',
-"rp,d16 reloc: _sym_key")
-
-# 6. _parse_dw: upper = part_str.upper() -> _sym_key
-rep('''                part_str = part.strip()
-                if re.match(r'^(?:\\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', part_str):
-                    upper = part_str.upper()
-                    if upper not in self.symbols:''',
-'''                part_str = part.strip()
-                if re.match(r'^(?:\\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', part_str):
-                    upper = self._sym_key(part_str)
-                    if upper not in self.symbols:''',
-"_parse_dw: _sym_key")
-
-# 7. _is_import_symbol: upper = t.upper() -> _sym_key
-rep('''        if re.match(r'^(?:\\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', t):
-            upper = t.upper()
-            if upper in self._imports:
-                return upper''',
-'''        if re.match(r'^(?:\\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', t):
-            upper = self._sym_key(t)
-            if upper in self._imports:
-                return upper''',
-"_is_import_symbol: _sym_key")
-
-# 8. IMPORT directive: name.upper() -> _sym_key
-rep('''                        self._imports.add(name.upper())
-                        # Define as 0 for pass 1 (will be resolved by linker)
-                        if name.upper() not in self.symbols:
-                            self.symbols[name.upper()] = 0''',
-'''                        _imp_key = self._sym_key(name)
-                        self._imports.add(_imp_key)
-                        # Define as 0 for pass 1 (will be resolved by linker)
-                        if _imp_key not in self.symbols:
-                            self.symbols[_imp_key] = 0''',
-"IMPORT: _sym_key")
-
-# 9. Output: convert _imports/_exports/_global_labels to original case
-rep('''            exports=list(self._exports),
-            imports=list(self._imports),
-            global_labels=set(self._global_labels),
-''',
-'''            exports=[self._symbol_case.get(_k, _k) for _k in self._exports],
-            imports=[self._symbol_case.get(_k, _k) for _k in self._imports],
-            global_labels={self._symbol_case.get(_k, _k) for _k in self._global_labels},
-''',
-"output: original case exports/imports/global_labels")
-
-open(path, 'w', encoding='utf-8').write(src)
-print(f"APPLIED: {len(applied)} changes")
-for a in applied:
-    print(f"  - {a}")
-```
-<!-- END FILE: _fix_case2.py -->
+<!-- END FILE: _fix_asmresult.py -->
 
 ### `_fix_en.py` (50 строк)
 
@@ -3439,136 +3070,240 @@ print("Done")
 ```
 <!-- END FILE: _fix_en.py -->
 
-### `_fix_guide.py` (57 строк)
+### `_fix_guide2.py` (32 строк)
 
-<!-- FILE: _fix_guide.py -->
+<!-- FILE: _fix_guide2.py -->
 ```python
 import sys
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 path = 'ASSEMBLER_GUIDE.md'
 src = open(path, encoding='utf-8').read()
-applied = []
 
-def rep(old, new, tag):
-    global src
-    if old in src:
-        src = src.replace(old, new)
-        applied.append(tag)
-    else:
-        print(f"NOT FOUND: {tag}")
+old = '''> Примечание: однобуквенные метки (`a:`, `b:`, `i:` и т.п.) корректно
+> разрешаются и не путаются с регистрами при определении. Например,
+> `shld i` + `i: .dw 0` линкуется, символ `i` разрешён.
+'''
 
-# 1. Add --case-sensitive to options table (after --cpu line)
-rep('''| `--cpu {8080,8085}` | Тип CPU (по умолчанию 8080); директива `CPU` в коде может переопределить |
-''',
-'''| `--cpu {8080,8085}` | Тип CPU (по умолчанию 8080); директива `CPU` в коде может переопределить |
-| `--case-sensitive` | Имена лейблов чувствительны к регистру (`i` и `I` — разные символы). По умолчанию регистр не значим, но исходный регистр сохраняется в выводе |
-''', "options table: --case-sensitive")
-
-# 2. Add a new subsection about label case sensitivity after 11.2 options (before 11.3 examples)
-rep('''### 11.3. Примеры
-''',
-'''### 11.2.1. Регистр лейблов (case sensitivity)
-
-По умолчанию ассемблер **не чувствителен к регистру** лейблов: `main`, `Main` и
-`MAIN` считаются одним и тем же символом. При этом **исходный регистр
-сохраняется** в таблице символов, map-файле и `.obj` (например, `main`, а не
-`MAIN`) — это важно для пайплайна SmallC, где компилятор генерирует
-нижний регистр.
-
-Чтобы включить **чувствительность к регистру** (когда `i` и `I` — разные
-символы), используйте ключ `--case-sensitive`:
-
-```
-python -m assemble8080 prog.asm --case-sensitive
-```
-
-В режиме `--case-sensitive` ссылка на метку с другим регистром считается
-неопределённой (предупреждение «Неопределённая метка»).
-
-Python API: `assemble(source, case_sensitive=True)` или
-`asm = Assembler(); asm.case_sensitive = True`.
-
-> Примечание: однобуквенные метки (`a:`, `b:`, `i:` и т.п.) корректно
+new = '''> Примечание: однобуквенные метки (`a:`, `b:`, `i:` и т.п.) корректно
 > разрешаются и не путаются с регистрами при определении. Например,
 > `shld i` + `i: .dw 0` линкуется, символ `i` разрешён.
 
-### 11.3. Примеры
-''', "new subsection: label case sensitivity")
-
-open(path, 'w', encoding='utf-8').write(src)
-print(f"APPLIED: {len(applied)} changes")
-for a in applied:
-    print(f"  - {a}")
-```
-<!-- END FILE: _fix_guide.py -->
-
-### `_fix_import.py` (23 строк)
-
-<!-- FILE: _fix_import.py -->
-```python
-import sys
-sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-
-path = 'assemble8080/assembler.py'
-src = open(path, encoding='utf-8').read()
-
-old = '''                            self._imports.add(name.upper())
-                            # Define as 0 for pass 1 (will be resolved by linker)
-                            if name.upper() not in self.symbols:
-                                self.symbols[name.upper()] = 0'''
-
-new = '''                            _imp_key = self._sym_key(name)
-                            self._imports.add(_imp_key)
-                            # Define as 0 for pass 1 (will be resolved by linker)
-                            if _imp_key not in self.symbols:
-                                self.symbols[_imp_key] = 0'''
+**Кросс-модульная линковка и регистр.** В режиме case-insensitive ассемблер
+хранит в `.obj` `symbols` в исходном регистре, а `relocations`/`imports` — в
+UPPER-ключе. Чтобы кросс-модульные ссылки разрешались независимо от регистра,
+**линкер нормализует имена к UPPER** при построении таблиц символов, проверке
+imports и применении relocations (per-object, по флагу `case_sensitive` в `.obj`).
+Тогда `HELPER` (relocation) находит `helper` (symbol). В режиме
+`--case-sensitive` линкер делает точное сопоставление без нормализации. Флаг
+`case_sensitive` сериализуется в `.obj` (старые файлы без поля загружаются с
+`False`).
+'''
 
 if old in src:
     src = src.replace(old, new)
     open(path, 'w', encoding='utf-8').write(src)
-    print("IMPORT directive: APPLIED")
+    print("ASSEMBLER_GUIDE.md: linker case normalization note ADDED")
 else:
-    print("IMPORT directive: NOT FOUND")
+    print("NOT FOUND")
 ```
-<!-- END FILE: _fix_import.py -->
+<!-- END FILE: _fix_guide2.py -->
 
-### `_investigate_reloc.py` (30 строк)
+### `_fix_linker_case.py` (189 строк)
 
-<!-- FILE: _investigate_reloc.py -->
+<!-- FILE: _fix_linker_case.py -->
 ```python
 import sys
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-from assemble8080.assembler import assemble
 
-# crun8080lib.asm
-path = r'c:\smallc\crun8080lib.asm'
-src = open(path, encoding='utf-8', errors='replace').read()
-r = assemble(src)
-print(f"success={r.success}, errors={len(r.errors)}, relocations={len(r.relocations)}")
-print(f"warnings={len(r.warnings)}")
+applied = []
 
-# Count relocations by symbol
-from collections import Counter
-sym_count = Counter(sym for (_, _, sym) in r.relocations)
-print(f"\nUnique symbols in relocations: {len(sym_count)}")
-print("Top 20 symbols by relocation count:")
-for sym, cnt in sym_count.most_common(20):
-    print(f"  {sym}: {cnt}")
+def rep(path, old, new, tag):
+    src = open(path, encoding='utf-8').read()
+    if old in src:
+        src = src.replace(old, new)
+        open(path, 'w', encoding='utf-8').write(src)
+        applied.append(tag)
+    else:
+        print(f"NOT FOUND: {tag}")
 
-# Check for single-letter symbols (case sensitivity related)
-single = {s: c for s, c in sym_count.items() if len(s) == 1}
-print(f"\nSingle-letter symbols in relocations: {single}")
+# ============ 1. assembler.py ============
+# 1a. AsmResult: add case_sensitive field
+rep('assemble8080/assembler.py',
+'''    global_labels: set = field(default_factory=set)    # :: метки (глобальные/экспорт)
+    equ_symbols: set = field(default_factory=set)      # имена EQU/DEF констант (не метки)
+''',
+'''    global_labels: set = field(default_factory=set)    # :: метки (глобальные/экспорт)
+    equ_symbols: set = field(default_factory=set)      # имена EQU/DEF констант (не метки)
+    case_sensitive: bool = False                       # True = регистр лейблов значим
+''', "AsmResult: case_sensitive field")
 
-# Check if there are both upper and lower case versions of the same symbol
-upper_lower = {}
-for sym in sym_count:
-    key = sym.upper()
-    upper_lower.setdefault(key, set()).add(sym)
-dups = {k: v for k, v in upper_lower.items() if len(v) > 1}
-print(f"\nSymbols with mixed case (potential case issue): {dups}")
+# 1b. assemble(): set case_sensitive in AsmResult
+rep('assemble8080/assembler.py',
+'''            relocations=list(self._relocations),
+            end_address=location
+        )
+''',
+'''            relocations=list(self._relocations),
+            end_address=location,
+            case_sensitive=self.case_sensitive
+        )
+''', "assemble(): set case_sensitive in result")
+
+# ============ 2. objfile.py ============
+# 2a. ObjectFile: add case_sensitive field
+rep('assemble8080/objfile.py',
+'''    relocations: list = field(default_factory=list)   # [Relocation]
+    
+    def symbol_address(self, name: str) -> Optional[int]:
+''',
+'''    relocations: list = field(default_factory=list)   # [Relocation]
+    case_sensitive: bool = False                      # True = регистр лейблов значим
+
+    def symbol_address(self, name: str) -> Optional[int]:
+''', "ObjectFile: case_sensitive field")
+
+# 2b. save_obj: serialize case_sensitive
+rep('assemble8080/objfile.py',
+'''        "relocations": [
+            {"offset": r.offset, "size": r.size, "symbol": r.symbol}
+            for r in obj.relocations
+        ],
+    }
+''',
+'''        "relocations": [
+            {"offset": r.offset, "size": r.size, "symbol": r.symbol}
+            for r in obj.relocations
+        ],
+        "case_sensitive": obj.case_sensitive,
+    }
+''', "save_obj: case_sensitive")
+
+# 2c. load_obj: deserialize case_sensitive
+rep('assemble8080/objfile.py',
+'''        exports=d.get("exports", []),
+        imports=d.get("imports", []),
+    )
+    for r in d.get("relocations", []):
+''',
+'''        exports=d.get("exports", []),
+        imports=d.get("imports", []),
+        case_sensitive=d.get("case_sensitive", False),
+    )
+    for r in d.get("relocations", []):
+''', "load_obj: case_sensitive")
+
+# 2d. obj_from_asm_result: set case_sensitive
+rep('assemble8080/objfile.py',
+'''    # Get exports/imports/relocations from result
+    obj.exports = list(getattr(result, 'exports', []))
+    obj.imports = list(getattr(result, 'imports', []))
+''',
+'''    # Get exports/imports/relocations from result
+    obj.exports = list(getattr(result, 'exports', []))
+    obj.imports = list(getattr(result, 'imports', []))
+    obj.case_sensitive = bool(getattr(result, 'case_sensitive', False))
+''', "obj_from_asm_result: case_sensitive")
+
+# ============ 3. linker.py ============
+# 3a. global_symbols: normalize per object
+rep('assemble8080/linker.py',
+'''    # Step 2: Build global symbol table
+    # First pass: collect all exported symbols
+    global_symbols = {}  # {name: absolute_address}
+    for obj in objects:
+        for name in obj.exports:
+            if name in obj.symbols:
+                addr = obj.org + obj.symbols[name]
+                if name in global_symbols:
+                    warnings.append(f"Duplicate export: {name} (in {obj.name})")
+                else:
+                    global_symbols[name] = addr
+    
+    # Also add all symbols (for local resolution within same object)
+    all_symbols = {}
+    for obj in objects:
+        for name, offset in obj.symbols.items():
+            addr = obj.org + offset
+            if name not in all_symbols:
+                all_symbols[name] = addr
+''',
+'''    # Step 2: Build global symbol table
+    # Case-insensitive mode (default): normalize keys to UPPER so that
+    # relocations/imports (UPPER) match symbols (original case).
+    # Case-sensitive mode: exact matching (no normalization).
+    def _norm(obj, name):
+        return name if obj.case_sensitive else name.upper()
+    
+    # First pass: collect all exported symbols
+    global_symbols = {}  # {name: absolute_address}
+    for obj in objects:
+        for name in obj.exports:
+            if name in obj.symbols:
+                addr = obj.org + obj.symbols[name]
+                key = _norm(obj, name)
+                if key in global_symbols:
+                    warnings.append(f"Duplicate export: {name} (in {obj.name})")
+                else:
+                    global_symbols[key] = addr
+    
+    # Also add all symbols (for local resolution within same object)
+    all_symbols = {}
+    for obj in objects:
+        for name, offset in obj.symbols.items():
+            addr = obj.org + offset
+            key = _norm(obj, name)
+            if key not in all_symbols:
+                all_symbols[key] = addr
+''', "linker: normalize global_symbols/all_symbols")
+
+# 3b. imports check: normalize per object
+rep('assemble8080/linker.py',
+'''    # Step 3: Check for unresolved imports
+    for obj in objects:
+        for imp in obj.imports:
+            if imp not in global_symbols and imp not in all_symbols:
+                errors.append(LinkError(
+                    f"Unresolved symbol: {imp} (imported by {obj.name})",
+                    file=obj.name
+                ))
+''',
+'''    # Step 3: Check for unresolved imports
+    for obj in objects:
+        for imp in obj.imports:
+            imp_key = _norm(obj, imp)
+            if imp_key not in global_symbols and imp_key not in all_symbols:
+                errors.append(LinkError(
+                    f"Unresolved symbol: {imp} (imported by {obj.name})",
+                    file=obj.name
+                ))
+''', "linker: normalize imports check")
+
+# 3c. relocations: normalize per object
+rep('assemble8080/linker.py',
+'''    # Step 6: Apply relocations
+    for obj in objects:
+        for reloc in obj.relocations:
+            sym_addr = global_symbols.get(reloc.symbol) or all_symbols.get(reloc.symbol)
+            if sym_addr is None:
+                warnings.append(f"Relocation: symbol '{reloc.symbol}' not found (in {obj.name})")
+                continue
+''',
+'''    # Step 6: Apply relocations
+    for obj in objects:
+        for reloc in obj.relocations:
+            sym_key = _norm(obj, reloc.symbol)
+            sym_addr = global_symbols.get(sym_key) or all_symbols.get(sym_key)
+            if sym_addr is None:
+                warnings.append(f"Relocation: symbol '{reloc.symbol}' not found (in {obj.name})")
+                continue
+''', "linker: normalize relocations")
+
+print(f"APPLIED: {len(applied)} changes")
+for a in applied:
+    print(f"  - {a}")
 ```
-<!-- END FILE: _investigate_reloc.py -->
+<!-- END FILE: _fix_linker_case.py -->
 
 ### `_read_code.py` (37 строк)
 
@@ -3739,186 +3474,6 @@ print("=== RETRANSLATE ===")
 print(mw[max(0,idx2-50):idx2+2000])
 ```
 <!-- END FILE: _read_code4.py -->
-
-### `_review5.py` (13 строк)
-
-<!-- FILE: _review5.py -->
-```python
-import sys
-sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-lines = open('assemble8080/assembler.py', encoding='utf-8').read().split('\n')
-
-def dump(start, end, title):
-    print(f"\n{'='*70}\n### {title} (lines {start}-{end})\n{'='*70}")
-    for i in range(start-1, min(end, len(lines))):
-        print(f"{i+1:5d}: {lines[i]}")
-
-# Pass 1 instruction size calculation
-dump(895, 940, "Pass 1: instruction size")
-# Pass 2 instruction encoding (where bytes are emitted)
-dump(1140, 1180, "Pass 2: instruction encoding")
-```
-<!-- END FILE: _review5.py -->
-
-### `_review6.py` (11 строк)
-
-<!-- FILE: _review6.py -->
-```python
-import sys
-sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-lines = open('assemble8080/assembler.py', encoding='utf-8').read().split('\n')
-
-def dump(start, end, title):
-    print(f"\n{'='*70}\n### {title} (lines {start}-{end})\n{'='*70}")
-    for i in range(start-1, min(end, len(lines))):
-        print(f"{i+1:5d}: {lines[i]}")
-
-# Context before the bug - how mnemonic and operand are parsed in pass 1
-dump(855, 920, "Pass 1: mnemonic/operand parsing + instruction size")
-```
-<!-- END FILE: _review6.py -->
-
-### `_review7.py` (9 строк)
-
-<!-- FILE: _review7.py -->
-```python
-import sys, re
-sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-lines = open('assemble8080/assembler.py', encoding='utf-8').read().split('\n')
-
-# Find where mnemonic and operand are assigned in pass 1 (before line 855)
-for i in range(660, 860):
-    line = lines[i]
-    if re.search(r'\bmnemonic\s*=', line) or re.search(r'\boperand\s*=', line) or '_parse_instruction' in line or 'split' in line.lower() and 'operand' in line:
-        print(f"{i+1:5d}: {line.rstrip()}")
-```
-<!-- END FILE: _review7.py -->
-
-### `_review8.py` (16 строк)
-
-<!-- FILE: _review8.py -->
-```python
-import sys
-sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-lines = open('assemble8080/assembler.py', encoding='utf-8').read().split('\n')
-
-def dump(start, end, title):
-    print(f"\n{'='*70}\n### {title} (lines {start}-{end})\n{'='*70}")
-    for i in range(start-1, min(end, len(lines))):
-        print(f"{i+1:5d}: {lines[i]}")
-
-dump(685, 712, "Pass 1: parts/mnemonic/operand parsing")
-# Also check REGISTERS definition
-for i, line in enumerate(lines, 1):
-    if 'REGISTERS' in line and ('=' in line or 'dict' in line or '{' in line):
-        print(f"REGISTERS at {i}: {line.rstrip()}")
-    if 'REG_PAIRS' in line or 'REGISTERS =' in line:
-        print(f"  {i}: {line.rstrip()}")
-```
-<!-- END FILE: _review8.py -->
-
-### `_review9.py` (11 строк)
-
-<!-- FILE: _review9.py -->
-```python
-import sys
-sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-lines = open('assemble8080/assembler.py', encoding='utf-8').read().split('\n')
-
-def dump(start, end, title):
-    print(f"\n{'='*70}\n### {title} (lines {start}-{end})\n{'='*70}")
-    for i in range(start-1, min(end, len(lines))):
-        print(f"{i+1:5d}: {lines[i]}")
-
-dump(73, 92, "REGISTERS / REG_PAIRS definitions")
-dump(1318, 1398, "Pass 2: 'r' format handler (full)")
-```
-<!-- END FILE: _review9.py -->
-
-### `_review_case.py` (13 строк)
-
-<!-- FILE: _review_case.py -->
-```python
-import sys
-sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-lines = open('assemble8080/assembler.py', encoding='utf-8').read().split('\n')
-
-def dump(start, end, title):
-    print(f"\n{'='*70}\n### {title} (lines {start}-{end})\n{'='*70}")
-    for i in range(start-1, min(end, len(lines))):
-        print(f"{i+1:5d}: {lines[i]}")
-
-dump(530, 560, "Assembler.__init__")
-dump(1260, 1296, "AsmResult construction (end of assemble)")
-# label storage in pass 1
-dump(673, 692, "Pass 1 label storage")
-```
-<!-- END FILE: _review_case.py -->
-
-### `_review_cli.py` (22 строк)
-
-<!-- FILE: _review_cli.py -->
-```python
-import sys
-sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-
-# __main__.py
-print("=" * 60)
-print("__main__.py")
-print("=" * 60)
-print(open('assemble8080/__main__.py', encoding='utf-8').read())
-
-# assemble() function signature (line ~1814)
-lines = open('assemble8080/assembler.py', encoding='utf-8').read().split('\n')
-print("=" * 60)
-print("assemble() function (lines 1814-1860)")
-print("=" * 60)
-for i in range(1813, min(1860, len(lines))):
-    print(f"{i+1:5d}: {lines[i]}")
-
-# __init__.py
-print("=" * 60)
-print("__init__.py")
-print("=" * 60)
-print(open('assemble8080/__init__.py', encoding='utf-8').read())
-```
-<!-- END FILE: _review_cli.py -->
-
-### `_review_cli2.py` (12 строк)
-
-<!-- FILE: _review_cli2.py -->
-```python
-import sys, re
-sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-lines = open('assemble8080/assembler.py', encoding='utf-8').read().split('\n')
-
-# Find _cli_main
-for i, line in enumerate(lines, 1):
-    if 'def _cli_main' in line:
-        print(f"_cli_main at line {i}")
-        # print the function
-        for j in range(i-1, min(i+90, len(lines))):
-            print(f"{j+1:5d}: {lines[j]}")
-        break
-```
-<!-- END FILE: _review_cli2.py -->
-
-### `_review_guide.py` (10 строк)
-
-<!-- FILE: _review_guide.py -->
-```python
-import sys
-sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-lines = open('ASSEMBLER_GUIDE.md', encoding='utf-8').read().split('\n')
-
-def dump(start, end, title):
-    print(f"\n{'='*70}\n### {title} (lines {start}-{end})\n{'='*70}")
-    for i in range(start-1, min(end, len(lines))):
-        print(f"{i+1:5d}: {lines[i]}")
-
-dump(1192, 1250, "CLI options section (11.2)")
-```
-<!-- END FILE: _review_guide.py -->
 
 ### `_run_all_tests.py` (94 строк)
 
@@ -4371,6 +3926,163 @@ sys.exit(0 if failed == 0 else 1)
 ```
 <!-- END FILE: _test_dollar.py -->
 
+### `_test_linker_case.py` (150 строк)
+
+<!-- FILE: _test_linker_case.py -->
+```python
+"""Test: cross-module case-mismatch linking (PROMPT_i8080_ci_case_fix.md)."""
+import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
+from assemble8080.assembler import assemble
+from assemble8080.objfile import obj_from_asm_result, save_obj, load_obj
+from assemble8080.linker import link
+
+passed = 0
+failed = 0
+
+def check(name, cond, detail=""):
+    global passed, failed
+    if cond:
+        passed += 1
+        print(f"  PASS: {name}")
+    else:
+        failed += 1
+        print(f"  FAIL: {name} {detail}")
+
+print("=" * 60)
+print("TEST: Cross-module case-mismatch linking")
+print("=" * 60)
+
+# Minimal repro from the prompt:
+# Module A (defines main, calls helper)
+# Module B (defines helper)
+src_a = """main:
+    call helper
+    ret
+"""
+src_b = """helper:
+    mvi a,0
+    ret
+"""
+
+# Test 1: case-insensitive (default) - cross-module link works
+r_a = assemble(src_a, filename="A.asm")
+r_b = assemble(src_b, filename="B.asm")
+check("A assembled", r_a.success)
+check("B assembled", r_b.success)
+
+obj_a = obj_from_asm_result(r_a, "A.asm")
+obj_b = obj_from_asm_result(r_b, "B.asm")
+obj_a.org = 0x0100
+obj_b.org = 0x0200
+
+# Verify the inconsistency described in the prompt
+check("A: symbols in original case", 'main' in obj_a.symbols,
+      f"(symbols={obj_a.symbols})")
+check("A: imports in UPPER", 'HELPER' in obj_a.imports,
+      f"(imports={obj_a.imports})")
+check("B: symbols in original case", 'helper' in obj_b.symbols,
+      f"(symbols={obj_b.symbols})")
+
+res = link([obj_a, obj_b], origin=0, size=0x10000, fill=0xFF)
+check("Link A+B: success", res.success,
+      f"(errors={res.errors})")
+if res.success:
+    # call helper at 0x0100: opcode 0xCD, address at 0x0101 (low) - 0x0102 (high)
+    # helper is at 0x0200, so address should be 0x00, 0x02
+    addr_lo = res.binary[0x0101]
+    addr_hi = res.binary[0x0102]
+    check("call helper patched to 0x0200", addr_lo == 0x00 and addr_hi == 0x02,
+          f"(got 0x{addr_hi:02X}{addr_lo:02X})")
+
+# Test 2: case-insensitive - reference with different case than definition
+src_a2 = """main:
+    call HELPER
+    ret
+"""
+r_a2 = assemble(src_a2, filename="A2.asm")
+obj_a2 = obj_from_asm_result(r_a2, "A2.asm")
+obj_a2.org = 0x0100
+res2 = link([obj_a2, obj_b], origin=0, size=0x10000, fill=0xFF)
+check("Link A2(HELPER)+B(helper): success (case-insensitive)", res2.success,
+      f"(errors={res2.errors})")
+
+# Test 3: case-sensitive - i and I are different
+src_c1 = """i:
+    mvi a,0
+    ret
+"""
+src_c2 = """main:
+    call I
+    ret
+"""
+r_c1 = assemble(src_c1, filename="C1.asm", case_sensitive=True)
+r_c2 = assemble(src_c2, filename="C2.asm", case_sensitive=True)
+obj_c1 = obj_from_asm_result(r_c1, "C1.asm")
+obj_c2 = obj_from_asm_result(r_c2, "C2.asm")
+obj_c1.org = 0x0100
+obj_c2.org = 0x0200
+check("C1: case_sensitive flag in obj", obj_c1.case_sensitive == True)
+check("C2: case_sensitive flag in obj", obj_c2.case_sensitive == True)
+res3 = link([obj_c1, obj_c2], origin=0, size=0x10000, fill=0xFF)
+check("Link C1(i)+C2(I): FAIL (case-sensitive, different case)", not res3.success,
+      f"(success={res3.success})")
+
+# Test 4: case-sensitive - same case matches
+src_c3 = """main:
+    call i
+    ret
+"""
+r_c3 = assemble(src_c3, filename="C3.asm", case_sensitive=True)
+obj_c3 = obj_from_asm_result(r_c3, "C3.asm")
+obj_c3.org = 0x0200
+res4 = link([obj_c1, obj_c3], origin=0, size=0x10000, fill=0xFF)
+check("Link C1(i)+C3(i): success (case-sensitive, same case)", res4.success,
+      f"(errors={res4.errors})")
+
+# Test 5: save/load roundtrip preserves case_sensitive flag
+import tempfile, os
+tmp = tempfile.mktemp(suffix='.obj')
+save_obj(tmp, obj_c1)
+loaded = load_obj(tmp)
+check("save/load: case_sensitive preserved", loaded.case_sensitive == True)
+os.unlink(tmp)
+
+# Test 6: old .obj (no case_sensitive field) loads with default False
+import json
+tmp2 = tempfile.mktemp(suffix='.obj')
+d = {
+    "format": "i8080-obj-v1",
+    "name": "old",
+    "source": "old.asm",
+    "org": 0,
+    "size": 2,
+    "data": "0000",
+    "symbols": {"X": 0},
+    "exports": ["X"],
+    "imports": [],
+    "relocations": [],
+}
+with open(tmp2, 'w') as f:
+    json.dump(d, f)
+loaded2 = load_obj(tmp2)
+check("old .obj: case_sensitive defaults to False", loaded2.case_sensitive == False)
+os.unlink(tmp2)
+
+print()
+print("=" * 60)
+print(f"RESULTS: {passed} passed, {failed} failed")
+print("=" * 60)
+
+if failed == 0:
+    print("ALL TESTS PASSED")
+else:
+    print("SOME TESTS FAILED")
+    sys.exit(1)
+```
+<!-- END FILE: _test_linker_case.py -->
+
 ### `_test_reloc.py` (166 строк)
 
 <!-- FILE: _test_reloc.py -->
@@ -4728,9 +4440,9 @@ else:
 ```
 <!-- END FILE: _test_reloc_undefined.py -->
 
-### `_update_changes2.py` (49 строк)
+### `_update_changes3.py` (45 строк)
 
-<!-- FILE: _update_changes2.py -->
+<!-- FILE: _update_changes3.py -->
 ```python
 import sys
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -4738,51 +4450,47 @@ sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 path = 'CHANGES.md'
 src = open(path, encoding='utf-8').read()
 
-new_entry = """## v2.1.12 (2026-10-12)
+new_entry = """## v2.1.13 (2026-10-12)
 
-### ALU immediate size fix (pass 1) + label case sensitivity
+### Cross-module case-mismatch linking fix (linker normalizes case)
 
-**БАГ #1 (критический): неверный размер ALU-команд с immediate в pass 1**
-- **Fixed:** В pass 1 (расчёт смещений символов) размер ALU-инструкций формата `r`
-  (ADD/ADC/SUB/SBB/ANA/XRA/ORA/CMP) брался из таблицы как 1 байт, даже когда
-  операнд — immediate (число, `#n`, метка, выражение). Реальное кодирование
-  immediate-формы — 2 байта. Ошибка накапливалась по всему модулю, и все символы
-  после первой ALU-imm инструкции получали неверный offset.
-- Фикс: перед `location += size` в pass 1 проверяется, является ли операнд
-  регистром/парой (A B C D E H L M / BC DE HL PSW). Если нет — `size = 2`.
-  Поддерживается ASxxxx 2-операндная форма `cmp a, #5` и префикс `#`.
-- Pass 2 уже корректно кодировал imm-форму в 2 байта (проверено).
-- 14 новых тестов (`_test_alu_imm.py`), все pass.
-- crun8080lib.asm: 353 → 366 релокаций (смещения теперь корректны).
+**Критический баг пайплайна:** в режиме case-insensitive (по умолчанию) ассемблер
+выводил в `.obj` несогласованный регистр: `symbols` — в исходном регистре
+(`main`, `helper`), а `relocations`/`imports` — в UPPER-ключе (`MAIN`, `HELPER`).
+Линкер делал точное сопоставление, поэтому кросс-модульная ссылка не разрешалась:
+`Unresolved symbol: HELPER` хотя `helper` определён в другом модуле. В пайплайне
+SmallC это ломало линковку всех тестов с `main` (56 из 97).
 
-**Регистр лейблов: сохранение исходного регистра + ключ --case-sensitive**
-- **New:** Ассемблер больше не капсит лейблы в ВЕРХНИЙ регистр. Исходный регистр
-  сохраняется в таблице символов, map-файле и .obj (например, `main`, а не `MAIN`).
-- **New:** Ключ командной строки `--case-sensitive` включает чувствительность к
-  регистру лейблов: `i` и `I` становятся разными символами. По умолчанию
-  (без ключа) — регистр не значим (case-insensitive), но исходный регистр
-  сохраняется в выводе.
-- API: `assemble(..., case_sensitive=False)`, `Assembler.case_sensitive`.
-- Внутренние lookup-места (`_parse_operand`, релокационные обработчики,
-  `_is_import_symbol`, IMPORT) используют `_sym_key()` для единообразия.
-- 15 новых тестов (`_test_case.py`), все pass.
-- Минимальный кейс из промпта (БАГ #2): `shld i` + `i: .dw 0` линкуется,
-  символ `i` разрешён; однобуквенная метка `a:` не путается с регистром A.
+**Фикс (рекомендованный вариант из промпта):**
+- **Линкер нормализует регистр при сопоставлении** в case-insensitive режиме:
+  при построении `global_symbols`/`all_symbols` и при проверке imports / применении
+  relocations имена приводятся к UPPER (per-object, по флагу `obj.case_sensitive`).
+  Тогда `HELPER` (relocation/import) находит `helper` (symbol).
+- **Флаг `case_sensitive` в `.obj`:** добавлено поле `case_sensitive: bool`
+  (по умолчанию `False`) в `ObjectFile`, сериализуется/десериализуется в JSON
+  (старые `.obj` без поля загружаются с `False`). Ассемблер выставляет его по
+  `Assembler.case_sensitive` через `AsmResult.case_sensitive`.
+- **Режим `--case-sensitive`:** линкер делает точное сопоставление (без
+  нормализации) — `i` и `I` остаются разными символами.
+- Минимальный кросс-модульный кейс из промпта: `A(main→call helper) + B(helper)`
+  линкуется, `call helper` патчится на адрес `helper` в B.
+- 14 новых тестов (`_test_linker_case.py`), все pass.
 
-Updated: `assemble8080/assembler.py` (pass 1 ALU-imm size, case sensitivity, CLI)
+Updated: `assemble8080/linker.py` (case normalization), `assemble8080/objfile.py`
+(case_sensitive field), `assemble8080/assembler.py` (AsmResult.case_sensitive)
 
 """
 
-marker = "## v2.1.11"
+marker = "## v2.1.12"
 idx = src.find(marker)
 if idx == -1:
-    print("ERROR: v2.1.11 marker not found")
+    print("ERROR: v2.1.12 marker not found")
     sys.exit(1)
 src = src[:idx] + new_entry + src[idx:]
 open(path, 'w', encoding='utf-8').write(src)
-print("CHANGES.md updated with v2.1.12 entry")
+print("CHANGES.md updated with v2.1.13 entry")
 ```
-<!-- END FILE: _update_changes2.py -->
+<!-- END FILE: _update_changes3.py -->
 
 ### `_verify_fixes.py` (43 строк)
 
@@ -8880,7 +8588,7 @@ for f, p, fl, s in results:
 ```python
 """Project version and build information."""
 
-__version__ = "2.1.12"
+__version__ = "2.1.13"
 __build__ = "20261012"
 __app_name__ = "i8080-5 CI"
 
@@ -8951,7 +8659,7 @@ if __name__ == "__main__":
 ```
 <!-- END FILE: assemble8080/__main__.py -->
 
-### `assemble8080/assembler.py` (2063 строк)
+### `assemble8080/assembler.py` (2065 строк)
 
 <!-- FILE: assemble8080/assembler.py -->
 ```python
@@ -9020,6 +8728,7 @@ class AsmResult:
     map_text: str = ""                                 # текст map-файла (генерируется при успехе)
     global_labels: set = field(default_factory=set)    # метки с :: (глобальные/экспортные)
     equ_symbols: set = field(default_factory=set)      # имена EQU/DEF констант (не адреса)
+    case_sensitive: bool = False                       # True = регистр лейблов значим
 
 
 # =============================================================
@@ -10276,7 +9985,8 @@ class Assembler:
             global_labels={self._symbol_case.get(_k, _k) for _k in self._global_labels},
 
             relocations=list(self._relocations),
-            end_address=location
+            end_address=location,
+            case_sensitive=self.case_sensitive
         )
         # Генерация map-файла при успешной сборке
         if result.success:
@@ -11065,7 +10775,7 @@ class AsmResult:
 ```
 <!-- END FILE: assemble8080/errors.py -->
 
-### `assemble8080/linker.py` (255 строк)
+### `assemble8080/linker.py` (265 строк)
 
 <!-- FILE: assemble8080/linker.py -->
 ```python
@@ -11182,29 +10892,38 @@ def link(objects: list, origin: int = 0, size: int = 0x10000, fill: int = 0xFF) 
         return LinkResult(success=False, errors=errors)
     
     # Step 2: Build global symbol table
+    # Case-insensitive mode (default): normalize keys to UPPER so that
+    # relocations/imports (UPPER) match symbols (original case).
+    # Case-sensitive mode: exact matching (no normalization).
+    def _norm(obj, name):
+        return name if obj.case_sensitive else name.upper()
+    
     # First pass: collect all exported symbols
     global_symbols = {}  # {name: absolute_address}
     for obj in objects:
         for name in obj.exports:
             if name in obj.symbols:
                 addr = obj.org + obj.symbols[name]
-                if name in global_symbols:
+                key = _norm(obj, name)
+                if key in global_symbols:
                     warnings.append(f"Duplicate export: {name} (in {obj.name})")
                 else:
-                    global_symbols[name] = addr
+                    global_symbols[key] = addr
     
     # Also add all symbols (for local resolution within same object)
     all_symbols = {}
     for obj in objects:
         for name, offset in obj.symbols.items():
             addr = obj.org + offset
-            if name not in all_symbols:
-                all_symbols[name] = addr
+            key = _norm(obj, name)
+            if key not in all_symbols:
+                all_symbols[key] = addr
     
     # Step 3: Check for unresolved imports
     for obj in objects:
         for imp in obj.imports:
-            if imp not in global_symbols and imp not in all_symbols:
+            imp_key = _norm(obj, imp)
+            if imp_key not in global_symbols and imp_key not in all_symbols:
                 errors.append(LinkError(
                     f"Unresolved symbol: {imp} (imported by {obj.name})",
                     file=obj.name
@@ -11227,7 +10946,8 @@ def link(objects: list, origin: int = 0, size: int = 0x10000, fill: int = 0xFF) 
     # Step 6: Apply relocations
     for obj in objects:
         for reloc in obj.relocations:
-            sym_addr = global_symbols.get(reloc.symbol) or all_symbols.get(reloc.symbol)
+            sym_key = _norm(obj, reloc.symbol)
+            sym_addr = global_symbols.get(sym_key) or all_symbols.get(sym_key)
             if sym_addr is None:
                 warnings.append(f"Relocation: symbol '{reloc.symbol}' not found (in {obj.name})")
                 continue
@@ -11587,7 +11307,7 @@ class NumberParser:
 ```
 <!-- END FILE: assemble8080/numbers.py -->
 
-### `assemble8080/objfile.py` (137 строк)
+### `assemble8080/objfile.py` (141 строк)
 
 <!-- FILE: assemble8080/objfile.py -->
 ```python
@@ -11631,7 +11351,8 @@ class ObjectFile:
     exports: list = field(default_factory=list)       # [name]
     imports: list = field(default_factory=list)       # [name]
     relocations: list = field(default_factory=list)   # [Relocation]
-    
+    case_sensitive: bool = False                      # True = регистр лейблов значим
+
     def symbol_address(self, name: str) -> Optional[int]:
         """Get absolute address of a symbol in this object."""
         if name in self.symbols:
@@ -11655,6 +11376,7 @@ def save_obj(path: str, obj: ObjectFile):
             {"offset": r.offset, "size": r.size, "symbol": r.symbol}
             for r in obj.relocations
         ],
+        "case_sensitive": obj.case_sensitive,
     }
     with open(path, 'w', encoding='utf-8') as f:
         json.dump(d, f, indent=2)
@@ -11677,6 +11399,7 @@ def load_obj(path: str) -> ObjectFile:
         symbols=d.get("symbols", {}),
         exports=d.get("exports", []),
         imports=d.get("imports", []),
+        case_sensitive=d.get("case_sensitive", False),
     )
     for r in d.get("relocations", []):
         obj.relocations.append(Relocation(
@@ -11719,6 +11442,7 @@ def obj_from_asm_result(result, source_name: str = "") -> ObjectFile:
     # Get exports/imports/relocations from result
     obj.exports = list(getattr(result, 'exports', []))
     obj.imports = list(getattr(result, 'imports', []))
+    obj.case_sensitive = bool(getattr(result, 'case_sensitive', False))
     
     for reloc in getattr(result, 'relocations', []):
         if isinstance(reloc, tuple):
@@ -35117,7 +34841,7 @@ def create_terminal_widget(device):
 
 ■ РАЗДЕЛ 4: ИЗМЕНЕНИЯ РЕФАКТОРИНГА
 
-Источник: `CHANGES.md` (2712 строк)
+Источник: `CHANGES.md` (2741 строк)
 
 ```markdown
 # Changelog / Журнал изменений
@@ -35125,6 +34849,35 @@ def create_terminal_widget(device):
 
 
 
+
+## v2.1.13 (2026-10-12)
+
+### Cross-module case-mismatch linking fix (linker normalizes case)
+
+**Критический баг пайплайна:** в режиме case-insensitive (по умолчанию) ассемблер
+выводил в `.obj` несогласованный регистр: `symbols` — в исходном регистре
+(`main`, `helper`), а `relocations`/`imports` — в UPPER-ключе (`MAIN`, `HELPER`).
+Линкер делал точное сопоставление, поэтому кросс-модульная ссылка не разрешалась:
+`Unresolved symbol: HELPER` хотя `helper` определён в другом модуле. В пайплайне
+SmallC это ломало линковку всех тестов с `main` (56 из 97).
+
+**Фикс (рекомендованный вариант из промпта):**
+- **Линкер нормализует регистр при сопоставлении** в case-insensitive режиме:
+  при построении `global_symbols`/`all_symbols` и при проверке imports / применении
+  relocations имена приводятся к UPPER (per-object, по флагу `obj.case_sensitive`).
+  Тогда `HELPER` (relocation/import) находит `helper` (symbol).
+- **Флаг `case_sensitive` в `.obj`:** добавлено поле `case_sensitive: bool`
+  (по умолчанию `False`) в `ObjectFile`, сериализуется/десериализуется в JSON
+  (старые `.obj` без поля загружаются с `False`). Ассемблер выставляет его по
+  `Assembler.case_sensitive` через `AsmResult.case_sensitive`.
+- **Режим `--case-sensitive`:** линкер делает точное сопоставление (без
+  нормализации) — `i` и `I` остаются разными символами.
+- Минимальный кросс-модульный кейс из промпта: `A(main→call helper) + B(helper)`
+  линкуется, `call helper` патчится на адрес `helper` в B.
+- 14 новых тестов (`_test_linker_case.py`), все pass.
+
+Updated: `assemble8080/linker.py` (case normalization), `assemble8080/objfile.py`
+(case_sensitive field), `assemble8080/assembler.py` (AsmResult.case_sensitive)
 
 ## v2.1.12 (2026-10-12)
 
@@ -52988,4 +52741,4 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 
 ---
 
-*Конец среза. Сгенерировано 2026-10-12 12:17:31.*
+*Конец среза. Сгенерировано 2026-10-12 17:29:04.*

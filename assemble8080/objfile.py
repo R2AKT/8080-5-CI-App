@@ -38,7 +38,8 @@ class ObjectFile:
     exports: list = field(default_factory=list)       # [name]
     imports: list = field(default_factory=list)       # [name]
     relocations: list = field(default_factory=list)   # [Relocation]
-    
+    case_sensitive: bool = False                      # True = регистр лейблов значим
+
     def symbol_address(self, name: str) -> Optional[int]:
         """Get absolute address of a symbol in this object."""
         if name in self.symbols:
@@ -62,6 +63,7 @@ def save_obj(path: str, obj: ObjectFile):
             {"offset": r.offset, "size": r.size, "symbol": r.symbol}
             for r in obj.relocations
         ],
+        "case_sensitive": obj.case_sensitive,
     }
     with open(path, 'w', encoding='utf-8') as f:
         json.dump(d, f, indent=2)
@@ -84,6 +86,7 @@ def load_obj(path: str) -> ObjectFile:
         symbols=d.get("symbols", {}),
         exports=d.get("exports", []),
         imports=d.get("imports", []),
+        case_sensitive=d.get("case_sensitive", False),
     )
     for r in d.get("relocations", []):
         obj.relocations.append(Relocation(
@@ -126,6 +129,7 @@ def obj_from_asm_result(result, source_name: str = "") -> ObjectFile:
     # Get exports/imports/relocations from result
     obj.exports = list(getattr(result, 'exports', []))
     obj.imports = list(getattr(result, 'imports', []))
+    obj.case_sensitive = bool(getattr(result, 'case_sensitive', False))
     
     for reloc in getattr(result, 'relocations', []):
         if isinstance(reloc, tuple):
