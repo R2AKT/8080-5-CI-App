@@ -554,6 +554,29 @@ class Assembler:
         self.cpu_type = "i8080"
         # Relocatable mode: True if no .org directive (org=0)
         self._relocatable = True
+        # Case sensitivity for labels: False (default) = case-insensitive,
+        # True = case-sensitive. Original case is always preserved in output.
+        self.case_sensitive = False
+        # Remember original case of each symbol: {KEY: original_name}
+        self._symbol_case: dict = {}
+
+    def _sym_key(self, name: str) -> str:
+        """Ключ для имени символа с учётом case_sensitive.
+
+        case_sensitive=False (по умолчанию) -> UPPER (case-insensitive match).
+        case_sensitive=True -> исходный регистр (exact match).
+        """
+        if self.case_sensitive:
+            return name
+        return name.upper()
+
+    def _store_symbol(self, name: str, value: int):
+        """Сохранить символ, запоминая исходный регистр для вывода."""
+        key = self._sym_key(name)
+        self.symbols[key] = value
+        # Запоминаем исходный регистр (первое определение побеждает)
+        if key not in self._symbol_case:
+            self._symbol_case[key] = name
 
     def _get_mnemonics(self) -> dict:
         """Вернуть таблицу мнемоник с учётом типа процессора.
@@ -673,9 +696,9 @@ class Assembler:
             # Метка
             label, is_global, rest = self._parse_label(stripped)
             if label:
-                label_upper = label.upper()
+                label_upper = self._sym_key(label)
                 # Разрешаем переопределение (последнее значение побеждает)
-                self.symbols[label_upper] = location
+                self._store_symbol(label, location)
                 if is_global:
 
                     self._global_labels.add(label_upper)
@@ -764,10 +787,11 @@ class Assembler:
                     for name in self._split_operands(operand):
                         name = name.strip()
                         if name:
-                            self._imports.add(name.upper())
+                            _imp_key = self._sym_key(name)
+                            self._imports.add(_imp_key)
                             # Define as 0 for pass 1 (will be resolved by linker)
-                            if name.upper() not in self.symbols:
-                                self.symbols[name.upper()] = 0
+                            if _imp_key not in self.symbols:
+                                self.symbols[_imp_key] = 0
                 continue
 
             # #code SECTION, ADDRESS, SIZE — секция (zasm)
@@ -911,6 +935,20 @@ class Assembler:
             _mnemonics = self._get_mnemonics()
             if mnemonic in _mnemonics:
                 opcode, fmt, size = _mnemonics[mnemonic]
+                # БАГ #1: ALU-команды формата 'r' с immediate-операндом — 2 байта,
+                # а не 1 (в таблице size=1 для reg-формы). Без этого pass 1
+                # занижает смещения всех последующих символов.
+                if fmt == 'r' and operand:
+                    op_u = operand.strip().upper()
+                    if ',' in op_u:
+                        # ASxxxx 2-операндная форма "cmp a, #5" -> immediate
+                        size = 2
+                    else:
+                        op_clean = op_u.lstrip('#').strip()
+                        _REG_OPS = ('A', 'B', 'C', 'D', 'E', 'H', 'L', 'M',
+                                    'BC', 'DE', 'HL', 'PSW')
+                        if op_clean not in _REG_OPS:
+                            size = 2
                 location += size
                 self.pc = location
             else:
@@ -1264,17 +1302,21 @@ class Assembler:
                     pass
             self._current_section = None
 
+        # Таблица символов в исходном регистре (не UPPER) для вывода
+        _symbols_out = {}
+        for _k, _v in self.symbols.items():
+            _symbols_out[self._symbol_case.get(_k, _k)] = _v
         result = AsmResult(
             success=len(self.errors) == 0,
             binary=bytes(self.binary[:self._write_pos]) if self._write_pos < len(self.binary) else bytes(self.binary),
-            symbols=dict(self.symbols),
+            symbols=_symbols_out,
             origin=self.origin,
             errors=list(self.errors),
             warnings=list(self.warnings),
             listing=list(self.listing),
-            exports=list(self._exports),
-            imports=list(self._imports),
-            global_labels=set(self._global_labels),
+            exports=[self._symbol_case.get(_k, _k) for _k in self._exports],
+            imports=[self._symbol_case.get(_k, _k) for _k in self._imports],
+            global_labels={self._symbol_case.get(_k, _k) for _k in self._global_labels},
 
             relocations=list(self._relocations),
             end_address=location
@@ -1299,7 +1341,7 @@ class Assembler:
         """Если операнд — чистая ссылка на импортированный символ, вернуть его имя (UPPER)."""
         t = operand_str.strip()
         if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', t):
-            upper = t.upper()
+            upper = self._sym_key(t)
             if upper in self._imports:
                 return upper
         return None
@@ -1410,7 +1452,7 @@ class Assembler:
             else:
                 op_str = operands[0].strip()
                 if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', op_str):
-                    upper = op_str.upper()
+                    upper = self._sym_key(op_str)
                     if upper not in self.symbols:
                         # Undefined symbol → import
                         self._imports.add(upper)
@@ -1454,7 +1496,7 @@ class Assembler:
             else:
                 op_str = operands[1].strip()
                 if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', op_str):
-                    upper = op_str.upper()
+                    upper = self._sym_key(op_str)
                     if upper not in self.symbols:
                         # Undefined symbol → import
                         self._imports.add(upper)
@@ -1548,7 +1590,7 @@ class Assembler:
         # Простой идентификатор без операторов — предупреждение если не определён
         if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', expr_str):
             in_defines = any(expr_str.lower() == d.lower() for d in self.defines)
-            if expr_str.upper() not in self.symbols and not in_defines:
+            if self._sym_key(expr_str) not in self.symbols and not in_defines:
                 # Warning, не error: файл может быть "нижним" (включается в другой)
                 self.warnings.append(f"L{line_num}: Неопределённая метка: {expr_str}")
                 return 0
@@ -1560,7 +1602,7 @@ class Assembler:
         # Пробуем как выражение: метка +/- число
         m = re.match(r'^([A-Za-z_][A-Za-z0-9_]*)\s*([+\-])\s*(.+)$', operand_str)
         if m:
-            label = m.group(1).upper()
+            label = self._sym_key(m.group(1))
             op = m.group(2)
             rest_str = m.group(3).strip()
 
@@ -1586,7 +1628,7 @@ class Assembler:
                 return base_val - rest_val
 
         # Пробуем как метку
-        label = operand_str.upper()
+        label = self._sym_key(operand_str)
         if label in self.symbols:
             return self.symbols[label]
 
@@ -1709,7 +1751,7 @@ class Assembler:
             else:
                 part_str = part.strip()
                 if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', part_str):
-                    upper = part_str.upper()
+                    upper = self._sym_key(part_str)
                     if upper not in self.symbols:
                         # Undefined symbol → import
                         self._imports.add(upper)
@@ -1821,7 +1863,8 @@ class Assembler:
 # УДОБНАЯ ФУНКЦИЯ ДЛЯ БЫСТРОГО ИСПОЛЬЗОВАНИЯ
 # =============================================================
 
-def assemble(source: str, filename: str = "", now=None, cpu_type: str = "i8080") -> AsmResult:
+def assemble(source: str, filename: str = "", now=None, cpu_type: str = "i8080",
+             case_sensitive: bool = False) -> AsmResult:
     """Ассемблировать исходный код: вернуть результат сборки.
 
     :param source: исходный текст программы
@@ -1831,6 +1874,7 @@ def assemble(source: str, filename: str = "", now=None, cpu_type: str = "i8080")
     """
     asm = Assembler(now=now)
     asm.cpu_type = cpu_type
+    asm.case_sensitive = case_sensitive
     return asm.assemble(source, filename)
 
 
@@ -1905,6 +1949,9 @@ def _cli_main(argv=None) -> int:
     parser.add_argument("--obj", help="Output object file (default: <input>.obj)")
     parser.add_argument("--cpu", choices=["8080", "8085"], default="8080",
                         help="CPU type (default: 8080)")
+    parser.add_argument("--case-sensitive", action="store_true",
+                        help="Label names are case-sensitive (i and I are different). "
+                             "Default: case-insensitive (original case preserved in output).")
     parser.add_argument("--lnk", help="Link script (.lnk) for multi-file linking")
     parser.add_argument("--hex", action="store_true", help="Print hexdump of output")
     parser.add_argument("--list", action="store_true", help="Print listing (address, bytes, source)")
@@ -1951,7 +1998,8 @@ def _cli_main(argv=None) -> int:
             continue
         with open(src, 'r', encoding='utf-8', errors='replace') as f:
             source = f.read()
-        result = assemble(source, filename=src, cpu_type=cpu_type)
+        result = assemble(source, filename=src, cpu_type=cpu_type,
+                          case_sensitive=args.case_sensitive)
 
         if not result.success:
             print(f"[FAIL] {src}:")

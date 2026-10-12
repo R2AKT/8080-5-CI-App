@@ -58,13 +58,13 @@ check(f"JZ $1 → 0x0109 (got 0x{jz_target:04X})", jz_target == 0x0109, f"got 0x
 jmp_target = res.binary[0x0106] | (res.binary[0x0107] << 8)
 check(f"JMP $0 → 0x0100 (got 0x{jmp_target:04X})", jmp_target == 0x0100, f"got 0x{jmp_target:04X}")
 
-print("\n=== Test 3: crun8080lib.asm still 353 relocations ===")
+print("\n=== Test 3: crun8080lib.asm still 366 relocations (was 353 before ALU-imm fix) ===")
 crun_path = r"c:\smallc\crun8080lib.asm"
 if os.path.exists(crun_path):
     with open(crun_path, 'r', encoding='utf-8', errors='replace') as f:
         crun_src = f.read()
     r_crun = assemble(crun_src, filename=crun_path)
-    check(f"crun: {len(r_crun.relocations)} relocations (expect 353)", len(r_crun.relocations) == 353,
+    check(f"crun: {len(r_crun.relocations)} relocations (expect 366)", len(r_crun.relocations) == 366,
           f"got {len(r_crun.relocations)}")
 
 print(f"\n{'='*60}")

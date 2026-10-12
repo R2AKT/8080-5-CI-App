@@ -1,8 +1,8 @@
 # СРЕЗ ПРОЕКТА (PROJECT SNAPSHOT)
 
-> Сгенерировано: 2026-10-11 19:47:42
+> Сгенерировано: 2026-10-12 12:17:31
 > Корень проекта: `c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis`
-> Код: 113 файлов, 31113 строк
+> Код: 125 файлов, 31805 строк
 > Тесты: 74 файлов, 11719 строк
 > Профили: 22 файлов, 843 строк
 
@@ -138,7 +138,7 @@
 ├── assemble8080/
 │   ├── __init__.py  [28 строк]
 │   ├── __main__.py  [19 строк]
-│   ├── assembler.py  [2015 строк]
+│   ├── assembler.py  [2063 строк]
 │   ├── errors.py  [37 строк]
 │   ├── linker.py  [255 строк]
 │   ├── mapfile.py  [162 строк]
@@ -433,28 +433,40 @@
 ├── _audit_and_version.py  [84 строк]
 ├── _cycle1.py  [402 строк]
 ├── _final_fixes.py  [134 строк]
+├── _fix_alu.py  [45 строк]
+├── _fix_case.py  [115 строк]
+├── _fix_case2.py  [109 строк]
 ├── _fix_en.py  [50 строк]
-├── _fix_reloc.py  [63 строк]
+├── _fix_guide.py  [57 строк]
+├── _fix_import.py  [23 строк]
+├── _investigate_reloc.py  [30 строк]
 ├── _read_code.py  [37 строк]
 ├── _read_code2.py  [53 строк]
 ├── _read_code3.py  [33 строк]
 ├── _read_code4.py  [19 строк]
-├── _review1.py  [13 строк]
-├── _review2.py  [14 строк]
-├── _review3.py  [10 строк]
-├── _review4.py  [20 строк]
+├── _review5.py  [13 строк]
+├── _review6.py  [11 строк]
+├── _review7.py  [9 строк]
+├── _review8.py  [16 строк]
+├── _review9.py  [11 строк]
+├── _review_case.py  [13 строк]
+├── _review_cli.py  [22 строк]
+├── _review_cli2.py  [12 строк]
+├── _review_guide.py  [10 строк]
 ├── _run_all_tests.py  [94 строк]
+├── _test_alu_imm.py  [131 строк]
+├── _test_case.py  [125 строк]
 ├── _test_dollar.py  [73 строк]
 ├── _test_out.txt  [45 строк]
 ├── _test_reloc.py  [166 строк]
 ├── _test_reloc_undefined.py  [177 строк]
-├── _update_changes.py  [37 строк]
+├── _update_changes2.py  [49 строк]
 ├── _verify_fixes.py  [43 строк]
 ├── Addendum.txt  [81 строк]
 ├── ANALYSIS.md  [536 строк]
 ├── ANALYSIS_ASSEMBLER.md  [341 строк]
-├── ASSEMBLER_GUIDE.md  [1268 строк]
-├── CHANGES.md  [2679 строк]
+├── ASSEMBLER_GUIDE.md  [1294 строк]
+├── CHANGES.md  [2712 строк]
 ├── claude_desktop_config.json  [7 строк]
 ├── clean_pycache.py  [87 строк]
 ├── config.json  [10 строк]
@@ -475,7 +487,7 @@
 ├── micro-80_bp_preset.json  [77 строк]
 ├── package-lock.json  [6 строк]
 ├── PROJECT_SNAPSHOT.md  [52050 строк]
-├── PROMPT_CI_ASSEMBLER_DOLLAR_LABELS.md  [106 строк]
+├── PROMPT_i8080_ci_fix.md  [116 строк]
 ├── pyproject.toml  [61 строк]
 ├── README.md  [389 строк]
 ├── requirements.txt  [22 строк]
@@ -529,6 +541,33 @@
 
 ---
 
+### `_fix_alu.py` (45 строк)
+
+**Импорты (1):**
+- `sys`
+
+---
+
+### `_fix_case.py` (115 строк)
+
+**Импорты (1):**
+- `sys`
+
+**Функции (1):**
+- `rep(old, new, tag)`
+
+---
+
+### `_fix_case2.py` (109 строк)
+
+**Импорты (1):**
+- `sys`
+
+**Функции (1):**
+- `rep(old, new, tag, count)`
+
+---
+
 ### `_fix_en.py` (50 строк)
 
 **Импорты (4):**
@@ -539,10 +578,29 @@
 
 ---
 
-### `_fix_reloc.py` (63 строк)
+### `_fix_guide.py` (57 строк)
 
 **Импорты (1):**
 - `sys`
+
+**Функции (1):**
+- `rep(old, new, tag)`
+
+---
+
+### `_fix_import.py` (23 строк)
+
+**Импорты (1):**
+- `sys`
+
+---
+
+### `_investigate_reloc.py` (30 строк)
+
+**Импорты (3):**
+- `sys`
+- `from assemble8080.assembler import assemble`
+- `from collections import Counter`
 
 ---
 
@@ -574,7 +632,27 @@
 
 ---
 
-### `_review1.py` (13 строк)
+### `_review5.py` (13 строк)
+
+**Импорты (1):**
+- `sys`
+
+**Функции (1):**
+- `dump(start, end, title)`
+
+---
+
+### `_review6.py` (11 строк)
+
+**Импорты (1):**
+- `sys`
+
+**Функции (1):**
+- `dump(start, end, title)`
+
+---
+
+### `_review7.py` (9 строк)
 
 **Импорты (2):**
 - `sys`
@@ -582,7 +660,7 @@
 
 ---
 
-### `_review2.py` (14 строк)
+### `_review8.py` (16 строк)
 
 **Импорты (1):**
 - `sys`
@@ -592,7 +670,7 @@
 
 ---
 
-### `_review3.py` (10 строк)
+### `_review9.py` (11 строк)
 
 **Импорты (1):**
 - `sys`
@@ -602,10 +680,38 @@
 
 ---
 
-### `_review4.py` (20 строк)
+### `_review_case.py` (13 строк)
 
 **Импорты (1):**
 - `sys`
+
+**Функции (1):**
+- `dump(start, end, title)`
+
+---
+
+### `_review_cli.py` (22 строк)
+
+**Импорты (1):**
+- `sys`
+
+---
+
+### `_review_cli2.py` (12 строк)
+
+**Импорты (2):**
+- `sys`
+- `re`
+
+---
+
+### `_review_guide.py` (10 строк)
+
+**Импорты (1):**
+- `sys`
+
+**Функции (1):**
+- `dump(start, end, title)`
 
 ---
 
@@ -625,6 +731,32 @@
 - `main()`
 
 **Константы:** ROOT, API_SNIPPETS, SELF
+
+---
+
+### `_test_alu_imm.py` (131 строк)
+
+> Test: ALU immediate form size in pass 1 (bug #1 fix).
+
+**Импорты (2):**
+- `sys`
+- `from assemble8080.assembler import assemble`
+
+**Функции (1):**
+- `check(name, cond, detail)`
+
+---
+
+### `_test_case.py` (125 строк)
+
+> Test: label case preservation + case sensitivity (v2.1.12).
+
+**Импорты (2):**
+- `sys`
+- `from assemble8080.assembler import assemble`
+
+**Функции (1):**
+- `check(name, cond, detail)`
 
 ---
 
@@ -675,7 +807,7 @@
 
 ---
 
-### `_update_changes.py` (37 строк)
+### `_update_changes2.py` (49 строк)
 
 **Импорты (1):**
 - `sys`
@@ -864,7 +996,7 @@
 
 ---
 
-### `assemble8080/assembler.py` (2015 строк)
+### `assemble8080/assembler.py` (2063 строк)
 
 > assemble8080 — компактный макроассемблер Intel 8080.
 
@@ -887,12 +1019,12 @@
   - Методы (6): __init__(self, symbols, defines), _strip_comment(line), parse(self, expr, line_num), _process_high_low(self, expr), _convert_numbers(expr), _eval(self, expr, line_num)
 - **Assembler**
   - Двухпроходный ассемблер Intel 8080.
-  - Методы (18): __init__(self, now), _get_mnemonics(self), _write(self, data), _strip_comment(line), _parse_label(self, line), assemble(self, source, filename), _is_import_symbol(self, operand_str), _track_relocation(self, offset, size, symbol), _encode_instruction(self, mnemonic, opcode, fmt, operands, line_num), _parse_operand(self, operand_str, line_num, allow_current), _decode_string_escapes(s), _parse_db(self, operand, line_num), _parse_dw(self, operand, line_num), _get_reg_code(self, reg_str, line_num), _get_rp_code(self, rp_str, line_num, use_psw)
-    - ... и ещё 3
+  - Методы (20): __init__(self, now), _sym_key(self, name), _store_symbol(self, name, value), _get_mnemonics(self), _write(self, data), _strip_comment(line), _parse_label(self, line), assemble(self, source, filename), _is_import_symbol(self, operand_str), _track_relocation(self, offset, size, symbol), _encode_instruction(self, mnemonic, opcode, fmt, operands, line_num), _parse_operand(self, operand_str, line_num, allow_current), _decode_string_escapes(s), _parse_db(self, operand, line_num), _parse_dw(self, operand, line_num)
+    - ... и ещё 5
 
 **Функции (5):**
 - `parse_number(text)`
-- `assemble(source, filename, now, cpu_type)`
+- `assemble(source, filename, now, cpu_type, case_sensitive)`
 - `_hexdump(data, start, width)`
 - `_run_selftest()`
 - `_cli_main(argv)`
@@ -2960,6 +3092,296 @@ print("\n=== ALL DONE ===")
 ```
 <!-- END FILE: _final_fixes.py -->
 
+### `_fix_alu.py` (45 строк)
+
+<!-- FILE: _fix_alu.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
+path = 'assemble8080/assembler.py'
+src = open(path, encoding='utf-8').read()
+
+old = """            # Обычная инструкция — используем полную таблицу и кодирование
+            _mnemonics = self._get_mnemonics()
+            if mnemonic in _mnemonics:
+                opcode, fmt, size = _mnemonics[mnemonic]
+                location += size
+                self.pc = location"""
+
+new = """            # Обычная инструкция — используем полную таблицу и кодирование
+            _mnemonics = self._get_mnemonics()
+            if mnemonic in _mnemonics:
+                opcode, fmt, size = _mnemonics[mnemonic]
+                # БАГ #1: ALU-команды формата 'r' с immediate-операндом — 2 байта,
+                # а не 1 (в таблице size=1 для reg-формы). Без этого pass 1
+                # занижает смещения всех последующих символов.
+                if fmt == 'r' and operand:
+                    op_u = operand.strip().upper()
+                    if ',' in op_u:
+                        # ASxxxx 2-операндная форма "cmp a, #5" -> immediate
+                        size = 2
+                    else:
+                        op_clean = op_u.lstrip('#').strip()
+                        _REG_OPS = ('A', 'B', 'C', 'D', 'E', 'H', 'L', 'M',
+                                    'BC', 'DE', 'HL', 'PSW')
+                        if op_clean not in _REG_OPS:
+                            size = 2
+                location += size
+                self.pc = location"""
+
+if old in src:
+    src = src.replace(old, new)
+    open(path, 'w', encoding='utf-8').write(src)
+    print("ALU imm size fix (pass 1): APPLIED")
+else:
+    print("ALU imm size fix (pass 1): NOT FOUND")
+    # debug
+    lines = src.split('\n')
+    for i, line in enumerate(lines):
+        if 'location += size' in line and 'self.pc = location' in lines[i+1] if i+1 < len(lines) else False:
+            print(f"  candidate at {i+1}: {repr(line)}")
+```
+<!-- END FILE: _fix_alu.py -->
+
+### `_fix_case.py` (115 строк)
+
+<!-- FILE: _fix_case.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
+path = 'assemble8080/assembler.py'
+src = open(path, encoding='utf-8').read()
+applied = []
+
+def rep(old, new, tag):
+    global src
+    if old in src:
+        src = src.replace(old, new)
+        applied.append(tag)
+    else:
+        print(f"NOT FOUND: {tag}")
+
+# 1. __init__: add case_sensitive + _symbol_case
+rep('''        # Relocatable mode: True if no .org directive (org=0)
+        self._relocatable = True
+''',
+'''        # Relocatable mode: True if no .org directive (org=0)
+        self._relocatable = True
+        # Case sensitivity for labels: False (default) = case-insensitive,
+        # True = case-sensitive. Original case is always preserved in output.
+        self.case_sensitive = False
+        # Remember original case of each symbol: {KEY: original_name}
+        self._symbol_case: dict = {}
+''', "init: case_sensitive + _symbol_case")
+
+# 2. Add _sym_key + _store_symbol helpers before _get_mnemonics
+rep('''    def _get_mnemonics(self) -> dict:''',
+'''    def _sym_key(self, name: str) -> str:
+        """Ключ для имени символа с учётом case_sensitive.
+
+        case_sensitive=False (по умолчанию) -> UPPER (case-insensitive match).
+        case_sensitive=True -> исходный регистр (exact match).
+        """
+        if self.case_sensitive:
+            return name
+        return name.upper()
+
+    def _store_symbol(self, name: str, value: int):
+        """Сохранить символ, запоминая исходный регистр для вывода."""
+        key = self._sym_key(name)
+        self.symbols[key] = value
+        # Запоминаем исходный регистр (первое определение побеждает)
+        if key not in self._symbol_case:
+            self._symbol_case[key] = name
+
+    def _get_mnemonics(self) -> dict:''', "helper: _sym_key + _store_symbol")
+
+# 3. Pass 1 label storage: use _store_symbol
+rep('''            if label:
+                label_upper = label.upper()
+                # Разрешаем переопределение (последнее значение побеждает)
+                self.symbols[label_upper] = location
+''',
+'''            if label:
+                label_upper = self._sym_key(label)
+                # Разрешаем переопределение (последнее значение побеждает)
+                self._store_symbol(label, location)
+''', "pass1 label storage: _store_symbol")
+
+# 4. Output: use original case in AsmResult.symbols
+rep('''        result = AsmResult(
+            success=len(self.errors) == 0,
+            binary=bytes(self.binary[:self._write_pos]) if self._write_pos < len(self.binary) else bytes(self.binary),
+            symbols=dict(self.symbols),
+''',
+'''        # Таблица символов в исходном регистре (не UPPER) для вывода
+        _symbols_out = {}
+        for _k, _v in self.symbols.items():
+            _symbols_out[self._symbol_case.get(_k, _k)] = _v
+        result = AsmResult(
+            success=len(self.errors) == 0,
+            binary=bytes(self.binary[:self._write_pos]) if self._write_pos < len(self.binary) else bytes(self.binary),
+            symbols=_symbols_out,
+''', "output: original case symbols")
+
+# 5. assemble() function: add case_sensitive param
+rep('''def assemble(source: str, filename: str = "", now=None, cpu_type: str = "i8080") -> AsmResult:''',
+'''def assemble(source: str, filename: str = "", now=None, cpu_type: str = "i8080",
+             case_sensitive: bool = False) -> AsmResult:''', "assemble(): signature")
+
+rep('''    asm = Assembler(now=now)
+    asm.cpu_type = cpu_type
+    return asm.assemble(source, filename)
+''',
+'''    asm = Assembler(now=now)
+    asm.cpu_type = cpu_type
+    asm.case_sensitive = case_sensitive
+    return asm.assemble(source, filename)
+''', "assemble(): set case_sensitive")
+
+# 6. CLI: add --case-sensitive flag
+rep('''    parser.add_argument("--cpu", choices=["8080", "8085"], default="8080",
+                        help="CPU type (default: 8080)")
+''',
+'''    parser.add_argument("--cpu", choices=["8080", "8085"], default="8080",
+                        help="CPU type (default: 8080)")
+    parser.add_argument("--case-sensitive", action="store_true",
+                        help="Label names are case-sensitive (i and I are different). "
+                             "Default: case-insensitive (original case preserved in output).")
+''', "CLI: --case-sensitive flag")
+
+# 7. CLI: pass case_sensitive to assemble()
+rep('''        result = assemble(source, filename=src, cpu_type=cpu_type)
+''',
+'''        result = assemble(source, filename=src, cpu_type=cpu_type,
+                          case_sensitive=args.case_sensitive)
+''', "CLI: pass case_sensitive")
+
+open(path, 'w', encoding='utf-8').write(src)
+print(f"APPLIED: {len(applied)} changes")
+for a in applied:
+    print(f"  - {a}")
+```
+<!-- END FILE: _fix_case.py -->
+
+### `_fix_case2.py` (109 строк)
+
+<!-- FILE: _fix_case2.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
+path = 'assemble8080/assembler.py'
+src = open(path, encoding='utf-8').read()
+applied = []
+
+def rep(old, new, tag, count=1):
+    global src
+    if old in src:
+        src = src.replace(old, new, count)
+        applied.append(tag)
+    else:
+        print(f"NOT FOUND: {tag}")
+
+# 1. _parse_operand: expr_str.upper() -> _sym_key
+rep('''            if expr_str.upper() not in self.symbols and not in_defines:''',
+'''            if self._sym_key(expr_str) not in self.symbols and not in_defines:''',
+"_parse_operand: expr_str lookup")
+
+# 2. _parse_operand: label = m.group(1).upper() -> _sym_key
+rep('''            label = m.group(1).upper()
+            op = m.group(2)''',
+'''            label = self._sym_key(m.group(1))
+            op = m.group(2)''',
+"_parse_operand: label +/- lookup")
+
+# 3. _parse_operand: label = operand_str.upper() -> _sym_key
+rep('''        # Пробуем как метку
+        label = operand_str.upper()
+        if label in self.symbols:
+            return self.symbols[label]''',
+'''        # Пробуем как метку
+        label = self._sym_key(operand_str)
+        if label in self.symbols:
+            return self.symbols[label]''',
+"_parse_operand: label lookup")
+
+# 4. d16 relocation handler: upper = op_str.upper() -> _sym_key
+rep('''                op_str = operands[0].strip()
+                if re.match(r'^(?:\\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', op_str):
+                    upper = op_str.upper()
+                    if upper not in self.symbols:''',
+'''                op_str = operands[0].strip()
+                if re.match(r'^(?:\\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', op_str):
+                    upper = self._sym_key(op_str)
+                    if upper not in self.symbols:''',
+"d16 reloc: _sym_key")
+
+# 5. rp,d16 relocation handler: upper = op_str.upper() -> _sym_key
+rep('''                op_str = operands[1].strip()
+                if re.match(r'^(?:\\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', op_str):
+                    upper = op_str.upper()
+                    if upper not in self.symbols:''',
+'''                op_str = operands[1].strip()
+                if re.match(r'^(?:\\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', op_str):
+                    upper = self._sym_key(op_str)
+                    if upper not in self.symbols:''',
+"rp,d16 reloc: _sym_key")
+
+# 6. _parse_dw: upper = part_str.upper() -> _sym_key
+rep('''                part_str = part.strip()
+                if re.match(r'^(?:\\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', part_str):
+                    upper = part_str.upper()
+                    if upper not in self.symbols:''',
+'''                part_str = part.strip()
+                if re.match(r'^(?:\\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', part_str):
+                    upper = self._sym_key(part_str)
+                    if upper not in self.symbols:''',
+"_parse_dw: _sym_key")
+
+# 7. _is_import_symbol: upper = t.upper() -> _sym_key
+rep('''        if re.match(r'^(?:\\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', t):
+            upper = t.upper()
+            if upper in self._imports:
+                return upper''',
+'''        if re.match(r'^(?:\\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', t):
+            upper = self._sym_key(t)
+            if upper in self._imports:
+                return upper''',
+"_is_import_symbol: _sym_key")
+
+# 8. IMPORT directive: name.upper() -> _sym_key
+rep('''                        self._imports.add(name.upper())
+                        # Define as 0 for pass 1 (will be resolved by linker)
+                        if name.upper() not in self.symbols:
+                            self.symbols[name.upper()] = 0''',
+'''                        _imp_key = self._sym_key(name)
+                        self._imports.add(_imp_key)
+                        # Define as 0 for pass 1 (will be resolved by linker)
+                        if _imp_key not in self.symbols:
+                            self.symbols[_imp_key] = 0''',
+"IMPORT: _sym_key")
+
+# 9. Output: convert _imports/_exports/_global_labels to original case
+rep('''            exports=list(self._exports),
+            imports=list(self._imports),
+            global_labels=set(self._global_labels),
+''',
+'''            exports=[self._symbol_case.get(_k, _k) for _k in self._exports],
+            imports=[self._symbol_case.get(_k, _k) for _k in self._imports],
+            global_labels={self._symbol_case.get(_k, _k) for _k in self._global_labels},
+''',
+"output: original case exports/imports/global_labels")
+
+open(path, 'w', encoding='utf-8').write(src)
+print(f"APPLIED: {len(applied)} changes")
+for a in applied:
+    print(f"  - {a}")
+```
+<!-- END FILE: _fix_case2.py -->
+
 ### `_fix_en.py` (50 строк)
 
 <!-- FILE: _fix_en.py -->
@@ -3017,9 +3439,73 @@ print("Done")
 ```
 <!-- END FILE: _fix_en.py -->
 
-### `_fix_reloc.py` (63 строк)
+### `_fix_guide.py` (57 строк)
 
-<!-- FILE: _fix_reloc.py -->
+<!-- FILE: _fix_guide.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
+path = 'ASSEMBLER_GUIDE.md'
+src = open(path, encoding='utf-8').read()
+applied = []
+
+def rep(old, new, tag):
+    global src
+    if old in src:
+        src = src.replace(old, new)
+        applied.append(tag)
+    else:
+        print(f"NOT FOUND: {tag}")
+
+# 1. Add --case-sensitive to options table (after --cpu line)
+rep('''| `--cpu {8080,8085}` | Тип CPU (по умолчанию 8080); директива `CPU` в коде может переопределить |
+''',
+'''| `--cpu {8080,8085}` | Тип CPU (по умолчанию 8080); директива `CPU` в коде может переопределить |
+| `--case-sensitive` | Имена лейблов чувствительны к регистру (`i` и `I` — разные символы). По умолчанию регистр не значим, но исходный регистр сохраняется в выводе |
+''', "options table: --case-sensitive")
+
+# 2. Add a new subsection about label case sensitivity after 11.2 options (before 11.3 examples)
+rep('''### 11.3. Примеры
+''',
+'''### 11.2.1. Регистр лейблов (case sensitivity)
+
+По умолчанию ассемблер **не чувствителен к регистру** лейблов: `main`, `Main` и
+`MAIN` считаются одним и тем же символом. При этом **исходный регистр
+сохраняется** в таблице символов, map-файле и `.obj` (например, `main`, а не
+`MAIN`) — это важно для пайплайна SmallC, где компилятор генерирует
+нижний регистр.
+
+Чтобы включить **чувствительность к регистру** (когда `i` и `I` — разные
+символы), используйте ключ `--case-sensitive`:
+
+```
+python -m assemble8080 prog.asm --case-sensitive
+```
+
+В режиме `--case-sensitive` ссылка на метку с другим регистром считается
+неопределённой (предупреждение «Неопределённая метка»).
+
+Python API: `assemble(source, case_sensitive=True)` или
+`asm = Assembler(); asm.case_sensitive = True`.
+
+> Примечание: однобуквенные метки (`a:`, `b:`, `i:` и т.п.) корректно
+> разрешаются и не путаются с регистрами при определении. Например,
+> `shld i` + `i: .dw 0` линкуется, символ `i` разрешён.
+
+### 11.3. Примеры
+''', "new subsection: label case sensitivity")
+
+open(path, 'w', encoding='utf-8').write(src)
+print(f"APPLIED: {len(applied)} changes")
+for a in applied:
+    print(f"  - {a}")
+```
+<!-- END FILE: _fix_guide.py -->
+
+### `_fix_import.py` (23 строк)
+
+<!-- FILE: _fix_import.py -->
 ```python
 import sys
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -3027,65 +3513,62 @@ sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 path = 'assemble8080/assembler.py'
 src = open(path, encoding='utf-8').read()
 
-# Fix 1: rp,d16 handler - add undefined symbol → import
-old1 = """                    upper = op_str.upper()
-                    if upper in self.symbols and self._relocatable:
-                        self._track_relocation(self._write_pos + 1, 2, upper)
-            return bytearray([opcode | (rp_code << 4), val & 0xFF, (val >> 8) & 0xFF])"""
+old = '''                            self._imports.add(name.upper())
+                            # Define as 0 for pass 1 (will be resolved by linker)
+                            if name.upper() not in self.symbols:
+                                self.symbols[name.upper()] = 0'''
 
-new1 = """                    upper = op_str.upper()
-                    if upper not in self.symbols:
-                        # Undefined symbol → import
-                        self._imports.add(upper)
-                        self._track_relocation(self._write_pos + 1, 2, upper)
-                    elif self._relocatable:
-                        # Defined local symbol in relocatable mode → relocation
-                        self._track_relocation(self._write_pos + 1, 2, upper)
-            return bytearray([opcode | (rp_code << 4), val & 0xFF, (val >> 8) & 0xFF])"""
+new = '''                            _imp_key = self._sym_key(name)
+                            self._imports.add(_imp_key)
+                            # Define as 0 for pass 1 (will be resolved by linker)
+                            if _imp_key not in self.symbols:
+                                self.symbols[_imp_key] = 0'''
 
-if old1 in src:
-    src = src.replace(old1, new1)
-    print("Fix 1 (rp,d16): APPLIED")
+if old in src:
+    src = src.replace(old, new)
+    open(path, 'w', encoding='utf-8').write(src)
+    print("IMPORT directive: APPLIED")
 else:
-    print("Fix 1 (rp,d16): NOT FOUND")
-    # Debug: find the actual text
-    lines = src.split('\n')
-    for i, line in enumerate(lines):
-        if 'upper in self.symbols and self._relocatable' in line:
-            print(f"  Found at line {i+1}: {repr(line)}")
-            print(f"  Context: {repr(lines[i-1:i+3])}")
-
-# Fix 2: _parse_dw - add undefined symbol → import
-old2 = """                    upper = part_str.upper()
-                    if upper in self.symbols and self._relocatable:
-                        self._track_relocation(self._write_pos + len(result) - 2, 2, upper)
-        return result"""
-
-new2 = """                    upper = part_str.upper()
-                    if upper not in self.symbols:
-                        # Undefined symbol → import
-                        self._imports.add(upper)
-                        self._track_relocation(self._write_pos + len(result) - 2, 2, upper)
-                    elif self._relocatable:
-                        # Defined local symbol in relocatable mode → relocation
-                        self._track_relocation(self._write_pos + len(result) - 2, 2, upper)
-        return result"""
-
-if old2 in src:
-    src = src.replace(old2, new2)
-    print("Fix 2 (_parse_dw): APPLIED")
-else:
-    print("Fix 2 (_parse_dw): NOT FOUND")
-    lines = src.split('\n')
-    for i, line in enumerate(lines):
-        if 'upper in self.symbols and self._relocatable' in line:
-            print(f"  Found at line {i+1}: {repr(line)}")
-            print(f"  Context: {repr(lines[i-1:i+3])}")
-
-open(path, 'w', encoding='utf-8').write(src)
-print("File saved.")
+    print("IMPORT directive: NOT FOUND")
 ```
-<!-- END FILE: _fix_reloc.py -->
+<!-- END FILE: _fix_import.py -->
+
+### `_investigate_reloc.py` (30 строк)
+
+<!-- FILE: _investigate_reloc.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+from assemble8080.assembler import assemble
+
+# crun8080lib.asm
+path = r'c:\smallc\crun8080lib.asm'
+src = open(path, encoding='utf-8', errors='replace').read()
+r = assemble(src)
+print(f"success={r.success}, errors={len(r.errors)}, relocations={len(r.relocations)}")
+print(f"warnings={len(r.warnings)}")
+
+# Count relocations by symbol
+from collections import Counter
+sym_count = Counter(sym for (_, _, sym) in r.relocations)
+print(f"\nUnique symbols in relocations: {len(sym_count)}")
+print("Top 20 symbols by relocation count:")
+for sym, cnt in sym_count.most_common(20):
+    print(f"  {sym}: {cnt}")
+
+# Check for single-letter symbols (case sensitivity related)
+single = {s: c for s, c in sym_count.items() if len(s) == 1}
+print(f"\nSingle-letter symbols in relocations: {single}")
+
+# Check if there are both upper and lower case versions of the same symbol
+upper_lower = {}
+for sym in sym_count:
+    key = sym.upper()
+    upper_lower.setdefault(key, set()).add(sym)
+dups = {k: v for k, v in upper_lower.items() if len(v) > 1}
+print(f"\nSymbols with mixed case (potential case issue): {dups}")
+```
+<!-- END FILE: _investigate_reloc.py -->
 
 ### `_read_code.py` (37 строк)
 
@@ -3257,29 +3740,63 @@ print(mw[max(0,idx2-50):idx2+2000])
 ```
 <!-- END FILE: _read_code4.py -->
 
-### `_review1.py` (13 строк)
+### `_review5.py` (13 строк)
 
-<!-- FILE: _review1.py -->
+<!-- FILE: _review5.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+lines = open('assemble8080/assembler.py', encoding='utf-8').read().split('\n')
+
+def dump(start, end, title):
+    print(f"\n{'='*70}\n### {title} (lines {start}-{end})\n{'='*70}")
+    for i in range(start-1, min(end, len(lines))):
+        print(f"{i+1:5d}: {lines[i]}")
+
+# Pass 1 instruction size calculation
+dump(895, 940, "Pass 1: instruction size")
+# Pass 2 instruction encoding (where bytes are emitted)
+dump(1140, 1180, "Pass 2: instruction encoding")
+```
+<!-- END FILE: _review5.py -->
+
+### `_review6.py` (11 строк)
+
+<!-- FILE: _review6.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+lines = open('assemble8080/assembler.py', encoding='utf-8').read().split('\n')
+
+def dump(start, end, title):
+    print(f"\n{'='*70}\n### {title} (lines {start}-{end})\n{'='*70}")
+    for i in range(start-1, min(end, len(lines))):
+        print(f"{i+1:5d}: {lines[i]}")
+
+# Context before the bug - how mnemonic and operand are parsed in pass 1
+dump(855, 920, "Pass 1: mnemonic/operand parsing + instruction size")
+```
+<!-- END FILE: _review6.py -->
+
+### `_review7.py` (9 строк)
+
+<!-- FILE: _review7.py -->
 ```python
 import sys, re
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-src = open('assemble8080/assembler.py', encoding='utf-8').read()
-lines = src.split('\n')
-print(f"TOTAL LINES: {len(lines)}")
-print()
-# Find all lines with key markers
-markers = ['_relocatable', '_track_relocation', '_is_import_symbol', '_parse_dw', '_parse_operand', 'self._imports', 'def assemble', 'pass 1', 'pass 2', 'PASS 1', 'PASS 2', 'self.symbols']
-for i, line in enumerate(lines, 1):
-    for m in markers:
-        if m in line:
-            print(f"{i:5d}: {line.rstrip()}")
-            break
+lines = open('assemble8080/assembler.py', encoding='utf-8').read().split('\n')
+
+# Find where mnemonic and operand are assigned in pass 1 (before line 855)
+for i in range(660, 860):
+    line = lines[i]
+    if re.search(r'\bmnemonic\s*=', line) or re.search(r'\boperand\s*=', line) or '_parse_instruction' in line or 'split' in line.lower() and 'operand' in line:
+        print(f"{i+1:5d}: {line.rstrip()}")
 ```
-<!-- END FILE: _review1.py -->
+<!-- END FILE: _review7.py -->
 
-### `_review2.py` (14 строк)
+### `_review8.py` (16 строк)
 
-<!-- FILE: _review2.py -->
+<!-- FILE: _review8.py -->
 ```python
 import sys
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -3290,17 +3807,19 @@ def dump(start, end, title):
     for i in range(start-1, min(end, len(lines))):
         print(f"{i+1:5d}: {lines[i]}")
 
-dump(1298, 1330, "_is_import_symbol + _track_relocation")
-dump(1395, 1470, "d16 handler + rp,d16 handler")
-dump(1693, 1725, "_parse_dw")
-dump(630, 680, "assemble() pass 1 setup")
-dump(740, 775, ".org + IMPORT handling")
+dump(685, 712, "Pass 1: parts/mnemonic/operand parsing")
+# Also check REGISTERS definition
+for i, line in enumerate(lines, 1):
+    if 'REGISTERS' in line and ('=' in line or 'dict' in line or '{' in line):
+        print(f"REGISTERS at {i}: {line.rstrip()}")
+    if 'REG_PAIRS' in line or 'REGISTERS =' in line:
+        print(f"  {i}: {line.rstrip()}")
 ```
-<!-- END FILE: _review2.py -->
+<!-- END FILE: _review8.py -->
 
-### `_review3.py` (10 строк)
+### `_review9.py` (11 строк)
 
-<!-- FILE: _review3.py -->
+<!-- FILE: _review9.py -->
 ```python
 import sys
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -3311,36 +3830,95 @@ def dump(start, end, title):
     for i in range(start-1, min(end, len(lines))):
         print(f"{i+1:5d}: {lines[i]}")
 
-dump(1482, 1600, "_parse_operand")
+dump(73, 92, "REGISTERS / REG_PAIRS definitions")
+dump(1318, 1398, "Pass 2: 'r' format handler (full)")
 ```
-<!-- END FILE: _review3.py -->
+<!-- END FILE: _review9.py -->
 
-### `_review4.py` (20 строк)
+### `_review_case.py` (13 строк)
 
-<!-- FILE: _review4.py -->
+<!-- FILE: _review_case.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+lines = open('assemble8080/assembler.py', encoding='utf-8').read().split('\n')
+
+def dump(start, end, title):
+    print(f"\n{'='*70}\n### {title} (lines {start}-{end})\n{'='*70}")
+    for i in range(start-1, min(end, len(lines))):
+        print(f"{i+1:5d}: {lines[i]}")
+
+dump(530, 560, "Assembler.__init__")
+dump(1260, 1296, "AsmResult construction (end of assemble)")
+# label storage in pass 1
+dump(673, 692, "Pass 1 label storage")
+```
+<!-- END FILE: _review_case.py -->
+
+### `_review_cli.py` (22 строк)
+
+<!-- FILE: _review_cli.py -->
 ```python
 import sys
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
-# Read linker.py
-print("=" * 70)
-print("LINKER.PY - Relocation handling")
-print("=" * 70)
-lines = open('assemble8080/linker.py', encoding='utf-8').read().split('\n')
-for i, line in enumerate(lines, 1):
-    if 'reloc' in line.lower() or 'symbol' in line.lower():
-        print(f"{i:5d}: {line.rstrip()}")
+# __main__.py
+print("=" * 60)
+print("__main__.py")
+print("=" * 60)
+print(open('assemble8080/__main__.py', encoding='utf-8').read())
 
-print()
-print("=" * 70)
-print("OBJFILE.PY - Relocation conversion")
-print("=" * 70)
-lines2 = open('assemble8080/objfile.py', encoding='utf-8').read().split('\n')
-for i, line in enumerate(lines2, 1):
-    if 'reloc' in line.lower() or 'symbol' in line.lower() or 'import' in line.lower():
-        print(f"{i:5d}: {line.rstrip()}")
+# assemble() function signature (line ~1814)
+lines = open('assemble8080/assembler.py', encoding='utf-8').read().split('\n')
+print("=" * 60)
+print("assemble() function (lines 1814-1860)")
+print("=" * 60)
+for i in range(1813, min(1860, len(lines))):
+    print(f"{i+1:5d}: {lines[i]}")
+
+# __init__.py
+print("=" * 60)
+print("__init__.py")
+print("=" * 60)
+print(open('assemble8080/__init__.py', encoding='utf-8').read())
 ```
-<!-- END FILE: _review4.py -->
+<!-- END FILE: _review_cli.py -->
+
+### `_review_cli2.py` (12 строк)
+
+<!-- FILE: _review_cli2.py -->
+```python
+import sys, re
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+lines = open('assemble8080/assembler.py', encoding='utf-8').read().split('\n')
+
+# Find _cli_main
+for i, line in enumerate(lines, 1):
+    if 'def _cli_main' in line:
+        print(f"_cli_main at line {i}")
+        # print the function
+        for j in range(i-1, min(i+90, len(lines))):
+            print(f"{j+1:5d}: {lines[j]}")
+        break
+```
+<!-- END FILE: _review_cli2.py -->
+
+### `_review_guide.py` (10 строк)
+
+<!-- FILE: _review_guide.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+lines = open('ASSEMBLER_GUIDE.md', encoding='utf-8').read().split('\n')
+
+def dump(start, end, title):
+    print(f"\n{'='*70}\n### {title} (lines {start}-{end})\n{'='*70}")
+    for i in range(start-1, min(end, len(lines))):
+        print(f"{i+1:5d}: {lines[i]}")
+
+dump(1192, 1250, "CLI options section (11.2)")
+```
+<!-- END FILE: _review_guide.py -->
 
 ### `_run_all_tests.py` (94 строк)
 
@@ -3443,6 +4021,276 @@ if __name__ == '__main__':
 ```
 <!-- END FILE: _run_all_tests.py -->
 
+### `_test_alu_imm.py` (131 строк)
+
+<!-- FILE: _test_alu_imm.py -->
+```python
+"""Test: ALU immediate form size in pass 1 (bug #1 fix)."""
+import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
+from assemble8080.assembler import assemble
+
+passed = 0
+failed = 0
+
+def check(name, cond, detail=""):
+    global passed, failed
+    if cond:
+        passed += 1
+        print(f"  PASS: {name}")
+    else:
+        failed += 1
+        print(f"  FAIL: {name} {detail}")
+
+print("=" * 60)
+print("TEST: ALU immediate form size in pass 1 (bug #1)")
+print("=" * 60)
+
+# Test 1: ALU-imm shifts subsequent label by correct amount
+# MVI A,5 (2) + ADD 3 (2, imm) + HLT (1) = 5 bytes total
+# LABEL after should be at offset 5
+src1 = """
+    MVI A, 5
+    ADD 3
+    HLT
+LABEL:
+    NOP
+"""
+r1 = assemble(src1)
+check("ALU-imm: assembled OK", r1.success)
+# LABEL should be at offset 5 (2+2+1)
+check("ALU-imm: LABEL at offset 5", r1.symbols.get('LABEL') == 5,
+      f"(got {r1.symbols.get('LABEL')})")
+
+# Test 2: ALU-reg form is 1 byte
+# MVI A,5 (2) + ADD B (1, reg) + HLT (1) = 4 bytes total
+src2 = """
+    MVI A, 5
+    ADD B
+    HLT
+LABEL:
+    NOP
+"""
+r2 = assemble(src2)
+check("ALU-reg: assembled OK", r2.success)
+check("ALU-reg: LABEL at offset 4", r2.symbols.get('LABEL') == 4,
+      f"(got {r2.symbols.get('LABEL')})")
+
+# Test 3: Multiple ALU-imm accumulate correctly
+# MVI A,5 (2) + ADD 1 (2) + SUB 2 (2) + CMP 3 (2) + HLT (1) = 9 bytes
+src3 = """
+    MVI A, 5
+    ADD 1
+    SUB 2
+    CMP 3
+    HLT
+LABEL:
+    NOP
+"""
+r3 = assemble(src3)
+check("Multi ALU-imm: assembled OK", r3.success)
+check("Multi ALU-imm: LABEL at offset 9", r3.symbols.get('LABEL') == 9,
+      f"(got {r3.symbols.get('LABEL')})")
+
+# Test 4: ASxxxx 2-operand form "cmp a, #5" is 2 bytes
+src4 = """
+    MVI A, 5
+    cmp a, #5
+    HLT
+LABEL:
+    NOP
+"""
+r4 = assemble(src4)
+check("ASxxxx cmp a,#5: assembled OK", r4.success)
+# MVI A,5 (2) + CPI 5 (2) + HLT (1) = 5 bytes
+check("ASxxxx cmp a,#5: LABEL at offset 5", r4.symbols.get('LABEL') == 5,
+      f"(got {r4.symbols.get('LABEL')})")
+
+# Test 5: # prefix immediate is 2 bytes
+src5 = """
+    MVI A, 5
+    ADD #3
+    HLT
+LABEL:
+    NOP
+"""
+r5 = assemble(src5)
+check("# prefix: assembled OK", r5.success)
+check("# prefix: LABEL at offset 5", r5.symbols.get('LABEL') == 5,
+      f"(got {r5.symbols.get('LABEL')})")
+
+# Test 6: M (memory) operand is 1 byte (register form)
+src6 = """
+    MVI A, 5
+    ADD M
+    HLT
+LABEL:
+    NOP
+"""
+r6 = assemble(src6)
+check("ADD M: assembled OK", r6.success)
+check("ADD M: LABEL at offset 4", r6.symbols.get('LABEL') == 4,
+      f"(got {r6.symbols.get('LABEL')})")
+
+# Test 7: Verify binary encoding matches (pass 2 correct)
+# ADD 3 should be 0xC6 0x03
+src7 = "ADD 3"
+r7 = assemble(src7)
+check("ADD 3 binary: 0xC6 0x03", r7.success and bytes(r7.binary) == b'\xC6\x03',
+      f"(got {bytes(r7.binary).hex()})")
+
+# Test 8: ADD B should be 0x80 (1 byte) — B is register code 0
+src8 = "ADD B"
+r8 = assemble(src8)
+check("ADD B binary: 0x80", r8.success and bytes(r8.binary) == b'\x80',
+      f"(got {bytes(r8.binary).hex()})")
+
+print()
+print("=" * 60)
+print(f"RESULTS: {passed} passed, {failed} failed")
+print("=" * 60)
+
+if failed == 0:
+    print("ALL TESTS PASSED")
+else:
+    print("SOME TESTS FAILED")
+    sys.exit(1)
+```
+<!-- END FILE: _test_alu_imm.py -->
+
+### `_test_case.py` (125 строк)
+
+<!-- FILE: _test_case.py -->
+```python
+"""Test: label case preservation + case sensitivity (v2.1.12)."""
+import sys
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
+from assemble8080.assembler import assemble
+
+passed = 0
+failed = 0
+
+def check(name, cond, detail=""):
+    global passed, failed
+    if cond:
+        passed += 1
+        print(f"  PASS: {name}")
+    else:
+        failed += 1
+        print(f"  FAIL: {name} {detail}")
+
+print("=" * 60)
+print("TEST: Label case preservation + case sensitivity")
+print("=" * 60)
+
+# Test 1: Default (case-insensitive) - original case preserved in output
+src1 = """
+main:
+    MVI A, 5
+    CALL helper
+    HLT
+helper:
+    RET
+"""
+r1 = assemble(src1)
+check("Default: assembled OK", r1.success)
+check("Default: 'main' in symbols (original case)", 'main' in r1.symbols,
+      f"(symbols={list(r1.symbols.keys())})")
+check("Default: 'helper' in symbols (original case)", 'helper' in r1.symbols,
+      f"(symbols={list(r1.symbols.keys())})")
+check("Default: 'MAIN' NOT in symbols (not uppercased)", 'MAIN' not in r1.symbols)
+
+# Test 2: Default - case-insensitive matching (i and I match)
+src2 = """
+myLabel:
+    MVI A, 5
+    JMP mylabel
+    HLT
+"""
+r2 = assemble(src2)
+check("Case-insensitive: assembled OK", r2.success)
+check("Case-insensitive: 'myLabel' in symbols", 'myLabel' in r2.symbols,
+      f"(symbols={list(r2.symbols.keys())})")
+
+# Test 3: Case-sensitive - i and I are different
+src3 = """
+myLabel:
+    MVI A, 5
+    HLT
+"""
+r3a = assemble(src3, case_sensitive=True)
+check("Case-sensitive: assembled OK", r3a.success)
+check("Case-sensitive: 'myLabel' in symbols", 'myLabel' in r3a.symbols,
+      f"(symbols={list(r3a.symbols.keys())})")
+
+# Test 4: Case-sensitive - reference with different case is unresolved
+src4 = """
+myLabel:
+    MVI A, 5
+    JMP MYLABEL
+    HLT
+"""
+r4 = assemble(src4, case_sensitive=True)
+# In case-sensitive mode, MYLABEL != myLabel, so it should be a warning (undefined)
+check("Case-sensitive: different case -> warning", 
+      any('MYLABEL' in w or 'mylabel' in w.lower() for w in r4.warnings) or not r4.success,
+      f"(warnings={r4.warnings}, success={r4.success})")
+
+# Test 5: Case-sensitive - same case matches
+src5 = """
+myLabel:
+    MVI A, 5
+    JMP myLabel
+    HLT
+"""
+r5 = assemble(src5, case_sensitive=True)
+check("Case-sensitive: same case matches (no warning)", 
+      not any('myLabel' in w or 'MYLABEL' in w for w in r5.warnings),
+      f"(warnings={r5.warnings})")
+
+# Test 6: Single-letter labels (the bug #2 scenario)
+src6 = """
+main:
+    lxi h, #1
+    shld i
+    ret
+i:
+    .dw 0
+"""
+r6 = assemble(src6)
+check("Single-letter: assembled OK", r6.success)
+check("Single-letter: 'i' in symbols (original case)", 'i' in r6.symbols,
+      f"(symbols={list(r6.symbols.keys())})")
+check("Single-letter: 'I' NOT in symbols", 'I' not in r6.symbols)
+
+# Test 7: Single-letter label 'a' not confused with register A
+src7 = """
+main:
+    MVI A, 5
+    HLT
+a:
+    .dw 0
+"""
+r7 = assemble(src7)
+check("Label 'a': assembled OK", r7.success)
+check("Label 'a': 'a' in symbols", 'a' in r7.symbols,
+      f"(symbols={list(r7.symbols.keys())})")
+
+print()
+print("=" * 60)
+print(f"RESULTS: {passed} passed, {failed} failed")
+print("=" * 60)
+
+if failed == 0:
+    print("ALL TESTS PASSED")
+else:
+    print("SOME TESTS FAILED")
+    sys.exit(1)
+```
+<!-- END FILE: _test_case.py -->
+
 ### `_test_dollar.py` (73 строк)
 
 <!-- FILE: _test_dollar.py -->
@@ -3507,13 +4355,13 @@ check(f"JZ $1 → 0x0109 (got 0x{jz_target:04X})", jz_target == 0x0109, f"got 0x
 jmp_target = res.binary[0x0106] | (res.binary[0x0107] << 8)
 check(f"JMP $0 → 0x0100 (got 0x{jmp_target:04X})", jmp_target == 0x0100, f"got 0x{jmp_target:04X}")
 
-print("\n=== Test 3: crun8080lib.asm still 353 relocations ===")
+print("\n=== Test 3: crun8080lib.asm still 366 relocations (was 353 before ALU-imm fix) ===")
 crun_path = r"c:\smallc\crun8080lib.asm"
 if os.path.exists(crun_path):
     with open(crun_path, 'r', encoding='utf-8', errors='replace') as f:
         crun_src = f.read()
     r_crun = assemble(crun_src, filename=crun_path)
-    check(f"crun: {len(r_crun.relocations)} relocations (expect 353)", len(r_crun.relocations) == 353,
+    check(f"crun: {len(r_crun.relocations)} relocations (expect 366)", len(r_crun.relocations) == 366,
           f"got {len(r_crun.relocations)}")
 
 print(f"\n{'='*60}")
@@ -3880,9 +4728,9 @@ else:
 ```
 <!-- END FILE: _test_reloc_undefined.py -->
 
-### `_update_changes.py` (37 строк)
+### `_update_changes2.py` (49 строк)
 
-<!-- FILE: _update_changes.py -->
+<!-- FILE: _update_changes2.py -->
 ```python
 import sys
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -3890,39 +4738,51 @@ sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 path = 'CHANGES.md'
 src = open(path, encoding='utf-8').read()
 
-new_entry = """## v2.1.11 (2026-10-11)
+new_entry = """## v2.1.12 (2026-10-12)
 
-### Undefined symbol relocations in LXI and DW
+### ALU immediate size fix (pass 1) + label case sensitivity
 
-- **Fixed:** Inconsistent handling of undefined symbols in `rp,d16` (LXI) and `DW`
-  handlers. Previously, undefined symbols in these contexts were silently ignored
-  (value 0, no import, no relocation), while the `d16` handler (CALL/JMP/J*/C*/LHLD/SHLD)
-  correctly added them to imports and tracked relocations.
-- Now all three handlers (d16, rp,d16, DW) consistently treat undefined symbols as
-  imports and generate relocation entries, allowing the linker to resolve them from
-  other modules.
-- Behavior in absolute mode: undefined symbols still generate relocations (linker
-  resolves them); defined local symbols do not (address already known).
-- 28 new tests added (`_test_reloc_undefined.py`), all pass.
-- All 921 existing tests + 30 relocation tests + 11 $-label tests pass.
+**БАГ #1 (критический): неверный размер ALU-команд с immediate в pass 1**
+- **Fixed:** В pass 1 (расчёт смещений символов) размер ALU-инструкций формата `r`
+  (ADD/ADC/SUB/SBB/ANA/XRA/ORA/CMP) брался из таблицы как 1 байт, даже когда
+  операнд — immediate (число, `#n`, метка, выражение). Реальное кодирование
+  immediate-формы — 2 байта. Ошибка накапливалась по всему модулю, и все символы
+  после первой ALU-imm инструкции получали неверный offset.
+- Фикс: перед `location += size` в pass 1 проверяется, является ли операнд
+  регистром/парой (A B C D E H L M / BC DE HL PSW). Если нет — `size = 2`.
+  Поддерживается ASxxxx 2-операндная форма `cmp a, #5` и префикс `#`.
+- Pass 2 уже корректно кодировал imm-форму в 2 байта (проверено).
+- 14 новых тестов (`_test_alu_imm.py`), все pass.
+- crun8080lib.asm: 353 → 366 релокаций (смещения теперь корректны).
 
-Updated: `assemble8080/assembler.py` (rp,d16 handler, _parse_dw)
+**Регистр лейблов: сохранение исходного регистра + ключ --case-sensitive**
+- **New:** Ассемблер больше не капсит лейблы в ВЕРХНИЙ регистр. Исходный регистр
+  сохраняется в таблице символов, map-файле и .obj (например, `main`, а не `MAIN`).
+- **New:** Ключ командной строки `--case-sensitive` включает чувствительность к
+  регистру лейблов: `i` и `I` становятся разными символами. По умолчанию
+  (без ключа) — регистр не значим (case-insensitive), но исходный регистр
+  сохраняется в выводе.
+- API: `assemble(..., case_sensitive=False)`, `Assembler.case_sensitive`.
+- Внутренние lookup-места (`_parse_operand`, релокационные обработчики,
+  `_is_import_symbol`, IMPORT) используют `_sym_key()` для единообразия.
+- 15 новых тестов (`_test_case.py`), все pass.
+- Минимальный кейс из промпта (БАГ #2): `shld i` + `i: .dw 0` линкуется,
+  символ `i` разрешён; однобуквенная метка `a:` не путается с регистром A.
+
+Updated: `assemble8080/assembler.py` (pass 1 ALU-imm size, case sensitivity, CLI)
 
 """
 
-# Find the v2.1.10 entry and insert before it
-marker = "## v2.1.10"
+marker = "## v2.1.11"
 idx = src.find(marker)
 if idx == -1:
-    print("ERROR: v2.1.10 marker not found")
+    print("ERROR: v2.1.11 marker not found")
     sys.exit(1)
-
-# Insert before the marker
 src = src[:idx] + new_entry + src[idx:]
 open(path, 'w', encoding='utf-8').write(src)
-print("CHANGES.md updated with v2.1.11 entry")
+print("CHANGES.md updated with v2.1.12 entry")
 ```
-<!-- END FILE: _update_changes.py -->
+<!-- END FILE: _update_changes2.py -->
 
 ### `_verify_fixes.py` (43 строк)
 
@@ -8020,8 +8880,8 @@ for f, p, fl, s in results:
 ```python
 """Project version and build information."""
 
-__version__ = "2.1.7"
-__build__ = "20261009"
+__version__ = "2.1.12"
+__build__ = "20261012"
 __app_name__ = "i8080-5 CI"
 
 def get_version_string():
@@ -8091,7 +8951,7 @@ if __name__ == "__main__":
 ```
 <!-- END FILE: assemble8080/__main__.py -->
 
-### `assemble8080/assembler.py` (2015 строк)
+### `assemble8080/assembler.py` (2063 строк)
 
 <!-- FILE: assemble8080/assembler.py -->
 ```python
@@ -8651,6 +9511,29 @@ class Assembler:
         self.cpu_type = "i8080"
         # Relocatable mode: True if no .org directive (org=0)
         self._relocatable = True
+        # Case sensitivity for labels: False (default) = case-insensitive,
+        # True = case-sensitive. Original case is always preserved in output.
+        self.case_sensitive = False
+        # Remember original case of each symbol: {KEY: original_name}
+        self._symbol_case: dict = {}
+
+    def _sym_key(self, name: str) -> str:
+        """Ключ для имени символа с учётом case_sensitive.
+
+        case_sensitive=False (по умолчанию) -> UPPER (case-insensitive match).
+        case_sensitive=True -> исходный регистр (exact match).
+        """
+        if self.case_sensitive:
+            return name
+        return name.upper()
+
+    def _store_symbol(self, name: str, value: int):
+        """Сохранить символ, запоминая исходный регистр для вывода."""
+        key = self._sym_key(name)
+        self.symbols[key] = value
+        # Запоминаем исходный регистр (первое определение побеждает)
+        if key not in self._symbol_case:
+            self._symbol_case[key] = name
 
     def _get_mnemonics(self) -> dict:
         """Вернуть таблицу мнемоник с учётом типа процессора.
@@ -8770,9 +9653,9 @@ class Assembler:
             # Метка
             label, is_global, rest = self._parse_label(stripped)
             if label:
-                label_upper = label.upper()
+                label_upper = self._sym_key(label)
                 # Разрешаем переопределение (последнее значение побеждает)
-                self.symbols[label_upper] = location
+                self._store_symbol(label, location)
                 if is_global:
 
                     self._global_labels.add(label_upper)
@@ -8861,10 +9744,11 @@ class Assembler:
                     for name in self._split_operands(operand):
                         name = name.strip()
                         if name:
-                            self._imports.add(name.upper())
+                            _imp_key = self._sym_key(name)
+                            self._imports.add(_imp_key)
                             # Define as 0 for pass 1 (will be resolved by linker)
-                            if name.upper() not in self.symbols:
-                                self.symbols[name.upper()] = 0
+                            if _imp_key not in self.symbols:
+                                self.symbols[_imp_key] = 0
                 continue
 
             # #code SECTION, ADDRESS, SIZE — секция (zasm)
@@ -9008,6 +9892,20 @@ class Assembler:
             _mnemonics = self._get_mnemonics()
             if mnemonic in _mnemonics:
                 opcode, fmt, size = _mnemonics[mnemonic]
+                # БАГ #1: ALU-команды формата 'r' с immediate-операндом — 2 байта,
+                # а не 1 (в таблице size=1 для reg-формы). Без этого pass 1
+                # занижает смещения всех последующих символов.
+                if fmt == 'r' and operand:
+                    op_u = operand.strip().upper()
+                    if ',' in op_u:
+                        # ASxxxx 2-операндная форма "cmp a, #5" -> immediate
+                        size = 2
+                    else:
+                        op_clean = op_u.lstrip('#').strip()
+                        _REG_OPS = ('A', 'B', 'C', 'D', 'E', 'H', 'L', 'M',
+                                    'BC', 'DE', 'HL', 'PSW')
+                        if op_clean not in _REG_OPS:
+                            size = 2
                 location += size
                 self.pc = location
             else:
@@ -9361,17 +10259,21 @@ class Assembler:
                     pass
             self._current_section = None
 
+        # Таблица символов в исходном регистре (не UPPER) для вывода
+        _symbols_out = {}
+        for _k, _v in self.symbols.items():
+            _symbols_out[self._symbol_case.get(_k, _k)] = _v
         result = AsmResult(
             success=len(self.errors) == 0,
             binary=bytes(self.binary[:self._write_pos]) if self._write_pos < len(self.binary) else bytes(self.binary),
-            symbols=dict(self.symbols),
+            symbols=_symbols_out,
             origin=self.origin,
             errors=list(self.errors),
             warnings=list(self.warnings),
             listing=list(self.listing),
-            exports=list(self._exports),
-            imports=list(self._imports),
-            global_labels=set(self._global_labels),
+            exports=[self._symbol_case.get(_k, _k) for _k in self._exports],
+            imports=[self._symbol_case.get(_k, _k) for _k in self._imports],
+            global_labels={self._symbol_case.get(_k, _k) for _k in self._global_labels},
 
             relocations=list(self._relocations),
             end_address=location
@@ -9396,7 +10298,7 @@ class Assembler:
         """Если операнд — чистая ссылка на импортированный символ, вернуть его имя (UPPER)."""
         t = operand_str.strip()
         if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', t):
-            upper = t.upper()
+            upper = self._sym_key(t)
             if upper in self._imports:
                 return upper
         return None
@@ -9507,7 +10409,7 @@ class Assembler:
             else:
                 op_str = operands[0].strip()
                 if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', op_str):
-                    upper = op_str.upper()
+                    upper = self._sym_key(op_str)
                     if upper not in self.symbols:
                         # Undefined symbol → import
                         self._imports.add(upper)
@@ -9551,7 +10453,7 @@ class Assembler:
             else:
                 op_str = operands[1].strip()
                 if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', op_str):
-                    upper = op_str.upper()
+                    upper = self._sym_key(op_str)
                     if upper not in self.symbols:
                         # Undefined symbol → import
                         self._imports.add(upper)
@@ -9645,7 +10547,7 @@ class Assembler:
         # Простой идентификатор без операторов — предупреждение если не определён
         if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', expr_str):
             in_defines = any(expr_str.lower() == d.lower() for d in self.defines)
-            if expr_str.upper() not in self.symbols and not in_defines:
+            if self._sym_key(expr_str) not in self.symbols and not in_defines:
                 # Warning, не error: файл может быть "нижним" (включается в другой)
                 self.warnings.append(f"L{line_num}: Неопределённая метка: {expr_str}")
                 return 0
@@ -9657,7 +10559,7 @@ class Assembler:
         # Пробуем как выражение: метка +/- число
         m = re.match(r'^([A-Za-z_][A-Za-z0-9_]*)\s*([+\-])\s*(.+)$', operand_str)
         if m:
-            label = m.group(1).upper()
+            label = self._sym_key(m.group(1))
             op = m.group(2)
             rest_str = m.group(3).strip()
 
@@ -9683,7 +10585,7 @@ class Assembler:
                 return base_val - rest_val
 
         # Пробуем как метку
-        label = operand_str.upper()
+        label = self._sym_key(operand_str)
         if label in self.symbols:
             return self.symbols[label]
 
@@ -9806,7 +10708,7 @@ class Assembler:
             else:
                 part_str = part.strip()
                 if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', part_str):
-                    upper = part_str.upper()
+                    upper = self._sym_key(part_str)
                     if upper not in self.symbols:
                         # Undefined symbol → import
                         self._imports.add(upper)
@@ -9918,7 +10820,8 @@ class Assembler:
 # УДОБНАЯ ФУНКЦИЯ ДЛЯ БЫСТРОГО ИСПОЛЬЗОВАНИЯ
 # =============================================================
 
-def assemble(source: str, filename: str = "", now=None, cpu_type: str = "i8080") -> AsmResult:
+def assemble(source: str, filename: str = "", now=None, cpu_type: str = "i8080",
+             case_sensitive: bool = False) -> AsmResult:
     """Ассемблировать исходный код: вернуть результат сборки.
 
     :param source: исходный текст программы
@@ -9928,6 +10831,7 @@ def assemble(source: str, filename: str = "", now=None, cpu_type: str = "i8080")
     """
     asm = Assembler(now=now)
     asm.cpu_type = cpu_type
+    asm.case_sensitive = case_sensitive
     return asm.assemble(source, filename)
 
 
@@ -10002,6 +10906,9 @@ def _cli_main(argv=None) -> int:
     parser.add_argument("--obj", help="Output object file (default: <input>.obj)")
     parser.add_argument("--cpu", choices=["8080", "8085"], default="8080",
                         help="CPU type (default: 8080)")
+    parser.add_argument("--case-sensitive", action="store_true",
+                        help="Label names are case-sensitive (i and I are different). "
+                             "Default: case-insensitive (original case preserved in output).")
     parser.add_argument("--lnk", help="Link script (.lnk) for multi-file linking")
     parser.add_argument("--hex", action="store_true", help="Print hexdump of output")
     parser.add_argument("--list", action="store_true", help="Print listing (address, bytes, source)")
@@ -10048,7 +10955,8 @@ def _cli_main(argv=None) -> int:
             continue
         with open(src, 'r', encoding='utf-8', errors='replace') as f:
             source = f.read()
-        result = assemble(source, filename=src, cpu_type=cpu_type)
+        result = assemble(source, filename=src, cpu_type=cpu_type,
+                          case_sensitive=args.case_sensitive)
 
         if not result.success:
             print(f"[FAIL] {src}:")
@@ -34209,7 +35117,7 @@ def create_terminal_widget(device):
 
 ■ РАЗДЕЛ 4: ИЗМЕНЕНИЯ РЕФАКТОРИНГА
 
-Источник: `CHANGES.md` (2679 строк)
+Источник: `CHANGES.md` (2712 строк)
 
 ```markdown
 # Changelog / Журнал изменений
@@ -34217,6 +35125,39 @@ def create_terminal_widget(device):
 
 
 
+
+## v2.1.12 (2026-10-12)
+
+### ALU immediate size fix (pass 1) + label case sensitivity
+
+**БАГ #1 (критический): неверный размер ALU-команд с immediate в pass 1**
+- **Fixed:** В pass 1 (расчёт смещений символов) размер ALU-инструкций формата `r`
+  (ADD/ADC/SUB/SBB/ANA/XRA/ORA/CMP) брался из таблицы как 1 байт, даже когда
+  операнд — immediate (число, `#n`, метка, выражение). Реальное кодирование
+  immediate-формы — 2 байта. Ошибка накапливалась по всему модулю, и все символы
+  после первой ALU-imm инструкции получали неверный offset.
+- Фикс: перед `location += size` в pass 1 проверяется, является ли операнд
+  регистром/парой (A B C D E H L M / BC DE HL PSW). Если нет — `size = 2`.
+  Поддерживается ASxxxx 2-операндная форма `cmp a, #5` и префикс `#`.
+- Pass 2 уже корректно кодировал imm-форму в 2 байта (проверено).
+- 14 новых тестов (`_test_alu_imm.py`), все pass.
+- crun8080lib.asm: 353 → 366 релокаций (смещения теперь корректны).
+
+**Регистр лейблов: сохранение исходного регистра + ключ --case-sensitive**
+- **New:** Ассемблер больше не капсит лейблы в ВЕРХНИЙ регистр. Исходный регистр
+  сохраняется в таблице символов, map-файле и .obj (например, `main`, а не `MAIN`).
+- **New:** Ключ командной строки `--case-sensitive` включает чувствительность к
+  регистру лейблов: `i` и `I` становятся разными символами. По умолчанию
+  (без ключа) — регистр не значим (case-insensitive), но исходный регистр
+  сохраняется в выводе.
+- API: `assemble(..., case_sensitive=False)`, `Assembler.case_sensitive`.
+- Внутренние lookup-места (`_parse_operand`, релокационные обработчики,
+  `_is_import_symbol`, IMPORT) используют `_sym_key()` для единообразия.
+- 15 новых тестов (`_test_case.py`), все pass.
+- Минимальный кейс из промпта (БАГ #2): `shld i` + `i: .dw 0` линкуется,
+  символ `i` разрешён; однобуквенная метка `a:` не путается с регистром A.
+
+Updated: `assemble8080/assembler.py` (pass 1 ALU-imm size, case sensitivity, CLI)
 
 ## v2.1.11 (2026-10-11)
 
@@ -52047,4 +52988,4 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 
 ---
 
-*Конец среза. Сгенерировано 2026-10-11 19:47:42.*
+*Конец среза. Сгенерировано 2026-10-12 12:17:31.*
