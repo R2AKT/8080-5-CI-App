@@ -14,6 +14,5 @@ _*.py
 _*.txt
 _ref_page.html
 
-# Release artifacts (regeneratable, attached to GitHub release)
-release/*.zip
-release/*.exe
+# Release package (regeneratable, attached to GitHub release)
+Release/

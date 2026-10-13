@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "i8080-5-ci"
-version = "0.5.0"
+version = "2.1.14"
 description = "i8080-5 Master Controller — GUI, emulator, MCP server and Arduino bridge for i8080-based hardware"
 readme = "README.md"
 requires-python = ">=3.10"

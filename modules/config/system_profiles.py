@@ -10,10 +10,25 @@
 import os
 import os.path
 import glob
+import sys
 
 # Базовый каталог проекта (каталог скрипта)
 _PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-_PROFILES_DIR = os.path.join(_PROJECT_DIR, "profiles")
+
+def _find_profiles_dir():
+    """Каталог профилей: рядом с исходниками, в CWD или рядом с exe (PyInstaller)."""
+    candidates = [
+        os.path.join(_PROJECT_DIR, "profiles"),
+        os.path.join(os.getcwd(), "profiles"),
+    ]
+    if getattr(sys, "frozen", False):
+        candidates.append(os.path.join(os.path.dirname(os.path.abspath(sys.executable)), "profiles"))
+    for c in candidates:
+        if os.path.isdir(c):
+            return c
+    return os.path.join(_PROJECT_DIR, "profiles")
+
+_PROFILES_DIR = _find_profiles_dir()
 
 # ============================================================
 # ВСТРОЕННЫЕ ПРОФИЛИ (минимальный набор, если нет внешних)
@@ -48,6 +63,7 @@ def _load_external_profiles():
     _external_profiles = {}
 
     if not os.path.isdir(_PROFILES_DIR):
+        print(f"[profiles] Каталог профилей не найден: {_PROFILES_DIR}")
         return
 
     try:
@@ -81,6 +97,9 @@ def _load_external_profiles():
                 }
         except Exception as e:
             print(f"Ошибка загрузки профиля {filepath}: {e}")
+
+    if os.environ.get("I8080_DEBUG_PROFILES"):
+        print(f"[profiles] dir={_PROFILES_DIR} loaded={len(_external_profiles)}")
 
 # Загружаем при импорте модуля
 _load_external_profiles()
