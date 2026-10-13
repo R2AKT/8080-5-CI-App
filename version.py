@@ -1,7 +1,7 @@
 """Project version and build information."""
 
-__version__ = "2.1.13"
-__build__ = "20261012"
+__version__ = "2.1.14"
+__build__ = "20261013"
 __app_name__ = "i8080-5 CI"
 
 def get_version_string():

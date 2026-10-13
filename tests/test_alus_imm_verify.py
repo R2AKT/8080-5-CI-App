@@ -5,7 +5,7 @@
 2. Регистровая форма (0x80-0xBF) использует ORA/CMP
 3. Непосредственная форма (0xF6/0xFE) использует ORI/CPI
 4. Round-trip: ассемблирование -> дизассемблирование -> сравнение
-5. CMP с immediate операндом НЕ принимается (только CPI)
+5. CMP с immediate операндом принимается как алиас CPI
 """
 import sys
 import os
@@ -124,15 +124,14 @@ def test_assembler_alu_imm_fallback():
     print('  PASS: assembler ALU immediate fallback (ADD/ADC/SUB/SBB/ANA/XRA)')
 
 
-def test_assembler_cmp_imm_rejected():
-    """CMP с immediate операндом НЕ принимается (используйте CPI)."""
+def test_assembler_cmp_imm_alias():
+    """CMP с immediate операндом принимается как алиас CPI (0xFE)."""
     asm = Assembler()
     r = asm.assemble('    ORG 0100H\n        CMP 05H\n        RET')
-    # CMP 05H: main table has CMP as (0xB8, 'r', 1), tries to parse 05H as register
-    # 05H is not a register, ALU_IMM_OPCODES no longer has 'CMP'
-    # Should produce an error
-    assert r.errors, f'Expected error for CMP 05H, but got binary: {r.binary.hex() if r.binary else "None"}'
-    print(f'  PASS: assembler rejects CMP 05H (error: {r.errors[0]})')
+    # CMP 05H -> CPI 05H (0xFE 05): ALU_IMM_OPCODES maps 'CMP' -> 0xFE
+    assert r.binary == bytearray([0xFE, 0x05, 0xC9]), \
+        f'Expected FE 05 C9 (CPI 05H), got {r.binary.hex() if r.binary else "None"}'
+    print('  PASS: assembler accepts CMP 05H as CPI 05H (FE 05)')
 
 
 def test_roundtrip_all_immediate():
@@ -193,7 +192,7 @@ if __name__ == '__main__':
     test_disassembler_register_alu()
     test_assembler_cpi_ori()
     test_assembler_alu_imm_fallback()
-    test_assembler_cmp_imm_rejected()
+    test_assembler_cmp_imm_alias()
     test_roundtrip_all_immediate()
     test_roundtrip_register()
     print('=' * 55)

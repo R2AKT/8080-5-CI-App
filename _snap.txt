@@ -1,0 +1,6 @@
+<unknown>:82: SyntaxWarning: invalid escape sequence '\$'
+Обход проекта: c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis
+Выходной файл: c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis\PROJECT_SNAPSHOT.md
+Готово: c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis\PROJECT_SNAPSHOT.md
+  Размер: 2,200,154 байт (2148 КБ)
+  Строк: 54,064

@@ -37,14 +37,14 @@ def main():
         print("Тест 1: Генерация map файла")
         source = """
 ORG 0x0100
-start:
+START:
     MVI A, 0x42
-    CALL sub
+    CALL SUB
     HLT
-sub:
+SUB:
     ADD B
     RET
-my_data:
+MY_DATA:
     DB 0x11, 0x22, 0x33
 """
         result = assemble(source)
@@ -68,11 +68,11 @@ my_data:
         print("Тест 2: Объектный файл")
         source2 = """
 ORG 0x0200
-EXPORT main
-IMPORT helper
-main:
+EXPORT MAIN
+IMPORT HELPER
+MAIN:
     MVI A, 0x01
-    CALL helper
+    CALL HELPER
     HLT
 """
         result2 = assemble(source2)
@@ -224,7 +224,7 @@ END
         r = assemble(src_imp)
         check("Import: success", r.success, str(r.errors))
         check("Import: 3 relocations", len(r.relocations) == 3, str(r.relocations))
-        expected = [(3, 2, 'HELPER'), (6, 2, 'HELPER'), (9, 2, 'HELPER')]
+        expected = [(3, 2, 'HELPER', 0), (6, 2, 'HELPER', 0), (9, 2, 'HELPER', 0)]
         check("Import: correct offsets", r.relocations == expected, str(r.relocations))
         
         # DW with import
@@ -237,7 +237,7 @@ END
 """
         r = assemble(src_dw)
         check("DW: success", r.success, str(r.errors))
-        check("DW: 1 relocation", r.relocations == [(0, 2, 'TBL')], str(r.relocations))
+        check("DW: 1 relocation", r.relocations == [(0, 2, 'TBL', 0)], str(r.relocations))
         
         # LXI with import
         src_lxi = """
@@ -249,7 +249,7 @@ END
 """
         r = assemble(src_lxi)
         check("LXI: success", r.success, str(r.errors))
-        check("LXI: 1 relocation", r.relocations == [(1, 2, 'PTR')], str(r.relocations))
+        check("LXI: 1 relocation", r.relocations == [(1, 2, 'PTR', 0)], str(r.relocations))
         
         # Full link: relocation applied correctly
         srcA = """

@@ -4,7 +4,7 @@
   <img src="logo.svg" width="200" alt="8080-5 CI Logo"/>
 </p>
 
-![Version](https://img.shields.io/badge/Version-2.1.7-orange.svg)
+![Version](https://img.shields.io/badge/Version-2.1.14-orange.svg)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
 ![Qt](https://img.shields.io/badge/PySide6-6.5+-red.svg)
