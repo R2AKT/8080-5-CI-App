@@ -8,3 +8,12 @@ Plugins/i8080_ci-vscode/out/
 *.egg-info/
 dist/
 build/
+
+# AI analysis temp scripts (regeneratable)
+_*.py
+_*.txt
+_ref_page.html
+
+# Release artifacts (regeneratable, attached to GitHub release)
+release/*.zip
+release/*.exe
