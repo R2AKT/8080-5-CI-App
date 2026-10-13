@@ -1,0 +1,38 @@
+<table cellspacing="0" cellpadding="5">
+  <tr>
+    <td>Код </td>
+    <td>Регистр </td>
+  </tr>
+  <tr>
+    <td>000 </td>
+    <td>B </td>
+  </tr>
+  <tr>
+    <td>001 </td>
+    <td>C </td>
+  </tr>
+  <tr>
+    <td>010 </td>
+    <td>D </td>
+  </tr>
+  <tr>
+    <td>011 </td>
+    <td>E </td>
+  </tr>
+  <tr>
+    <td>100 </td>
+    <td>H </td>
+  </tr>
+  <tr>
+    <td>101 </td>
+    <td>L </td>
+  </tr>
+  <tr>
+    <td>110 </td>
+    <td>M </td>
+  </tr>
+  <tr>
+    <td>111 </td>
+    <td>A </td>
+  </tr>
+</table>

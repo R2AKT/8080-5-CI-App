@@ -1,0 +1,24 @@
+<table cellspacing="0" cellpadding="5" border="0">
+  <tr>
+    <td>A </td>
+    <td>флаги </td>
+  </tr>
+  <tr>
+    <td>B </td>
+    <td>C </td>
+  </tr>
+  <tr>
+    <td>D </td>
+    <td>E </td>
+  </tr>
+  <tr>
+    <td>H </td>
+    <td>L </td>
+  </tr>
+  <tr>
+    <td width="206" colspan="2" valign="top"><p>PC (счётчик команд) </td>
+  </tr>
+  <tr>
+    <td width="206" colspan="2" valign="top"><p>SP (указатель стека ) </td>
+  </tr>
+</table>

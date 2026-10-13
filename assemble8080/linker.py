@@ -175,13 +175,14 @@ def link(objects: list, origin: int = 0, size: int = 0x10000, fill: int = 0xFF) 
             if patch_addr >= output_size:
                 continue
             
+            patch_val = (sym_addr + getattr(reloc, 'addend', 0)) & 0xFFFF
             if reloc.size == 2:
                 # 16-bit little-endian
-                output[patch_addr] = sym_addr & 0xFF
-                output[patch_addr + 1] = (sym_addr >> 8) & 0xFF
+                output[patch_addr] = patch_val & 0xFF
+                output[patch_addr + 1] = (patch_val >> 8) & 0xFF
             elif reloc.size == 1:
                 # 8-bit (low byte only)
-                output[patch_addr] = sym_addr & 0xFF
+                output[patch_addr] = patch_val & 0xFF
     
     # Step 7: Generate map
     map_entries = []

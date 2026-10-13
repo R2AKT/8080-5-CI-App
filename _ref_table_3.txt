@@ -1,0 +1,3369 @@
+<table cellpadding=5 cellspacing=0 >
+<tr>
+<td width="20%">
+Команда
+
+</td>
+<td width="20%">
+Код
+
+</td>
+<td>
+Описание</td>
+</tr>
+<tr>
+<td>
+ADD A
+
+</td>
+<td>
+87
+
+</td>
+<td>
+A&larr;(A) + (A)
+
+</td>
+</tr>
+<tr>
+<td>
+ADD B
+
+</td>
+<td>
+80
+
+</td>
+<td>
+A&larr;(B) + (A)
+
+</td>
+</tr>
+<tr>
+<td>
+ADD C
+
+</td>
+<td>
+81
+
+</td>
+<td>
+A&larr;(C) + (A)
+
+</td>
+</tr>
+<tr>
+<td>
+ADD D
+
+</td>
+<td>
+82
+
+</td>
+<td>
+A&larr;(D) + (A)
+
+</td>
+</tr>
+<tr>
+<td>
+ADD E
+
+</td>
+<td>
+83
+
+</td>
+<td>
+A&larr;(E) + (A)
+
+</td>
+</tr>
+<tr>
+<td>
+ADD H
+
+</td>
+<td>
+84
+
+</td>
+<td>
+A&larr;(H) + (A)
+
+</td>
+</tr>
+<tr>
+<td>
+ADD L
+
+</td>
+<td>
+85
+
+</td>
+<td>
+A&larr;(L) + (A)
+
+</td>
+</tr>
+<tr>
+<td>
+ADD M
+
+</td>
+<td>
+86
+
+</td>
+<td>
+A&larr;Loc(HL) + (A)
+
+</td>
+</tr>
+<tr>
+<td>
+ADI d8
+
+</td>
+<td>
+C6
+
+</td>
+<td>
+A&larr;d8 + (A)
+
+</td>
+</tr>
+<tr>
+<td>
+ADC A
+
+</td>
+<td>
+8F
+
+</td>
+<td>
+A&larr;(A) + (A) + CY
+
+</td>
+</tr>
+<tr>
+<td>
+ADC B
+
+</td>
+<td>
+88
+
+</td>
+<td>
+A&larr;(B) + (A) + CY
+
+</td>
+</tr>
+<tr>
+<td>
+ADC C
+
+</td>
+<td>
+89
+
+</td>
+<td>
+A&larr;(C) + (A) + CY
+
+</td>
+</tr>
+<tr>
+<td>
+ADC D
+
+</td>
+<td>
+8A
+
+</td>
+<td>
+A&larr;(D) + (A) + CY
+
+</td>
+</tr>
+<tr>
+<td>
+ADC E
+
+</td>
+<td>
+8B
+
+</td>
+<td>
+A&larr;(E) + (A) + CY
+
+</td>
+</tr>
+<tr>
+<td>
+ADC H
+
+</td>
+<td>
+8C
+
+</td>
+<td>
+A&larr;(H) + (A) + CY
+
+</td>
+</tr>
+<tr>
+<td>
+ADC L
+
+</td>
+<td>
+8D
+
+</td>
+<td>
+A&larr;(L) + (A) + CY
+
+</td>
+</tr>
+<tr>
+<td>
+ADC M
+
+</td>
+<td>
+8E
+
+</td>
+<td>
+A&larr;Loc(HL) + (A) + CY
+
+</td>
+</tr>
+<tr>
+<td>
+ACI d8
+
+</td>
+<td>
+CE
+
+</td>
+<td>
+A&larr;d8 + (A) + CF
+
+</td>
+</tr>
+<tr>
+<td>
+ANA A
+
+</td>
+<td>
+A7
+
+</td>
+<td>
+Проверка A
+
+</td>
+</tr>
+<tr>
+<td>
+ANA B
+
+</td>
+<td>
+A0
+
+</td>
+<td>
+Логическое И B с A
+
+</td>
+</tr>
+<tr>
+<td>
+ANA C
+
+</td>
+<td>
+A1
+
+</td>
+<td>
+Логическое И C с A
+
+</td>
+</tr>
+<tr>
+<td>
+ANA D
+
+</td>
+<td>
+A2
+
+</td>
+<td>
+Логическое И D с A
+
+</td>
+</tr>
+<tr>
+<td>
+ANA E
+
+</td>
+<td>
+A3
+
+</td>
+<td>
+Логическое И E с A
+
+</td>
+</tr>
+<tr>
+<td>
+ANA H
+
+</td>
+<td>
+A4
+
+</td>
+<td>
+Логическое И H с A
+
+</td>
+</tr>
+<tr>
+<td>
+ANA L
+
+</td>
+<td>
+A5
+
+</td>
+<td>
+Логическое И L с A
+
+</td>
+</tr>
+<tr>
+<td>
+ANA M
+
+</td>
+<td>
+A6
+
+</td>
+<td>
+Логическое И Loc(HL) с A
+
+</td>
+</tr>
+<tr>
+<td>
+ANI d8
+
+</td>
+<td>
+E6
+
+</td>
+<td>
+Логическое И непосредственные данные с A
+
+</td>
+</tr>
+<tr>
+<td>
+CALL a16
+
+</td>
+<td>
+CD
+
+</td>
+<td>
+Передать управление подпрограмме по адресу a16</td>
+</tr>
+<tr>
+<td>
+CZ a16
+
+</td>
+<td>
+CC
+
+</td>
+<td>
+Вызвать подпрограмму по адресу a16, если нуль
+
+</td>
+</tr>
+<tr>
+<td>
+СNZ a16
+
+</td>
+<td>
+C4
+
+</td>
+<td>
+То же, если не нуль
+
+</td>
+</tr>
+<tr>
+<td>
+СP a16
+
+</td>
+<td>
+F4
+
+</td>
+<td>
+То же, если плюс
+
+</td>
+</tr>
+<tr>
+<td>
+СM a16
+
+</td>
+<td>
+FC
+
+</td>
+<td>
+То же, если минус
+
+</td>
+</tr>
+<tr>
+<td>
+CC a16
+
+</td>
+<td>
+DC</td>
+<td>
+То же, если перенос
+
+</td>
+</tr>
+<tr>
+<td>
+CNC a16
+
+</td>
+<td>
+D4
+
+</td>
+<td>
+То же, если нет переноса
+
+</td>
+</tr>
+<tr>
+<td>
+CPE a16
+
+</td>
+<td>
+EC
+
+</td>
+<td>
+То же, если чётно
+
+</td>
+</tr>
+<tr>
+<td>
+CPO a16
+
+</td>
+<td>
+E4
+
+</td>
+<td>
+То же, если нечётно
+
+</td>
+</tr>
+<tr>
+<td>
+CMA
+
+</td>
+<td>
+2F
+
+</td>
+<td>
+Инвертировать A
+
+</td>
+</tr>
+<tr>
+<td>
+CMC
+
+</td>
+<td>
+3F
+
+</td>
+<td>
+Инвертировать перенос
+
+</td>
+</tr>
+<tr>
+<td>
+CMP A
+
+</td>
+<td>
+BF
+
+</td>
+<td>
+Установить флаг FZ
+
+</td>
+</tr>
+<tr>
+<td>
+CMP B
+
+</td>
+<td>
+B8
+
+</td>
+<td>
+Сравнить A с B
+
+</td>
+</tr>
+<tr>
+<td>
+CMP C
+
+</td>
+<td>
+B9
+
+</td>
+<td>
+Сравнить A с C
+
+</td>
+</tr>
+<tr>
+<td>
+CMP D
+
+</td>
+<td>
+BA
+
+</td>
+<td>
+Сравнить A с D
+
+</td>
+</tr>
+<tr>
+<td>
+CMP E
+
+</td>
+<td>
+BB
+
+</td>
+<td>
+Сравнить A с E
+
+</td>
+</tr>
+<tr>
+<td>
+CMP H
+
+</td>
+<td>
+BC
+
+</td>
+<td>
+Сравнить A с H
+
+</td>
+</tr>
+<tr>
+<td>
+CMP L
+
+</td>
+<td>
+BD
+
+</td>
+<td>
+Сравнить A с L
+
+</td>
+</tr>
+<tr>
+<td>
+CMP M
+
+</td>
+<td>
+BE
+
+</td>
+<td>
+Сравнить A с Loc(HL)
+
+</td>
+</tr>
+<tr>
+<td>
+CPI d8
+
+</td>
+<td>
+FE</td>
+<td>
+Сравнить A с непосредственными данными, заданными в команде
+
+</td>
+</tr>
+<tr>
+<td>
+DAA
+
+</td>
+<td>
+27
+
+</td>
+<td>
+Десятичная коррекция аккумулятора (совершенно бесполезная команда. Я так и ни разу ей и не воспользовался:)
+
+</td>
+</tr>
+<tr>
+<td>
+DAD
+B
+
+</td>
+<td>09</td>
+<td>
+Сложить BC с HL
+
+</td>
+</tr>
+<tr>
+<td>
+DAD
+D
+
+</td>
+<td>19
+</td>
+<td>
+Сложить DE с HL
+
+</td>
+</tr>
+<tr>
+<td>
+DAD
+H
+
+</td>
+<td>29
+</td>
+<td>
+Сложить HL с HL (удвоение HL)
+
+</td>
+</tr>
+<tr>
+<td>
+DAD
+SP
+
+</td>
+<td>39
+</td>
+<td>
+Сложить SP с HL
+
+</td>
+</tr>
+<tr>
+<td>
+DCR A
+
+</td>
+<td>
+3D
+
+</td>
+<td>
+A&larr;(A) - 1 (декремент A)
+
+</td>
+</tr>
+<tr>
+<td>
+DCR B
+
+</td>
+<td>
+05
+
+</td>
+<td>
+B&larr;(B) - 1
+
+</td>
+</tr>
+<tr>
+<td>
+DCR C
+
+</td>
+<td>
+0D
+
+</td>
+<td>
+C&larr;(C) - 1
+
+</td>
+</tr>
+<tr>
+<td>
+DCR D
+
+</td>
+<td>
+15
+
+</td>
+<td>
+D&larr;(D) - 1
+
+</td>
+</tr>
+<tr>
+<td>
+DCR E
+
+</td>
+<td>
+1D
+
+</td>
+<td>
+E&larr;(E) - 1
+
+</td>
+</tr>
+<tr>
+<td>
+DCR H
+
+</td>
+<td>
+25
+
+</td>
+<td>
+H&larr;(H) - 1
+
+</td>
+</tr>
+<tr>
+<td>
+DCR L
+
+</td>
+<td>
+2D
+
+</td>
+<td>
+L&larr;(L) - 1
+
+</td>
+</tr>
+<tr>
+<td>
+DCR M
+
+</td>
+<td>
+35</td>
+<td>
+Loc (HL)&larr;(Loc(HL)) -1
+
+</td>
+</tr>
+<tr>
+<td>
+DCX B
+
+</td>
+<td>
+0B
+
+</td>
+<td>
+BC&larr;(BC) - 1
+
+</td>
+</tr>
+<tr>
+<td>
+DCX D
+
+</td>
+<td>
+1B
+
+</td>
+<td>
+DE&larr;(DE) -1
+
+</td>
+</tr>
+<tr>
+<td>
+DCX H
+
+</td>
+<td>
+2B
+
+</td>
+<td>
+HL&larr;(HL) - 1
+
+</td>
+</tr>
+<tr>
+<td>
+DCX SP
+
+</td>
+<td>
+3B
+
+</td>
+<td>
+SP&larr;(SP) -1
+
+</td>
+</tr>
+<tr>
+<td>
+DI
+
+</td>
+<td>
+F3
+
+</td>
+<td>
+Запретить прерывания
+
+</td>
+</tr>
+<tr>
+<td>
+EI
+
+</td>
+<td>
+FB
+
+</td>
+<td>
+Разрешить прерывания
+
+</td>
+</tr>
+<tr>
+<td>
+HLT
+
+</td>
+<td>
+76
+
+</td>
+<td>
+Останов процессора
+
+</td>
+</tr>
+<tr>
+<td>
+IN pp
+
+</td>
+<td>
+DB
+
+</td>
+<td>
+Ввести данные из порта pp
+
+</td>
+</tr>
+<tr>
+<td>
+INR A
+
+</td>
+<td>
+3C
+
+</td>
+<td>
+A&larr;(A) + 1 (инкрементировать A)
+
+</td>
+</tr>
+<tr>
+<td>
+INR B
+
+</td>
+<td>
+04
+
+</td>
+<td>
+Инкрементировать B
+
+</td>
+</tr>
+<tr>
+<td>
+INR C
+
+</td>
+<td>
+0C
+
+</td>
+<td>
+Инкрементировать C
+
+</td>
+</tr>
+<tr>
+<td>
+INR D
+
+</td>
+<td> 14</td>
+<td>
+Инкрементировать D
+
+</td>
+</tr>
+<tr>
+<td>
+INR E
+
+</td>
+<td>
+1C </td>
+<td>
+Инкрементировать E
+
+</td>
+</tr>
+<tr>
+<td>
+INR H
+
+</td>
+<td> 24
+</td>
+<td>
+Инкрементировать H
+
+</td>
+</tr>
+<tr>
+<td>
+INR L
+
+</td>
+<td>
+2C
+
+</td>
+<td>
+Инкрементировать L
+
+</td>
+</tr>
+<tr>
+<td>
+INR M
+
+</td>
+<td>
+34
+
+</td>
+<td>
+Инкрементировать содержимое Loc(HL)
+
+</td>
+</tr>
+<tr>
+<td>
+INX B
+
+</td>
+<td>
+03
+
+</td>
+<td>
+Инкрементировать BС
+
+</td>
+</tr>
+<tr>
+<td>
+INX D
+
+</td>
+<td>
+13
+
+</td>
+<td>
+Инкрементировать DE
+
+</td>
+</tr>
+<tr>
+<td>
+INX H
+
+</td>
+<td>
+23
+
+</td>
+<td>
+Инкрементировать HL
+
+</td>
+</tr>
+<tr>
+<td>
+INX SP
+
+</td>
+<td>
+33
+
+</td>
+<td>
+Инкрементировать SP
+
+</td>
+</tr>
+<tr>
+<td>
+JMP a16
+
+</td>
+<td>
+C3
+
+</td>
+<td>
+Перейти по адресу a16
+
+</td>
+</tr>
+<tr>
+<td>
+JZ a16
+
+</td>
+<td>
+CA
+
+</td>
+<td>
+То же, если нуль
+
+</td>
+</tr>
+<tr>
+<td>
+JNZ a16
+
+</td>
+<td>
+C2
+
+</td>
+<td>
+То же, если не нуль
+
+</td>
+</tr>
+<tr>
+<td>
+JP a16
+
+</td>
+<td>
+F2
+
+</td>
+<td>
+То же, если плюс
+
+</td>
+</tr>
+<tr>
+<td>
+JM a16
+
+</td>
+<td>
+FA
+
+</td>
+<td>
+То же, если минус
+
+</td>
+</tr>
+<tr>
+<td>
+JC a16
+
+</td>
+<td>
+DA
+
+</td>
+<td>
+То же, если перенос
+
+</td>
+</tr>
+<tr>
+<td>
+JNC a16
+
+</td>
+<td>
+D2
+
+</td>
+<td>
+То же, если нет переноса
+
+</td>
+</tr>
+<tr>
+<td>
+JPE a16
+
+</td>
+<td>
+EA
+
+</td>
+<td>
+Перейти по адресу a16, если паритет чётный
+
+</td>
+</tr>
+<tr>
+<td>
+JPO a16
+
+</td>
+<td>
+E2
+
+</td>
+<td>
+Перейти по адресу a16, если паритет нечётный
+
+</td>
+</tr>
+<tr>
+<td>
+LDA a16</td>
+<td>
+3A
+
+</td>
+<td>
+Загрузить A из 
+
+
+ ячейки
+
+ с адресом a16
+
+</td>
+</tr>
+<tr>
+<td>
+LDAX B
+
+</td>
+<td>
+0A
+
+</td>
+<td>
+Загрузить A из ячейки  с адресом Loc(BC)
+
+</td>
+</tr>
+<tr>
+<td>
+LDAX D
+
+</td>
+<td>
+1A
+
+</td>
+<td>
+Загрузить A из ячейки с адресом Loc(DE)
+
+</td>
+</tr>
+<tr>
+<td>
+LHLD a16
+
+</td>
+<td>
+2A
+
+</td>
+<td>
+Загрузить в HL содержимое ячейки с адресом a16
+
+</td>
+</tr>
+<tr>
+<td>
+LXI B,d16
+
+</td>
+<td>
+01
+
+</td>
+<td>
+Загрузить в BC непосредственные данные d16
+
+</td>
+</tr>
+<tr>
+<td>
+LXI H,d16
+
+</td>
+<td>
+21
+
+</td>
+<td>
+Загрузить в HL непосредственные данные d16
+
+</td>
+</tr>
+<tr>
+<td>
+LXI SP,d16
+
+</td>
+<td>
+31
+
+</td>
+<td>
+Загрузить в SP непосредственные данные d16
+
+</td>
+</tr>
+<tr>
+  <td> MOV A,A</td>
+  <td> 7F</td>
+  <td> Переслать из A в A </td>
+</tr>
+<tr>
+<td>
+MOV A,B
+
+</td>
+<td>
+78
+
+</td>
+<td>
+Переслать из B в A (B&larr;(A) )
+
+</td>
+</tr>
+<tr>
+<td>
+MOV A,C
+
+</td>
+<td>
+79
+
+</td>
+<td>
+Переслать из C в
+
+A </td>
+</tr>
+<tr>
+<td>
+MOV A,D
+
+</td>
+<td>
+7A
+
+</td>
+<td>
+Переслать из  D в
+
+A 
+
+</td>
+</tr>
+<tr>
+<td>
+MOV A,E
+
+</td>
+<td>
+7B
+
+</td>
+<td>
+Переслать из  E
+в
+
+A 
+</td>
+</tr>
+<tr>
+<td>
+MOV A,H
+
+</td>
+<td>
+7C
+
+</td>
+<td>
+Переслать из  H
+в
+
+A 
+</td>
+</tr>
+<tr>
+<td>
+MOV A,L
+
+</td>
+<td>
+7D
+
+</td>
+<td>
+Переслать из  L
+в
+
+A 
+</td>
+</tr>
+<tr>
+<td>
+MOV A,M
+
+</td>
+<td>
+7E
+
+</td>
+<td>
+Переслать из Loc(HL)
+в
+
+A 
+</td>
+</tr>
+<tr>
+<td>
+MOV B,A
+
+</td>
+<td>
+47
+
+</td>
+<td>
+Переслать из A в B</td>
+</tr>
+<tr>
+  <td> MOV B,B</td>
+  <td> 40</td>
+  <td> Переслать из B в B 
+
+
+ (ещё одна странная команда)</td>
+</tr>
+<tr>
+<td>
+MOV B,C
+
+</td>
+<td>
+41
+
+</td>
+<td>
+Переслать из  C
+в B
+</td>
+</tr>
+<tr>
+<td>
+MOV B,D
+
+</td>
+<td>
+42
+
+</td>
+<td>
+Переслать из  D
+в B
+</td>
+</tr>
+<tr>
+<td>
+MOV B,E
+
+</td>
+<td>
+43
+
+</td>
+<td>
+Переслать из  E
+в B
+</td>
+</tr>
+<tr>
+<td>
+MOV B,H
+
+</td>
+<td>
+44
+
+</td>
+<td>
+Переслать из  H
+в B
+</td>
+</tr>
+<tr>
+<td>
+MOV B,L
+
+</td>
+<td>
+45
+
+</td>
+<td>
+Переслать из  L
+в B
+</td>
+</tr>
+<tr>
+<td>
+MOV B,M
+
+</td>
+<td>
+46
+
+</td>
+<td>
+Переслать из Loc(HL)
+в B
+</td>
+</tr>
+<tr>
+<td>
+MOV C,A
+
+</td>
+<td>
+4F
+
+</td>
+<td>
+Переслать из  A
+в C
+</td>
+</tr>
+<tr>
+<td>
+MOV C,B
+
+</td>
+<td>
+48
+
+</td>
+<td>
+Переслать из B
+в C
+</td>
+</tr>
+<tr>
+  <td> MOV C,C</td>
+  <td> 49</td>
+  <td> Переслать из  C в C</td>
+</tr>
+<tr>
+<td>
+MOV C,D
+
+</td>
+<td>
+4A
+
+</td>
+<td>
+Переслать из  D
+в C
+</td>
+</tr>
+<tr>
+<td>
+MOV C,E
+
+</td>
+<td>
+4B
+
+</td>
+<td>
+Переслать из  E
+
+в C
+
+</td>
+</tr>
+<tr>
+<td>
+MOV C,H
+
+</td>
+<td>
+4C
+
+</td>
+<td>
+Переслать из  H
+
+в C
+
+</td>
+</tr>
+<tr>
+<td>
+MOV C,L
+
+</td>
+<td>
+4D
+
+</td>
+<td>
+Переслать из  L
+
+в C
+
+</td>
+</tr>
+<tr>
+<td>
+MOV C,M
+
+</td>
+<td>
+4E
+
+</td>
+<td>
+Переслать из  Loc(HL)
+
+в C
+
+</td>
+</tr>
+<tr>
+<td>
+MOV D,A
+
+</td>
+<td>
+57
+
+</td>
+<td>
+Переслать из   A в
+D
+</td>
+</tr>
+<tr>
+<td>
+MOV D,B
+
+</td>
+<td>
+50
+
+</td>
+<td>
+Переслать из  B
+в
+D
+</td>
+</tr>
+<tr>
+<td>
+MOV D,C
+
+</td>
+<td>
+51
+
+</td>
+<td>
+Переслать из  C
+в
+D
+</td>
+</tr>
+<tr>
+  <td> MOV D,D</td>
+  <td> 52</td>
+  <td> Переслать из D в D </td>
+</tr>
+<tr>
+<td>
+MOV D,E
+
+</td>
+<td>
+53
+
+</td>
+<td>
+Переслать из  E
+в
+D
+</td>
+</tr>
+<tr>
+<td>
+MOV D,H
+
+</td>
+<td>
+54
+
+</td>
+<td>
+Переслать из  H
+в
+D
+</td>
+</tr>
+<tr>
+<td>
+MOV D,L
+
+</td>
+<td>
+55
+
+</td>
+<td>
+Переслать из  L
+в
+D
+</td>
+</tr>
+<tr>
+<td>
+MOV D,M
+
+</td>
+<td>
+56
+
+</td>
+<td>
+Переслать из  Loc(HL)
+в
+D
+</td>
+</tr>
+<tr>
+<td>
+MOV E,A
+
+</td>
+<td>
+5F
+
+</td>
+<td>
+Переслать из  A
+в E</td>
+</tr>
+<tr>
+<td>
+MOV E,B
+
+</td>
+<td>
+58
+
+</td>
+<td>
+Переслать из B
+ в E
+</td>
+</tr>
+<tr>
+<td>
+MOV E,C
+
+</td>
+<td>
+59
+
+</td>
+<td>
+Переслать из  C
+ в E
+</td>
+</tr>
+<tr>
+<td>
+MOV E,D
+
+</td>
+<td>
+5A
+
+</td>
+<td>
+Переслать из  D
+в E
+</td>
+</tr>
+<tr>
+  <td> MOV E,E</td>
+  <td> 5B</td>
+  <td> Переслать из E в E </td>
+</tr>
+<tr>
+<td>
+MOV E,H
+
+</td>
+<td>
+5C
+
+</td>
+<td>
+Переслать из  H
+в E
+</td>
+</tr>
+<tr>
+<td>
+MOV E,L
+
+</td>
+<td>
+5D
+
+</td>
+<td>
+Переслать из  L
+в E
+</td>
+</tr>
+<tr>
+<td>
+MOV E,M
+
+</td>
+<td>
+5E
+
+</td>
+<td>
+Переслать из Loc(HL)
+в E
+</td>
+</tr>
+<tr>
+<td>
+MOV H,A
+
+</td>
+<td>
+67
+
+</td>
+<td>
+Переслать из  A
+в H</td>
+</tr>
+<tr>
+<td>
+MOV H,B
+
+</td>
+<td>
+60
+
+</td>
+<td>
+Переслать из  B
+в H</td>
+</tr>
+<tr>
+<td>
+MOV H,C
+
+</td>
+<td>
+61
+
+</td>
+<td>
+Переслать из  C
+в H
+</td>
+</tr>
+<tr>
+<td>
+MOV H,D
+
+</td>
+<td>
+62
+
+</td>
+<td>
+Переслать из  D
+в H
+</td>
+</tr>
+<tr>
+<td>
+MOV H,E
+
+</td>
+<td>
+63
+
+</td>
+<td>
+Переслать из  E
+в H
+</td>
+</tr>
+<tr>
+  <td> MOV H,H</td>
+  <td> 64</td>
+  <td> Переслать из H в H </td>
+</tr>
+<tr>
+<td>
+MOV H,L
+
+</td>
+<td>
+65
+
+</td>
+<td>
+Переслать из  L
+в H
+</td>
+</tr>
+<tr>
+<td>
+MOV H,M
+
+</td>
+<td>
+66
+
+</td>
+<td>
+Переслать из  Loc(HL)
+в H
+</td>
+</tr>
+<tr>
+<td>
+MOV L,A
+
+</td>
+<td>
+6F
+
+</td>
+<td>
+Переслать из A
+в L</td>
+</tr>
+<tr>
+<td>
+MOV L,B
+
+</td>
+<td>
+68
+
+</td>
+<td>
+Переслать из B
+в L
+</td>
+</tr>
+<tr>
+<td>
+MOV L,C
+
+</td>
+<td>
+69
+
+</td>
+<td>
+Переслать из C
+в L
+</td>
+</tr>
+<tr>
+<td>
+MOV L,D
+
+</td>
+<td>
+6A
+
+</td>
+<td>
+Переслать из D
+в L
+</td>
+</tr>
+<tr>
+<td>
+MOV L,E
+
+</td>
+<td>
+6B
+
+</td>
+<td>
+Переслать из E
+в L
+</td>
+</tr>
+<tr>
+<td>
+MOV L,H
+
+</td>
+<td>
+6C
+
+</td>
+<td>
+Переслать из H
+в L
+</td>
+</tr>
+<tr>
+  <td> MOV L,L</td>
+  <td> 6D</td>
+  <td> Переслать из L в L </td>
+</tr>
+<tr>
+<td>
+MOV L,M
+
+</td>
+<td>
+6E
+
+</td>
+<td>
+Переслать из Loc(HL)
+в L
+</td>
+</tr>
+<tr>
+<td>
+MOV M,A
+
+</td>
+<td>
+77
+
+</td>
+<td>
+Переслать из  A
+в M</td>
+</tr>
+<tr>
+<td>
+MOV M,B
+
+</td>
+<td>
+70
+
+</td>
+<td>
+Переслать из  B
+в M
+</td>
+</tr>
+<tr>
+<td>
+MOV M,C
+
+</td>
+<td>
+71
+
+</td>
+<td>
+Переслать из  C
+в M
+</td>
+</tr>
+<tr>
+<td>
+MOV M,D
+
+</td>
+<td>
+72
+
+</td>
+<td>
+Переслать из  D
+в M
+</td>
+</tr>
+<tr>
+<td>
+MOV M,E
+
+</td>
+<td>
+73
+
+</td>
+<td>
+Переслать из  E
+в M
+</td>
+</tr>
+<tr>
+<td>
+MOV M,H
+
+</td>
+<td>
+74
+
+</td>
+<td>
+Переслать из  H
+в M
+</td>
+</tr>
+<tr>
+<td>
+MOV M,L
+
+</td>
+<td>
+75
+
+</td>
+<td>
+Переслать из  L
+в M
+</td>
+</tr>
+<tr>
+<td>
+MVI A,d8
+
+</td>
+<td>
+3E
+
+</td>
+<td>
+Переслать d8 в A
+
+</td>
+</tr>
+<tr>
+<td>
+MVI B,d8
+
+</td>
+<td>
+06
+
+</td>
+<td>
+Переслать d8 в B
+
+</td>
+</tr>
+<tr>
+<td>
+MVI C,d8
+
+</td>
+<td>
+0E
+
+</td>
+<td>
+Переслать d8 в C
+
+</td>
+</tr>
+<tr>
+<td>
+MVI D,d8
+
+</td>
+<td>
+16
+
+</td>
+<td>
+Переслать d8 в D
+
+</td>
+</tr>
+<tr>
+<td>
+MVI E,d8
+
+</td>
+<td>
+1E
+
+</td>
+<td>
+Переслать d8 в E
+
+</td>
+</tr>
+<tr>
+<td>
+MVI H,d8
+
+</td>
+<td>
+26
+
+</td>
+<td>
+Переслать d8 в H
+
+</td>
+</tr>
+<tr>
+<td>
+MVI L,d8
+
+</td>
+<td>
+2E
+
+</td>
+<td>
+Переслать d8 в L
+
+</td>
+</tr>
+<tr>
+<td>
+MVI M,d8
+
+</td>
+<td>
+36
+
+</td>
+<td>
+Переслать d8 в Loc(HL)
+
+</td>
+</tr>
+<tr>
+<td>
+NOP </td>
+<td>00 
+</td>
+
+<td>Нет операции
+
+
+</td>
+</tr>
+<tr>
+<td>
+ORA A
+
+</td>
+<td>
+B7
+
+</td>
+<td>
+Проверить A и сбросить перенос
+
+</td>
+</tr>
+<tr>
+<td>
+ORA B
+
+</td>
+<td>
+B0
+
+</td>
+<td>
+Логичеcкая операция A
+
+ИЛИ B </td>
+</tr>
+<tr>
+<td>
+ORA C
+
+</td>
+<td>
+B1
+
+</td>
+<td>
+Логичеcкая операция A
+
+ИЛИ C 
+
+</td>
+</tr>
+<tr>
+<td>
+ORA D
+
+</td>
+<td>
+B2
+
+</td>
+<td>
+Логичеcкая операция A
+
+ИЛИ D 
+
+</td>
+</tr>
+<tr>
+<td>
+ORA E
+
+</td>
+<td>
+B3
+
+</td>
+<td>
+Логичеcкая операция A
+
+ИЛИ E 
+
+</td>
+</tr>
+<tr>
+<td>
+ORA H
+
+</td>
+<td>
+B4
+
+</td>
+<td>
+Логичеcкая операция A
+
+ИЛИ H 
+
+</td>
+</tr>
+<tr>
+<td>
+ORA L
+
+</td>
+<td>
+B5
+
+</td>
+<td>
+Логичеcкая операция A
+
+ИЛИ L 
+
+</td>
+</tr>
+<tr>
+<td>
+ORA M
+
+</td>
+<td>
+B6
+
+</td>
+<td>
+Логичеcкая операция A
+
+ИЛИ M 
+
+</td>
+</tr>
+<tr>
+<td>
+ORI d8
+
+</td>
+<td>
+F6
+
+</td>
+<td>
+Логичеcкая операция A
+
+ИЛИ d8 
+
+</td>
+</tr>
+<tr>
+<td>
+OUT pp
+
+</td>
+<td>
+D3
+
+</td>
+<td>
+Записать A в порт pp
+
+</td>
+</tr>
+<tr>
+<td>
+PCHL
+
+</td>
+<td>
+E9
+
+</td>
+<td>
+Передать управление по адресу в HL
+
+</td>
+</tr>
+<tr>
+<td>
+POP B
+
+</td>
+<td>
+C1
+
+</td>
+<td>
+Извлечь слово из стека в BC
+
+</td>
+</tr>
+<tr>
+<td>
+POP D
+
+</td>
+<td>
+D1
+
+</td>
+<td>
+Извлечь слово из стека в DE
+
+</td>
+</tr>
+<tr>
+<td>
+POP H
+
+</td>
+<td>
+E1
+
+</td>
+<td>
+Извлечь слово из стека в HL
+
+</td>
+</tr>
+<tr>
+<td>
+POP PSW
+
+</td>
+<td>
+F1
+
+</td>
+<td>
+Извлечь слово из стека в PSW
+
+</td>
+</tr>
+<tr>
+<td>
+PUSH B
+
+</td>
+<td>
+C5
+
+</td>
+<td>
+Поместить в стек содержимое BC
+
+</td>
+</tr>
+<tr>
+<td>
+PUSH D
+
+</td>
+<td>
+D5
+
+</td>
+<td>
+Поместить в стек содержимое DE
+
+</td>
+</tr>
+<tr>
+<td>
+PUSH H
+
+</td>
+<td>
+E5
+
+</td>
+<td>
+Поместить в стек содержимое HL
+
+</td>
+</tr>
+<tr>
+<td>
+PUSH PSW
+
+</td>
+<td>
+F5
+
+</td>
+<td>
+Поместить в стек содержимое PSW
+
+</td>
+</tr>
+<tr>
+<td>
+RAL
+
+</td>
+<td>
+17
+
+</td>
+<td>
+Циклический сдвиг CY + A влево
+
+</td>
+</tr>
+<tr>
+<td>
+RAR
+
+</td>
+<td>
+1F
+
+</td>
+<td>
+Циклический сдвиг CY + A вправо
+
+</td>
+</tr>
+<tr>
+<td>
+RLC</td>
+<td>
+07
+
+</td>
+<td>
+Сдвинуть A влево на один разряд с переносом
+
+</td>
+</tr>
+<tr>
+<td>
+RRC</td>
+<td>
+0F
+
+</td>
+<td>
+Сдвинуть A вправо на один разряд с переносом
+
+</td>
+</tr>
+<tr>
+<td>
+RIM
+
+</td>
+<td>
+20
+
+</td>
+<td>
+Считать маску прерывания (только в 8085)
+
+</td>
+</tr>
+<tr>
+<td>
+RET
+
+</td>
+<td>
+C9
+
+</td>
+<td>
+Возврат из подпрограммы
+
+</td>
+</tr>
+<tr>
+<td>
+RZ
+
+</td>
+<td>
+C8
+
+</td>
+<td>
+Возврат из подпрограммы, если FZ=0
+
+</td>
+</tr>
+<tr>
+<td>
+RNZ
+
+</td>
+<td>
+C0
+
+</td>
+<td>
+Возврат из подпрограммы, если FZ=1
+
+</td>
+</tr>
+<tr>
+<td>
+RP
+
+</td>
+<td>
+F0
+
+</td>
+<td>
+Возврат из подпрограммы, если FP=1
+
+</td>
+</tr>
+<tr>
+<td>
+RM
+
+</td>
+<td>
+F8
+
+</td>
+<td>
+Возврат из подпрограммы, если FP=0
+
+</td>
+</tr>
+<tr>
+<td>
+RC
+
+</td>
+<td>
+D8
+
+</td>
+<td>
+Возврат из подпрограммы, если FC=1
+
+</td>
+</tr>
+<tr>
+<td>
+RNC
+
+</td>
+<td>
+D0
+
+</td>
+<td>
+Возврат из подпрограммы, если FC=0
+
+</td>
+</tr>
+<tr>
+<td>
+RPE
+
+</td>
+<td>
+E8
+
+</td>
+<td>
+Возврат из подпрограммы, если паритет чётный
+
+</td>
+</tr>
+<tr>
+<td>
+RPO
+
+</td>
+<td>
+E0
+
+</td>
+<td>
+Возврат из подпрограммы, если паритет нечётный
+
+</td>
+</tr>
+<tr>
+<td>
+RST 0
+
+</td>
+<td>
+C7
+
+</td>
+<td>
+Запуск программы с адреса 0
+
+</td>
+</tr>
+<tr>
+<td>
+RST 1
+
+</td>
+<td>
+CF
+
+</td>
+<td>
+Запуск программы с адреса 8h
+
+</td>
+</tr>
+<tr>
+<td>
+RST 2
+
+</td>
+<td>
+D7
+
+</td>
+<td>
+Запуск программы с адреса 10h
+
+</td>
+</tr>
+<tr>
+<td>
+RST 3
+
+</td>
+<td>
+DF
+
+</td>
+<td>
+Запуск программы с адреса 18h
+
+</td>
+</tr>
+<tr>
+<td>
+RST 4
+
+</td>
+<td>
+E7
+
+</td>
+<td>
+Запуск программы с адреса 20h
+
+</td>
+</tr>
+<tr>
+<td>
+RST 5
+
+</td>
+<td>
+EF
+
+</td>
+<td>
+Запуск программы с адреса 28h
+
+</td>
+</tr>
+<tr>
+<td>
+RST 6
+
+</td>
+<td>
+F7
+
+</td>
+<td>
+Запуск программы с адреса 30h
+
+</td>
+</tr>
+<tr>
+<td>
+RST 7
+
+</td>
+<td>
+FF
+
+</td>
+<td>
+Запуск программы с адреса 38h
+
+</td>
+</tr>
+<tr>
+<td>
+SIM </td>
+<td>30 
+</td>
+<td>Установить маску прерывания (только в 8085) 
+
+
+</td>
+</tr>
+<tr>
+<td>
+SPHL
+
+</td>
+<td>
+F9
+
+</td>
+<td>
+Загрузить SP из HL
+
+</td>
+</tr>
+<tr>
+<td>
+SHLD a16
+
+</td>
+<td>
+22
+
+</td>
+<td>
+Записать HL по адресу a16
+
+</td>
+</tr>
+<tr>
+<td>
+STA a16
+
+</td>
+<td>
+32
+
+</td>
+<td>
+Записать A по адресу a16
+
+</td>
+</tr>
+<tr>
+<td>
+STAX B
+
+</td>
+<td>
+02
+
+</td>
+<td>
+Записать A по адресу Loc(BC)
+
+</td>
+</tr>
+<tr>
+<td>
+STAX D
+
+</td>
+<td>
+12
+
+</td>
+<td>
+Записать A по адресу Loc(DE)
+
+</td>
+</tr>
+<tr>
+<td>
+STC
+
+</td>
+<td>
+37
+
+</td>
+<td>
+Установить флаг переноса (CF=1)
+
+</td>
+</tr>
+<tr>
+<td>
+SUB A
+
+</td>
+<td>
+97</td>
+<td>
+Вычесть А из А (очистить А)
+
+</td>
+</tr>
+<tr>
+<td>
+SUB B
+
+</td>
+<td>
+90</td>
+<td>
+Вычесть B из А
+
+</td>
+</tr>
+<tr>
+<td>
+SUB C
+
+</td>
+<td>
+91</td>
+<td>
+Вычесть C из А
+
+</td>
+</tr>
+<tr>
+<td>
+SUB D
+
+</td>
+<td>
+92</td>
+<td>
+Вычесть D из А
+
+</td>
+</tr>
+<tr>
+<td>
+SUB E
+
+</td>
+<td>
+93</td>
+<td>
+Вычесть E из А
+
+</td>
+</tr>
+<tr>
+<td>
+SUB H
+
+</td>
+<td>
+94</td>
+<td>
+Вычесть H из А
+
+</td>
+</tr>
+<tr>
+<td>
+SUB L
+
+</td>
+<td>
+95</td>
+<td>
+Вычесть L из А
+
+</td>
+</tr>
+<tr>
+<td>
+SUB M
+
+</td>
+<td>
+96</td>
+<td>
+Вычесть M из А
+
+</td>
+</tr>
+<tr>
+<td>
+SUI d8
+
+</td>
+<td>
+D6</td>
+<td>
+Вычесть d8 из А
+
+</td>
+</tr>
+<tr>
+<td>
+SBB A
+
+</td>
+<td>
+9F
+
+</td>
+<td>
+Вычесть А из А (очистить А)
+
+</td>
+</tr>
+<tr>
+<td>
+SBB B
+
+</td>
+<td>
+98
+
+</td>
+<td>
+Вычесть c заёмом B из А
+
+</td>
+</tr>
+<tr>
+<td>
+SBB C
+
+</td>
+<td>
+99
+
+</td>
+<td>
+Вычесть c заёмом C из А
+
+</td>
+</tr>
+<tr>
+<td>
+SBB D
+
+</td>
+<td>
+9A
+
+</td>
+<td>
+Вычесть c заёмом D из А
+
+</td>
+</tr>
+<tr>
+<td>
+SBB E
+
+</td>
+<td>
+9B
+
+</td>
+<td>
+Вычесть c заёмом E из А
+
+</td>
+</tr>
+<tr>
+<td>
+SBB H
+
+</td>
+<td>
+9C
+
+</td>
+<td>
+Вычесть c заёмом H из А
+
+</td>
+</tr>
+<tr>
+<td>
+SBB L
+
+</td>
+<td>
+9D
+
+</td>
+<td>
+Вычесть c заёмом L из А
+
+</td>
+</tr>
+<tr>
+<td>
+SBB M
+
+</td>
+<td>
+9E
+
+</td>
+<td>
+Вычесть c заёмом M из А
+
+</td>
+</tr>
+<tr>
+<td>
+SBI d8
+
+</td>
+<td>
+DE
+
+</td>
+<td>
+Вычесть c заемом d8 из А
+
+</td>
+</tr>
+<tr>
+<td>
+XCHG
+
+</td>
+<td>
+EB
+
+</td>
+<td>
+Обмен содержимым DE и HL
+
+</td>
+</tr>
+<tr>
+<td>
+XTHL
+
+</td>
+<td>
+E3
+
+</td>
+<td>
+Обмен содержимого вершины стека с содержимым HL
+
+</td>
+</tr>
+<tr>
+<td>
+XRA A
+
+</td>
+<td>
+AF
+
+</td>
+<td>
+Исключающее ИЛИ A с A (очистка A)
+
+</td>
+</tr>
+<tr>
+<td>
+XRA B
+
+</td>
+<td>
+A8
+
+</td>
+<td>
+Исключающее ИЛИ B с A
+
+</td>
+</tr>
+<tr>
+<td>
+XRA C
+
+</td>
+<td>
+A9
+
+</td>
+<td>
+Исключающее ИЛИ C с A
+
+</td>
+</tr>
+<tr>
+<td>
+XRA D
+
+</td>
+<td>
+AA
+
+</td>
+<td>
+Исключающее ИЛИ D с A
+
+</td>
+</tr>
+<tr>
+<td>
+XRA E
+
+</td>
+<td>
+AB
+
+</td>
+<td>
+Исключающее ИЛИ E с A
+
+</td>
+</tr>
+<tr>
+<td>
+XRA H
+
+</td>
+<td>
+AC
+
+</td>
+<td>
+Исключающее ИЛИ H с A
+
+</td>
+</tr>
+<tr>
+<td>
+XRA L
+
+</td>
+<td>
+AD
+
+</td>
+<td>
+Исключающее ИЛИ L с A
+
+</td>
+</tr>
+<tr>
+<td>
+XRA M
+
+</td>
+<td>
+AE
+
+</td>
+<td>
+Исключающее ИЛИ Loc(HL) с A
+
+</td>
+</tr>
+<tr>
+<td>
+XRI d8
+
+</td>
+<td>
+EE
+
+</td>
+<td>
+Исключающее ИЛИ d8 с A
+
+</td>
+</tr>
+</table>

@@ -24,6 +24,7 @@ class Relocation:
     offset: int      # Byte offset from section origin
     size: int        # 1 or 2 bytes
     symbol: str      # Symbol name to resolve
+    addend: int = 0  # Additive constant added to symbol address
 
 
 @dataclass
@@ -60,7 +61,7 @@ def save_obj(path: str, obj: ObjectFile):
         "exports": obj.exports,
         "imports": obj.imports,
         "relocations": [
-            {"offset": r.offset, "size": r.size, "symbol": r.symbol}
+            {"offset": r.offset, "size": r.size, "symbol": r.symbol, "addend": r.addend}
             for r in obj.relocations
         ],
         "case_sensitive": obj.case_sensitive,
@@ -93,6 +94,7 @@ def load_obj(path: str) -> ObjectFile:
             offset=r["offset"],
             size=r["size"],
             symbol=r["symbol"],
+            addend=r.get("addend", 0),
         ))
     return obj
 
@@ -133,8 +135,12 @@ def obj_from_asm_result(result, source_name: str = "") -> ObjectFile:
     
     for reloc in getattr(result, 'relocations', []):
         if isinstance(reloc, tuple):
-            offset, size, sym = reloc
-            obj.relocations.append(Relocation(offset=offset, size=size, symbol=sym))
+            if len(reloc) == 4:
+                offset, size, sym, addend = reloc
+                obj.relocations.append(Relocation(offset=offset, size=size, symbol=sym, addend=addend))
+            else:
+                offset, size, sym = reloc
+                obj.relocations.append(Relocation(offset=offset, size=size, symbol=sym))
         elif isinstance(reloc, Relocation):
             obj.relocations.append(reloc)
     

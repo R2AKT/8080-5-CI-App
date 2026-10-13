@@ -458,8 +458,8 @@ class ExpressionParser:
             # Конвертируем числовые литералы в десятичные
             expr = self._convert_numbers(expr)
 
-            # Заменяем $ на текущий адрес
-            expr = expr.replace('$', str(self.pc))
+            # Заменяем $ на текущий адрес (только standalone $, не $N)
+            expr = re.sub(r'\$(?!\d)', str(self.pc), expr)
 
             # Заменяем операторы
             expr = expr.replace('&&', ' and ')
@@ -1348,9 +1348,24 @@ class Assembler:
                 return upper
         return None
 
-    def _track_relocation(self, offset: int, size: int, symbol: str):
+    def _parse_label_addend(self, op_str: str):
+        """Разобрать 'label' или 'label+/-N' (включая $N локальные метки)
+        в (LABEL_KEY, addend). Возвращает None если не подходит."""
+        op_str = op_str.strip()
+        m = re.match(r'^(\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)\s*([+-])\s*#?(-?\d+)$', op_str)
+        if m:
+            label = m.group(1)
+            num = int(m.group(3))
+            if m.group(2) == '-':
+                num = -num
+            return self._sym_key(label), num
+        if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', op_str):
+            return self._sym_key(op_str), 0
+        return None
+
+    def _track_relocation(self, offset: int, size: int, symbol: str, addend: int = 0):
         """Записать запись переноса (offset от начала бинарного буфера)."""
-        self._relocations.append((offset, size, symbol))
+        self._relocations.append((offset, size, symbol, addend))
 
     def _encode_instruction(self, mnemonic: str, opcode: int, fmt: str,
                             operands: list[str], line_num: int) -> bytearray | None:
@@ -1452,16 +1467,16 @@ class Assembler:
             if sym is not None:
                 self._track_relocation(self._write_pos + 1, 2, sym)
             else:
-                op_str = operands[0].strip()
-                if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', op_str):
-                    upper = self._sym_key(op_str)
+                parsed = self._parse_label_addend(operands[0])
+                if parsed is not None:
+                    upper, addend = parsed
                     if upper not in self.symbols:
                         # Undefined symbol → import
                         self._imports.add(upper)
-                        self._track_relocation(self._write_pos + 1, 2, upper)
+                        self._track_relocation(self._write_pos + 1, 2, upper, addend)
                     elif self._relocatable:
                         # Defined local symbol in relocatable mode → relocation
-                        self._track_relocation(self._write_pos + 1, 2, upper)
+                        self._track_relocation(self._write_pos + 1, 2, upper, addend)
             return bytearray([opcode, val & 0xFF, (val >> 8) & 0xFF])
 
         if fmt == 'r,d8':
@@ -1496,16 +1511,16 @@ class Assembler:
             if sym is not None:
                 self._track_relocation(self._write_pos + 1, 2, sym)
             else:
-                op_str = operands[1].strip()
-                if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', op_str):
-                    upper = self._sym_key(op_str)
+                parsed = self._parse_label_addend(operands[1])
+                if parsed is not None:
+                    upper, addend = parsed
                     if upper not in self.symbols:
                         # Undefined symbol → import
                         self._imports.add(upper)
-                        self._track_relocation(self._write_pos + 1, 2, upper)
+                        self._track_relocation(self._write_pos + 1, 2, upper, addend)
                     elif self._relocatable:
                         # Defined local symbol in relocatable mode → relocation
-                        self._track_relocation(self._write_pos + 1, 2, upper)
+                        self._track_relocation(self._write_pos + 1, 2, upper, addend)
             return bytearray([opcode | (rp_code << 4), val & 0xFF, (val >> 8) & 0xFF])
 
         if fmt == 'rst':
@@ -1588,7 +1603,8 @@ class Assembler:
             self.warnings.append(f"L{line_num}: Неопределённая метка: {expr_str}")
             return 0
         if allow_current and '$' in expr_str:
-            expr_str = expr_str.replace('$', str(self.pc))
+            # Заменяем только standalone $ (текущий адрес), но НЕ $N (локальные метки)
+            expr_str = re.sub(r'\$(?!\d)', str(self.pc), expr_str)
         # Простой идентификатор без операторов — предупреждение если не определён
         if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', expr_str):
             in_defines = any(expr_str.lower() == d.lower() for d in self.defines)
@@ -1751,16 +1767,16 @@ class Assembler:
             if sym is not None:
                 self._track_relocation(self._write_pos + len(result) - 2, 2, sym)
             else:
-                part_str = part.strip()
-                if re.match(r'^(?:\$[0-9]+|[A-Za-z_][A-Za-z0-9_]*)$', part_str):
-                    upper = self._sym_key(part_str)
+                parsed = self._parse_label_addend(part)
+                if parsed is not None:
+                    upper, addend = parsed
                     if upper not in self.symbols:
                         # Undefined symbol → import
                         self._imports.add(upper)
-                        self._track_relocation(self._write_pos + len(result) - 2, 2, upper)
+                        self._track_relocation(self._write_pos + len(result) - 2, 2, upper, addend)
                     elif self._relocatable:
                         # Defined local symbol in relocatable mode → relocation
-                        self._track_relocation(self._write_pos + len(result) - 2, 2, upper)
+                        self._track_relocation(self._write_pos + len(result) - 2, 2, upper, addend)
         return result
 
     # ---------------------------------------------------------

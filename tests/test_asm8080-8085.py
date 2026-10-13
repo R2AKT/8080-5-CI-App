@@ -31,7 +31,7 @@ check("8080: опкод 0x20 как NOP (PC=0x0001)", emu.pc, 0x0001)
 # === Тест 2: 8085 — опкод 0x20 как SIM ===
 print("\nТест 2: 8085 — опкод 0x20 как SIM")
 print("-" * 50)
-mem = {0x0000: 0x3E, 0x0001: 0x0B, 0x0002: 0x20, 0x0003: 0x76}  # MVI A,0x0B; SIM; HLT
+mem = {0x0000: 0x3E, 0x0001: 0x0B, 0x0002: 0x30, 0x0003: 0x76}  # MVI A,0x0B; SIM; HLT
 emu2 = I8080Emulator(mem)
 emu2.cpu_type = "i8085"
 emu2.sp = 0xFFFE
@@ -54,10 +54,10 @@ emu3.reset()
 emu3.step()
 check("8080: опкод 0x30 как NOP (PC=0x0001)", emu3.pc, 0x0001)
 
-# === Тест 4: 8085 — опкод 0x30 как RIM ===
-print("\nТест 4: 8085 — опкод 0x30 как RIM")
+# === Тест 4: 8085 — опкод 0x20 как RIM ===
+print("\nТест 4: 8085 — опкод 0x20 как RIM")
 print("-" * 50)
-mem = {0x0000: 0x30, 0x0001: 0x76}  # RIM; HLT
+mem = {0x0000: 0x20, 0x0001: 0x76}  # RIM; HLT
 emu4 = I8080Emulator(mem)
 emu4.cpu_type = "i8085"
 emu4.sp = 0xFFFE
