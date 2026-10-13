@@ -14,7 +14,10 @@
   - `profiles/` — внешние профили систем + шаблоны
   - `roms/` — внешние ROM-образы и шрифты
   - документация: README, USER_GUIDE, ASSEMBLER_GUIDE, OPCODE_REFERENCE, MCP_GUIDE, SCRIPTS_GUIDE, CHANGES, LICENSE, INSTALL
-- [x] Zip-архив пакета: `Release\i8080-5_CI_v2.1.14_win64.zip`
+- [x] Windows: zip-архив пакета `Release\i8080-5_CI_v2.1.14_win64.zip` (~76.5 МБ)
+- [x] GNU/Linux: исходный архив `Release\i8080-5_CI_v2.1.14_source.tar.gz` (~2.2 МБ);
+      готовый Linux-бинарник собирается GitHub Actions
+      (см. раздел «Linux-бинарник через GitHub Actions»)
 
 ## Шаг 1. Открыть репозиторий в GitHub Desktop
 
@@ -72,8 +75,11 @@
 2. **Release title:** `v2.1.14`
 3. В поле **Describe this release** вставьте текст из раздела
    «Текст release notes» ниже.
-4. Перетащите файл `Release\i8080-5_CI_v2.1.14_win64.zip`
-   в блок **Attach binaries** (или нажмите «Attach binaries” и выберите файл).
+4. Перетащите файлы в блок **Attach binaries**:
+   - `Release\i8080-5_CI_v2.1.14_win64.zip` (Windows)
+   - `Release\i8080-5_CI_v2.1.14_source.tar.gz` (GNU/Linux, исходники)
+   - при наличии: `i8080-5_CI_v2.1.14_linux_x86_64.tar.gz` (готовый Linux-бинарник,
+     скачанный из артефактов GitHub Actions — см. раздел ниже)
 5. Нажмите **Publish release**.
 
 Готово: релиз доступен по адресу
@@ -99,7 +105,12 @@
 
 ### Состав пакета / Package contents
 
-- `i8080_CI.exe` — портативное приложение (Windows 10/11 x64, PyInstaller)
+- **Windows:** `i8080-5_CI_v2.1.14_win64.zip` — портативное приложение
+  (Windows 10/11 x64, PyInstaller) + profiles/ + roms/ + документация
+- **GNU/Linux:** `i8080-5_CI_v2.1.14_linux_x86_64.tar.gz` — портативный
+  бинарник (PyInstaller) + profiles/ + roms/ + документация;
+  либо исходники `i8080-5_CI_v2.1.14_source.tar.gz`
+  (сборка: `./build_linux.sh` или `pip install -r requirements.txt`)
 - `profiles/` — внешние профили систем (TOML) + шаблоны
 - `roms/` — внешние ROM-образы и шрифты
 - документация: README, USER_GUIDE, ASSEMBLER_GUIDE, OPCODE_REFERENCE,
@@ -107,16 +118,35 @@
 
 ### Установка / Installation
 
-Распакуйте архив в любую папку и запустите `i8080_CI.exe`.
-Каталоги `profiles/` и `roms/` должны находиться рядом с exe —
-их можно свободно менять и дополнять (см. INSTALL.md).
+- **Windows:** распакуйте zip в любую папку и запустите `i8080_CI.exe`.
+- **GNU/Linux:** распакуйте tar.gz и выполните `./i8080_CI`
+  (или из исходников: `pip install -r requirements.txt && python i8080_CI.py`).
 
-Unpack the archive to any folder and run `i8080_CI.exe`.
-Keep `profiles/` and `roms/` next to the exe — they are external
-and can be freely modified or extended (see INSTALL.md).
+Каталоги `profiles/` и `roms/` лежат рядом с приложением и могут
+свободно меняться и дополняться (см. INSTALL.md).
+
+Unpack the archive and run the app. The `profiles/` and `roms/` folders
+sit next to the binary and can be freely modified or extended (see INSTALL.md).
 ```
 
 ---
+
+## Linux-бинарник через GitHub Actions (готовый файл для вложения)
+
+PyInstaller не умеет кросс-сборку: Linux-бинарник собирается только в Linux.
+В репозитории уже есть workflow `.github/workflows/build-linux.yml`:
+
+1. После первого **Push origin** (Шаг 3) откройте на GitHub:
+   `https://github.com/<ваш-логин>/i8080-5_CI/actions` → workflow **build-linux**
+   → **Run workflow** (или дождитесь автоматического запуска —
+   он срабатывает при отправке тега `v*`).
+2. Когда запуск станет зелёным (~3–5 мин): страница run → вкладка
+   **Artifacts** → скачайте `i8080-5_CI_linux_x86_64`
+   (это `i8080-5_CI_v2.1.14_linux_x86_64.tar.gz`: бинарник + profiles/ + roms/ + docs).
+3. Прикрепите скачанный файл к релизу в Шаге 6.
+
+Альтернатива без GitHub: на любой Linux-машине распакуйте исходный архив
+и выполните `./build_linux.sh` (нужен Python 3.10+ с venv и pip).
 
 ## Примечания
 
