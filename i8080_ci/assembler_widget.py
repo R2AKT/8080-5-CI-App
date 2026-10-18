@@ -1946,6 +1946,16 @@ class AssemblerWidget(QWidget):
             return
         try:
             mw = self.main_window
+            # FIX: clear tail of previously loaded larger image at same origin
+            prev = getattr(self, '_last_load', None)
+            if prev is not None and prev[0] == origin and prev[1] > len(binary):
+                removed = {}
+                for addr in range(origin + len(binary), origin + prev[1]):
+                    if addr in mw.mem_data:
+                        removed[addr] = mw.mem_data.pop(addr)
+                if removed:
+                    mw.hex_model.update_data({a: 0xFF for a in removed})
+            self._last_load = (origin, len(binary))
             changes = {}
             for i, byte in enumerate(binary):
                 mw.mem_data[origin + i] = byte & 0xFF
