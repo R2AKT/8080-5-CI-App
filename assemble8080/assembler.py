@@ -950,6 +950,15 @@ class Assembler:
                                     'BC', 'DE', 'HL', 'PSW')
                         if op_clean not in _REG_OPS:
                             size = 2
+                elif fmt == 'r,r' and operand:
+                    # FIX #2: MOV r, #imm - r, imm (2 bytes)
+                    _rr_parts = [p.strip() for p in operand.split(',', 1)]
+                    if len(_rr_parts) == 2:
+                        _src = _rr_parts[1].strip().upper().lstrip('#').strip()
+                        _REG_OPS_RR = ('A', 'B', 'C', 'D', 'E', 'H', 'L', 'M',
+                                       'BC', 'DE', 'HL', 'PSW')
+                        if _src not in _REG_OPS_RR:
+                            size = 2
                 location += size
                 self.pc = location
             else:
