@@ -1,4 +1,4 @@
-# i8080-5 CI
+﻿# i8080-5 CI
 
 <p align="center">
   <img src="logo.svg" width="200" alt="8080-5 CI Logo"/>
@@ -325,13 +325,13 @@ Profile files / Файлы профилей: `profiles/` (TOML format / TOML-ф�
 
 ## Testing / Тестирование
 
-**EN:** 60+ test files: `run_tests.py` (964 passed, 0 failed), the zasm reference
+**EN:** 60+ test files: `run_tests.py` (978 passed, 0 failed), the zasm reference
 comparison `tests/test_bin_compare.py` (15 reference files, byte-identical), the
 round-trip test `tests/test_roundtrip_256.py` (assemble → disassemble → re-assemble,
 3 consecutive cycles), `tests/test_8085.py`, and GUI smoke tests. Full cycle:
 `python _run_all_tests.py`.
 
-**RU:** 60+ тест-файлов: `run_tests.py` (964 пройдено, 0 провалов), сравнение с
+**RU:** 60+ тест-файлов: `run_tests.py` (978 пройдено, 0 провалов), сравнение с
 эталонами zasm `tests/test_bin_compare.py` (15 эталонных файлов, побайтово),
 round-trip тест `tests/test_roundtrip_256.py` (ассемблирование → дизассемблирование →
 повторная сборка, 3 последовательных цикла), `tests/test_8085.py` и GUI smoke-тесты.
