@@ -29,6 +29,7 @@ unit_tests = [
     'tests/test_system_integration.py', 'tests/test_wait_cf_ide.py',
     'tests/test_wait_signals.py', 'tests/test_8085.py',
     'tests/test_watch_auto.py',
+    'tests/test_hex_tail.py',
 ]
 
 # Filter to existing files

@@ -56,7 +56,13 @@
 **Документация:** ASSEMBLER_GUIDE.md (7.2-7.8), USER_GUIDE.md (8.14, 13.2),
 README.md — обновлены по новым возможностям.
 
-**Тесты:** 956/0 (run_tests, 36 файлов) + GUI smoke + map autoload flow.
+**Тесты:** 956/0 (run_tests, 36 файлов) + GUI smoke + map autoload flow.
+
+**FIX (хвост образа в hex-окне эмулятора):** `HexModel.mem` — тот же словарь, что `mem_data`,
+поэтому «очистка хвоста» прежнего большего образа через `hex_model.update_data({a: 0xFF})`
+возвращала те же адреса обратно как 0xFF — хвост оставался в окне. Теперь после pop
+хвоста из `mem_data` вызывается только `update_range() + layoutChanged.emit()` без
+возврата 0xFF. Тесты: tests/test_hex_tail.py (8/0).
 ## v2.1.14 (2026-10-13)
 
 ### Поддержка label+addend, безопасная замена $, эталон опкодов, чистка тестов

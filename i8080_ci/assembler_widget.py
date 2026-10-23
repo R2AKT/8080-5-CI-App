@@ -1966,7 +1966,11 @@ class AssemblerWidget(QWidget):
                     if addr in mw.mem_data:
                         removed[addr] = mw.mem_data.pop(addr)
                 if removed:
-                    mw.hex_model.update_data({a: 0xFF for a in removed})
+                    # Хвост уже удалён из общего словаря mem_data == hex_model.mem.
+                    # Не возвращаем его как 0xFF: пересчитываем диапазон таблицы
+                    # и обновляем вид (иначе хвост остаётся в hex-окне).
+                    mw.hex_model.update_range()
+                    mw.hex_model.layoutChanged.emit()
             self._last_load = (origin, len(binary))
             changes = {}
             for i, byte in enumerate(binary):
