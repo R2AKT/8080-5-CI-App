@@ -1,9 +1,9 @@
 # СРЕЗ ПРОЕКТА (PROJECT SNAPSHOT)
 
-> Сгенерировано: 2026-10-23 16:06:51
+> Сгенерировано: 2026-10-23 19:47:18
 > Корень проекта: `c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis`
-> Код: 151 файлов, 33897 строк
-> Тесты: 76 файлов, 11972 строк
+> Код: 163 файлов, 34464 строк
+> Тесты: 78 файлов, 12082 строк
 > Профили: 43 файлов, 1625 строк
 
 ---
@@ -141,7 +141,7 @@
 ├── assemble8080/
 │   ├── __init__.py  [28 строк]
 │   ├── __main__.py  [19 строк]
-│   ├── assembler.py  [2089 строк]
+│   ├── assembler.py  [2103 строк]
 │   ├── errors.py  [37 строк]
 │   ├── librarian.py  [91 строк]
 │   ├── linker.py  [367 строк]
@@ -201,7 +201,7 @@
 │   │   ├── hex_view.py  [155 строк]
 │   │   └── search.py  [116 строк]
 │   ├── __init__.py  [20 строк]
-│   ├── assembler_widget.py  [2059 строк]
+│   ├── assembler_widget.py  [2063 строк]
 │   ├── automation.py  [736 строк]
 │   ├── bus_worker.py  [249 строк]
 │   ├── disassembler.py  [233 строк]
@@ -428,6 +428,7 @@
 │   ├── test_emu_integration.py  [273 строк]
 │   ├── test_equ_filter.py  [62 строк]
 │   ├── test_gui_smoke.py  [83 строк]
+│   ├── test_hex_tail.py  [50 строк]
 │   ├── test_i16550.py  [144 строк]
 │   ├── test_i512vi1.py  [248 строк]
 │   ├── test_i8251.py  [88 строк]
@@ -461,6 +462,7 @@
 │   ├── test_wait_cf_ide.py  [173 строк]
 │   ├── test_wait_signals.py  [183 строк]
 │   ├── test_watch_auto.py  [88 строк]
+│   ├── test_watch_ds.py  [60 строк]
 │   └── uart_test.py  [52 строк]
 ├── ui/
 │   ├── __init__.py  [5 строк]
@@ -485,17 +487,28 @@
 ├── _cycle1.py  [402 строк]
 ├── _deep_analysis.py  [176 строк]
 ├── _diag.py  [106 строк]
+├── _diag_ds.py  [6 строк]
+├── _diag_tail.py  [27 строк]
 ├── _final_fixes.py  [134 строк]
 ├── _fix_addend.py  [250 строк]
+├── _fix_alias_table.py  [41 строк]
 ├── _fix_bugs.py  [160 строк]
 ├── _fix_datamap.py  [136 строк]
 ├── _fix_datapath.py  [81 строк]
 ├── _fix_docs.py  [373 строк]
 ├── _fix_en.py  [50 строк]
+├── _fix_hextail.py  [38 строк]
+├── _fix_readme.py  [47 строк]
 ├── _fix_runtests.py  [17 строк]
 ├── _fix_runtests2.py  [17 строк]
 ├── _fix_runtests3.py  [16 строк]
+├── _fix_runtests4.py  [16 строк]
+├── _fix_runtests_ds.py  [16 строк]
 ├── _fix_runtests_list.py  [17 строк]
+├── _fix_sot_refs.py  [67 строк]
+├── _fix_stax_alias.py  [107 строк]
+├── _fix_stax_alias2.py  [82 строк]
+├── _fix_stax_ldax_alias.py  [68 строк]
 ├── _fix_tests.py  [93 строк]
 ├── _make_source_tarball.py  [47 строк]
 ├── _parse_ref.py  [16 строк]
@@ -518,6 +531,7 @@
 ├── _read_tl.py  [4 строк]
 ├── _read_ver.py  [11 строк]
 ├── _ref_page.html  [3636 строк]
+├── _repro_ds.py  [32 строк]
 ├── _run_all_tests.py  [94 строк]
 ├── _run_remaining_tests.py  [65 строк]
 ├── _show_struct.py  [8 строк]
@@ -540,9 +554,9 @@
 ├── Addendum.txt  [81 строк]
 ├── ANALYSIS.md  [536 строк]
 ├── ANALYSIS_ASSEMBLER.md  [341 строк]
-├── ASSEMBLER_GUIDE.md  [1354 строк]
+├── ASSEMBLER_GUIDE.md  [1375 строк]
 ├── build_linux.sh  [42 строк]
-├── CHANGES.md  [2827 строк]
+├── CHANGES.md  [2839 строк]
 ├── claude_desktop_config.json  [7 строк]
 ├── clean_pycache.py  [87 строк]
 ├── config.json  [10 строк]
@@ -563,11 +577,11 @@
 ├── md2html.py  [372 строк]
 ├── micro-80_bp_preset.json  [77 строк]
 ├── OPCODE_REFERENCE.md  [484 строк]
-├── PROJECT_SNAPSHOT.md  [54064 строк]
+├── PROJECT_SNAPSHOT.md  [56880 строк]
 ├── pyproject.toml  [61 строк]
-├── README.md  [389 строк]
+├── README.md  [391 строк]
 ├── requirements.txt  [22 строк]
-├── run_tests.py  [98 строк]
+├── run_tests.py  [100 строк]
 ├── SCRIPTS_GUIDE.md  [551 строк]
 ├── USER_GUIDE.html  [1471 строк]
 ├── USER_GUIDE.md  [1451 строк]
@@ -639,6 +653,25 @@
 
 ---
 
+### `_diag_ds.py` (6 строк)
+
+**Импорты (3):**
+- `io`
+- `sys`
+- `re`
+
+---
+
+### `_diag_tail.py` (27 строк)
+
+**Импорты (4):**
+- `io`
+- `sys`
+- `os`
+- `re`
+
+---
+
 ### `_final_fixes.py` (134 строк)
 
 **Импорты (3):**
@@ -654,6 +687,16 @@
 
 **Импорты (2):**
 - `re`
+- `sys`
+
+---
+
+### `_fix_alias_table.py` (41 строк)
+
+> Fix ASSEMBLER_GUIDE.md section 3.4.1: remove wrong opcodes from alias table.
+
+**Импорты (2):**
+- `pathlib`
 - `sys`
 
 ---
@@ -726,6 +769,29 @@
 
 ---
 
+### `_fix_hextail.py` (38 строк)
+
+> FIX: хвост прежнего образа в hex-окне эмулятора (0xFF).
+
+**Импорты (3):**
+- `os`
+- `sys`
+- `py_compile`
+
+**Константы:** ROOT
+
+---
+
+### `_fix_readme.py` (47 строк)
+
+> Patch README.md: version badge, librarian.py, test count.
+
+**Импорты (2):**
+- `pathlib`
+- `sys`
+
+---
+
 ### `_fix_runtests.py` (17 строк)
 
 **Импорты (3):**
@@ -759,6 +825,24 @@
 
 ---
 
+### `_fix_runtests4.py` (16 строк)
+
+**Импорты (3):**
+- `os`
+- `sys`
+- `py_compile`
+
+---
+
+### `_fix_runtests_ds.py` (16 строк)
+
+**Импорты (3):**
+- `os`
+- `sys`
+- `py_compile`
+
+---
+
 ### `_fix_runtests_list.py` (17 строк)
 
 **Импорты (3):**
@@ -767,6 +851,46 @@
 - `py_compile`
 
 **Константы:** ROOT
+
+---
+
+### `_fix_sot_refs.py` (67 строк)
+
+> Add OPCODE_REFERENCE.md (SINGLE SOURCE OF TRUTH) references everywhere.
+
+**Импорты (2):**
+- `pathlib`
+- `sys`
+
+---
+
+### `_fix_stax_alias.py` (107 строк)
+
+> Add STAX H / LDAX H → MOV M,A / MOV A,M alias in assembler._encode_instruction.
+
+**Импорты (2):**
+- `pathlib`
+- `sys`
+
+---
+
+### `_fix_stax_alias2.py` (82 строк)
+
+> Add STAX H / LDAX H → MOV M,A / MOV A,M alias in assembler._encode_instruction.
+
+**Импорты (2):**
+- `pathlib`
+- `sys`
+
+---
+
+### `_fix_stax_ldax_alias.py` (68 строк)
+
+> Add STAX H / LDAX H alias notes to assembler.py and ASSEMBLER_GUIDE.md.
+
+**Импорты (2):**
+- `pathlib`
+- `sys`
 
 ---
 
@@ -944,6 +1068,26 @@
 **Импорты (2):**
 - `sys`
 - `re`
+
+---
+
+### `_repro_ds.py` (32 строк)
+
+**Импорты (7):**
+- `os`
+- `sys`
+- `io`
+- `from assemble8080.assembler import Assembler`
+- `from assemble8080.mapfile import generate_map, parse_map`
+- `from PySide6.QtWidgets import QApplication`
+- `from i8080_ci.models.watch_model import WatchModel`
+
+**Классы (1):**
+- **DummyEmu**
+  - Методы (2): read_mem(self, a), read_mem16(self, a)
+
+**Функции (1):**
+- `watch_for(src, tag)`
 
 ---
 
@@ -1316,7 +1460,7 @@
 
 ---
 
-### `run_tests.py` (98 строк)
+### `run_tests.py` (100 строк)
 
 > Run all unit tests as scripts and collect results.
 
@@ -1360,7 +1504,7 @@
 
 ---
 
-### `assemble8080/assembler.py` (2089 строк)
+### `assemble8080/assembler.py` (2103 строк)
 
 > assemble8080 — компактный макроассемблер Intel 8080.
 
@@ -1734,7 +1878,7 @@
 
 ---
 
-### `i8080_ci/assembler_widget.py` (2059 строк)
+### `i8080_ci/assembler_widget.py` (2063 строк)
 
 > Assembler tab — editor, assembly, load to memory.
 
@@ -3655,6 +3799,53 @@ print("\nDone.")
 ```
 <!-- END FILE: _diag.py -->
 
+### `_diag_ds.py` (6 строк)
+
+<!-- FILE: _diag_ds.py -->
+```python
+# -*- coding: utf-8 -*-
+import io, sys, re
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+s = open("assemble8080/mapfile.py", encoding="utf-8", errors="replace").read()
+i = s.find("def generate_map")
+print(s[i:i+2600])
+```
+<!-- END FILE: _diag_ds.py -->
+
+### `_diag_tail.py` (27 строк)
+
+<!-- FILE: _diag_tail.py -->
+```python
+# -*- coding: utf-8 -*-
+import io, sys, os, re
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+
+# 1) Где создаётся HexModel и передаётся ли mem_data
+mw = open("i8080_ci/main_window.py", encoding="utf-8", errors="replace").read()
+print("=== HexModel( construction in main_window ===")
+for m in re.finditer(r"HexModel\(", mw):
+    i = m.start(); print(mw[max(0,i-150):i+200].replace("\n"," | ")); print("--")
+
+print("\n=== memory module location ===")
+for root, dirs, files in os.walk("."):
+    if "memory.py" in files:
+        print(os.path.join(root, "memory.py"))
+    dirs[:] = [d for d in dirs if d not in ("__pycache__",".git","node_modules")]
+
+print("\n=== RAMRegion class (first hit) ===")
+for root, dirs, files in os.walk("."):
+    dirs[:] = [d for d in dirs if d not in ("__pycache__",".git","node_modules")]
+    if "memory.py" in files:
+        p = os.path.join(root, "memory.py")
+        s = open(p, encoding="utf-8", errors="replace").read()
+        i = s.find("class RAMRegion")
+        if i >= 0:
+            print("FILE:", p)
+            print(s[i:i+2500])
+        break
+```
+<!-- END FILE: _diag_tail.py -->
+
 ### `_final_fixes.py` (134 строк)
 
 <!-- FILE: _final_fixes.py -->
@@ -4052,6 +4243,54 @@ print(f"[OK] {path}")
 print("\nAll changes applied successfully.")
 ```
 <!-- END FILE: _fix_addend.py -->
+
+### `_fix_alias_table.py` (41 строк)
+
+<!-- FILE: _fix_alias_table.py -->
+```python
+#!/usr/bin/env python3
+"""Fix ASSEMBLER_GUIDE.md section 3.4.1: remove wrong opcodes from alias table."""
+import pathlib, sys
+
+base = pathlib.Path(__file__).parent
+guide = base / "ASSEMBLER_GUIDE.md"
+t = guide.read_text(encoding="utf-8")
+
+# Replace the old table (with wrong opcodes) with corrected version (no opcodes)
+old_table = """| Алиас | Эквивалент | Такты |
+|-------|-----------|-------|
+| `STAX H` | `STAX HL` (0x22) | 13 |
+| `STAX L` | `STAX DE` (0x2A) | 13 |
+| `LDAX H` | `LDAX HL` (0x2A) | 7 |
+| `LDAX L` | `LDAX DE` (0x3A) | 7 |
+| `LXI H, addr` | `LXI HL, addr` (0x21) | 10 |
+| `INX H` | `INX HL` (0x23) | 10 |
+| `DCX H` | `DCX HL` (0x2B) | 10 |
+| `DAD H` | `DAD HL` (0x29) | 10 |
+| `PUSH H` | `PUSH HL` (0xE5) | 5 |
+| `POP H` | `POP HL` (0xE1) | 5 |"""
+
+new_table = """| Алиас | Эквивалент (каноничная форма 8080) | Такты |
+|-------|-----------------------------------|-------|
+| `STAX H` | `STAX HL` | 13 |
+| `STAX L` | `STAX DE` | 13 |
+| `LDAX H` | `LDAX HL` | 7 |
+| `LDAX L` | `LDAX DE` | 7 |
+| `LXI H, addr` | `LXI HL, addr` | 10 |
+| `INX H` | `INX HL` | 10 |
+| `DCX H` | `DCX HL` | 10 |
+| `DAD H` | `DAD HL` | 10 |
+| `PUSH H` | `PUSH HL` | 5 |
+| `POP H` | `POP HL` | 5 |"""
+
+if old_table in t:
+    t = t.replace(old_table, new_table)
+    guide.write_text(t, encoding="utf-8")
+    print("ASSEMBLER_GUIDE.md: alias table fixed (removed wrong opcodes)")
+else:
+    print("ASSEMBLER_GUIDE.md: old table not found (already fixed?)")
+```
+<!-- END FILE: _fix_alias_table.py -->
 
 ### `_fix_bugs.py` (160 строк)
 
@@ -4888,6 +5127,105 @@ print("Done")
 ```
 <!-- END FILE: _fix_en.py -->
 
+### `_fix_hextail.py` (38 строк)
+
+<!-- FILE: _fix_hextail.py -->
+```python
+# -*- coding: utf-8 -*-
+"""FIX: хвост прежнего образа в hex-окне эмулятора (0xFF).
+
+Причина: HexModel.mem — тот же словарь, что mw.mem_data. _load_to_memory
+попал хвост из mem_data, но затем hex_model.update_data({a: 0xFF ...})
+через self.mem.update() вернул те же адреса обратно как 0xFF.
+Итог: хвост остался в hex-окне (и в mem_data), заполненный 0xFF.
+
+Фикс: после pop не возвращать 0xFF, а только пересчитать диапазон
+и обновить таблицу.
+"""
+import os, sys, py_compile
+ROOT = os.path.dirname(os.path.abspath(__file__))
+p = os.path.join(ROOT, "i8080_ci", "assembler_widget.py")
+b = open(p, "rb").read()
+nl = b"\r\n" if b.count(b"\r\n") >= b.count(b"\n") - b.count(b"\r\n") else b"\n"
+old = (
+    "                if removed:\n"
+    "                    mw.hex_model.update_data({a: 0xFF for a in removed})\n"
+).encode("utf-8").replace(b"\n", nl)
+new = (
+    "                if removed:\n"
+    "                    # Хвост уже удалён из общего словаря mem_data == hex_model.mem.\n"
+    "                    # Не возвращаем его как 0xFF: пересчитываем диапазон таблицы\n"
+    "                    # и обновляем вид (иначе хвост остаётся в hex-окне).\n"
+    "                    mw.hex_model.update_range()\n"
+    "                    mw.hex_model.layoutChanged.emit()\n"
+).encode("utf-8").replace(b"\n", nl)
+if new in b:
+    print("SKIP already applied")
+elif old not in b:
+    print("FAIL anchor")
+    sys.exit(1)
+else:
+    open(p, "wb").write(b.replace(old, new, 1))
+    print("OK")
+py_compile.compile(p, doraise=True)
+print("COMPILE_OK")
+```
+<!-- END FILE: _fix_hextail.py -->
+
+### `_fix_readme.py` (47 строк)
+
+<!-- FILE: _fix_readme.py -->
+```python
+#!/usr/bin/env python3
+"""Patch README.md: version badge, librarian.py, test count."""
+import pathlib, sys
+
+p = pathlib.Path(__file__).parent / "README.md"
+text = p.read_text(encoding="utf-8")
+orig = text
+
+# 1. Version badge 2.1.14 -> 2.1.15
+text = text.replace(
+    'https://img.shields.io/badge/Version-2.1.14-orange.svg',
+    'https://img.shields.io/badge/Version-2.1.15-orange.svg'
+)
+text = text.replace(
+    'Version-2.1.14',
+    'Version-2.1.15'
+)
+
+# 2. Add librarian.py to project structure after linker.py
+old_linker = "|   linker.py              #   Linker / \u041b\u0438\u043d\u043a\u043e\u0432\u0449\u0438\u043a (.lnk scripts, relocations)"
+new_linker = "|   linker.py              #   Linker / \u041b\u0438\u043d\u043a\u043e\u0432\u0449\u0438\u043a (.lnk scripts, relocations)\n|\u3000|   librarian.py             #   Library manager / \u0411\u0438\u0431\u043b\u0438\u043e\u0442\u0435\u043a\u0430\u0440\u044c (.lib archives)"
+if old_linker in text:
+    text = text.replace(old_linker, new_linker)
+else:
+    # Try simpler anchor
+    old_linker2 = "linker.py"
+    if old_linker2 in text:
+        # find the line with linker.py and add after it
+        lines = text.split("\n")
+        for i, line in enumerate(lines):
+            if "linker.py" in line and "Linker" in line:
+                lines.insert(i + 1, "|\u3000|   librarian.py             #   Library manager / \u0411\u0438\u0431\u043b\u0438\u043e\u0442\u0435\u043a\u0430\u0440\u044c (.lib archives)")
+                break
+        text = "\n".join(lines)
+    else:
+        print("WARNING: could not find linker.py line to add librarian.py after it")
+
+# 3. Update test count 921 -> 964
+text = text.replace("921 passed", "964 passed")
+text = text.replace("921 \u043f\u0440\u043e\u0439\u0434\u0435\u043d\u043e", "964 \u043f\u0440\u043e\u0439\u0434\u0435\u043d\u043e")
+text = text.replace("921/0", "964/0")
+
+if text != orig:
+    p.write_text(text, encoding="utf-8")
+    print("README.md updated")
+else:
+    print("README.md unchanged")
+```
+<!-- END FILE: _fix_readme.py -->
+
 ### `_fix_runtests.py` (17 строк)
 
 <!-- FILE: _fix_runtests.py -->
@@ -4959,6 +5297,52 @@ print("COMPILE_OK")
 ```
 <!-- END FILE: _fix_runtests3.py -->
 
+### `_fix_runtests4.py` (16 строк)
+
+<!-- FILE: _fix_runtests4.py -->
+```python
+# -*- coding: utf-8 -*-
+import os, sys
+p = os.path.join(os.path.dirname(os.path.abspath(__file__)), "run_tests.py")
+b = open(p, "rb").read()
+old = b"'tests/test_watch_auto.py',\n]"
+new = b"'tests/test_watch_auto.py',\n    'tests/test_hex_tail.py',\n]"
+if new in b:
+    print("SKIP already")
+elif old in b:
+    open(p, "wb").write(b.replace(old, new, 1))
+    print("OK added")
+else:
+    i = b.find(b"test_watch_auto")
+    print("FAIL anchor; context:", b[max(0, i - 60):i + 80])
+    sys.exit(1)
+import py_compile; py_compile.compile(p, doraise=True); print("COMPILE_OK")
+```
+<!-- END FILE: _fix_runtests4.py -->
+
+### `_fix_runtests_ds.py` (16 строк)
+
+<!-- FILE: _fix_runtests_ds.py -->
+```python
+# -*- coding: utf-8 -*-
+import os, sys, py_compile
+p = os.path.join(os.path.dirname(os.path.abspath(__file__)), "run_tests.py")
+b = open(p, "rb").read()
+old = b"'tests/test_hex_tail.py',\n]"
+new = b"'tests/test_hex_tail.py',\n    'tests/test_watch_ds.py',\n]"
+if new in b:
+    print("SKIP already")
+elif old in b:
+    open(p, "wb").write(b.replace(old, new, 1))
+    print("OK added")
+else:
+    i = b.find(b"test_hex_tail")
+    print("FAIL anchor; ctx:", b[max(0, i - 60):i + 80])
+    sys.exit(1)
+py_compile.compile(p, doraise=True); print("COMPILE_OK")
+```
+<!-- END FILE: _fix_runtests_ds.py -->
+
 ### `_fix_runtests_list.py` (17 строк)
 
 <!-- FILE: _fix_runtests_list.py -->
@@ -4982,6 +5366,358 @@ py_compile.compile(p, doraise=True)
 print("COMPILE_OK")
 ```
 <!-- END FILE: _fix_runtests_list.py -->
+
+### `_fix_sot_refs.py` (67 строк)
+
+<!-- FILE: _fix_sot_refs.py -->
+```python
+#!/usr/bin/env python3
+"""Add OPCODE_REFERENCE.md (SINGLE SOURCE OF TRUTH) references everywhere."""
+import pathlib, sys
+
+base = pathlib.Path(__file__).parent
+
+# ── 1. ASSEMBLER_GUIDE.md: add note after the title ──
+guide = base / "ASSEMBLER_GUIDE.md"
+gt = guide.read_text(encoding="utf-8")
+
+old = "# Руководство программиста по ассемблеру i8080"
+new = """# Руководство программиста по ассемблеру i8080
+
+> **Каноническая таблица опкодов:** [`OPCODE_REFERENCE.md`](OPCODE_REFERENCE.md) —
+> ЕДИНСТВЕННЫЙ ИСТОЧНИК ПРАВДЫ (SINGLE SOURCE OF TRUTH) по опкодам и мнемоникам 8080/8085.
+> Никогда не выдумывай опкоды — сверяйся с этим файлом. При конфликте — приоритет у OPCODE_REFERENCE.md."""
+
+if old in gt and "SINGLE SOURCE OF TRUTH" not in gt[:500]:
+    gt = gt.replace(old, new, 1)
+    guide.write_text(gt, encoding="utf-8")
+    print("ASSEMBLER_GUIDE.md: SOT note added")
+else:
+    print("ASSEMBLER_GUIDE.md: already has SOT note or anchor not found")
+
+# ── 2. README.md: add OPCODE_REFERENCE.md to documentation table ──
+readme = base / "README.md"
+rt = readme.read_text(encoding="utf-8")
+
+old_row = "| [ASSEMBLER_GUIDE.md](ASSEMBLER_GUIDE.md) | Assembler programmer's guide / Руководство программиста по ассемблеру |"
+new_row = """| [ASSEMBLER_GUIDE.md](ASSEMBLER_GUIDE.md) | Assembler programmer's guide / Руководство программиста по ассемблеру |
+| [OPCODE_REFERENCE.md](OPCODE_REFERENCE.md) | **Canonical opcode table (SINGLE SOURCE OF TRUTH)** / Каноническая таблица опкодов |"""
+
+if old_row in rt and "OPCODE_REFERENCE.md" not in rt:
+    rt = rt.replace(old_row, new_row)
+    readme.write_text(rt, encoding="utf-8")
+    print("README.md: OPCODE_REFERENCE.md added to docs table")
+elif "OPCODE_REFERENCE.md" in rt:
+    print("README.md: already references OPCODE_REFERENCE.md")
+else:
+    print("README.md: anchor row not found")
+
+# ── 3. assembler.py: add SOT comment at the top ──
+asm = base / "assemble8080" / "assembler.py"
+at = asm.read_text(encoding="utf-8")
+
+if "OPCODE_REFERENCE" not in at[:2000]:
+    # Find the first docstring or comment block and add after it
+    old_header = '"""Двухпроходный ассемблер Intel 8080 с препроцессором, макросами и линковщиком."""'
+    if old_header in at:
+        new_header = old_header + '\n\nКаноническая таблица опкодов: OPCODE_REFERENCE.md (SINGLE SOURCE OF TRUTH).\nНикогда не выдумывай опкоды — сверяйся с этим файлом.'
+        at = at.replace(old_header, new_header, 1)
+        asm.write_text(at, encoding="utf-8")
+        print("assembler.py: SOT comment added")
+    else:
+        # Try to find any module docstring
+        import re
+        m = re.match(r'^("""|\')(.*?)\1', at, re.DOTALL)
+        if m:
+            insert_pos = m.end()
+            note = '\n\nКаноническая таблица опкодов: OPCODE_REFERENCE.md (SINGLE SOURCE OF TRUTH).\nНикогда не выдумывай опкоды — сверяйся с этим файлом.'
+            at = at[:insert_pos] + note + at[insert_pos:]
+            asm.write_text(at, encoding="utf-8")
+            print("assembler.py: SOT comment added (after docstring)")
+        else:
+            print("assembler.py: no docstring found, skipping")
+else:
+    print("assembler.py: already references OPCODE_REFERENCE")
+```
+<!-- END FILE: _fix_sot_refs.py -->
+
+### `_fix_stax_alias.py` (107 строк)
+
+<!-- FILE: _fix_stax_alias.py -->
+```python
+#!/usr/bin/env python3
+"""Add STAX H / LDAX H → MOV M,A / MOV A,M alias in assembler._encode_instruction."""
+import pathlib, sys
+
+base = pathlib.Path(__file__).parent
+asm = base / "assemble8080" / "assembler.py"
+t = asm.read_text(encoding="utf-8")
+
+# Insert alias handling at the top of _encode_instruction, after the docstring
+old = '''    def _encode_instruction(self, mnemonic: str, opcode: int, fmt: str,
+                             operands: list[str], line_num: int) -> bytearray | None:
+        """Кодирует одну инструкцию. Возвращает байты или None при ошибке."""
+
+        if fmt == '':
+            return bytearray([opcode])'''
+
+new = '''    def _encode_instruction(self, mnemonic: str, opcode: int, fmt: str,
+                             operands: list[str], line_num: int) -> bytearray | None:
+        """Кодирует одну инструкцию. Возвращает байты или None при ошибке."""
+
+        # Алиасы (НЕ каноничные 8080): STAX H/L = MOV M,A (0x77), LDAX H/L = MOV A,M (0x7E).
+        # 0x22=SHLD, 0x2A=LHLD — каноничные. Такты: 7 (MOV). Hover: MOV M,A / MOV A,M.
+        if fmt == 'rp' and len(operands) >= 1:
+            _op = operands[0].strip().upper()
+            if _op in ('H', 'L', 'HL'):
+                if mnemonic == 'STAX':
+                    return bytearray([0x77])  # MOV M, A
+                if mnemonic == 'LDAX':
+                    return bytearray([0x7E])  # MOV A, M
+
+        if fmt == '':
+            return bytearray([opcode])'''
+
+if old in t:
+    t = t.replace(old, new)
+    asm.write_text(t, encoding="utf-8")
+    print("assembler.py: STAX H / LDAX H → MOV alias added")
+else:
+    print("assembler.py: anchor not found")
+    sys.exit(1)
+
+# Also fix the comment in the MNEMONICS section (remove the wrong zasm alias comment)
+old_comment = """    # Алиасы (zasm-совместимость): одиночный регистр вместо пары.
+    # STAX H = STAX HL, LDAX H = LDAX HL. Не каноничные формы 8080 —
+    # алиасы для существующих команд. Такты и hover — оригинальные STAX/LDAX.
+    # _get_rp_code() мапит H->HL, L->HL, B->BC, D->DE, A->PSW."""
+new_comment = """    # STAX H/L и LDAX H/L — алиасы для MOV M,A (0x77) / MOV A,M (0x7E).
+    # Не каноничные 8080: 0x22=SHLD, 0x2A=LHLD. Такты 7, hover: MOV."""
+if old_comment in t:
+    t = t.replace(old_comment, new_comment)
+    asm.write_text(t, encoding="utf-8")
+    print("assembler.py: MNEMONICS comment updated")
+else:
+    print("assembler.py: old comment not found (ok)")
+
+# Fix ASSEMBLER_GUIDE.md section 3.4.1
+guide = base / "ASSEMBLER_GUIDE.md"
+gt = guide.read_text(encoding="utf-8")
+
+old_section = """### 3.4.1. Алиасы одиночных регистров (zasm-совместимость)
+
+Ассемблер принимает одиночный регистр там, где ожидается пара регистров
+(zasm-совместимость). Это **не каноничные** формы команд 8080 — лишь алиасы
+для существующих команд. Количество тактов и hover-подсказка в GUI
+относятся к **оригинальной** команде 8080.
+
+| Алиас | Эквивалент (каноничная форма 8080) | Такты |
+|-------|-----------------------------------|-------|
+| `STAX H` | `STAX HL` | 13 |
+| `STAX L` | `STAX DE` | 13 |
+| `LDAX H` | `LDAX HL` | 7 |
+| `LDAX L` | `LDAX DE` | 7 |
+| `LXI H, addr` | `LXI HL, addr` | 10 |
+| `INX H` | `INX HL` | 10 |
+| `DCX H` | `DCX HL` | 10 |
+| `DAD H` | `DAD HL` | 10 |
+| `PUSH H` | `PUSH HL` | 5 |
+| `POP H` | `POP HL` | 5 |
+
+Маппинг: `H`/`L` → `HL`, `B`/`C` → `BC`, `D`/`E` → `DE`, `A` → `PSW`.
+
+> Дизассемблер всегда показывает каноничную форму (`STAX HL`, не `STAX H`)."""
+
+new_section = """### 3.4.1. Алиасы STAX H / LDAX H (не каноничные 8080)
+
+`STAX H` и `LDAX H` — **не каноничные** мнемоники Intel 8080.
+В каноничной таблице опкодов 0x22 = SHLD, 0x2A = LHLD;
+STAX/LDAX существуют только для регистров B (пара BC) и D (пара DE).
+
+Ассемблер принимает `STAX H` и `LDAX H` как **алиасы** для реальных
+команд MOV, выполняющих идентичное действие:
+
+| Алиас | Каноничная команда | Опкод | Такты |
+|-------|-------------------|-------|-------|
+| `STAX H` (или `STAX L`, `STAX HL`) | `MOV M, A` | 0x77 | 7 |
+| `LDAX H` (или `LDAX L`, `LDAX HL`) | `MOV A, M` | 0x7E | 7 |
+
+Hover-подсказка и подсчёт тактов используют **оригинальную** команду MOV.
+Дизассемблер для опкодов 0x77 / 0x7E всегда показывает каноничную форму
+`MOV M, A` / `MOV A, M` — никогда `STAX H` / `LDAX H`."""
+
+if old_section in gt:
+    gt = gt.replace(old_section, new_section)
+    guide.write_text(gt, encoding="utf-8")
+    print("ASSEMBLER_GUIDE.md: section 3.4.1 rewritten")
+else:
+    print("ASSEMBLER_GUIDE.md: old section not found")
+```
+<!-- END FILE: _fix_stax_alias.py -->
+
+### `_fix_stax_alias2.py` (82 строк)
+
+<!-- FILE: _fix_stax_alias2.py -->
+```python
+#!/usr/bin/env python3
+"""Add STAX H / LDAX H → MOV M,A / MOV A,M alias in assembler._encode_instruction."""
+import pathlib, sys
+
+base = pathlib.Path(__file__).parent
+asm = base / "assemble8080" / "assembler.py"
+t = asm.read_text(encoding="utf-8")
+
+# Insert alias handling right after the docstring in _encode_instruction
+old = '        """Кодирует одну инструкцию. Возвращает байты или None при ошибке."""\n\n        if fmt == \'\':\n            return bytearray([opcode])'
+
+new = '''        """Кодирует одну инструкцию. Возвращает байты или None при ошибке."""
+
+        # Алиасы (НЕ каноничные 8080): STAX H/L = MOV M,A (0x77), LDAX H/L = MOV A,M (0x7E).
+        # 0x22=SHLD, 0x2A=LHLD — каноничные. Такты: 7 (MOV). Hover: MOV M,A / MOV A,M.
+        if fmt == 'rp' and len(operands) >= 1:
+            _op = operands[0].strip().upper()
+            if _op in ('H', 'L', 'HL'):
+                if mnemonic == 'STAX':
+                    return bytearray([0x77])  # MOV M, A
+                if mnemonic == 'LDAX':
+                    return bytearray([0x7E])  # MOV A, M
+
+        if fmt == '':
+            return bytearray([opcode])'''
+
+if old in t:
+    t = t.replace(old, new)
+    asm.write_text(t, encoding="utf-8")
+    print("OK: alias code inserted")
+else:
+    print("FAIL: anchor not found")
+    sys.exit(1)
+
+# Fix the MNEMONICS comment
+old_comment = """    # Алиасы (zasm-совместимость): одиночный регистр вместо пары.
+    # STAX H = STAX HL, LDAX H = LDAX HL. Не каноничные формы 8080 —
+    # алиасы для существующих команд. Такты и hover — оригинальные STAX/LDAX.
+    # _get_rp_code() мапит H->HL, L->HL, B->BC, D->DE, A->PSW."""
+new_comment = """    # STAX H/L и LDAX H/L — алиасы для MOV M,A (0x77) / MOV A,M (0x7E).
+    # Не каноничные 8080: 0x22=SHLD, 0x2A=LHLD. Такты 7, hover: MOV."""
+if old_comment in t:
+    t = t.replace(old_comment, new_comment)
+    asm.write_text(t, encoding="utf-8")
+    print("OK: MNEMONICS comment updated")
+else:
+    print("INFO: old MNEMONICS comment not found (may already be updated)")
+
+# Fix ASSEMBLER_GUIDE.md section 3.4.1
+guide = base / "ASSEMBLER_GUIDE.md"
+gt = guide.read_text(encoding="utf-8")
+
+# Find and replace the entire 3.4.1 section
+start_marker = "### 3.4.1. Алиасы одиночных регистров (zasm-совместимость)"
+end_marker = "\n## 4. Директивы ассемблера"
+
+start_idx = gt.find(start_marker)
+end_idx = gt.find(end_marker)
+
+if start_idx != -1 and end_idx != -1:
+    new_section = """### 3.4.1. Алиасы STAX H / LDAX H (не каноничные 8080)
+
+`STAX H` и `LDAX H` — **не каноничные** мнемоники Intel 8080.
+В каноничной таблице опкодов 0x22 = SHLD, 0x2A = LHLD;
+STAX/LDAX существуют только для регистров B (пара BC) и D (пара DE).
+
+Ассемблер принимает `STAX H` и `LDAX H` как **алиасы** для реальных
+команд MOV, выполняющих идентичное действие:
+
+| Алиас | Каноничная команда | Опкод | Такты |
+|-------|-------------------|-------|-------|
+| `STAX H` (или `STAX L`, `STAX HL`) | `MOV M, A` | 0x77 | 7 |
+| `LDAX H` (или `LDAX L`, `LDAX HL`) | `MOV A, M` | 0x7E | 7 |
+
+Hover-подсказка и подсчёт тактов используют **оригинальную** команду MOV.
+Дизассемблер для опкодов 0x77 / 0x7E всегда показывает каноничную форму
+`MOV M, A` / `MOV A, M` — никогда `STAX H` / `LDAX H`."""
+    gt = gt[:start_idx] + new_section + gt[end_idx:]
+    guide.write_text(gt, encoding="utf-8")
+    print("OK: ASSEMBLER_GUIDE.md section 3.4.1 rewritten")
+else:
+    print(f"INFO: section markers not found (start={start_idx}, end={end_idx})")
+```
+<!-- END FILE: _fix_stax_alias2.py -->
+
+### `_fix_stax_ldax_alias.py` (68 строк)
+
+<!-- FILE: _fix_stax_ldax_alias.py -->
+```python
+#!/usr/bin/env python3
+"""Add STAX H / LDAX H alias notes to assembler.py and ASSEMBLER_GUIDE.md."""
+import pathlib, sys
+
+base = pathlib.Path(__file__).parent
+
+# ── 1. assembler.py: add comment after LDAX line ──
+asm_path = base / "assemble8080" / "assembler.py"
+text = asm_path.read_text(encoding="utf-8")
+
+old = "    'LDAX':  (0x0A, 'rp', 1),"
+new = """    'LDAX':  (0x0A, 'rp', 1),
+    # Алиасы (zasm-совместимость): одиночный регистр вместо пары.
+    # STAX H = STAX HL, LDAX H = LDAX HL. Не каноничные формы 8080 —
+    # алиасы для существующих команд. Такты и hover — оригинальные STAX/LDAX.
+    # _get_rp_code() мапит H->HL, L->HL, B->BC, D->DE, A->PSW."""
+if old in text and "Алиасы (zasm-совместимость)" not in text:
+    text = text.replace(old, new)
+    asm_path.write_text(text, encoding="utf-8")
+    print("assembler.py: alias comment added")
+else:
+    print("assembler.py: already has alias comment or anchor not found")
+
+# ── 2. ASSEMBLER_GUIDE.md: add alias note in section 3.4 (expressions) or new subsection ──
+guide_path = base / "ASSEMBLER_GUIDE.md"
+gtext = guide_path.read_text(encoding="utf-8")
+
+# Find the "Операции с памятью" section or add after the expressions section
+# We'll add a note right after the "3.4. Выражения" section, before "3.5" or the next section
+# Actually, let's add it as a note in section 4 (directives) or as a standalone note.
+# Best place: after the "3.3. Числовые форматы" and before "3.4. Выражения", or as a new "3.5"
+
+# Let's add it right before "## 4. Директивы ассемблера"
+old_guide = "---\n\n## 4. Директивы ассемблера"
+new_guide = """---
+
+### 3.4.1. Алиасы одиночных регистров (zasm-совместимость)
+
+Ассемблер принимает одиночный регистр там, где ожидается пара регистров
+(zasm-совместимость). Это **не каноничные** формы команд 8080 — лишь алиасы
+для существующих команд. Количество тактов и hover-подсказка в GUI
+относятся к **оригинальной** команде 8080.
+
+| Алиас | Эквивалент | Такты |
+|-------|-----------|-------|
+| `STAX H` | `STAX HL` (0x22) | 13 |
+| `STAX L` | `STAX DE` (0x2A) | 13 |
+| `LDAX H` | `LDAX HL` (0x2A) | 7 |
+| `LDAX L` | `LDAX DE` (0x3A) | 7 |
+| `LXI H, addr` | `LXI HL, addr` (0x21) | 10 |
+| `INX H` | `INX HL` (0x23) | 10 |
+| `DCX H` | `DCX HL` (0x2B) | 10 |
+| `DAD H` | `DAD HL` (0x29) | 10 |
+| `PUSH H` | `PUSH HL` (0xE5) | 5 |
+| `POP H` | `POP HL` (0xE1) | 5 |
+
+Маппинг: `H`/`L` → `HL`, `B`/`C` → `BC`, `D`/`E` → `DE`, `A` → `PSW`.
+
+> Дизассемблер всегда показывает каноничную форму (`STAX HL`, не `STAX H`).
+
+## 4. Директивы ассемблера"""
+
+if old_guide in gtext and "3.4.1. Алиасы" not in gtext:
+    gtext = gtext.replace(old_guide, new_guide)
+    guide_path.write_text(gtext, encoding="utf-8")
+    print("ASSEMBLER_GUIDE.md: alias section added")
+else:
+    print("ASSEMBLER_GUIDE.md: already has alias section or anchor not found")
+```
+<!-- END FILE: _fix_stax_ldax_alias.py -->
 
 ### `_fix_tests.py` (93 строк)
 
@@ -5616,6 +6352,45 @@ for i,l in enumerate(open('CHANGES.md', encoding='utf-8').read().splitlines()[:3
     print(f"{i+1}: {l}")
 ```
 <!-- END FILE: _read_ver.py -->
+
+### `_repro_ds.py` (32 строк)
+
+<!-- FILE: _repro_ds.py -->
+```python
+# -*- coding: utf-8 -*-
+import os, sys, io
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from assemble8080.assembler import Assembler
+from assemble8080.mapfile import generate_map, parse_map
+from PySide6.QtWidgets import QApplication
+app = QApplication.instance() or QApplication([])
+from i8080_ci.models.watch_model import WatchModel
+
+class DummyEmu:
+    def read_mem(self, a): return 0
+    def read_mem16(self, a): return 0
+
+def watch_for(src, tag):
+    r = Assembler().assemble(src, tag + ".asm")
+    mf = parse_map(generate_map(r, source_name=tag + ".asm"))
+    m = WatchModel(DummyEmu())
+    n = m.set_auto_watches_from_map(mf)
+    print(f"[{tag}] added={n} items=" + repr([(it['name'], it['type'], hex(it['target'])) for it in m.items]))
+    return m
+
+# 1) DS с меткой, size>1
+watch_for("ORG 0x0100\nSTART: MVI A,0\nRET\nBUF: DS 10\nTAIL: DB 0x55", "A")
+# 2) DS size=1
+watch_for("ORG 0x0100\nSTART: RET\nBUF: DS 1\n", "B")
+# 3) DS последним (нет следующей метки)
+watch_for("ORG 0x0100\nSTART: RET\nBUF: DS 5\n", "C")
+# 4) DS без метки + DW
+watch_for("ORG 0x0100\nSTART: RET\nDB 1\nDW 2\nBUF: DS 4\n", "D")
+```
+<!-- END FILE: _repro_ds.py -->
 
 ### `_run_all_tests.py` (94 строк)
 
@@ -11060,7 +11835,7 @@ print(f"Tables: {body_html.count('<table>')}")
 ```
 <!-- END FILE: md2html.py -->
 
-### `run_tests.py` (98 строк)
+### `run_tests.py` (100 строк)
 
 <!-- FILE: run_tests.py -->
 ```python
@@ -11095,6 +11870,8 @@ unit_tests = [
     'tests/test_system_integration.py', 'tests/test_wait_cf_ide.py',
     'tests/test_wait_signals.py', 'tests/test_8085.py',
     'tests/test_watch_auto.py',
+    'tests/test_hex_tail.py',
+    'tests/test_watch_ds.py',
 ]
 
 # Filter to existing files
@@ -11171,8 +11948,8 @@ for f, p, fl, s in results:
 ```python
 """Project version and build information."""
 
-__version__ = "2.1.14"
-__build__ = "20261013"
+__version__ = "2.1.15"
+__build__ = "20261023"
 __app_name__ = "i8080-5 CI"
 
 def get_version_string():
@@ -11242,7 +12019,7 @@ if __name__ == "__main__":
 ```
 <!-- END FILE: assemble8080/__main__.py -->
 
-### `assemble8080/assembler.py` (2089 строк)
+### `assemble8080/assembler.py` (2103 строк)
 
 <!-- FILE: assemble8080/assembler.py -->
 ```python
@@ -11267,6 +12044,8 @@ assemble8080 — компактный макроассемблер Intel 8080.
     else:
         for err in result.errors:
             print(err)
+Каноническая таблица опкодов: OPCODE_REFERENCE.md (SINGLE SOURCE OF TRUTH).
+Никогда не выдумывай опкоды — сверяйся с этим файлом.
 """
 
 from __future__ import annotations
@@ -11385,6 +12164,8 @@ MNEMONICS = {
     # Операции с памятью через HL
     'STAX':  (0x02, 'rp', 1),
     'LDAX':  (0x0A, 'rp', 1),
+    # STAX H/L и LDAX H/L — алиасы для MOV M,A (0x77) / MOV A,M (0x7E).
+    # Не каноничные 8080: 0x22=SHLD, 0x2A=LHLD. Такты 7, hover: MOV.
     'SHLD':  (0x22, 'd16', 3),
     'LHLD':  (0x2A, 'd16', 3),
     'STA':   (0x32, 'd16', 3),
@@ -12627,6 +13408,16 @@ class Assembler:
     def _encode_instruction(self, mnemonic: str, opcode: int, fmt: str,
                             operands: list[str], line_num: int) -> bytearray | None:
         """Кодирует одну инструкцию. Возвращает байты или None при ошибке."""
+
+        # Алиасы (НЕ каноничные 8080): STAX H/L = MOV M,A (0x77), LDAX H/L = MOV A,M (0x7E).
+        # 0x22=SHLD, 0x2A=LHLD — каноничные. Такты: 7 (MOV). Hover: MOV M,A / MOV A,M.
+        if fmt == 'rp' and len(operands) >= 1:
+            _op = operands[0].strip().upper()
+            if _op in ('H', 'L', 'HL'):
+                if mnemonic == 'STAX':
+                    return bytearray([0x77])  # MOV M, A
+                if mnemonic == 'LDAX':
+                    return bytearray([0x7E])  # MOV A, M
 
         if fmt == '':
             return bytearray([opcode])
@@ -16741,7 +17532,7 @@ __all__ = [
 ```
 <!-- END FILE: i8080_ci/__init__.py -->
 
-### `i8080_ci/assembler_widget.py` (2059 строк)
+### `i8080_ci/assembler_widget.py` (2063 строк)
 
 <!-- FILE: i8080_ci/assembler_widget.py -->
 ```python
@@ -18713,7 +19504,11 @@ class AssemblerWidget(QWidget):
                     if addr in mw.mem_data:
                         removed[addr] = mw.mem_data.pop(addr)
                 if removed:
-                    mw.hex_model.update_data({a: 0xFF for a in removed})
+                    # Хвост уже удалён из общего словаря mem_data == hex_model.mem.
+                    # Не возвращаем его как 0xFF: пересчитываем диапазон таблицы
+                    # и обновляем вид (иначе хвост остаётся в hex-окне).
+                    mw.hex_model.update_range()
+                    mw.hex_model.layoutChanged.emit()
             self._last_load = (origin, len(binary))
             changes = {}
             for i, byte in enumerate(binary):
@@ -37777,7 +38572,7 @@ def create_terminal_widget(device):
 
 ■ РАЗДЕЛ 4: ИЗМЕНЕНИЯ РЕФАКТОРИНГА
 
-Источник: `CHANGES.md` (2827 строк)
+Источник: `CHANGES.md` (2839 строк)
 
 ```markdown
 # Changelog / Журнал изменений
@@ -37839,6 +38634,18 @@ def create_terminal_widget(device):
 README.md — обновлены по новым возможностям.
 
 **Тесты:** 956/0 (run_tests, 36 файлов) + GUI smoke + map autoload flow.
+
+
+
+**FIX (хвост образа в hex-окне эмулятора):** `HexModel.mem` — тот же словарь, что `mem_data`,
+
+поэтому «очистка хвоста» прежнего большего образа через `hex_model.update_data({a: 0xFF})`
+
+возвращала те же адреса обратно как 0xFF — хвост оставался в окне. Теперь после pop
+
+хвоста из `mem_data` вызывается только `update_range() + layoutChanged.emit()` без
+
+возврата 0xFF. Тесты: tests/test_hex_tail.py (8/0).
 ## v2.1.14 (2026-10-13)
 
 ### Поддержка label+addend, безопасная замена $, эталон опкодов, чистка тестов
@@ -40612,7 +41419,7 @@ Menu title and items update on language switch.
 
 ■ РАЗДЕЛ 5: ТЕСТЫ
 
-Всего тестовых файлов: 76, строк: 11972
+Всего тестовых файлов: 78, строк: 12082
 
 ### `tests/PPI_3D_8x8x8_Flame.py` (224 строк)
 
@@ -47881,6 +48688,63 @@ print("\nВСЕ SMOKE-ТЕСТЫ ПРОЙДЕНЫ")
 ```
 <!-- END FILE: tests/test_gui_smoke.py -->
 
+### `tests/test_hex_tail.py` (50 строк)
+
+<!-- FILE: tests/test_hex_tail.py -->
+```python
+# -*- coding: utf-8 -*-
+"""GUI-тест: загрузка меньшего образа поверх большего — хвост исчезает (не 0xFF)."""
+import os, sys
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+ok = True
+def check(name, cond, info=""):
+    global ok
+    print(("\u2705 " if cond else "\u274c ") + name + ((" - " + str(info)) if (info and not cond) else ""))
+    ok = ok and bool(cond)
+
+from PySide6.QtWidgets import QApplication
+app = QApplication.instance() or QApplication(sys.argv)
+
+from i8080_ci.main_window import MainWindow
+from i8080_ci.assembler_widget import AssemblerWidget
+
+mw = MainWindow()
+w = AssemblerWidget(mw)
+w.main_window = mw
+
+ORIGIN = 0x0100
+big = bytes(range(0x10, 0x20))          # 16 байт
+small = bytes([0x76, 0xC9])             # 2 байта
+
+# 1) Загружаем БОЛЬШОЙ образ
+w._load_to_memory(big, ORIGIN)
+check("Большой образ загружен", max(mw.mem_data.keys()) == ORIGIN + 15, max(mw.mem_data.keys()))
+check("hex_model.mem — тот же словарь", mw.hex_model.mem is mw.mem_data)
+
+# 2) Загружаем МЕНЬШИЙ образ по тому же origin
+w._load_to_memory(small, ORIGIN)
+tail = [a for a in range(ORIGIN + 2, ORIGIN + 16) if a in mw.mem_data]
+check("Хвост удалён из mem_data", not tail, tail)
+check("Хвост удалён из hex_model.mem", not any(a in mw.hex_model.mem for a in range(ORIGIN + 2, ORIGIN + 16)))
+check("hex max_addr = конец нового образа", mw.hex_model.max_addr == ORIGIN + 1, hex(mw.hex_model.max_addr))
+check("Новый образ на месте", mw.mem_data.get(ORIGIN) == 0x76 and mw.mem_data.get(ORIGIN + 1) == 0xC9)
+
+# 3) Повторная загрузка того же размера — ничего не ломается
+w._load_to_memory(small, ORIGIN)
+check("Повторная загрузка", mw.mem_data.get(ORIGIN) == 0x76 and mw.hex_model.max_addr == ORIGIN + 1)
+
+# 4) Загрузка БОЛЬШЕГО после МЕНЬШЕГО — расширение работает
+w._load_to_memory(big, ORIGIN)
+check("Расширение работает", max(mw.mem_data.keys()) == ORIGIN + 15)
+
+print("RESULT:", "ALL PASS" if ok else "FAILURES")
+sys.exit(0 if ok else 1)
+```
+<!-- END FILE: tests/test_hex_tail.py -->
+
 ### `tests/test_i16550.py` (144 строк)
 
 <!-- FILE: tests/test_i16550.py -->
@@ -53059,6 +53923,73 @@ sys.exit(0 if ok else 1)
 ```
 <!-- END FILE: tests/test_watch_auto.py -->
 
+### `tests/test_watch_ds.py` (60 строк)
+
+<!-- FILE: tests/test_watch_ds.py -->
+```python
+# -*- coding: utf-8 -*-
+"""DS-блоки (резервирование памяти) — это честные переменные и должны попасть в авто watch-list."""
+import os, sys, io
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from assemble8080.assembler import Assembler
+from assemble8080.mapfile import generate_map, parse_map
+from PySide6.QtWidgets import QApplication
+app = QApplication.instance() or QApplication([])
+from i8080_ci.models.watch_model import WatchModel
+
+ok = True
+def check(name, cond, info=""):
+    global ok
+    mark = "\u2705" if cond else "\u274c"
+    print(f"{mark} {name}" + ("" if cond else f"  <- {info}"))
+    ok = ok and bool(cond)
+
+class DummyEmu:
+    def read_mem(self, a): return 0
+    def read_mem16(self, a): return 0
+
+def auto_watches(src, tag):
+    r = Assembler().assemble(src, tag + ".asm")
+    check(f"[{tag}] ассемблировалось", r.success, [str(e) for e in r.errors])
+    mf = parse_map(generate_map(r, source_name=tag + ".asm"))
+    m = WatchModel(DummyEmu())
+    m.set_auto_watches_from_map(mf)
+    return {it["name"]: it for it in m.items}
+
+# 1) DS единственный блок
+w = auto_watches("ORG 0x0100\nBUF: DS 16", "only")
+check("DS-only в watch", "BUF" in w, list(w))
+
+# 2) DS в середине (между кодом)
+w = auto_watches("ORG 0x0100\nSTART: RET\nBUF: DS 10\nEND: RET", "mid")
+check("DS mid в watch", "BUF" in w, list(w))
+check("DS mid не путается с кодом", "START" not in w and "END" not in w, list(w))
+
+# 3) DS в конце (нет следующей метки)
+w = auto_watches("ORG 0x0100\nSTART: RET\nBUF: DS 5", "tail")
+check("DS tail в watch", "BUF" in w, list(w))
+
+# 4) DS с fill-значением
+w = auto_watches("ORG 0x0100\nSTART: RET\nBUF: DS 8, 0x5A", "fill")
+check("DS fill в watch", "BUF" in w, list(w))
+
+# 5) размерность: DS>1 -> word, DS 1 -> byte
+w = auto_watches("ORG 0x0100\nBIG: DS 4\nONE: DS 1\nEND: RET", "size")
+check("DS>1 => word", w.get("BIG", {}).get("type") == WatchModel.TYPE_MEM_WORD, w.get("BIG"))
+check("DS 1 => byte", w.get("ONE", {}).get("type") == WatchModel.TYPE_MEM_BYTE, w.get("ONE"))
+
+# 6) адрес корректен (смещение от ORIGIN)
+w = auto_watches("ORG 0x0100\nSTART: RET\nBUF: DS 4", "addr")
+check("DS адрес = ORIGIN+1", w.get("BUF", {}).get("target") == 0x0101, w.get("BUF"))
+
+print("RESULT:", "ALL PASS" if ok else "FAILURES")
+sys.exit(0 if ok else 1)
+```
+<!-- END FILE: tests/test_watch_ds.py -->
+
 ### `tests/uart_test.py` (52 строк)
 
 <!-- FILE: tests/uart_test.py -->
@@ -56134,6 +57065,8 @@ MNEMONICS = {# Без операндов
     # Операции с памятью через HL
     'STAX':  (0x02, 'rp', 1),
     'LDAX':  (0x0A, 'rp', 1),
+    # STAX H/L и LDAX H/L — алиасы для MOV M,A (0x77) / MOV A,M (0x7E).
+    # Не каноничные 8080: 0x22=SHLD, 0x2A=LHLD. Такты 7, hover: MOV.
     'SHLD':  (0x22, 'd16', 3),
     'LHLD':  (0x2A, 'd16', 3),
     'STA':   (0x32, 'd16', 3),
@@ -56877,4 +57810,4 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 
 ---
 
-*Конец среза. Сгенерировано 2026-10-23 16:06:51.*
+*Конец среза. Сгенерировано 2026-10-23 19:47:18.*
