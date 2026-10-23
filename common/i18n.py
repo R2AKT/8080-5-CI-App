@@ -1,4 +1,4 @@
-"""Internationalization strings and system language detection."""
+﻿"""Internationalization strings and system language detection."""
 from PySide6.QtCore import QLocale
 
 
@@ -749,8 +749,8 @@ MNEMONIC_INFO = {
         "HLT":  ("Halt CPU", "0x76", 7),
         "DI":   ("Disable Interrupts", "0x77", 4),
         "EI":   ("Enable Interrupts", "0xFB", 4),
-        "SIM":  ("Set Interrupt Mask (8085)", "0x04", 4),
-        "RIM":  ("Read Interrupt Mask (8085)", "0x67", 13),
+        "SIM":  ("Set Interrupt Mask (8085)", "0x30", 4),
+        "RIM":  ("Read Interrupt Mask (8085)", "0x20", 13),
         "RET":  ("Return from Subroutine", "0xC9", 10),
         "RZ":   ("Return if Zero", "0xC8", "5/12"),
         "RNZ":  ("Return if Not Zero", "0xC0", "5/12"),
@@ -827,16 +827,17 @@ MNEMONIC_INFO = {
         "PCHL": ("PC = HL", "0xE9", 5),
         "DSUB": ("8085: Subtract B from A (no flags)", "0x08", 10),
         "ARHL": ("8085: Arithmetic Right Shift HL", "0x10", 7),
-        "SHLX": ("8085: Shift Left [M] through CY", "0x18", 10),
-        "LHLX": ("8085: Load HL from [M] with shift", "0x20", 4),
+        "SHLX": ("8085: Store HL to (BC)", "0xD9", 16),
+        "LHLX": ("8085: Load HL from (BC)", "0xED", 16),
+        "RSTV": ("8085: Reserved (NOP)", "0xCB", 1),
     },
     "ru": {
         "NOP":  ("Нет операции", "0x00", 4),
         "HLT":  ("Остановка CPU", "0x76", 7),
         "DI":   ("Запрет прерываний", "0x77", 4),
         "EI":   ("Разрешить прерывания", "0xFB", 4),
-        "SIM":  ("Установка маски прерываний (8085)", "0x04", 4),
-        "RIM":  ("Чтение маски прерываний (8085)", "0x67", 13),
+        "SIM":  ("Установка маски прерываний (8085)", "0x30", 4),
+        "RIM":  ("Чтение маски прерываний (8085)", "0x20", 13),
         "RET":  ("Возврат из подпрограммы", "0xC9", 10),
         "RZ":   ("Возврат если Z=1", "0xC8", "5/12"),
         "RNZ":  ("Возврат если Z=0", "0xC0", "5/12"),
@@ -913,8 +914,9 @@ MNEMONIC_INFO = {
         "PCHL": ("PC ← HL", "0xE9", 5),
         "DSUB": ("8085: вычитание B из A (без флагов)", "0x08", 10),
         "ARHL": ("8085: арифм. сдвиг HL вправо", "0x10", 7),
-        "SHLX": ("8085: сдвиг [M] влево через CY", "0x18", 10),
-        "LHLX": ("8085: загрузка HL из [M] со сдвигом", "0x20", 4),
+        "SHLX": ("8085: запись HL в (BC)", "0xD9", 16),
+        "LHLX": ("8085: загрузка HL из (BC)", "0xED", 16),
+        "RSTV": ("8085: зарезервировано (NOP)", "0xCB", 1),
     },
 }
 

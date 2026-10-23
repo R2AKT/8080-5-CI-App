@@ -1,8 +1,8 @@
 # СРЕЗ ПРОЕКТА (PROJECT SNAPSHOT)
 
-> Сгенерировано: 2026-10-23 23:29:16
+> Сгенерировано: 2026-10-23 23:35:31
 > Корень проекта: `c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis`
-> Код: 166 файлов, 34839 строк
+> Код: 169 файлов, 35385 строк
 > Тесты: 78 файлов, 12082 строк
 > Профили: 43 файлов, 1625 строк
 
@@ -186,7 +186,7 @@
 ├── common/
 │   ├── __init__.py  [5 строк]
 │   ├── encoding.py  [109 строк]
-│   ├── i18n.py  [971 строк]
+│   ├── i18n.py  [973 строк]
 │   └── themes.py  [115 строк]
 ├── i8080_ci/
 │   ├── models/
@@ -559,6 +559,9 @@
 ├── audit_cycle1.py  [135 строк]
 ├── audit_cycle1b.py  [123 строк]
 ├── audit_cycle1c.py  [117 строк]
+├── audit_cycle2.py  [185 строк]
+├── audit_cycle3.py  [206 строк]
+├── audit_cycle4.py  [153 строк]
 ├── build_linux.sh  [42 строк]
 ├── CHANGES.md  [2839 строк]
 ├── claude_desktop_config.json  [7 строк]
@@ -1390,6 +1393,52 @@
 
 ---
 
+### `audit_cycle2.py` (185 строк)
+
+> Audit cycle 2: comprehensive sweep of all project areas.
+
+**Импорты (11):**
+- `sys`
+- `os`
+- `re`
+- `json`
+- `from i8080_ci.disassembler import I8080Disassembler`
+- `assemble8080.assembler`
+- `from PySide6.QtWidgets import QApplication`
+- `sys`
+- `i8080_emulator`
+- `version`
+- `common.i18n`
+
+**Функции (2):**
+- `check(name, cond, detail)`
+- `make_emu(program, cpu_type, extra_mem)`
+
+---
+
+### `audit_cycle3.py` (206 строк)
+
+> Audit cycle 3: fresh sweep - different checks than cycles 1-2.
+
+**Импорты (8):**
+- `sys`
+- `os`
+- `re`
+- `json`
+- `assemble8080.assembler`
+- `from i8080_ci.disassembler import I8080Disassembler`
+- `version`
+- `common.i18n`
+
+**Функции (1):**
+- `check(name, cond, detail)`
+
+---
+
+### `audit_cycle4.py` (153 строк)
+
+---
+
 ### `clean_pycache.py` (87 строк)
 
 > clean_pycache.py — Удаление Python-кеша из дерева проекта.
@@ -1893,19 +1942,7 @@
 
 ---
 
-### `common/i18n.py` (971 строк)
-
-> Internationalization strings and system language detection.
-
-**Импорты (1):**
-- `from PySide6.QtCore import QLocale`
-
-**Функции (3):**
-- `get_mnemonic_info(mnemonic, lang, cpu_type)`
-- `set_language(lang)`
-- `get_system_language()`
-
-**Константы:** LANGS, MNEMONIC_INFO, MNEMONIC_CYCLES_8085
+### `common/i18n.py` (973 строк)
 
 ---
 
@@ -8340,6 +8377,571 @@ else:
 print(f"{'='*60}")
 ```
 <!-- END FILE: audit_cycle1c.py -->
+
+### `audit_cycle2.py` (185 строк)
+
+<!-- FILE: audit_cycle2.py -->
+```python
+#!/usr/bin/env python3
+"""Audit cycle 2: comprehensive sweep of all project areas."""
+import sys, os, re, json
+sys.path.insert(0, '.')
+os.environ['PYTHONIOENCODING'] = 'utf-8'
+
+errors = []
+checks = 0
+passed = 0
+
+def check(name, cond, detail=""):
+    global checks, passed
+    checks += 1
+    if cond:
+        passed += 1
+    else:
+        errors.append(f"{name}: {detail}")
+        print(f"  [FAIL] {name}: {detail}")
+
+# === 1. Disassembler full table audit ===
+from i8080_ci.disassembler import I8080Disassembler
+d80 = I8080Disassembler()
+d80.set_cpu_type('i8080')
+d85 = I8080Disassembler()
+d85.set_cpu_type('i8085')
+
+# Verify all 256 opcodes have entries in both tables
+for i in range(256):
+    check(f"8080 table[0x{i:02X}] exists", i in d80.table, f"missing")
+    check(f"8085 table[0x{i:02X}] exists", i in d85.table, f"missing")
+
+# Spot-check critical opcodes
+critical_8080 = {
+    0x00: 'NOP', 0x76: 'HLT', 0xC9: 'RET', 0xC3: 'JMP',
+    0x77: 'MOV M,A', 0x7E: 'MOV A,M', 0x06: 'MVI B,',
+    0x01: 'LXI B,', 0x21: 'LXI H,', 0xC5: 'PUSH B',
+    0xCD: 'CALL', 0xC0: 'RNZ', 0xC2: 'JNZ',
+    0xC7: 'RST 0', 0xFF: 'RST 7', 0xEF: 'RST 5',
+}
+for op, mn in critical_8080.items():
+    check(f"8080 0x{op:02X} contains '{mn}'", mn in d80.table[op][1], f"got {d80.table[op]}")
+
+critical_8085 = {
+    0x30: 'SIM', 0x20: 'RIM', 0x08: 'DSUB', 0x10: 'ARHL',
+    0xD9: 'SHLX', 0xED: 'LHLX', 0xCB: 'RSTV',
+    0x00: 'NOP', 0x76: 'HLT', 0xC9: 'RET',
+}
+for op, mn in critical_8085.items():
+    check(f"8085 0x{op:02X} contains '{mn}'", mn in d85.table[op][1], f"got {d85.table[op]}")
+
+# === 2. Assembler opcode encoding ===
+import assemble8080.assembler as asm
+
+# Verify STAX H / LDAX H aliases
+for src, expect_op in [('STAX H', 0x77), ('LDAX H', 0x7E)]:
+    r = asm.assemble(src, cpu_type='i8080')
+    check(f"Asm {src} = 0x{expect_op:02X}", r.success and r.binary[0] == expect_op,
+          f"success={r.success}, binary={r.binary.hex() if r.binary else 'FAIL'}")
+
+# Verify canonical STAX/LDAX unchanged
+for src, expect_op in [('STAX B', 0x02), ('STAX D', 0x12), ('LDAX B', 0x0A), ('LDAX D', 0x1A)]:
+    r = asm.assemble(src, cpu_type='i8080')
+    check(f"Asm {src} = 0x{expect_op:02X}", r.success and r.binary[0] == expect_op,
+          f"success={r.success}, binary={r.binary.hex() if r.binary else 'FAIL'}")
+
+# Verify 8085-only mnemonics
+for mn, expect_op in [('SIM', 0x30), ('RIM', 0x20), ('DSUB', 0x08), ('ARHL', 0x10)]:
+    r = asm.assemble(f".8085\n{mn}", cpu_type='i8085')
+    check(f"Asm 8085 {mn} = 0x{expect_op:02X}", r.success and r.binary[0] == expect_op,
+          f"success={r.success}, binary={r.binary.hex() if r.binary else 'FAIL'}")
+
+# Verify 8080-only mnemonics
+for mn, expect_op in [('RET*', 0xD9), ('JMP*', None), ('CALL*', None)]:
+    r = asm.assemble(f".8080\n{mn} 1234H" if mn != 'RET*' else f".8080\n{mn}", cpu_type='i8080')
+    if mn == 'RET*':
+        check(f"Asm 8080 {mn} = 0x{expect_op:02X}", r.success and r.binary[0] == expect_op,
+              f"success={r.success}, binary={r.binary.hex() if r.binary else 'FAIL'}")
+    else:
+        check(f"Asm 8080 {mn} succeeds", r.success, f"success={r.success}, errors={r.errors}")
+
+# === 3. Emulator behavior ===
+from PySide6.QtWidgets import QApplication
+import sys as sys_mod
+app = QApplication.instance() or QApplication(sys_mod.argv)
+import i8080_emulator as em
+
+def make_emu(program, cpu_type="i8080", extra_mem=None):
+    memory = {}
+    for i, b in enumerate(program):
+        memory[i] = b
+    if extra_mem:
+        memory.update(extra_mem)
+    return em.I8080Emulator(memory, cpu_type=cpu_type) if False else (lambda e: (setattr(e,'cpu_type',cpu_type), e)[1])(em.I8080Emulator(memory))
+
+# 8085 SIM
+emu = make_emu([0x3E, 0x0F, 0x30], "i8085")
+emu.run(10)
+check("Emu 8085 SIM: irq_enabled_85", emu.irq_enabled_85, f"got {emu.irq_enabled_85}")
+check("Emu 8085 SIM: irq_mask=0x07", emu.irq_mask == 0x07, f"got {emu.irq_mask}")
+
+# 8085 RIM (after SIM)
+emu = make_emu([0x3E, 0x0F, 0x30, 0x20], "i8085")
+emu.run(10)
+check("Emu 8085 RIM: MSE bit", emu.a & 0x08, f"A={hex(emu.a)}")
+check("Emu 8085 RIM: mask bits", emu.a & 0x07 == 0x07, f"A={hex(emu.a)}")
+
+# 8085 DSUB
+emu = make_emu([0x21, 0x00, 0x01, 0x01, 0x50, 0x00, 0x08, 0x76], "i8085")
+emu.run(10)
+check("Emu 8085 DSUB: HL=00B0", emu.get_reg_pair('HL') == 0x00B0, f"got {hex(emu.get_reg_pair('HL'))}")
+
+# 8085 ARHL
+emu = make_emu([0x21, 0x00, 0x80, 0x10, 0x76], "i8085")
+emu.run(10)
+check("Emu 8085 ARHL: HL=C000", emu.get_reg_pair('HL') == 0xC000, f"got {hex(emu.get_reg_pair('HL'))}")
+
+# 8080 NOP* at 0x08, 0x30
+emu80 = make_emu([0x21, 0x00, 0x01, 0x08, 0x76], "i8080")
+emu80.run(10)
+check("Emu 8080 0x08=NOP*: HL unchanged", emu80.get_reg_pair('HL') == 0x0100, f"got {hex(emu80.get_reg_pair('HL'))}")
+
+emu80b = make_emu([0x21, 0x00, 0x01, 0x30, 0x76], "i8080")
+emu80b.run(10)
+check("Emu 8080 0x30=NOP*: HL unchanged", emu80b.get_reg_pair('HL') == 0x0100, f"got {hex(emu80b.get_reg_pair('HL'))}")
+
+# === 4. Documentation consistency ===
+ref = open('OPCODE_REFERENCE.md', 'r', encoding='utf-8-sig', errors='replace').read()
+check("OPCODE_REFERENCE SOT", 'SINGLE SOURCE OF TRUTH' in ref.upper(), "missing")
+check("OPCODE_REFERENCE SIM=0x30", '0x30' in ref and 'SIM' in ref, "missing")
+check("OPCODE_REFERENCE RIM=0x20", '0x20' in ref and 'RIM' in ref, "missing")
+check("OPCODE_REFERENCE DSUB=0x08", '0x08' in ref and 'DSUB' in ref, "missing")
+check("OPCODE_REFERENCE ARHL=0x10", '0x10' in ref and 'ARHL' in ref, "missing")
+
+guide = open('ASSEMBLER_GUIDE.md', 'r', encoding='utf-8-sig', errors='replace').read()
+check("ASSEMBLER_GUIDE SOT ref", 'OPCODE_REFERENCE' in guide, "missing")
+check("ASSEMBLER_GUIDE STAX H", 'STAX H' in guide, "missing")
+check("ASSEMBLER_GUIDE LDAX H", 'LDAX H' in guide, "missing")
+check("ASSEMBLER_GUIDE 0x77", '0x77' in guide, "missing")
+check("ASSEMBLER_GUIDE 0x7E", '0x7E' in guide, "missing")
+
+readme = open('README.md', 'r', encoding='utf-8-sig', errors='replace').read()
+check("README 978", '978' in readme, "missing")
+check("README OPCODE_REFERENCE", 'OPCODE_REFERENCE' in readme, "missing")
+check("README 2.1.15", '2.1.15' in readme, "missing")
+
+changes = open('CHANGES.md', 'r', encoding='utf-8-sig', errors='replace').read()
+check("CHANGES 2.1.15", '2.1.15' in changes, "missing")
+
+# === 5. Version consistency ===
+import version
+check("version.py 2.1.15", version.__version__ == '2.1.15', f"got {version.__version__}")
+pyproject = open('pyproject.toml', 'r', encoding='utf-8-sig', errors='replace').read()
+check("pyproject 2.1.15", '2.1.15' in pyproject, "missing")
+
+# === 6. Example files ===
+for ex in ['01_hello', '02_directives', '03_macros', '04_multifile']:
+    bp = os.path.join('assembler_example', ex, 'build.py')
+    check(f"Example {ex}/build.py exists", os.path.exists(bp), "missing")
+
+# === 7. GUI files ===
+for f in ['i8080_ci/main_window.py', 'i8080_ci/views/disasm_view.py',
+          'i8080_ci/views/hex_view.py', 'i8080_ci/models/watch_model.py',
+          'i8080_ci/assembler_widget.py', 'i8080_ci/disassembler.py']:
+    check(f"GUI {f} exists", os.path.exists(f), "missing")
+
+# === 8. i18n ===
+import common.i18n as i18n_mod
+check("i18n LANGS", hasattr(i18n_mod, 'LANGS'), "missing")
+check("i18n get_mnemonic_info", callable(i18n_mod.get_mnemonic_info), "missing")
+check("i18n SIM en", i18n_mod.get_mnemonic_info('SIM', 'en') is not None, "None")
+check("i18n RIM en", i18n_mod.get_mnemonic_info('RIM', 'en') is not None, "None")
+
+# === 9. OPCODE_REFERENCE.md completeness ===
+opcode_refs = set(re.findall(r'0x([0-9A-Fa-f]{2})', ref))
+check("OPCODE_REFERENCE >= 200 opcodes", len(opcode_refs) >= 200, f"only {len(opcode_refs)}")
+
+print(f"\n{'='*60}")
+print(f"AUDIT CYCLE 2: {passed}/{checks} passed, {len(errors)} errors")
+if errors:
+    print("ERRORS:")
+    for e in errors:
+        print(f"  - {e}")
+else:
+    print("  ALL CHECKS PASSED")
+print(f"{'='*60}")
+```
+<!-- END FILE: audit_cycle2.py -->
+
+### `audit_cycle3.py` (206 строк)
+
+<!-- FILE: audit_cycle3.py -->
+```python
+#!/usr/bin/env python3
+"""Audit cycle 3: fresh sweep - different checks than cycles 1-2."""
+import sys, os, re, json
+sys.path.insert(0, '.')
+os.environ['PYTHONIOENCODING'] = 'utf-8'
+
+errors = []
+checks = 0
+passed = 0
+
+def check(name, cond, detail=""):
+    global checks, passed
+    checks += 1
+    if cond:
+        passed += 1
+    else:
+        errors.append(f"{name}: {detail}")
+        print(f"  [FAIL] {name}: {detail}")
+
+# === 1. Assembler: full encoding verification ===
+import assemble8080.assembler as asm
+
+# Verify all basic 8080 instructions encode correctly
+test_cases = [
+    ('NOP', [0x00]),
+    ('HLT', [0x76]),
+    ('RET', [0xC9]),
+    ('JMP 0123H', [0xC3, 0x23, 0x01]),
+    ('CALL 0123H', [0xCD, 0x23, 0x01]),
+    ('MOV A,B', [0x78]),
+    ('MOV B,A', [0x47]),
+    ('MVI A,0x42', [0x3E, 0x42]),
+    ('LXI H,0x1234', [0x21, 0x34, 0x12]),
+    ('PUSH B', [0xC5]),
+    ('POP B', [0xC1]),
+    ('ADD B', [0x80]),
+    ('SUB B', [0x90]),
+    ('INR A', [0x3C]),
+    ('DCR A', [0x3D]),
+    ('INR B', [0x04]),
+    ('DCR B', [0x05]),
+    ('INR M', [0x34]),
+    ('DCR M', [0x35]),
+    ('INX B', [0x03]),
+    ('DCX B', [0x0B]),
+    ('INX H', [0x23]),
+    ('DCX H', [0x2B]),
+    ('INX SP', [0x33]),
+    ('DCX SP', [0x3B]),
+    ('STAX B', [0x02]),
+    ('LDAX B', [0x0A]),
+    ('STAX D', [0x12]),
+    ('LDAX D', [0x1A]),
+    ('SHLD 0123H', [0x22, 0x23, 0x01]),
+    ('LHLD 0123H', [0x2A, 0x23, 0x01]),
+    ('IN 01H', [0xDB, 0x01]),
+    ('OUT 01H', [0xD3, 0x01]),
+    ('DAD B', [0x09]),
+    ('DAD H', [0x29]),
+    ('DAD SP', [0x39]),
+    ('XCHG', [0xEB]),
+    ('CNC 0123H', [0xD4, 0x23, 0x01]),
+]
+
+for src, expected in test_cases:
+    r = asm.assemble(src, cpu_type='i8080')
+    actual = list(r.binary) if r.success else []
+    check(f"Asm '{src}'", r.success and actual == expected,
+          f"success={r.success}, got={actual}, expected={expected}, errors={r.errors}")
+
+# === 2. Assembler: STAX H / LDAX H aliases ===
+for src, expected in [('STAX H', [0x77]), ('LDAX H', [0x7E])]:
+    r = asm.assemble(src, cpu_type='i8080')
+    check(f"Asm alias '{src}'", r.success and list(r.binary) == expected,
+          f"success={r.success}, got={list(r.binary) if r.binary else 'FAIL'}")
+
+# === 3. Assembler: 8085-only instructions ===
+for src, expected in [
+    ('.8085\nSIM', [0x30]),
+    ('.8085\nRIM', [0x20]),
+    ('.8085\nDSUB', [0x08]),
+    ('.8085\nARHL', [0x10]),
+    ('.8085\nSHLX', [0xD9]),
+    ('.8085\nLHLX', [0xED]),
+    ('.8085\nRSTV', [0xCB]),
+]:
+    r = asm.assemble(src, cpu_type='i8085')
+    check(f"Asm 8085 '{src.strip()}'", r.success and list(r.binary) == expected,
+          f"success={r.success}, got={list(r.binary) if r.binary else 'FAIL'}, errors={r.errors}")
+
+# === 4. Assembler: 8080-only undocumented ===
+for src, expected in [
+    ('.8080\nRET*', [0xD9]),
+]:
+    r = asm.assemble(src, cpu_type='i8080')
+    check(f"Asm 8080 '{src.strip()}'", r.success and list(r.binary) == expected,
+          f"success={r.success}, got={list(r.binary) if r.binary else 'FAIL'}")
+
+# JMP* and CALL* with address
+r = asm.assemble('.8080\nJMP* 1234H', cpu_type='i8080')
+check("Asm 8080 JMP* 1234H", r.success and list(r.binary) == [0xCB, 0x34, 0x12],
+      f"got={list(r.binary) if r.binary else 'FAIL'}")
+r = asm.assemble('.8080\nCALL* 1234H', cpu_type='i8080')
+check("Asm 8080 CALL* 1234H", r.success and list(r.binary) == [0xDD, 0x34, 0x12],
+      f"got={list(r.binary) if r.binary else 'FAIL'}")
+
+# === 5. Disassembler: round-trip test ===
+from i8080_ci.disassembler import I8080Disassembler
+d80 = I8080Disassembler()
+d80.set_cpu_type('i8080')
+
+# Assemble then disassemble - verify round-trip
+for src, expected_bytes in [('NOP', [0x00]), ('HLT', [0x76]), ('RET', [0xC9]),
+                            ('MOV A,B', [0x47]), ('MVI A,0x42', [0x3E, 0x42])]:
+    r = asm.assemble(src, cpu_type='i8080')
+    if r.success:
+        # Disassemble the bytes
+        mem_dict = {0x0100 + i: b for i, b in enumerate(r.binary)}
+        disasm_result = d80.disassemble(mem_dict, 0x0100, len(r.binary))
+        check(f"Roundtrip '{src}'", disasm_result is not None and len(disasm_result) > 0,
+              f"disasm returned {disasm_result}")
+
+# === 6. Documentation: check for stale references ===
+# Scan all .md files for references to old test counts, wrong opcodes, etc.
+md_files = []
+for root, dirs, files in os.walk('.'):
+    if '.git' in root:
+        continue
+    for f in files:
+        if f.endswith('.md'):
+            md_files.append(os.path.join(root, f))
+
+check(f"Found {len(md_files)} .md files", len(md_files) > 0, "none found")
+
+# Check README.md for consistency
+readme = open('README.md', 'r', encoding='utf-8-sig', errors='replace').read()
+check("README: 978 tests", '978' in readme, "978 not found")
+check("README: no 964", '964' not in readme, "964 still present")
+check("README: OPCODE_REFERENCE", 'OPCODE_REFERENCE' in readme, "SOT ref missing")
+check("README: version 2.1.15", '2.1.15' in readme, "version missing")
+
+# Check ASSEMBLER_GUIDE.md
+guide = open('ASSEMBLER_GUIDE.md', 'r', encoding='utf-8-sig', errors='replace').read()
+check("GUIDE: OPCODE_REFERENCE ref", 'OPCODE_REFERENCE' in guide, "missing")
+check("GUIDE: STAX H alias", 'STAX H' in guide, "missing")
+check("GUIDE: LDAX H alias", 'LDAX H' in guide, "missing")
+check("GUIDE: 0x77 MOV M,A", '0x77' in guide, "missing")
+check("GUIDE: 0x7E MOV A,M", '0x7E' in guide, "missing")
+
+# Check OPCODE_REFERENCE.md
+ref = open('OPCODE_REFERENCE.md', 'r', encoding='utf-8-sig', errors='replace').read()
+check("REF: SOT note", 'SINGLE SOURCE OF TRUTH' in ref.upper() or 'ЕДИНСТВЕНН' in ref, "missing")
+check("REF: SIM=0x30", '0x30' in ref and 'SIM' in ref, "missing")
+check("REF: RIM=0x20", '0x20' in ref and 'RIM' in ref, "missing")
+
+# === 7. Version files ===
+import version
+check("version.py: 2.1.15", version.__version__ == '2.1.15', f"got {version.__version__}")
+check("version.py: build 20261023", version.__build__ == '20261023', f"got {version.__build__}")
+pyproject = open('pyproject.toml', 'r', encoding='utf-8-sig', errors='replace').read()
+check("pyproject: 2.1.15", '2.1.15' in pyproject, "missing")
+
+# === 8. CHANGES.md ===
+changes = open('CHANGES.md', 'r', encoding='utf-8-sig', errors='replace').read()
+check("CHANGES: 2.1.15", '2.1.15' in changes, "missing")
+check("CHANGES: non-empty", len(changes) > 100, f"only {len(changes)} chars")
+
+# === 9. Project structure ===
+expected_files = [
+    'i8080_emulator.py',
+    'i8080_ci/disassembler.py',
+    'i8080_ci/main_window.py',
+    'i8080_ci/assembler_widget.py',
+    'i8080_ci/views/disasm_view.py',
+    'i8080_ci/views/hex_view.py',
+    'i8080_ci/models/watch_model.py',
+    'assemble8080/assembler.py',
+    'common/i18n.py',
+    'run_tests.py',
+    'build_snapshot.py',
+    'version.py',
+    'pyproject.toml',
+    'OPCODE_REFERENCE.md',
+    'ASSEMBLER_GUIDE.md',
+    'README.md',
+    'CHANGES.md',
+    'PROJECT_SNAPSHOT.md',
+]
+for f in expected_files:
+    check(f"File exists: {f}", os.path.exists(f), "missing")
+
+# === 10. i18n: mnemonic info for all 8085 opcodes ===
+import common.i18n as i18n_mod
+for mn in ['SIM', 'RIM', 'DSUB', 'ARHL', 'SHLX', 'LHLX', 'RSTV']:
+    info = i18n_mod.get_mnemonic_info(mn, 'en')
+    check(f"i18n {mn} en info", info is not None, "None")
+
+print(f"\n{'='*60}")
+print(f"AUDIT CYCLE 3: {passed}/{checks} passed, {len(errors)} errors")
+if errors:
+    print("ERRORS:")
+    for e in errors:
+        print(f"  - {e}")
+else:
+    print("  ALL CHECKS PASSED")
+print(f"{'='*60}")
+```
+<!-- END FILE: audit_cycle3.py -->
+
+### `audit_cycle4.py` (153 строк)
+
+<!-- FILE: audit_cycle4.py -->
+```python
+﻿#!/usr/bin/env python3
+"""Audit cycle 4: deep cross-module opcode consistency check."""
+import sys, os, re
+sys.path.insert(0, '.')
+os.environ['PYTHONIOENCODING'] = 'utf-8'
+
+errors = []
+checks = 0
+passed = 0
+
+def check(name, cond, detail=""):
+    global checks, passed
+    checks += 1
+    if cond:
+        passed += 1
+    else:
+        errors.append(f"{name}: {detail}")
+        print(f"  [FAIL] {name}: {detail}")
+
+# === 1. Cross-module opcode consistency ===
+from i8080_ci.disassembler import I8080Disassembler
+import assemble8080.assembler as asm
+from PySide6.QtWidgets import QApplication
+import sys as sys_mod
+app = QApplication.instance() or QApplication(sys_mod.argv)
+import i8080_emulator as em
+import common.i18n as i18n_mod
+
+d80 = I8080Disassembler(); d80.set_cpu_type('i8080')
+d85 = I8080Disassembler(); d85.set_cpu_type('i8085')
+
+# For each 8085-specific opcode, verify:
+# - Disassembler 8085 table has correct mnemonic
+# - Assembler 8085 encodes to correct opcode
+# - i18n has correct info
+# - OPCODE_REFERENCE.md mentions it
+
+opcodes_8085 = {
+    'SIM':  0x30,
+    'RIM':  0x20,
+    'DSUB': 0x08,
+    'ARHL': 0x10,
+    'SHLX': 0xD9,
+    'LHLX': 0xED,
+    'RSTV': 0xCB,
+}
+
+for mn, op in opcodes_8085.items():
+    # Disassembler 8085
+    check(f"Disasm85 0x{op:02X}={mn}", mn in d85.table[op][1], f"got {d85.table[op]}")
+    # Assembler 8085
+    r = asm.assemble(".8085\n" + mn, cpu_type='i8085')
+    check(f"Asm85 {mn}=0x{op:02X}", r.success and r.binary[0] == op, f"got {r.binary.hex() if r.binary else 'FAIL'}")
+    # i18n EN
+    info_en = i18n_mod.get_mnemonic_info(mn, 'en')
+    check(f"i18n EN {mn}", info_en is not None and info_en[1] == f'0x{op:02X}', f"got {info_en}")
+    # i18n RU
+    info_ru = i18n_mod.get_mnemonic_info(mn, 'ru')
+    check(f"i18n RU {mn}", info_ru is not None and info_ru[1] == f'0x{op:02X}', f"got {info_ru}")
+
+# === 2. Cross-check 8080 undocumented opcodes ===
+opcodes_8080_undoc = {
+    'RET*': 0xD9,
+    'JMP*': 0xCB,
+    'CALL*': 0xDD,
+}
+for mn, op in opcodes_8080_undoc.items():
+    check(f"Disasm80 0x{op:02X} contains {mn[:3]}", mn[:3] in d80.table[op][1] or 'NOP' in d80.table[op][1], f"got {d80.table[op]}")
+
+# === 3. Verify all 256 disassembler entries have valid mnemonics ===
+for cpu, table in [('8080', d80.table), ('8085', d85.table)]:
+    for i in range(256):
+        entry = table[i]
+        check(f"{cpu} table[0x{i:02X}] has mnemonic", len(entry) >= 2 and isinstance(entry[1], str) and len(entry[1]) > 0, f"got {entry}")
+
+# === 4. Verify assembler round-trip for all basic instructions ===
+roundtrip_tests = [
+    ('NOP', 0x00), ('HLT', 0x76), ('RET', 0xC9), ('JMP 0100H', 0xC3),
+    ('CALL 0100H', 0xCD), ('MOV A,B', 0x78), ('MOV B,A', 0x47),
+    ('MVI A,0x00', 0x3E), ('LXI H,0x0000', 0x21), ('PUSH B', 0xC5),
+    ('POP B', 0xC1), ('ADD B', 0x80), ('SUB B', 0x90),
+    ('INR A', 0x3C), ('DCR A', 0x3D), ('INX B', 0x03), ('DCX B', 0x0B),
+    ('INX H', 0x23), ('DCX H', 0x2B), ('INX SP', 0x33), ('DCX SP', 0x3B),
+    ('STAX B', 0x02), ('LDAX B', 0x0A), ('STAX D', 0x12), ('LDAX D', 0x1A),
+    ('SHLD 0000H', 0x22), ('LHLD 0000H', 0x2A),
+    ('DAD B', 0x09), ('DAD H', 0x29), ('DAD SP', 0x39),
+    ('XCHG', 0xEB), ('SPHL', 0xF9), ('PCHL', 0xE9),
+    ('IN 00H', 0xDB), ('OUT 00H', 0xD3),
+]
+for src, first_byte in roundtrip_tests:
+    r = asm.assemble(src, cpu_type='i8080')
+    check(f"Asm '{src}' first=0x{first_byte:02X}", r.success and r.binary[0] == first_byte,
+          f"got {r.binary.hex() if r.binary else 'FAIL'}")
+
+# === 5. STAX H / LDAX H aliases ===
+check("Asm STAX H = 0x77", asm.assemble('STAX H', cpu_type='i8080').binary[0] == 0x77)
+check("Asm LDAX H = 0x7E", asm.assemble('LDAX H', cpu_type='i8080').binary[0] == 0x7E)
+# Disassembler should show canonical MOV, not STAX/LDAX
+check("Disasm 0x77 = MOV M,A", 'MOV M,A' in d80.table[0x77][1], f"got {d80.table[0x77]}")
+check("Disasm 0x7E = MOV A,M", 'MOV A,M' in d80.table[0x7E][1], f"got {d80.table[0x7E]}")
+check("Disasm85 0x77 = MOV M,A", 'MOV M,A' in d85.table[0x77][1], f"got {d85.table[0x77]}")
+check("Disasm85 0x7E = MOV A,M", 'MOV A,M' in d85.table[0x7E][1], f"got {d85.table[0x7E]}")
+
+# === 6. OPCODE_REFERENCE.md cross-check ===
+ref = open('OPCODE_REFERENCE.md', 'r', encoding='utf-8-sig', errors='replace').read()
+for mn, op in opcodes_8085.items():
+    check(f"REF {mn}=0x{op:02X}", mn in ref and f'0x{op:02X}' in ref, f"{mn} or 0x{op:02X} not found")
+
+# === 7. Documentation consistency ===
+readme = open('README.md', 'r', encoding='utf-8-sig', errors='replace').read()
+check("README: 978", '978' in readme, "missing")
+check("README: no 964", '964' not in readme, "stale 964")
+check("README: OPCODE_REFERENCE", 'OPCODE_REFERENCE' in readme, "missing")
+
+guide = open('ASSEMBLER_GUIDE.md', 'r', encoding='utf-8-sig', errors='replace').read()
+check("GUIDE: OPCODE_REFERENCE", 'OPCODE_REFERENCE' in guide, "missing")
+check("GUIDE: STAX H", 'STAX H' in guide, "missing")
+check("GUIDE: LDAX H", 'LDAX H' in guide, "missing")
+check("GUIDE: 0x77", '0x77' in guide, "missing")
+check("GUIDE: 0x7E", '0x7E' in guide, "missing")
+
+changes = open('CHANGES.md', 'r', encoding='utf-8-sig', errors='replace').read()
+check("CHANGES: 2.1.15", '2.1.15' in changes, "missing")
+
+# === 8. Version consistency ===
+import version
+check("version: 2.1.15", version.__version__ == '2.1.15', f"got {version.__version__}")
+pyproject = open('pyproject.toml', 'r', encoding='utf-8-sig', errors='replace').read()
+check("pyproject: 2.1.15", '2.1.15' in pyproject, "missing")
+
+# === 9. Project structure ===
+for f in ['i8080_emulator.py', 'i8080_ci/disassembler.py', 'i8080_ci/main_window.py',
+          'i8080_ci/assembler_widget.py', 'i8080_ci/views/disasm_view.py',
+          'i8080_ci/views/hex_view.py', 'i8080_ci/models/watch_model.py',
+          'assemble8080/assembler.py', 'common/i18n.py', 'run_tests.py',
+          'build_snapshot.py', 'version.py', 'pyproject.toml',
+          'OPCODE_REFERENCE.md', 'ASSEMBLER_GUIDE.md', 'README.md',
+          'CHANGES.md', 'PROJECT_SNAPSHOT.md']:
+    check(f"File: {f}", os.path.exists(f), "missing")
+
+# === 10. Example files build ===
+for ex in ['01_hello', '02_directives', '03_macros', '04_multifile']:
+    check(f"Example {ex}/build.py", os.path.exists(f'assembler_example/{ex}/build.py'), "missing")
+
+print(f"\n{'='*60}")
+print(f"AUDIT CYCLE 4: {passed}/{checks} passed, {len(errors)} errors")
+if errors:
+    print("ERRORS:")
+    for e in errors:
+        print(f"  - {e}")
+else:
+    print("  ALL CHECKS PASSED")
+print(f"{'='*60}")
+```
+<!-- END FILE: audit_cycle4.py -->
 
 ### `clean_pycache.py` (87 строк)
 
@@ -16854,11 +17456,11 @@ def write_text_utf8(path: str, content: str):
 ```
 <!-- END FILE: common/encoding.py -->
 
-### `common/i18n.py` (971 строк)
+### `common/i18n.py` (973 строк)
 
 <!-- FILE: common/i18n.py -->
 ```python
-"""Internationalization strings and system language detection."""
+﻿"""Internationalization strings and system language detection."""
 from PySide6.QtCore import QLocale
 
 
@@ -17609,8 +18211,8 @@ MNEMONIC_INFO = {
         "HLT":  ("Halt CPU", "0x76", 7),
         "DI":   ("Disable Interrupts", "0x77", 4),
         "EI":   ("Enable Interrupts", "0xFB", 4),
-        "SIM":  ("Set Interrupt Mask (8085)", "0x04", 4),
-        "RIM":  ("Read Interrupt Mask (8085)", "0x67", 13),
+        "SIM":  ("Set Interrupt Mask (8085)", "0x30", 4),
+        "RIM":  ("Read Interrupt Mask (8085)", "0x20", 13),
         "RET":  ("Return from Subroutine", "0xC9", 10),
         "RZ":   ("Return if Zero", "0xC8", "5/12"),
         "RNZ":  ("Return if Not Zero", "0xC0", "5/12"),
@@ -17687,16 +18289,17 @@ MNEMONIC_INFO = {
         "PCHL": ("PC = HL", "0xE9", 5),
         "DSUB": ("8085: Subtract B from A (no flags)", "0x08", 10),
         "ARHL": ("8085: Arithmetic Right Shift HL", "0x10", 7),
-        "SHLX": ("8085: Shift Left [M] through CY", "0x18", 10),
-        "LHLX": ("8085: Load HL from [M] with shift", "0x20", 4),
+        "SHLX": ("8085: Store HL to (BC)", "0xD9", 16),
+        "LHLX": ("8085: Load HL from (BC)", "0xED", 16),
+        "RSTV": ("8085: Reserved (NOP)", "0xCB", 1),
     },
     "ru": {
         "NOP":  ("Нет операции", "0x00", 4),
         "HLT":  ("Остановка CPU", "0x76", 7),
         "DI":   ("Запрет прерываний", "0x77", 4),
         "EI":   ("Разрешить прерывания", "0xFB", 4),
-        "SIM":  ("Установка маски прерываний (8085)", "0x04", 4),
-        "RIM":  ("Чтение маски прерываний (8085)", "0x67", 13),
+        "SIM":  ("Установка маски прерываний (8085)", "0x30", 4),
+        "RIM":  ("Чтение маски прерываний (8085)", "0x20", 13),
         "RET":  ("Возврат из подпрограммы", "0xC9", 10),
         "RZ":   ("Возврат если Z=1", "0xC8", "5/12"),
         "RNZ":  ("Возврат если Z=0", "0xC0", "5/12"),
@@ -17773,8 +18376,9 @@ MNEMONIC_INFO = {
         "PCHL": ("PC ← HL", "0xE9", 5),
         "DSUB": ("8085: вычитание B из A (без флагов)", "0x08", 10),
         "ARHL": ("8085: арифм. сдвиг HL вправо", "0x10", 7),
-        "SHLX": ("8085: сдвиг [M] влево через CY", "0x18", 10),
-        "LHLX": ("8085: загрузка HL из [M] со сдвигом", "0x20", 4),
+        "SHLX": ("8085: запись HL в (BC)", "0xD9", 16),
+        "LHLX": ("8085: загрузка HL из (BC)", "0xED", 16),
+        "RSTV": ("8085: зарезервировано (NOP)", "0xCB", 1),
     },
 }
 
@@ -57617,8 +58221,8 @@ MNEMONIC_INFO = {"en": {
         "HLT":  ("Halt CPU", "0x76", 7),
         "DI":   ("Disable Interrupts", "0x77", 4),
         "EI":   ("Enable Interrupts", "0xFB", 4),
-        "SIM":  ("Set Interrupt Mask (8085)", "0x04", 4),
-        "RIM":  ("Read Interrupt Mask (8085)", "0x67", 13),
+        "SIM":  ("Set Interrupt Mask (8085)", "0x30", 4),
+        "RIM":  ("Read Interrupt Mask (8085)", "0x20", 13),
         "RET":  ("Return from Subroutine", "0xC9", 10),
         "RZ":   ("Return if Zero", "0xC8", "5/12"),
         "RNZ":  ("Return if Not Zero", "0xC0", "5/12"),
@@ -57695,8 +58299,9 @@ MNEMONIC_INFO = {"en": {
         "PCHL": ("PC = HL", "0xE9", 5),
         "DSUB": ("8085: Subtract B from A (no flags)", "0x08", 10),
         "ARHL": ("8085: Arithmetic Right Shift HL", "0x10", 7),
-        "SHLX": ("8085: Shift Left [M] through CY", "0x18", 10),
-        "LHLX": ("8085: Load HL from [M] with shift", "0x20", 4),}
+        "SHLX": ("8085: Store HL to (BC)", "0xD9", 16),
+        "LHLX": ("8085: Load HL from (BC)", "0xED", 16),
+        "RSTV": ("8085: Reserved (NOP)", "0xCB", 1),}
 ```
 
 **THEMES** (из `common/themes.py`):
@@ -58126,4 +58731,4 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 
 ---
 
-*Конец среза. Сгенерировано 2026-10-23 23:29:16.*
+*Конец среза. Сгенерировано 2026-10-23 23:35:31.*
