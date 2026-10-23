@@ -367,6 +367,7 @@ python i8080_emulator.py
 | [MCP_GUIDE.md](MCP_GUIDE.md) | MCP integration guide / Руководство по MCP-интеграции |
 | [SCRIPTS_GUIDE.md](SCRIPTS_GUIDE.md) | Automation scripts guide / Руководство по скриптам |
 | [ASSEMBLER_GUIDE.md](ASSEMBLER_GUIDE.md) | Assembler programmer's guide / Руководство программиста по ассемблеру |
+| [OPCODE_REFERENCE.md](OPCODE_REFERENCE.md) | **Canonical opcode table (SINGLE SOURCE OF TRUTH)** / Каноническая таблица опкодов |
 | [ANALYSIS.md](ANALYSIS.md) | Technical project analysis / Технический анализ проекта |
 | [CHANGES.md](CHANGES.md) | Changelog / Журнал изменений |
 | [I18N_AUDIT.md](I18N_AUDIT.md) | i18n audit report / Аудит интернационализации |

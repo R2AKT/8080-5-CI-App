@@ -19,6 +19,8 @@ assemble8080 — компактный макроассемблер Intel 8080.
     else:
         for err in result.errors:
             print(err)
+Каноническая таблица опкодов: OPCODE_REFERENCE.md (SINGLE SOURCE OF TRUTH).
+Никогда не выдумывай опкоды — сверяйся с этим файлом.
 """
 
 from __future__ import annotations
