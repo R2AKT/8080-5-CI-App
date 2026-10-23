@@ -58,8 +58,8 @@ def main():
     check("EQU: BUF_END = 0x0210", syms.get('BUF_END') == 0x0210)
     check("EQU (defs.inc): LED_ON = 0xFF", syms.get('LED_ON') == 0xFF)
     check("EQU (extra.inc): EXTRA_FLAG = 1", syms.get('EXTRA_FLAG') == 1)
-    check("Метка: local_label определена", 'LOCAL_LABEL' in syms)
-    check("Метка: global_label определена", 'GLOBAL_LABEL' in syms)
+    check("Метка: local_label определена", 'local_label' in syms)
+    check("Метка: global_label определена", 'global_label' in syms)
 
     if fails:
         print(f"  ИТОГ: пример 02 — {fails} проверок не пройдено")

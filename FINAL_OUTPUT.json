@@ -1,0 +1,3 @@
+{
+  "summary": "Documentation audit of i8080-5 CI v2.1.15 complete. Test suite: 978 passed / 0 failed / 38 files. 4 issues found (3 HIGH: stale test counts in README.md and CHANGES.md, wrong version/date in USER_GUIDE.md; 1 LOW: 243 vs 246 instruction count inconsistency in OPCODE_REFERENCE.md). ASSEMBLER_GUIDE.md opcode mappings verified correct against assembler.py. All cross-references valid, EN/RU sections consistent. Full report in DOCS_AUDIT_REPORT.md."
+}

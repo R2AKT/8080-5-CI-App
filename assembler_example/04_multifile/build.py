@@ -74,13 +74,13 @@ def main():
     check("app.map создан", os.path.exists(MAP))
 
     b = lr.binary
-    # main.asm в 0x0100: MVI A,0x42 (3E 42) + CALL HELPER (CD 00 02) + HLT (76)
+    # main.asm в 0x0100: MVI A,0x42 (3E 42) + CALL HELPER (CD 06 01) + HLT (76)
     check("app.bin[0x0100]: 3E 42 CD 06 01 76",
           b[0x0100:0x0106] == bytes([0x3E, 0x42, 0xCD, 0x06, 0x01, 0x76]))
-    # helper.asm в 0x0200: ADD B (80) + RET (C9)
+    # helper.asm в 0x0106: ADD B (80) + RET (C9) — последовательная раскладка от ORIGIN
     check("app.bin[0x0106]: 80 C9 (helper после main)",
           b[0x0106:0x0108] == bytes([0x80, 0xC9]))
-    # CALL HELPER должен быть пропатчен на 0x0200 (little-endian: 00 02)
+    # CALL HELPER должен быть пропатчен на 0x0106 (little-endian: 06 01)
     check("CALL HELPER пропатчен на 0x0106",
           b[0x0103:0x0105] == bytes([0x06, 0x01]))
 

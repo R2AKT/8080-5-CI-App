@@ -1,6 +1,6 @@
 # СРЕЗ ПРОЕКТА (PROJECT SNAPSHOT)
 
-> Сгенерировано: 2026-10-23 19:47:18
+> Сгенерировано: 2026-10-23 23:11:04
 > Корень проекта: `c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis`
 > Код: 163 файлов, 34464 строк
 > Тесты: 78 файлов, 12082 строк
@@ -176,10 +176,10 @@
 │   │   ├── build.py  [109 строк]
 │   │   ├── helper.asm  [13 строк]
 │   │   ├── helper.map  [9 строк]
-│   │   ├── helper.obj  [17 строк]
+│   │   ├── helper.obj  [18 строк]
 │   │   ├── main.asm  [15 строк]
 │   │   ├── main.map  [10 строк]
-│   │   └── main.obj  [26 строк]
+│   │   └── main.obj  [27 строк]
 │   ├── _common.py  [87 строк]
 │   ├── build_all.py  [52 строк]
 │   └── README.md  [55 строк]
@@ -554,13 +554,16 @@
 ├── Addendum.txt  [81 строк]
 ├── ANALYSIS.md  [536 строк]
 ├── ANALYSIS_ASSEMBLER.md  [341 строк]
+├── ASSEMBLER_AUDIT_REPORT.md  [177 строк]
 ├── ASSEMBLER_GUIDE.md  [1375 строк]
 ├── build_linux.sh  [42 строк]
 ├── CHANGES.md  [2839 строк]
 ├── claude_desktop_config.json  [7 строк]
 ├── clean_pycache.py  [87 строк]
 ├── config.json  [10 строк]
+├── DOCS_AUDIT_REPORT.md  [41 строк]
 ├── Doxyfile  [2970 строк]
+├── FINAL_OUTPUT.json  [3 строк]
 ├── gen_refs.py  [93 строк]
 ├── I18N_AUDIT.md  [310 строк]
 ├── i8080_CI.py  [20 строк]
@@ -577,7 +580,7 @@
 ├── md2html.py  [372 строк]
 ├── micro-80_bp_preset.json  [77 строк]
 ├── OPCODE_REFERENCE.md  [484 строк]
-├── PROJECT_SNAPSHOT.md  [56880 строк]
+├── PROJECT_SNAPSHOT.md  [57813 строк]
 ├── pyproject.toml  [61 строк]
 ├── README.md  [391 строк]
 ├── requirements.txt  [22 строк]
@@ -1965,15 +1968,6 @@
 ---
 
 ### `i8080_ci/disassembler.py` (233 строк)
-
-> I8080 CPU disassembler.
-
-**Классы (1):**
-- **I8080Disassembler**
-  - Методы (10): __init__(self, map_file, cpu_type), set_cpu_type(self, cpu_type), _generate_table(self), get_target(self, op, args), get_mnemonic(self, byte_val), set_map(self, map_file), set_equ(self, equ_dict), _resolve_symbol(self, addr), _substitute_equ(self, text), disassemble(self, mem_dict, start_addr, length)
-  - Атрибуты: REGS, ALUS, ALUS_IMM, RP, RP_PUSH, CC
-
-**Константы:** _JUMP_BASE, JUMP_OPCODES, JUMP_OPCODES_8085
 
 ---
 
@@ -16075,8 +16069,8 @@ def main():
     check("EQU: BUF_END = 0x0210", syms.get('BUF_END') == 0x0210)
     check("EQU (defs.inc): LED_ON = 0xFF", syms.get('LED_ON') == 0xFF)
     check("EQU (extra.inc): EXTRA_FLAG = 1", syms.get('EXTRA_FLAG') == 1)
-    check("Метка: local_label определена", 'LOCAL_LABEL' in syms)
-    check("Метка: global_label определена", 'GLOBAL_LABEL' in syms)
+    check("Метка: local_label определена", 'local_label' in syms)
+    check("Метка: global_label определена", 'global_label' in syms)
 
     if fails:
         print(f"  ИТОГ: пример 02 — {fails} проверок не пройдено")
@@ -16242,13 +16236,13 @@ def main():
     check("app.map создан", os.path.exists(MAP))
 
     b = lr.binary
-    # main.asm в 0x0100: MVI A,0x42 (3E 42) + CALL HELPER (CD 00 02) + HLT (76)
+    # main.asm в 0x0100: MVI A,0x42 (3E 42) + CALL HELPER (CD 06 01) + HLT (76)
     check("app.bin[0x0100]: 3E 42 CD 06 01 76",
           b[0x0100:0x0106] == bytes([0x3E, 0x42, 0xCD, 0x06, 0x01, 0x76]))
-    # helper.asm в 0x0200: ADD B (80) + RET (C9)
+    # helper.asm в 0x0106: ADD B (80) + RET (C9) — последовательная раскладка от ORIGIN
     check("app.bin[0x0106]: 80 C9 (helper после main)",
           b[0x0106:0x0108] == bytes([0x80, 0xC9]))
-    # CALL HELPER должен быть пропатчен на 0x0200 (little-endian: 00 02)
+    # CALL HELPER должен быть пропатчен на 0x0106 (little-endian: 06 01)
     check("CALL HELPER пропатчен на 0x0106",
           b[0x0103:0x0105] == bytes([0x06, 0x01]))
 
@@ -20603,7 +20597,7 @@ class BusWorker(QObject):
 
 <!-- FILE: i8080_ci/disassembler.py -->
 ```python
-"""I8080 CPU disassembler."""
+﻿"""I8080 CPU disassembler."""
 
 # === Опкоды переходов для подсветки в трассировке ===
 # Базовые переходы (одинаковы для 8080 и 8085)
@@ -56663,319 +56657,186 @@ EN and RU remains in `LANGS`.
 
 ■ РАЗДЕЛ 9: ИЗВЕСТНЫЕ ПРОБЛЕМЫ
 
-### Источник: `I18N_AUDIT.md`
+### Источник: `ASSEMBLER_AUDIT_REPORT.md`
 
 ```markdown
-# I18n Audit Report / Аудит интернационализации
-
-## i8080-5 CI
-
-**STATUS: ✅ FULL PARITY — 477 KEYS PER LANGUAGE / ПОЛНОЕ СООТВЕТСТВИЕ — 477 КЛЮЧЕЙ НА ЯЗЫК**
-
-Pass 4 (2026-09-08) + Pass 5 (2026-09-14) — all 26 issues resolved plus additional dm_* / dw_* keys added.
-Re-audit (2026-10-09) — key count re-verified from `common/i18n.py`: **477 keys per language, full EN/RU parity, no gaps**.
-
----
-
-**Date / Дата:** 2026-09-08 (audit), 2026-09-14 (final fix), 2026-10-09 (re-audit)
-**Files / Файлы:** `common/i18n.py`, `i8080_ci/i18n.py`, `i8080_ci/main_window.py`, `i8080_ci/assembler_widget.py`, `i8080_ci/views/search.py`, `ui/device_manager.py`, `ui/device_window.py`, `common/encoding.py`, `mcp_server.py`
-**i18n System / Система i18n:** `common/i18n.py` → `LANGS["en"]` / `LANGS["ru"]` (477 keys per language, full parity)
-
----
-
-## Current State — Re-audit 2026-10-09 / Текущее состояние — повторный аудит 2026-10-09
-
-**EN:** The key counts below were re-verified by parsing the actual `LANGS` dictionary in `common/i18n.py` (AST parse of the real file, not a guess).
-
-**RU:** Количество ключей ниже перепроверено разбором фактического словаря `LANGS` в `common/i18n.py` (AST-разбор реального файла, не оценка).
-
-### Key Count & Parity / Количество ключей и соответствие
-
-| Language / Язык | Keys / Ключей | Source / Источник |
-|--------|--------|---------|
-| EN | **477** | `common/i18n.py` → `LANGS["en"]` |
-| RU | **477** | `common/i18n.py` → `LANGS["ru"]` |
-
-**Parity / Соответствие:** ✅ **FULL PARITY** — every key in `en` has a matching key in `ru`, and vice versa.
-
-**Gaps / Разрывы:** **None / Нет** — keys only in `en`: **0**; keys only in `ru`: **0**.
-
-> **Note / Примечание:** The previous audit (2026-09-14) reported **378** keys per language. Since then **+99** keys were added, mostly for Assembler v2 (`asm_*`), trace, watch, breakpoints, compare, scripts, and help features.
-
-### Assembler v2 Keys / Ключи Assembler v2
-
-**EN:** The Assembler v2 feature set is covered by **74** `asm_*` keys (present in both `en` and `ru`). The workspace / tabs / labels sub-features map to the following keys:
-
-**RU:** Функционал Assembler v2 покрывается **74** ключами `asm_*` (присутствуют и в `en`, и в `ru`). Подфункции workspace / tabs / labels соответствуют следующим ключам:
-
-| Feature / Функция | Keys / Ключи |
-|---------|------|
-| Workspace (open/save) / Workspace (открыть/сохранить) | `asm_open_ws`, `asm_save_ws`, `asm_open_ws_title`, `asm_save_ws_title`, `asm_ws_filter`, `asm_ws_filter_save`, `asm_ws_loaded`, `asm_ws_saved`, `asm_ws_err`, `asm_ws_save_err` (10) |
-| Tabs / Вкладки | `asm_new_tab`, `asm_tab` (2) |
-| Labels / Метки | `asm_labels`, `asm_col_label` (2) |
-| Assemble / Link / Load / Save / Map / Obj / Errors / Прочее | the remaining 60 `asm_*` keys (e.g. `asm_assemble`, `asm_link`, `asm_load`, `asm_save`, `asm_map_saved`, `asm_obj_title`, `asm_errors`, `asm_placeholder`) |
-
-> **Honesty note / Примечание о точности:** There are **no** literal keys named `workspace`, `tabs`, or `global_label` in `LANGS`. Those Assembler v2 features are represented by the `asm_ws_*`, `asm_new_tab`/`asm_tab`, and `asm_labels`/`asm_col_label` key families listed above.
-
-### i18n Mechanism / Механизм i18n
-
-**EN:**
-
-- **`LANGS` dict** — defined in `common/i18n.py` (969 lines). A flat dictionary with two sections: `LANGS["en"]` and `LANGS["ru"]`, each mapping `key -> string`. No nested sub-dictionaries.
-- **`i8080_ci/i18n.py`** — a backward-compatible re-export: `from common.i18n import LANGS, get_system_language, set_language` (plus `THEMES` from `common.themes`).
-- **`self.tr(key)`** — the widget-level lookup, implemented in `i8080_ci/main_window.py` (line 261), `i8080_ci/bus_worker.py` (line 32), `i8080_ci/views/hex_view.py` (line 16), and `i8080_ci/views/search.py` (line 62). It resolves the key against the active language's `LANGS` section.
-- **`assembler_widget.py`** — does **not** use `self.tr()`; instead it defines a module-level `_tr(key)` helper (line 78) that reads `LANGS.get(lang, LANGS["en"]).get(key, key)`.
-- **Language switching / Переключение языка:**
-  - **GUI:** `MainWindow.lang_combo` is a `QComboBox` with items `["Русский", "English"]`. `on_lang_changed()` sets `self.current_lang`, calls `set_language(...)`, persists to settings, and calls `retranslate_ui()`.
-  - **MCP tools:** `get_language()` (returns `get_system_language()`) and `set_language(lang)` (validates `en`/`ru`, calls `common.i18n.set_language`, sets `mw.current_lang`, saves settings, calls `retranslate_ui()`). Registered in `mcp_server.py` (lines 969–970).
-- **`set_language` / `get_system_language`** — in `common/i18n.py`. `set_language(lang)` stores the choice in a module global `_current_lang`; `get_system_language()` returns `_current_lang` if set, otherwise falls back to `QLocale`-based detection (`ru`/`en`), defaulting to `en`.
-- **Supported languages / Поддерживаемые языки:** **Russian (`ru`)** and **English (`en`)** — two languages only.
-
-**RU:**
-
-- **Словарь `LANGS`** — определён в `common/i18n.py` (969 строк). Плоский словарь с двумя секциями: `LANGS["en"]` и `LANGS["ru"]`, каждая отображает `ключ -> строка`. Вложенных подсловарей нет.
-- **`i8080_ci/i18n.py`** — backward-compatible реэкспорт: `from common.i18n import LANGS, get_system_language, set_language` (плюс `THEMES` из `common.themes`).
-- **`self.tr(key)`** — виджетный поиск, реализован в `i8080_ci/main_window.py` (строка 261), `i8080_ci/bus_worker.py` (строка 32), `i8080_ci/views/hex_view.py` (строка 16) и `i8080_ci/views/search.py` (строка 62). Разрешает ключ по активной секции `LANGS`.
-- **`assembler_widget.py`** — **не** использует `self.tr()`; вместо этого определяет модульный хелпер `_tr(key)` (строка 78), читающий `LANGS.get(lang, LANGS["en"]).get(key, key)`.
-- **Переключение языка:**
-  - **GUI:** `MainWindow.lang_combo` — `QComboBox` с элементами `["Русский", "English"]`. `on_lang_changed()` устанавливает `self.current_lang`, вызывает `set_language(...)`, сохраняет в настройки и вызывает `retranslate_ui()`.
-  - **MCP-инструменты:** `get_language()` (возвращает `get_system_language()`) и `set_language(lang)` (валидирует `en`/`ru`, вызывает `common.i18n.set_language`, устанавливает `mw.current_lang`, сохраняет настройки, вызывает `retranslate_ui()`). Зарегистрированы в `mcp_server.py` (строки 969–970).
-- **`set_language` / `get_system_language`** — в `common/i18n.py`. `set_language(lang)` сохраняет выбор в модульную глобальную `_current_lang`; `get_system_language()` возвращает `_current_lang`, если задан, иначе fallback на детект через `QLocale` (`ru`/`en`), по умолчанию `en`.
-- **Поддерживаемые языки:** **Русский (`ru`)** и **Английский (`en`)** — только два языка.
-
-### File Encoding Auto-Detection (i18n-related) / Автоопределение кодировки файлов (связано с i18n)
-
-**EN:** `common/encoding.py` (109 lines) auto-detects file encoding so Russian (CP1251) source files open correctly. Strategy: (1) BOM check (UTF-8/16/32) — authoritative; (2) strict UTF-8 decode; (3) `charset_normalizer` for the rest (CP1251, KOI8-R, Latin-1, …); (4) heuristic — if the detector falls back to a catch-all (latin-1/iso-8859-1) and the file has high bytes, prefer **CP1251** (the de-facto Windows encoding for Russian text). All files are saved back as **UTF-8 (no BOM)**, so after the first save the encoding is stable and unambiguous.
-
-**RU:** `common/encoding.py` (109 строк) автоматически определяет кодировку файлов, чтобы русские (CP1251) исходники открывались корректно. Стратегия: (1) проверка BOM (UTF-8/16/32) — авторитетно; (2) строгий UTF-8 decode; (3) `charset_normalizer` для остального (CP1251, KOI8-R, Latin-1, …); (4) эвристика — если детектор откатывается на «универсальную» кодировку (latin-1/iso-8859-1), а в файле есть старшие байты, предпочитать **CP1251** (де-факто Windows-кодировка русского текста). Все файлы сохраняются обратно как **UTF-8 (без BOM)**, поэтому после первого сохранения кодировка стабильна и однозначна.
-
----
-
-## Summary / Резюме
-
-**EN:**
-
-| Category / Категория | Count / Кол-во |
-|-----------|--------|
-| Genuinely missing translations (no key in LANGS) | **12** |
-| Strings set in `__init__` but NOT updated in `retranslate_ui` | **8** |
-| Bug: local variable prevents retranslation | **2** |
-| Bug: wrong format string in `retranslate_ui` | **1** |
-| False positives (already handled) | **~40** |
-| Device Manager/Window keys (added in Pass 5) | **15** |
-| Global language propagation fix | **1** |
-
-**RU:**
-
-| Категория | Кол-во |
-|-----------|--------|
-| Истинно отсутствующие переводы (нет ключа в LANGS) | **12** |
-| Строки, установленные в `__init__`, но НЕ обновляемые в `retranslate_ui` | **8** |
-| Баг: локальная переменная препятствует перевыдаче | **2** |
-| Баг: неправильный формат в `retranslate_ui` | **1** |
-| Ложные срабатывания (уже обработаны) | **~40** |
-| Ключи Device Manager/Window (добавлены в Pass 5) | **15** |
-| Глобальная передача языка между диалогами | **1** |
-
----
-
-## 1. Genuinely Missing Translations / Истинно отсутствующие переводы
-
-**EN:** These strings appear in the UI but have no corresponding key in the `LANGS` dictionary.
-
-**RU:** Эти строки появляются в UI, но не имеют соответствующего ключа в словаре `LANGS`.
-
-### 1.1 Theme Combo Box
-
-| # | String | Context | Key | EN | RU |
-|---|--------|---------|-----|----|----|
-| 1 | `"Light"` | `theme_combo.addItems` | `light` ✅ | Light | Светлая |
-| 2 | `"Dark"` | same | `dark` ✅ | Dark | Тёмная |
-
-> **Note / Примечание:** Keys already existed in LANGS. The combo just didn't use them. Fixed: now uses `self.tr()`.
-
-### 1.2 Endianness Combo Box
-
-| # | String | Key | EN | RU |
-|---|--------|-----|----|----|
-| 3 | `"Little"` | `endian_little` | Little-Endian | Little-Endian |
-| 4 | `"Big"` | `endian_big` | Big-Endian | Big-Endian |
-
-### 1.3 Memory Test Patterns
-
-| # | String | Key | EN | RU |
-|---|--------|-----|----|----|
-| 7 | `"Checker"` | `test_pattern_checker` | Checker | Шахматный |
-| 8 | `"Zero"` | `test_pattern_zero` | Zero | Нули |
-| 9 | `"One"` | `test_pattern_one` | One | Единички |
-| 10 | `"Addr"` | `test_pattern_addr` | Address | Адрес |
-
-### 1.4 MCP Server Button
-
-| # | String | Key | EN | RU |
-|---|--------|-----|----|----|
-| 11 | `"MCP Server: OFF"` | `mcp_off` | MCP Server: OFF | MCP Сервер: ВЫКЛ |
-| 12 | `"MCP Server: ON"` | `mcp_on` | MCP Server: ON | MCP Сервер: ВКЛ |
-
-### 1.5 Search Dialog Placeholder
-
-| # | String | Key | EN | RU |
-|---|--------|-----|----|----|
-| 13 | `"C3 00 10 or HELLO"` | `search_placeholder` | C3 00 10 or HELLO | C3 00 10 или HELLO |
-
-### 1.6 Bus Status Suffixes
-
-| # | String | Key | EN | RU |
-|---|--------|-----|----|----|
-| 14 | `"BUS ACTIVE"` | `bus_active` | BUS ACTIVE | ШИНА АКТИВНА |
-| 15 | `"BUS FREE"` | `bus_free` | BUS FREE | ШИНА СВОБОДНА |
-
----
-
-## 2. Strings NOT Updated in `retranslate_ui` / Строки не обновляемые в `retranslate_ui`
-
-**EN:** These strings use hardcoded text as initial values and are never reset when the user switches language.
-
-**RU:** Эти строки используют зажёсткованный текст как начальные значения и никогда не сбрасываются при переключении языка.
-
-| # | Widget | LANGS Key | Issue / Проблема |
-|---|--------|-----------|-------|
-| 16 | `status_label_addr` | `status_addr` | Never reset in retranslate_ui / Никогда не сбрасывается |
-| 17 | `status_label_data` | `status_data` | Same / Аналогично |
-| 18 | `status_label_mnem` | `status_mnem` | Same / Аналогично |
-| 19 | `status_label_size` | `status_size` | **Wrong format** in retranslate_ui / **Неверный формат** |
-| 20 | `status_label_conn` | `disconnected` | Never reset / Никогда не сбрасывается |
-| 21 | `cycles_label` | `emu_cycles` | Never reset / Никогда не сбрасывается |
-| 22 | `state_label` | `emu_state` + `emu_state_halted` | Never reset / Никогда не сбрасывается |
-| 23 | `lbl_trace_status` | `trace_records` | Never reset / Никогда не сбрасывается |
-
-> **Impact / Влияние:** If app starts in English (or user switches), these labels remain in wrong language until specific event triggers update.
-
-> **Fix pattern / Паттерн исправления:** All added to `retranslate_ui()`.
-
----
-
-## 3. Bug: Local Variable Prevents Retranslation / Баг: локальная переменная
-
-| # | Code | Problem / Проблема |
-|---|------|---------|
-| 24 | `devices_menu = self.menuBar().addMenu("Устройства")` | Local variable, not `self.devices_menu`. `hasattr(self, 'devices_menu')` always False. |
-| 25 | `act_manager = devices_menu.addAction("Диспетчер устройств")` | Local variable, no reference stored. |
-
-> **Fix / Исправление:** Changed to `self.devices_menu` and `self.act_device_manager` with proper references.
-
----
-
-## 4. Bug: Wrong Format / Баг: неверный формат
-
-| # | Code | Problem | Fix |
-|---|------|---------|-----|
-| 26 | `f"0 {self.tr('status_size')}"` | Produces `"0 Size: "` (reversed word order). Should be `f"0 {self.tr('bytes')}"` → `"0 bytes"` / `"0 байт"`. | Fixed in retranslate_ui |
-
----
-
-## 5. Device Manager & Window Keys (Pass 5) / Ключи Диспетчера и Окна устройств
-
-**EN:** The `DeviceManagerDialog` and `DeviceWindow` had entirely hardcoded Russian strings. In Pass 5, a full `tr()` method with lazy i18n import was added, along with 15 new keys:
-
-**RU:** В `DeviceManagerDialog` и `DeviceWindow` были полностью зажёсткованные русские строки. В Pass 5 добавлен метод `tr()` с lazy-импортом i18n и 15 новых ключей:
-
-| Key | EN | RU |
-|-----|----|----|
-| `dm_title` | Device Manager / Диспетчер устройств | Диспетчер устройств / Device Manager |
-| `dm_subtitle` | Devices of current profile | Устройства текущего профиля |
-| `dm_open` | Open | Открыть |
-| `dm_close_all` | Close All | Закрыть все |
-| `dm_refresh` | Refresh | Обновить |
-| `dm_always_on_top` | Device windows always on top | Окна устройств всегда поверх всех |
-| `dm_no_devices` | No devices | Нет устройств |
-| `dm_cube_title` | 3D Cube | 3D-куб |
-| `dm_keyboard_title` | Keyboard 8x8 | Клавиатура 8x8 |
-| `dw_auto` | Auto | Авто |
-| `dw_auto_tooltip` | Auto-refresh device state | Автообновление состояния устройства |
-| `dw_refresh` | Refresh | Обновить |
-| `dw_yes` | Yes | Да |
-| `dw_no` | No | Нет |
-
----
-
-## 6. Global Language State Fix (Pass 5) / Глобальное состояние языка
-
-**EN:**
-**Problem:** `DeviceManagerDialog.tr()` used `get_system_language()` (system locale) but didn't know about user's language selection in `MainWindow.lang_combo`.
-
-**Solution:** Added `_current_lang` global variable and `set_language(lang)` function to `i18n.py`. `get_system_language()` now checks `_current_lang` first before falling back to `QLocale`.
-
-**RU:**
-**Проблема:** `DeviceManagerDialog.tr()` использовал `get_system_language()` (системный locale) и не знал о выборе языка пользователем.
-
-**Решение:** Добавлена глобальная переменная `_current_lang` и функция `set_language(lang)` в `i18n.py`. `get_system_language()` теперь сначала проверяет `_current_lang`, затем fallback на `QLocale`.
-
+# Deep Audit: assemble8080/ Core (2026-10-23)
+
+## 1. assembler.py — Opcode Verification vs OPCODE_REFERENCE.md
+
+**ALL 8080/8085 opcodes are CORRECT.** Every single opcode, size, and encoding formula matches the reference exactly.
+
+### Verified encoding formulas (all correct):
+| Instruction | Formula | Verified |
+|---|---|---|
+| MOV | `0x40 + dst*8 + src` | ✓ |
+| MVI | `0x06 + reg*8` | ✓ |
+| INR | `0x04 + reg*8` | ✓ |
+| DCR | `0x05 + reg*8` | ✓ |
+| INX/DCX | `0x03/0x0B + rp*16` | ✓ |
+| DAD | `0x09 + rp*16` | ✓ |
+| LXI | `0x01 + rp*16` | ✓ |
+| PUSH/POP | `0xC5/0xC1 + rp*16` | ✓ |
+| ALU r | `base + reg` (ADD=0x80, ADC=0x88, SUB=0x90, SBB=0x98, ANA=0xA0, XRA=0xA8, ORA=0xB0, CMP=0xB8) | ✓ |
+| ALI d8 | ADI=0xC6, ACI=0xCE, SUI=0xD6, SBI=0xDE, ANI=0xE6, XRI=0xEE, ORI=0xF6, CPI=0xFE | ✓ |
+| RST n | `0xC7 + n*8` | ✓ |
+| Jcc/Ccc | 0xC2/CA/D2/DA/E2/EA/F2/FA, 0xC4/CC/D4/DC/E4/EC/F4/FC | ✓ |
+| Rcc | 0xC0/C8/D0/D8/E0/E8/F0/F8 | ✓ |
+| 8085: SIM=0x30, RIM=0x20, DSUB=0x08, ARHL=0x10, RDEL=0x18, LDHI=0x28, LDSI=0x38, RSTV=0xCB, SHLX=0xD9, JNK=0xDD, LHLX=0xED, JK=0xFD | ✓ |
+| 8080 NOPs: 0x08, 0xCB(JMP*), 0xD9(RET*), 0xDD(CALL*) | ✓ |
+| STAX H/L → MOV M,A (0x77), LDAX H/L → MOV A,M (0x7E) | ✓ |
+| MOV r,#imm → MVI (ASxxxx compat) | ✓ |
+| ALU r,#imm → ALI (ASxxxx compat) | ✓ |
+
+### No missing instructions.
+All 246 8080 instructions are covered through the encoding tables.
+
+### BUG FOUND: `_parse_label` missing 'CODE' in exclude list (line 650)
+
+The zasm `CODE SECTION ADDR SIZE` directive is handled at lines 803/1110 via:
 ```python
-# i18n.py
-_current_lang = None
-
-def set_language(lang: str) -> None:
-    global _current_lang
-    _current_lang = lang
-
-def get_system_language() -> str:
-    if _current_lang is not None:
-        return _current_lang
-    from PySide6.QtCore import QLocale
-    loc = QLocale.system().name()
-    return 'ru' if loc.startswith('ru') else 'en'
+if mnemonic == 'CODE' or stripped.startswith('#code'):
 ```
+But `'CODE'` is NOT in the `_parse_label` exclude tuple (line 650). A bare line:
+```
+CODE 100H, *
+```
+(no label prefix) would be consumed as a **label** named "CODE" (stored in symbol table), and the remainder `100H, *` would be misparsed as an instruction → "Unknown instruction: 100H" error.
 
-Called from `main_window.py`:
-- `__init__`: `set_language(self.current_lang)`
-- `on_lang_changed`: `set_language(self.current_lang); self.retranslate_ui()`
+**Fix:** Add `'CODE'` to the exclude tuple in `_parse_label`.
 
----
+### MINOR BUG: Pass 1 size mismatch for INR/DCR with comma operand
 
-## 7. False Positives (Already Handled) / Ложные срабатывания
+In pass 1 (line ~942), the `fmt == 'r'` size check:
+```python
+if ',' in op_u:
+    size = 2  # ASxxxx 2-operand form
+```
+This applies to ALL `fmt='r'` instructions including INR/DCR. If someone writes `INR A, 5` (invalid 8080), pass 1 advances by 2 bytes, but pass 2's `_encode_instruction` for INR/DCR always returns 1 byte. Location drift.
 
-**EN:** The following hardcoded strings are set in `__init__` as placeholder values but **are properly updated** in `retranslate_ui()` or `emulator_retranslate()`:
+**Impact:** Low — only triggers on syntactically invalid input. No valid 8080 program is affected.
 
-**RU:** Следующие зажёсткованные строки установлены в `__init__` как плейсхолдеры, но **корректно обновляются** в `retranslate_ui()` или `emulator_retranslate()`:
-
-| File | Strings | Handled In |
-|------|---------|-----------|
-| main_window.py | "Port:", "Baud:" | retranslate_ui |
-| main_window.py | "Export" | retranslate_ui |
-| main_window.py | "▶ Run Script", "Load Script", etc. | retranslate_ui |
-| main_window.py | Watch/BP/Register group titles | emulator_retranslate |
-| main_window.py | Emulator buttons | emulator_retranslate |
-| main_window.py | Trace buttons, depth, search | retranslate_ui |
-| search.py | All labels/buttons | SearchDialog.retranslate() |
-
-**Technical values (NOT user-facing / Технические значения, не user-facing):**
-- Baud rates: "9600", "38400", etc.
-- Bit widths: "8", "16", "24", "32"
-- Language names: "Русский", "English" (by convention shown in native language)
-- Register names: "A", "B", "SP", "PC", etc.
-- Hex values: "0000", "00"
-- Icons/symbols: "+", "❌", "🗑", etc.
+**Fix:** Restrict the comma-check to ALU ops only (exclude INR/DCR from the `size = 2` branch).
 
 ---
 
-## 8. Verification Checklist / Чек-лист верификации
+## 2. preprocessor.py — Syntax & Edge Cases
 
-After fixes, verified / После исправлений, верифицировано:
+**Overall: Correct and robust.** Handles:
+- `#include` / `.include` / `include` (3 forms) ✓
+- `#define` with recursive expansion (10-pass limit) ✓
+- `#if` / `#elif` / `#else` / `#endif` with proper stack tracking ✓
+- Bare `IF` / `ELSE` / `ENDIF` (assembler-style) ✓
+- MACRO / ENDM definitions and expansion ✓
+- REPT n ... ENDM expansion ✓
+- `#path` / `.path` include directory management ✓
+- `#target rom/bin` ✓
+- Circular include protection (`included_files` set) ✓
+- Include depth limit (16) ✓
+- String-aware substitution (quotes protected) ✓
+- Dot-directive normalization (`.org` → `org`, etc.) ✓
 
-- [x] Switch EN → RU: all labels, buttons, tooltips, combos update
-- [x] Switch RU → EN: same
-- [x] Status bar shows correct language on initial load
-- [x] Emulator tab stats show correct language
-- [x] Trace tab status shows correct language
-- [x] Theme/Endianness/Test pattern combos show correct language
-- [x] Devices menu title AND action text update
-- [x] MCP button text updates on language switch
-- [x] Search dialog placeholder updates
-- [x] Bus status suffix shows correct language
-- [x] Device Manager dialog fully translated (EN + RU)
-- [x] Device Window fully translated (EN + RU)
-- [x] Global language propagates to all dialogs
+### LIMITATION: `.IF` / `.ELSE` / `.ENDIF` not handled as conditional blocks
+
+The preprocessor's conditional handler uses:
+```python
+re.match(r'^IF\b', stripped, re.IGNORECASE)
+```
+A line `.IF condition` starts with `.`, so it doesn't match. It falls through to `_normalize_dot_directives` (which converts `.IF` → `IF`), but by then the conditional handler has already passed. The assembler then sees bare `IF` and treats it as a no-op directive.
+
+**Impact:** Users who write `.IF` (M80-style dot-prefixed conditional) get silently ignored conditions. Must use `#if` or bare `IF` instead. Not a crash, but a silent logic gap.
+
+---
+
+## 3. objfile.py — Serialization/Deserialization
+
+**Correct.** JSON-based format (i8080-obj-v1):
+- Binary data as hex string ✓
+- Symbol addresses converted to offsets from org ✓
+- Imports excluded from local symbols ✓
+- Relocations with offset/size/symbol/addend ✓
+- Data lines (DB/DW/DS) captured from listing ✓
+- `load_obj` validates format version ✓
+- `obj_from_asm_result` handles 3-tuple and 4-tuple relocations ✓
+
+No bugs found.
+
+---
+
+## 4. linker.py — Relocation & Sequential Placement
+
+**Correct.** Key behaviors verified:
+- Sequential placement: objects laid back-to-back from ORIGIN, each object's own org ignored for placement ✓
+- 16-bit little-endian relocation patches ✓
+- 8-bit (low byte) relocation support ✓
+- Case-insensitive symbol matching (default) / case-sensitive mode ✓
+- Duplicate export detection with warning ✓
+- Unresolved import detection with error ✓
+- Library resolution: on-demand module pulling, no duplicates ✓
+- Output buffer sizing: `max(configured_size, origin + max(obj.org+obj.size))` — slightly over-allocates but never under-allocates ✓
+
+### MINOR: Output size over-allocation
+```python
+output_size = max(size, origin + max((o.org + o.size for o in objects), default=0))
+```
+Uses the object's assembler org (not placement base). If an object has org=0x8000 but is placed at 0x0000, the buffer is sized for 0x8000+size instead of the actual sequential end. Wastes memory, never causes corruption.
+
+---
+
+## 5. mapfile.py — DATA/CODE Classification
+
+**Correct.** Classification logic:
+- Checks if the symbol's address matches a listing entry
+- If the listing source (after stripping label prefix) starts with DB/DW/DS → "DATA"
+- Otherwise → "CODE"
+- EQU symbols are filtered out (not shown in map) ✓
+- Size computation: distance to next symbol, or to end of binary for last ✓
+
+No bugs found.
+
+---
+
+## 6. librarian.py — Library Creation/Loading
+
+**Correct.**
+- JSON archive format (i8080-lib-v1) with index + modules ✓
+- Export symbol → module name index for linker resolution ✓
+- Duplicate module name detection ✓
+- Duplicate export symbol across modules detection ✓
+- Format version validation on load ✓
+- Auto-creates output directory ✓
+
+No bugs found.
+
+---
+
+## 7. numbers.py — Number Parsing
+
+**Correct.** Handles:
+- `0x1A`, `0X1A` — hex prefix ✓
+- `1AH`, `1Ah`, `01AH` — hex suffix ✓
+- `26`, `26d`, `26D` — decimal (optional suffix) ✓
+- `00011010B`, `11010b` — binary ✓
+- `32q`, `32o` — octal (Q or O suffix) ✓
+- Leading zeros stripped correctly (00100 → 100) ✓
+- `is_number()`, `is_valid_hex()` helpers ✓
+
+Identical logic to `parse_number()` in assembler.py. No conflicts.
+
+---
+
+## Summary of Findings
+
+| # | Severity | File | Issue |
+|---|----------|------|-------|
+| 1 | **BUG** | assembler.py:650 | `CODE` missing from `_parse_label` exclude list — bare `CODE addr,size` consumed as label |
+| 2 | Minor | assembler.py:~942 | Pass 1 advances 2 bytes for `INR/DCR r, imm` (invalid syntax), pass 2 emits 1 byte — location drift on invalid input |
+| 3 | Limitation | preprocessor.py:143 | `.IF`/`.ELSE`/`.ENDIF` (dot-prefixed) not handled as conditional blocks — silently ignored |
+| 4 | Cosmetic | OPCODE_REFERENCE.md | Column header says "циклов" (cycles) but values are byte sizes (1/2/3), not T-cycles |
+| 5 | Minor | linker.py | Output buffer sized by `obj.org + obj.size` (assembler org) rather than sequential placement end — over-allocation only |
+
+**No wrong opcodes. No missing instructions. No corruption bugs.**
+The core encoding logic is 100% correct against OPCODE_REFERENCE.md.
 ```
 
 ### TODO/FIXME в коде (2):
@@ -57566,6 +57427,7 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 ### C. Конфигурационные файлы
 
 - `Addendum.txt` (81 строк)
+- `FINAL_OUTPUT.json` (3 строк)
 - `claude_desktop_config.json` (7 строк)
 - `config.json` (10 строк)
 - `micro-80_bp_preset.json` (77 строк)
@@ -57802,12 +57664,12 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 - `assembler_example/04_multifile/app.map` (.map, 10 строк)
 - `assembler_example/04_multifile/helper.asm` (.asm, 13 строк)
 - `assembler_example/04_multifile/helper.map` (.map, 9 строк)
-- `assembler_example/04_multifile/helper.obj` (.obj, 17 строк)
+- `assembler_example/04_multifile/helper.obj` (.obj, 18 строк)
 - `assembler_example/04_multifile/main.asm` (.asm, 15 строк)
 - `assembler_example/04_multifile/main.map` (.map, 10 строк)
-- `assembler_example/04_multifile/main.obj` (.obj, 26 строк)
+- `assembler_example/04_multifile/main.obj` (.obj, 27 строк)
 - `tests/test_all.cmd` (.cmd, 33 строк)
 
 ---
 
-*Конец среза. Сгенерировано 2026-10-23 19:47:18.*
+*Конец среза. Сгенерировано 2026-10-23 23:11:04.*
