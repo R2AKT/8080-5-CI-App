@@ -137,6 +137,8 @@ MNEMONICS = {
     # Операции с памятью через HL
     'STAX':  (0x02, 'rp', 1),
     'LDAX':  (0x0A, 'rp', 1),
+    # STAX H/L и LDAX H/L — алиасы для MOV M,A (0x77) / MOV A,M (0x7E).
+    # Не каноничные 8080: 0x22=SHLD, 0x2A=LHLD. Такты 7, hover: MOV.
     'SHLD':  (0x22, 'd16', 3),
     'LHLD':  (0x2A, 'd16', 3),
     'STA':   (0x32, 'd16', 3),
@@ -1379,6 +1381,16 @@ class Assembler:
     def _encode_instruction(self, mnemonic: str, opcode: int, fmt: str,
                             operands: list[str], line_num: int) -> bytearray | None:
         """Кодирует одну инструкцию. Возвращает байты или None при ошибке."""
+
+        # Алиасы (НЕ каноничные 8080): STAX H/L = MOV M,A (0x77), LDAX H/L = MOV A,M (0x7E).
+        # 0x22=SHLD, 0x2A=LHLD — каноничные. Такты: 7 (MOV). Hover: MOV M,A / MOV A,M.
+        if fmt == 'rp' and len(operands) >= 1:
+            _op = operands[0].strip().upper()
+            if _op in ('H', 'L', 'HL'):
+                if mnemonic == 'STAX':
+                    return bytearray([0x77])  # MOV M, A
+                if mnemonic == 'LDAX':
+                    return bytearray([0x7E])  # MOV A, M
 
         if fmt == '':
             return bytearray([opcode])
