@@ -23,10 +23,12 @@ unit_tests = [
     'tests/test_i8257.py', 'tests/test_i8259.py', 'tests/test_i8272.py',
     'tests/test_i8272_image.py', 'tests/test_i8275.py', 'tests/test_i8276.py',
     'tests/test_i8279.py', 'tests/test_integration_full.py', 'tests/test_interrupts.py',
+    'tests/test_librarian_and_linker_resolving.py',
     'tests/test_memory_bus.py', 'tests/test_memory_models.py',
     'tests/test_port_invert.py', 'tests/test_shadow_rom.py',
     'tests/test_system_integration.py', 'tests/test_wait_cf_ide.py',
     'tests/test_wait_signals.py', 'tests/test_8085.py',
+    'tests/test_watch_auto.py',
 ]
 
 # Filter to existing files

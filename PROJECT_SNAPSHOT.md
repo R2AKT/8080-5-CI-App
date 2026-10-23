@@ -1,16 +1,19 @@
 # СРЕЗ ПРОЕКТА (PROJECT SNAPSHOT)
 
-> Сгенерировано: 2026-10-13 14:45:54
+> Сгенерировано: 2026-10-23 16:06:51
 > Корень проекта: `c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis`
-> Код: 134 файлов, 32630 строк
-> Тесты: 74 файлов, 11718 строк
-> Профили: 22 файлов, 843 строк
+> Код: 151 файлов, 33897 строк
+> Тесты: 76 файлов, 11972 строк
+> Профили: 43 файлов, 1625 строк
 
 ---
 
 ■ РАЗДЕЛ 1: ДЕРЕВО ПРОЕКТА
 
 ```
+├── .github/
+│   └── workflows/
+│       └── build-linux.yml  [51 строк]
 ├── ASM_FOR_TEST/
 │   ├── 4KBAS.ASM  [2300 строк]
 │   ├── 8080EX1.MAC  [1367 строк]
@@ -138,12 +141,13 @@
 ├── assemble8080/
 │   ├── __init__.py  [28 строк]
 │   ├── __main__.py  [19 строк]
-│   ├── assembler.py  [2081 строк]
+│   ├── assembler.py  [2089 строк]
 │   ├── errors.py  [37 строк]
-│   ├── linker.py  [266 строк]
-│   ├── mapfile.py  [162 строк]
+│   ├── librarian.py  [91 строк]
+│   ├── linker.py  [367 строк]
+│   ├── mapfile.py  [165 строк]
 │   ├── numbers.py  [84 строк]
-│   ├── objfile.py  [147 строк]
+│   ├── objfile.py  [160 строк]
 │   ├── preprocessor.py  [630 строк]
 │   └── symbols.py  [77 строк]
 ├── assembler_example/
@@ -172,17 +176,17 @@
 │   │   ├── build.py  [109 строк]
 │   │   ├── helper.asm  [13 строк]
 │   │   ├── helper.map  [9 строк]
-│   │   ├── helper.obj  [16 строк]
+│   │   ├── helper.obj  [17 строк]
 │   │   ├── main.asm  [15 строк]
 │   │   ├── main.map  [10 строк]
-│   │   └── main.obj  [24 строк]
+│   │   └── main.obj  [26 строк]
 │   ├── _common.py  [87 строк]
 │   ├── build_all.py  [52 строк]
 │   └── README.md  [55 строк]
 ├── common/
 │   ├── __init__.py  [5 строк]
 │   ├── encoding.py  [109 строк]
-│   ├── i18n.py  [969 строк]
+│   ├── i18n.py  [971 строк]
 │   └── themes.py  [115 строк]
 ├── i8080_ci/
 │   ├── models/
@@ -190,27 +194,27 @@
 │   │   ├── bp_model.py  [70 строк]
 │   │   ├── hex_model.py  [92 строк]
 │   │   ├── trace_model.py  [189 строк]
-│   │   └── watch_model.py  [247 строк]
+│   │   └── watch_model.py  [300 строк]
 │   ├── views/
 │   │   ├── __init__.py  [6 строк]
 │   │   ├── disasm_view.py  [440 строк]
 │   │   ├── hex_view.py  [155 строк]
 │   │   └── search.py  [116 строк]
 │   ├── __init__.py  [20 строк]
-│   ├── assembler_widget.py  [2037 строк]
+│   ├── assembler_widget.py  [2059 строк]
 │   ├── automation.py  [736 строк]
 │   ├── bus_worker.py  [249 строк]
 │   ├── disassembler.py  [233 строк]
 │   ├── headless_host.py  [316 строк]
 │   ├── i18n.py  [4 строк]
 │   ├── intelhex.py  [51 строк]
-│   ├── main_window.py  [4192 строк]
+│   ├── main_window.py  [4203 строк]
 │   └── slip.py  [61 строк]
 ├── modules/
 │   ├── config/
 │   │   ├── __init__.py  [5 строк]
 │   │   ├── device_config.py  [469 строк]
-│   │   └── system_profiles.py  [115 строк]
+│   │   └── system_profiles.py  [134 строк]
 │   ├── io/
 │   │   ├── __init__.py  [23 строк]
 │   │   ├── am9511.py  [408 строк]
@@ -332,6 +336,49 @@
 │   ├── radio86rk.toml  [72 строк]
 │   ├── specialist.toml  [58 строк]
 │   └── vector06c.toml  [40 строк]
+├── Release/
+│   ├── profiles/
+│   │   ├── template/
+│   │   │   ├── 01_basic_ram_rom.toml  [20 строк]
+│   │   │   ├── 02_radio86rk.toml  [25 строк]
+│   │   │   ├── 03_mikro80.toml  [23 строк]
+│   │   │   ├── 04_banked_ram_io.toml  [16 строк]
+│   │   │   ├── 05_banked_ram_addr.toml  [16 строк]
+│   │   │   ├── 06_banked_rom.toml  [27 строк]
+│   │   │   ├── 07_shadow_rom_io.toml  [26 строк]
+│   │   │   ├── 08_shadow_rom_mem.toml  [24 строк]
+│   │   │   └── 09_shadow_rom_disable.toml  [24 строк]
+│   │   ├── apogey.toml  [41 строк]
+│   │   ├── display_test.toml  [40 строк]
+│   │   ├── empty8080.toml  [12 строк]
+│   │   ├── empty8085.toml  [12 строк]
+│   │   ├── full.toml  [102 строк]
+│   │   ├── lvovpk01.toml  [32 строк]
+│   │   ├── micro80.toml  [89 строк]
+│   │   ├── microsha.toml  [41 строк]
+│   │   ├── orion128.toml  [42 строк]
+│   │   ├── radio86rk.toml  [72 строк]
+│   │   ├── specialist.toml  [58 строк]
+│   │   └── vector06c.toml  [40 строк]
+│   ├── roms/
+│   │   ├── micro80_font.rom  [1 строк]
+│   │   ├── micro80_monitor.bin  [19 строк]
+│   │   ├── radio86rk_font.rom  [1 строк]
+│   │   └── radio86rk_monitor.bin  [27 строк]
+│   ├── ASSEMBLER_GUIDE.md  [1304 строк]
+│   ├── CHANGES.md  [2774 строк]
+│   ├── i8080-5_CI_v2.1.14_linux_x86_64.tar.gz  [726725 строк]
+│   ├── i8080-5_CI_v2.1.14_source.tar.gz  [18127 строк]
+│   ├── i8080-5_CI_v2.1.14_win64.zip  [601291 строк]
+│   ├── i8080_CI.exe  [594666 строк]
+│   ├── INSTALL.md  [60 строк]
+│   ├── LICENSE  [21 строк]
+│   ├── logo.png  [1161 строк]
+│   ├── MCP_GUIDE.md  [356 строк]
+│   ├── OPCODE_REFERENCE.md  [452 строк]
+│   ├── README.md  [389 строк]
+│   ├── SCRIPTS_GUIDE.md  [551 строк]
+│   └── USER_GUIDE.md  [1445 строк]
 ├── roms/
 │   ├── micro80_font.rom  [1 строк]
 │   ├── micro80_monitor.bin  [19 строк]
@@ -396,6 +443,7 @@
 │   ├── test_integration_full.py  [273 строк]
 │   ├── test_interrupts.py  [160 строк]
 │   ├── test_invert_port_range.py  [37 строк]
+│   ├── test_librarian_and_linker_resolving.py  [166 строк]
 │   ├── test_map_autoload.py  [59 строк]
 │   ├── test_map_autoload_v2.py  [51 строк]
 │   ├── test_map_emu_immediate.py  [57 строк]
@@ -412,6 +460,7 @@
 │   ├── test_system_profiles.py  [245 строк]
 │   ├── test_wait_cf_ide.py  [173 строк]
 │   ├── test_wait_signals.py  [183 строк]
+│   ├── test_watch_auto.py  [88 строк]
 │   └── uart_test.py  [52 строк]
 ├── ui/
 │   ├── __init__.py  [5 строк]
@@ -422,7 +471,7 @@
 │   ├── gpio_widget.py  [267 строк]
 │   ├── keyboard_widget.py  [146 строк]
 │   └── serial_terminal.py  [244 строк]
-├── .gitignore  [10 строк]
+├── .gitignore  [18 строк]
 ├── 8080-5 CI_app.png  [170 строк]
 ├── 8080-5 CI_app_device.png  [666 строк]
 ├── 8080-5 CI_app_disas.png  [325 строк]
@@ -431,17 +480,27 @@
 ├── 8080-5 CI_app_Micro-80.png  [530 строк]
 ├── 8080-5 CI_app_Specialist.png  [305 строк]
 ├── 8080-5 CI_app_trace.png  [331 строк]
-├── _api_out.txt  [444 строк]
 ├── _audit_and_version.py  [84 строк]
+├── _check_exe.py  [15 строк]
 ├── _cycle1.py  [402 строк]
 ├── _deep_analysis.py  [176 строк]
 ├── _diag.py  [106 строк]
 ├── _final_fixes.py  [134 строк]
 ├── _fix_addend.py  [250 строк]
 ├── _fix_bugs.py  [160 строк]
+├── _fix_datamap.py  [136 строк]
+├── _fix_datapath.py  [81 строк]
+├── _fix_docs.py  [373 строк]
 ├── _fix_en.py  [50 строк]
+├── _fix_runtests.py  [17 строк]
+├── _fix_runtests2.py  [17 строк]
+├── _fix_runtests3.py  [16 строк]
+├── _fix_runtests_list.py  [17 строк]
 ├── _fix_tests.py  [93 строк]
+├── _make_source_tarball.py  [47 строк]
 ├── _parse_ref.py  [16 строк]
+├── _patch_debug.py  [29 строк]
+├── _prep_release_paths.py  [82 строк]
 ├── _read_alus.py  [4 строк]
 ├── _read_case.py  [8 строк]
 ├── _read_code.py  [37 строк]
@@ -459,43 +518,41 @@
 ├── _read_tl.py  [4 строк]
 ├── _read_ver.py  [11 строк]
 ├── _ref_page.html  [3636 строк]
-├── _ref_table_0.txt  [24 строк]
-├── _ref_table_1.txt  [22 строк]
-├── _ref_table_2.txt  [30 строк]
-├── _ref_table_3.txt  [3369 строк]
-├── _ref_table_4.txt  [38 строк]
-├── _ref_text.txt  [1 строк]
 ├── _run_all_tests.py  [94 строк]
 ├── _run_remaining_tests.py  [65 строк]
-├── _snap.txt  []
+├── _show_struct.py  [8 строк]
 ├── _test_addend.py  [104 строк]
 ├── _test_alu2_push.py  [28 строк]
 ├── _test_alu_imm.py  [131 строк]
 ├── _test_case.py  [125 строк]
+├── _test_datapath.py  [41 строк]
 ├── _test_dollar.py  [73 строк]
+├── _test_frozen_profiles.py  [19 строк]
 ├── _test_inr_sp.py  [21 строк]
 ├── _test_linker_case.py  [150 строк]
 ├── _test_push2.py  [23 строк]
+├── _test_release_exe.py  [21 строк]
 ├── _test_reloc.py  [166 строк]
 ├── _test_reloc_undefined.py  [177 строк]
-├── _tl2.txt  [67 строк]
-├── _tl_out.txt  [67 строк]
+├── _test_source_debug.py  [18 строк]
 ├── _update_docs.py  [61 строк]
 ├── _verify_fixes.py  [43 строк]
 ├── Addendum.txt  [81 строк]
 ├── ANALYSIS.md  [536 строк]
 ├── ANALYSIS_ASSEMBLER.md  [341 строк]
-├── ASSEMBLER_GUIDE.md  [1304 строк]
-├── CHANGES.md  [2774 строк]
+├── ASSEMBLER_GUIDE.md  [1354 строк]
+├── build_linux.sh  [42 строк]
+├── CHANGES.md  [2827 строк]
 ├── claude_desktop_config.json  [7 строк]
 ├── clean_pycache.py  [87 строк]
 ├── config.json  [10 строк]
 ├── Doxyfile  [2970 строк]
 ├── gen_refs.py  [93 строк]
 ├── I18N_AUDIT.md  [310 строк]
-├── i8080_CI.py  [15 строк]
+├── i8080_CI.py  [20 строк]
 ├── i8080_CI.spec  [39 строк]
 ├── i8080_emulator.py  [2000 строк]
+├── INSTALL.md  [60 строк]
 ├── LICENSE  [21 строк]
 ├── logo.png  [1161 строк]
 ├── logo.svg  [154 строк]
@@ -505,16 +562,15 @@
 ├── mcp_server.py  [1213 строк]
 ├── md2html.py  [372 строк]
 ├── micro-80_bp_preset.json  [77 строк]
-├── OPCODE_REFERENCE.md  [452 строк]
-├── package-lock.json  [6 строк]
-├── PROJECT_SNAPSHOT.md  [52744 строк]
+├── OPCODE_REFERENCE.md  [484 строк]
+├── PROJECT_SNAPSHOT.md  [54064 строк]
 ├── pyproject.toml  [61 строк]
 ├── README.md  [389 строк]
 ├── requirements.txt  [22 строк]
-├── run_tests.py  [96 строк]
+├── run_tests.py  [98 строк]
 ├── SCRIPTS_GUIDE.md  [551 строк]
 ├── USER_GUIDE.html  [1471 строк]
-├── USER_GUIDE.md  [1445 строк]
+├── USER_GUIDE.md  [1451 строк]
 └── version.py  [9 строк]
 ```
 
@@ -529,6 +585,14 @@
 - `os`
 - `re`
 - `re`
+
+---
+
+### `_check_exe.py` (15 строк)
+
+**Импорты (2):**
+- `sys`
+- `from PyInstaller.archive.readers import CArchiveReader`
 
 ---
 
@@ -603,6 +667,55 @@
 
 ---
 
+### `_fix_datamap.py` (136 строк)
+
+> Исправление: DATA-классификация в map (лейблы перед DB/DW), data_lines в .obj,
+
+**Импорты (4):**
+- `io`
+- `sys`
+- `os`
+- `py_compile`
+
+**Функции (3):**
+- `read_p(p)`
+- `write_p(p, b)`
+- `patch(path, old, new, tag)`
+
+**Константы:** ROOT
+
+---
+
+### `_fix_datapath.py` (81 строк)
+
+> Добавляет _resolve_data_path (CWD -> каталог проекта) в device_config.py и chargen.py.
+
+**Импорты (2):**
+- `io`
+- `sys`
+
+**Функции (3):**
+- `load(p)`
+- `save(p, s)`
+- `make_method(nl)`
+
+---
+
+### `_fix_docs.py` (373 строк)
+
+> Обновление документации по librarian/.lib, ORIGIN-раскладке, map DATA, auto watch.
+
+**Импорты (2):**
+- `os`
+- `sys`
+
+**Функции (1):**
+- `patch(fname, pairs)`
+
+**Константы:** ROOT
+
+---
+
 ### `_fix_en.py` (50 строк)
 
 **Импорты (4):**
@@ -610,6 +723,50 @@
 - `os`
 - `re`
 - `py_compile`
+
+---
+
+### `_fix_runtests.py` (17 строк)
+
+**Импорты (3):**
+- `os`
+- `sys`
+- `py_compile`
+
+**Константы:** ROOT
+
+---
+
+### `_fix_runtests2.py` (17 строк)
+
+**Импорты (3):**
+- `os`
+- `sys`
+- `py_compile`
+
+**Константы:** ROOT
+
+---
+
+### `_fix_runtests3.py` (16 строк)
+
+**Импорты (3):**
+- `os`
+- `sys`
+- `py_compile`
+
+**Константы:** ROOT
+
+---
+
+### `_fix_runtests_list.py` (17 строк)
+
+**Импорты (3):**
+- `os`
+- `sys`
+- `py_compile`
+
+**Константы:** ROOT
 
 ---
 
@@ -625,11 +782,50 @@
 
 ---
 
+### `_make_source_tarball.py` (47 строк)
+
+> Сборка исходного архива i8080-5_CI_v<ver>_source.tar.gz в Release/.
+
+**Импорты (4):**
+- `os`
+- `sys`
+- `tarfile`
+- `version`
+
+**Функции (2):**
+- `excluded_dir(rel, name)`
+- `excluded_file(name)`
+
+**Константы:** EXCLUDE_DIRS
+
+---
+
 ### `_parse_ref.py` (16 строк)
 
 **Импорты (2):**
 - `re`
 - `sys`
+
+---
+
+### `_patch_debug.py` (29 строк)
+
+**Импорты (2):**
+- `io`
+- `sys`
+
+---
+
+### `_prep_release_paths.py` (82 строк)
+
+> Одноразовая подготовка: минимальные правки путей для PyInstaller-exe (CRLF).
+
+**Импорты (2):**
+- `io`
+- `sys`
+
+**Функции (1):**
+- `patch(path, old, new)`
 
 ---
 
@@ -781,6 +977,14 @@
 
 ---
 
+### `_show_struct.py` (8 строк)
+
+**Импорты (2):**
+- `io`
+- `sys`
+
+---
+
 ### `_test_addend.py` (104 строк)
 
 > Test: verify label+addend and $ replacement fixes.
@@ -832,6 +1036,18 @@
 
 ---
 
+### `_test_datapath.py` (41 строк)
+
+> Проверка _resolve_data_path: запуск из чужого CWD, файлы должны найтись через каталог проекта.
+
+**Импорты (4):**
+- `os`
+- `sys`
+- `from modules.config.device_config import DeviceFactory`
+- `from modules.io.chargen import CharGenerator`
+
+---
+
 ### `_test_dollar.py` (73 строк)
 
 > Test: $-labels get relocations in relocatable mode.
@@ -845,6 +1061,17 @@
 
 **Функции (1):**
 - `check(name, cond, msg)`
+
+---
+
+### `_test_frozen_profiles.py` (19 строк)
+
+> Проверка _find_profiles_dir в условиях, имитирующих PyInstaller-exe.
+
+**Импорты (3):**
+- `os`
+- `sys`
+- `from modules.config import system_profiles`
 
 ---
 
@@ -889,6 +1116,17 @@
 
 ---
 
+### `_test_release_exe.py` (21 строк)
+
+> Тест: Release/i8080_CI.exe с I8080_DEBUG_PROFILES=1 (offscreen).
+
+**Импорты (3):**
+- `os`
+- `subprocess`
+- `time`
+
+---
+
 ### `_test_reloc.py` (166 строк)
 
 > Test: internal relocations in relocatable mode.
@@ -917,6 +1155,18 @@
 
 **Функции (1):**
 - `check(name, cond)`
+
+---
+
+### `_test_source_debug.py` (18 строк)
+
+> Проверка debug-print в исходном режиме (python i8080_CI.py).
+
+**Импорты (4):**
+- `os`
+- `subprocess`
+- `sys`
+- `time`
 
 ---
 
@@ -968,11 +1218,12 @@
 
 ---
 
-### `i8080_CI.py` (15 строк)
+### `i8080_CI.py` (20 строк)
 
 > i8080-5 CI - Intel 8080 emulator, debugger, and device interface.
 
-**Импорты (3):**
+**Импорты (4):**
+- `os`
 - `sys`
 - `from PySide6.QtWidgets import QApplication`
 - `from i8080_ci.main_window import MainWindow`
@@ -1065,7 +1316,7 @@
 
 ---
 
-### `run_tests.py` (96 строк)
+### `run_tests.py` (98 строк)
 
 > Run all unit tests as scripts and collect results.
 
@@ -1109,7 +1360,7 @@
 
 ---
 
-### `assemble8080/assembler.py` (2081 строк)
+### `assemble8080/assembler.py` (2089 строк)
 
 > assemble8080 — компактный макроассемблер Intel 8080.
 
@@ -1163,15 +1414,32 @@
 
 ---
 
-### `assemble8080/linker.py` (266 строк)
+### `assemble8080/librarian.py` (91 строк)
+
+> Library tool for i8080-5 CI.
+
+**Импорты (2):**
+- `json`
+- `os`
+
+**Функции (2):**
+- `create_library(obj_file_paths, lib_output_path, lib_name)`
+- `load_library(path)`
+
+**Константы:** LIB_FORMAT_VERSION, OBJ_FORMAT_VERSION
+
+---
+
+### `assemble8080/linker.py` (367 строк)
 
 > Linker for i8080-5 CI.
 
-**Импорты (4):**
+**Импорты (5):**
 - `os`
 - `from dataclasses import dataclass, field`
-- `from objfile import load_obj`
+- `from objfile import load_obj, ObjectFile, Relocation, OBJ_FORMAT_VERSION`
 - `from mapfile import MapEntry, generate_map`
+- `from librarian import load_library`
 
 **Классы (2):**
 - **LinkError**
@@ -1179,14 +1447,16 @@
 - **LinkResult**
   - Result of linking.
 
-**Функции (3):**
+**Функции (5):**
 - `parse_link_script(text)`
 - `link(objects, origin, size, fill)`
+- `_obj_from_json(d)`
+- `_resolve_libraries(objects, libraries)`
 - `link_from_script(script_path)`
 
 ---
 
-### `assemble8080/mapfile.py` (162 строк)
+### `assemble8080/mapfile.py` (165 строк)
 
 > Map file generation and parsing for i8080-5 CI.
 
@@ -1225,7 +1495,7 @@
 
 ---
 
-### `assemble8080/objfile.py` (147 строк)
+### `assemble8080/objfile.py` (160 строк)
 
 > Object file format for i8080-5 CI linker.
 
@@ -1418,7 +1688,7 @@
 
 ---
 
-### `common/i18n.py` (969 строк)
+### `common/i18n.py` (971 строк)
 
 > Internationalization strings and system language detection.
 
@@ -1464,7 +1734,7 @@
 
 ---
 
-### `i8080_ci/assembler_widget.py` (2037 строк)
+### `i8080_ci/assembler_widget.py` (2059 строк)
 
 > Assembler tab — editor, assembly, load to memory.
 
@@ -1504,8 +1774,8 @@
   - Методы (4): __init__(self, document, is_dark), _setup_rules(self), highlightBlock(self, text), set_theme(self, is_dark)
 - **AssemblerWidget**(QWidget)
   - Assembler tab: multi-file editor with tabs, errors, labels.
-  - Методы (41): __init__(self, main_window, is_dark, parent), _init_ui(self), _add_tab(self, file_path, content, encoding), _on_tab_close(self, index), _on_tab_changed(self, index), _on_tab_move(self, from_idx, to_idx), _on_tab_modified(self, tab_info, modified), _tab_title(self, file_path, modified), _current_editor(self), _current_tab_info(self), _save_tab(self, index), on_open_workspace(self), on_save_workspace(self), _goto_line(self, line_num), _on_error_double_clicked(self, row, column)
-    - ... и ещё 26
+  - Методы (42): __init__(self, main_window, is_dark, parent), _init_ui(self), _add_tab(self, file_path, content, encoding), _on_tab_close(self, index), _on_tab_changed(self, index), _on_tab_move(self, from_idx, to_idx), _on_tab_modified(self, tab_info, modified), _tab_title(self, file_path, modified), _current_editor(self), _current_tab_info(self), _save_tab(self, index), on_open_workspace(self), on_save_workspace(self), _goto_line(self, line_num), _on_error_double_clicked(self, row, column)
+    - ... и ещё 27
 
 **Функции (1):**
 - `_tr(key)`
@@ -1627,7 +1897,7 @@
 
 ---
 
-### `i8080_ci/main_window.py` (4192 строк)
+### `i8080_ci/main_window.py` (4203 строк)
 
 > Main application window.
 
@@ -1656,8 +1926,8 @@
 
 **Классы (1):**
 - **MainWindow**(QMainWindow)
-  - Методы (148): __init__(self), tr(self, key), init_ui(self), update_emulator_ui(self), _on_emu_cpu_changed(self, cpu_type), _on_disasm_cpu_changed(self, cpu_type), _on_asm_cpu_changed(self, cpu_type), _set_cpu_type(self, cpu_type, source), _cpu_combos(self), update_stack_view(self), update_emu_disasm_view(self), update_emu_disasm_cursor(self), _scroll_emu_disasm_to_pc(self), highlight_pc_in_hex(self, pc), emulator_step(self)
-    - ... и ещё 133
+  - Методы (149): __init__(self), tr(self, key), init_ui(self), update_emulator_ui(self), _on_emu_cpu_changed(self, cpu_type), _on_disasm_cpu_changed(self, cpu_type), _on_asm_cpu_changed(self, cpu_type), _set_cpu_type(self, cpu_type, source), _cpu_combos(self), update_stack_view(self), update_emu_disasm_view(self), update_emu_disasm_cursor(self), _scroll_emu_disasm_to_pc(self), highlight_pc_in_hex(self, pc), emulator_step(self)
+    - ... и ещё 134
 
 ---
 
@@ -1734,7 +2004,7 @@
 
 ---
 
-### `i8080_ci/models/watch_model.py` (247 строк)
+### `i8080_ci/models/watch_model.py` (300 строк)
 
 > Watch variables table model.
 
@@ -1747,7 +2017,8 @@
 **Классы (1):**
 - **WatchModel**(QAbstractTableModel)
   - Модель для Watch-окна (наблюдение за памятью и регистрами)
-  - Методы (15): __init__(self, emulator, parent), add_watch(self, name, watch_type, target, fmt), remove_watch(self, row), clear(self), get_value(self, item), format_value(self, value, fmt, is_word), get_display_value(self, item), save_preset(self, filepath), load_preset(self, filepath), save_prev_values(self), refresh(self), rowCount(self, parent), columnCount(self, parent), headerData(self, section, orientation, role), data(self, index, role)
+  - Методы (17): __init__(self, emulator, parent), add_watch(self, name, watch_type, target, fmt, auto), remove_watch(self, row), clear(self), set_auto_watches_from_map(self, map_file), sort(self, column, order), get_value(self, item), format_value(self, value, fmt, is_word), get_display_value(self, item), save_preset(self, filepath), load_preset(self, filepath), save_prev_values(self), refresh(self), rowCount(self, parent), columnCount(self, parent)
+    - ... и ещё 2
   - Атрибуты: FORMATS, TYPE_MEM_BYTE, TYPE_MEM_WORD, TYPE_REG
 
 ---
@@ -1867,16 +2138,18 @@
 
 ---
 
-### `modules/config/system_profiles.py` (115 строк)
+### `modules/config/system_profiles.py` (134 строк)
 
 > Профили систем для i8080-5 CI.
 
-**Импорты (3):**
+**Импорты (4):**
 - `os`
 - `os.path`
 - `glob`
+- `sys`
 
-**Функции (5):**
+**Функции (6):**
+- `_find_profiles_dir()`
 - `_load_external_profiles()`
 - `reload_profiles()`
 - `get_profile(profile_name)`
@@ -2654,6 +2927,28 @@ if m:
 print("\n=== DONE ===")
 ```
 <!-- END FILE: _audit_and_version.py -->
+
+### `_check_exe.py` (15 строк)
+
+<!-- FILE: _check_exe.py -->
+```python
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+from PyInstaller.archive.readers import CArchiveReader
+
+ca = CArchiveReader('dist/i8080_CI.exe')
+names = list(ca.toc.keys())
+print(f'total entries: {len(names)}')
+profiles = sorted(n for n in names if n.startswith('profiles'))
+roms = sorted(n for n in names if n.startswith('roms'))
+print(f'profiles entries: {len(profiles)}')
+for n in profiles:
+    print('  ', n)
+print(f'roms entries: {len(roms)}')
+for n in roms:
+    print('  ', n)
+```
+<!-- END FILE: _check_exe.py -->
 
 ### `_cycle1.py` (402 строк)
 
@@ -3925,6 +4220,617 @@ print(f"\nTotal fixes applied: {fixes}")
 ```
 <!-- END FILE: _fix_bugs.py -->
 
+### `_fix_datamap.py` (136 строк)
+
+<!-- FILE: _fix_datamap.py -->
+```python
+# -*- coding: utf-8 -*-
+"""Исправление: DATA-классификация в map (лейблы перед DB/DW), data_lines в .obj,
+   linker map generation из data_lines объектов."""
+import io, sys, os
+
+ROOT = os.path.dirname(os.path.abspath(__file__))
+
+def read_p(p):
+    with open(p, "rb") as f:
+        b = f.read()
+    return b
+
+def write_p(p, b):
+    with open(p, "wb") as f:
+        f.write(b)
+
+def patch(path, old, new, tag):
+    b = read_p(path)
+    nl = b"\r\n" if b"\r\n" in b else b"\n"
+    old_b = old.encode("utf-8").replace(b"\n", nl)
+    new_b = new.encode("utf-8").replace(b"\n", nl)
+    if old_b not in b:
+        if new_b in b:
+            print("SKIP (already applied):", tag); return
+        print("FAIL anchor:", tag); sys.exit(1)
+    if b.count(old_b) != 1:
+        print("FAIL non-unique:", tag); sys.exit(1)
+    write_p(path, b.replace(old_b, new_b))
+    print("OK:", tag)
+
+# ---- 1. mapfile.generate_map: label prefix ----
+patch(os.path.join(ROOT, "assemble8080/mapfile.py"),
+"""        for (laddr, lbytes, lsrc) in result.listing:
+            if laddr == addr:
+                src_upper = lsrc.strip().upper()
+                if any(src_upper.startswith(d) for d in ('DB', 'DW', 'DS', '.DB', '.DW', '.DS')):
+                    entry_type = "DATA"
+                break""",
+"""        for (laddr, lbytes, lsrc) in result.listing:
+            if laddr == addr:
+                src = lsrc.strip()
+                if ":" in src:
+                    src = src.split(":", 1)[1].strip()
+                src_upper = src.upper()
+                if any(src_upper.startswith(d) for d in ('DB', 'DW', 'DS', '.DB', '.DW', '.DS')):
+                    entry_type = "DATA"
+                break""",
+"mapfile label prefix")
+
+# ---- 2. objfile: data_lines field ----
+patch(os.path.join(ROOT, "assemble8080/objfile.py"),
+"""    relocations: list = field(default_factory=list)   # [Relocation]
+    case_sensitive: bool = False                      # True =""",
+"""    relocations: list = field(default_factory=list)   # [Relocation]
+    data_lines: list = field(default_factory=list)    # [[offset, size, src], ...] DB/DW/DS
+    case_sensitive: bool = False                      # True =""",
+"objfile data_lines field")
+
+patch(os.path.join(ROOT, "assemble8080/objfile.py"),
+"""        "relocations": [
+            {"offset": r.offset, "size": r.size, "symbol": r.symbol, "addend": r.addend}
+            for r in obj.relocations
+        ],
+        "case_sensitive": obj.case_sensitive,
+    }""",
+"""        "relocations": [
+            {"offset": r.offset, "size": r.size, "symbol": r.symbol, "addend": r.addend}
+            for r in obj.relocations
+        ],
+        "data_lines": [
+            {"offset": o, "size": s, "src": t}
+            for (o, s, t) in obj.data_lines
+        ],
+        "case_sensitive": obj.case_sensitive,
+    }""",
+"save_obj data_lines")
+
+patch(os.path.join(ROOT, "assemble8080/objfile.py"),
+"""        case_sensitive=d.get("case_sensitive", False),
+    )
+    for r in d.get("relocations", []):""",
+"""        case_sensitive=d.get("case_sensitive", False),
+    )
+    for dl in d.get("data_lines", []):
+        obj.data_lines.append([dl["offset"], dl["size"], dl["src"]])
+    for r in d.get("relocations", []):""",
+"load_obj data_lines")
+
+patch(os.path.join(ROOT, "assemble8080/objfile.py"),
+"""    for reloc in getattr(result, 'relocations', []):""",
+"""    # Data directive lines (DB/DW/DS) for map DATA classification
+    for (laddr, lbytes, lsrc) in getattr(result, 'listing', []):
+        offset = laddr - result.origin
+        if offset >= 0:
+            obj.data_lines.append([offset, len(lbytes), lsrc])
+
+    for reloc in getattr(result, 'relocations', []):""",
+"obj_from_asm_result data_lines")
+
+# ---- 3. linker step 7: build fake listing + binary from objects ----
+patch(os.path.join(ROOT, "assemble8080/linker.py"),
+"""    map_text = ""
+    if map_entries:
+        # Build a pseudo-AsmResult for map generation
+        class _FakeResult:
+            pass
+        fake = _FakeResult()
+        fake.origin = origin
+        fake.binary = bytes(output)
+        fake.symbols = all_symbols
+        fake.listing = []
+        from .mapfile import generate_map
+        map_text = generate_map(fake, source_name="(linked)")""",
+"""    map_text = ""
+    if map_entries:
+        # Build a pseudo-AsmResult for map generation
+        class _FakeResult:
+            pass
+        fake = _FakeResult()
+        fake.origin = origin
+        fake.binary = b"".join(o.data for o in objects)
+        fake.symbols = all_symbols
+        fake.listing = [
+            (bases[i] + dl[0], bytes(dl[1]), dl[2])
+            for i, o in enumerate(objects)
+            for dl in getattr(o, 'data_lines', [])
+        ]
+        from .mapfile import generate_map
+        map_text = generate_map(fake, source_name="(linked)")""",
+"linker map data_lines")
+
+# syntax check
+import py_compile
+for p in ["assemble8080/mapfile.py", "assemble8080/objfile.py", "assemble8080/linker.py"]:
+    py_compile.compile(os.path.join(ROOT, p), doraise=True)
+print("COMPILE_OK")
+```
+<!-- END FILE: _fix_datamap.py -->
+
+### `_fix_datapath.py` (81 строк)
+
+<!-- FILE: _fix_datapath.py -->
+```python
+# -*- coding: utf-8 -*-
+"""Добавляет _resolve_data_path (CWD -> каталог проекта) в device_config.py и chargen.py."""
+import io
+import sys
+
+sys.stdout.reconfigure(encoding='utf-8')
+
+
+def load(p):
+    with io.open(p, encoding='utf-8', newline='') as f:
+        return f.read()
+
+
+def save(p, s):
+    with io.open(p, 'w', encoding='utf-8', newline='') as f:
+        f.write(s)
+
+
+def make_method(nl):
+    L = [
+        "    @staticmethod",
+        "    def _resolve_data_path(path: str) -> str:",
+        "        \"\"\"Разрешение пути к файлу данных: сначала относительно CWD,",
+        "        затем относительно каталога проекта (работает в PyInstaller exe).\"\"\"",
+        "        if os.path.isabs(path) or os.path.exists(path):",
+        "            return path",
+        "        try:",
+        "            project_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))",
+        "            candidate = os.path.join(project_dir, path)",
+        "            if os.path.exists(candidate):",
+        "                return candidate",
+        "        except Exception:",
+        "            pass",
+        "        return path",
+        "",
+        "",
+    ]
+    return nl.join(L) + nl
+
+
+# ================= device_config.py =================
+p = 'modules/config/device_config.py'
+s = load(p)
+nl = '\r\n' if '\r\n' in s else '\n'
+
+head = 'try:' + nl + '    import tomllib'
+assert s.startswith(head), 'dc: head anchor not found'
+s = 'import os' + nl + nl + s
+
+old_open = "with open(path, 'rb') as f:"
+idx = s.rfind(old_open)
+assert idx != -1, 'dc: open() not found'
+s = s[:idx] + "with open(DeviceConfig._resolve_data_path(path), 'rb') as f:" + s[idx + len(old_open):]
+
+anchor = '    @staticmethod' + nl + '    def _load_rom_file(path: str, start_addr: int) -> dict:'
+assert anchor in s, 'dc: _load_rom_file anchor not found'
+s = s.replace(anchor, make_method(nl) + anchor, 1)
+save(p, s)
+print('device_config.py: OK')
+
+# ================= chargen.py =================
+p = 'modules/io/chargen.py'
+s = load(p)
+nl = '\r\n' if '\r\n' in s else '\n'
+
+# import os после закрывающей тройной кавычки docstring
+close_idx = s.find(nl + '"""')
+assert close_idx != -1, 'cg: docstring close not found'
+insert_at = close_idx + len(nl + '"""')
+s = s[:insert_at] + nl + nl + 'import os' + nl + nl + s[insert_at:]
+
+old_open = "with open(path, 'rb') as f:"
+assert s.count(old_open) == 1, 'cg: expected exactly 1 open(), got %d' % s.count(old_open)
+s = s.replace(old_open, "with open(self._resolve_data_path(path), 'rb') as f:", 1)
+
+anchor = '    def load_from_file(self, path, height=8, width=8, num_chars=256,'
+assert anchor in s, 'cg: load_from_file anchor not found'
+s = s.replace(anchor, make_method(nl) + anchor, 1)
+save(p, s)
+print('chargen.py: OK')
+print('DONE')
+```
+<!-- END FILE: _fix_datapath.py -->
+
+### `_fix_docs.py` (373 строк)
+
+<!-- FILE: _fix_docs.py -->
+```python
+# -*- coding: utf-8 -*-
+"""Обновление документации по librarian/.lib, ORIGIN-раскладке, map DATA, auto watch."""
+import os, sys
+
+ROOT = os.path.dirname(os.path.abspath(__file__))
+
+def patch(fname, pairs):
+    p = os.path.join(ROOT, fname)
+    raw = open(p, "rb").read()
+    nl = b"\r\n" if raw.count(b"\r\n") >= raw.count(b"\n") - raw.count(b"\r\n") else b"\n"
+    text = raw.decode("utf-8", errors="replace")
+    norm_nl = "\r\n" if nl == b"\r\n" else "\n"
+    n_applied = 0
+    for old, new in pairs:
+        o = old.replace("\n", norm_nl)
+        n = new.replace("\n", norm_nl)
+        if n in text:
+            print(f"  SKIP (done): {old[:50]!r}")
+            continue
+        if o not in text:
+            print(f"  FAIL anchor: {old[:70]!r}")
+            sys.exit(1)
+        text = text.replace(o, n, 1)
+        n_applied += 1
+        print(f"  OK: {old[:60]!r}")
+    # preserve original line endings exactly: we only replaced within text using its own NL
+    open(p, "wb").write(text.encode("utf-8"))
+    print(f"{fname}: {n_applied} patch(es) applied")
+
+# ==================== ASSEMBLER_GUIDE.md ====================
+patch("ASSEMBLER_GUIDE.md", [
+    (
+"  - `linker.py` — линковщик (`.lnk`-скрипты, relocation)\n"
+"  - `mapfile.py` — генерация/разбор map-файлов",
+"  - `linker.py` — линковщик (`.lnk`-скрипты, relocation, библиотеки `.lib`)\n"
+"  - `mapfile.py` — генерация/разбор map-файлов\n"
+"  - `librarian.py` — библиотекарь (архивные библиотеки `.lib`)"
+    ),
+    (
+"| `relocations` | `[{offset, size, symbol}]` |",
+"| `relocations` | `[{offset, size, symbol, addend}]` (addend — аддитивная константа) |\n"
+"| `case_sensitive` | режим точного (без нормализации) сопоставления символов |\n"
+"| `data_lines` | строки данных `(offset, size, исходник)` — для классификации CODE/DATA в map |"
+    ),
+    (
+"| `INPUT f1.obj f2.obj ...` | Объектные файлы для линковки |",
+"| `INPUT f1.obj f2.obj lib1.lib ...` | Объектные файлы (`.obj`) и архивные библиотеки (`.lib`) для линковки |"
+    ),
+    (
+"| `ORIGIN 0x0000` | Базовый адрес вывода |",
+"| `ORIGIN 0x0000` | Базовый адрес вывода — модули размещаются **последовательно** от ORIGIN |"
+    ),
+    (
+"INPUT main.obj helper.obj\n"
+"OUTPUT app.bin\n"
+"MAP app.map\n"
+"ORIGIN 0x0000\n"
+"SIZE 0x10000\n"
+"FILL 0xFF",
+"INPUT main.obj helper.obj\n"
+"OUTPUT app.bin\n"
+"MAP app.map\n"
+"ORIGIN 0x0100\n"
+"SIZE 0x10000\n"
+"FILL 0xFF"
+    ),
+    (
+"1. **Проверка конфликтов ORG** — два модуля не могут иметь один `ORG`.\n"
+"2. **Глобальная таблица символов** — сборка всех `exports` (абсолютные адреса).\n"
+"3. **Проверка неразрешённых импортов** — каждый `IMPORT` должен быть в `exports`.\n"
+"4. **Выделение буфера** — размер `max(SIZE, ORIGIN + max(org+size))`.\n"
+"5. **Размещение данных** — каждый `.obj` кладётся по своему `ORG`.\n"
+"6. **Применение relocation** — патч 16-битных (и 8-битных) адресов.\n"
+"7. **Генерация map** — таблица символов с адресами.",
+"1. **Разрешение библиотек** — модули из `.lib`-архивов извлекаются по\n"
+"   неразрешённым импортам (worklist до фикс-пойнта).\n"
+"2. **Проверка неразрешённых импортов** — каждый `IMPORT` должен быть в `exports`.\n"
+"3. **Расчёт раскладки** — модули размещаются **последовательно** от `ORIGIN`:\n"
+"   `bases[0] = ORIGIN`, `bases[i] = bases[i-1] + len(data)`. Собственные `.org`\n"
+"   модулей **игнорируются** при размещении (они — только виртуальная база\n"
+"   ассемблера для вычисления локальных смещений).\n"
+"4. **Глобальная таблица символов** — сборка всех `exports` по финальным адресам\n"
+"   (`bases[i] + offset`).\n"
+"5. **Размещение данных** — каждый `.obj` записывается на свой `bases[i]`.\n"
+"6. **Применение relocation** — патч 16-битных (и 8-битных) адресов\n"
+"   (`sym_addr + addend`).\n"
+"7. **Генерация map** — таблица символов с адресами (классификация CODE/DATA\n"
+"   по строкам данных `data_lines`)."
+    ),
+    (
+"objects = [load_obj('main.obj'), load_obj('helper.obj')]\n"
+"result = link(objects, origin=0, size=0x10000, fill=0xFF)\n"
+"if result.success:\n"
+"    open('app.bin', 'wb').write(result.binary)\n"
+"    print(result.symbols)   # {'MAIN': 256, 'HELPER': 512}",
+"objects = [load_obj('main.obj'), load_obj('helper.obj')]\n"
+"result = link(objects, origin=0x0100)   # модули складываются последовательно от 0x0100\n"
+"if result.success:\n"
+"    open('app.bin', 'wb').write(result.binary)\n"
+"    print(result.symbols)   # {'MAIN': 0x0100, 'HELPER': 0x0106}"
+    ),
+    (
+"- `main.asm` — `ORG 0x0100`, `IMPORT HELPER`, `EXPORT main`, `CALL HELPER`.\n"
+"- `helper.asm` — `ORG 0x0200`, `EXPORT HELPER`.\n"
+"- `app.lnk` — скрипт линковщика.\n"
+"- `build.py` — собирает оба модуля, слинковывает, проверяет патч `CALL`.\n"
+"\n"
+"Результат: `app.bin` содержит `main` @ 0x0100 и `HELPER` @ 0x0200, а\n"
+"`CALL HELPER` пропатчен на `0x0200` (байты `CD 00 02`).",
+"- `main.asm` — 6 байт, `EXPORT main`, `IMPORT helper`, `CALL helper`.\n"
+"- `helper.asm` — 2 байта, `EXPORT helper`.\n"
+"- `app.lnk` — скрипт линковщика с `ORIGIN 0x0100`.\n"
+"- `build.py` — собирает оба модуля, слинковывает, проверяет патч `CALL`.\n"
+"\n"
+"Результат: модули размещены **последовательно** от `ORIGIN 0x0100`:\n"
+"`main` @ 0x0100 (6 байт), `helper` @ 0x0106, а `CALL helper` пропатчен на\n"
+"`0x0106` (байты `CD 06 01`). Собственные `ORG` модулей на размещение не влияют."
+    ),
+    (
+"---\n"
+"\n"
+"## 8. Map-файлы",
+"### 7.8. Архивные библиотеки (`.lib`)\n"
+"\n"
+"Библиотека объединяет несколько объектных модулей в один архив (JSON,\n"
+"`i8080-lib-v1`). Линковщик автоматически извлекает из неё только нужные\n"
+"модули — по неразрешённым импортам.\n"
+"\n"
+"Структура архива:\n"
+"\n"
+"| Поле | Описание |\n"
+"|------|----------|\n"
+"| `format` | `i8080-lib-v1` |\n"
+"| `name` | имя библиотеки |\n"
+"| `index` | `{UPPER_EXPORT: модуль}` — индекс экспортов |\n"
+"| `modules` | `{имя_модуля: полный JSON .obj}` |\n"
+"\n"
+"Создание библиотеки:\n"
+"\n"
+"```python\n"
+"from assemble8080.librarian import create_library, load_library\n"
+"\n"
+"create_library(['a.obj', 'b.obj', 'c.obj'], 'lib.lib', 'mylib')\n"
+"```\n"
+"\n"
+"Ограничения: имена модулей уникальны в пределах библиотеки, экспорт-символы\n"
+"не дублируются (иначе `ValueError`).\n"
+"\n"
+"В скрипте линковщика `.lib` указывается в `INPUT` наряду с `.obj`:\n"
+"\n"
+"```lnk\n"
+"INPUT main.obj lib.lib\n"
+"OUTPUT app.bin\n"
+"ORIGIN 0x0100\n"
+"```\n"
+"\n"
+"Разрешение выполняется worklist-циклом: пока есть неразрешённые импорты,\n"
+"линковщик ищет символ по индексу экспортов архива, извлекает модуль и\n"
+"обновляет множества разрешённых/требуемых символов. Ненужные модули\n"
+"в выходной образ не попадают.\n"
+"\n"
+"---\n"
+"\n"
+"## 8. Map-файлы"
+    ),
+])
+
+# ==================== USER_GUIDE.md ====================
+patch("USER_GUIDE.md", [
+    (
+"1. Write each module with `ORG` (its load address), `EXPORT` for public symbols, and `IMPORT` for symbols defined elsewhere.",
+"1. Write each module with `ORG` (its assembly base), `EXPORT` for public symbols, and `IMPORT` for symbols defined elsewhere."
+    ),
+    (
+"| `INPUT f1.obj f2.obj ...` | Object files to link (in order) |",
+"| `INPUT f1.obj f2.obj lib.lib ...` | Object files (`.obj`) and archive libraries (`.lib`) to link (in order) |"
+    ),
+    (
+"| `ORIGIN 0x0000` | Base address for the output |",
+"| `ORIGIN 0x0000` | Base address for the output — modules are placed **sequentially** from ORIGIN |"
+    ),
+    (
+"INPUT main.obj helper.obj\n"
+"OUTPUT app.bin\n"
+"MAP app.map\n"
+"ORIGIN 0x0000\n"
+"SIZE 0x10000\n"
+"FILL 0xFF",
+"INPUT main.obj helper.obj\n"
+"OUTPUT app.bin\n"
+"MAP app.map\n"
+"ORIGIN 0x0100\n"
+"SIZE 0x10000\n"
+"FILL 0xFF"
+    ),
+    (
+"**Rules:**\n"
+"- Each object must have a **unique `ORG`** (the linker reports ORG conflicts).\n"
+"- Every `IMPORT` must be satisfied by an `EXPORT` in some object (otherwise: *Unresolved symbol*).\n"
+"- Objects are placed at their own `ORG`; the linker does not rebase them.",
+"**Libraries:** `INPUT` can also reference `.lib` archives — the linker extracts only the modules that satisfy unresolved imports (via the archive's export index).\n"
+"\n"
+"**Rules:**\n"
+"- Modules are placed **sequentially from `ORIGIN`**: the first at ORIGIN, each next immediately after the previous one. A module's own `ORG` does not affect placement (it is only the assembler's virtual base).\n"
+"- Every `IMPORT` must be satisfied by an `EXPORT` in some object or library module (otherwise: *Unresolved symbol*)."
+    ),
+    (
+"1. Напишите каждый модуль с `ORG` (адрес загрузки), `EXPORT` для публичных символов и `IMPORT` для символов, определённых в других модулях.",
+"1. Напишите каждый модуль с `ORG` (базовый адрес сборки), `EXPORT` для публичных символов и `IMPORT` для символов, определённых в других модулях."
+    ),
+    (
+"| `INPUT f1.obj f2.obj ...` | Объектные файлы для линковки (в порядке) |",
+"| `INPUT f1.obj f2.obj lib.lib ...` | Объектные файлы (`.obj`) и архивные библиотеки (`.lib`) для линковки (в порядке) |"
+    ),
+    (
+"| `ORIGIN 0x0000` | Базовый адрес вывода |",
+"| `ORIGIN 0x0000` | Базовый адрес вывода — модули размещаются **последовательно** от ORIGIN |"
+    ),
+    (
+"INPUT main.obj helper.obj\n"
+"OUTPUT app.bin\n"
+"MAP app.map\n"
+"ORIGIN 0x0000\n"
+"SIZE 0x10000\n"
+"FILL 0xFF",
+"INPUT main.obj helper.obj\n"
+"OUTPUT app.bin\n"
+"MAP app.map\n"
+"ORIGIN 0x0100\n"
+"SIZE 0x10000\n"
+"FILL 0xFF"
+    ),
+    (
+"**Правила:**\n"
+"- У каждого объекта должен быть **уникальный `ORG`** (линковщик сообщает о конфликтах ORG).\n"
+"- Каждый `IMPORT` должен быть удовлетворён `EXPORT` в каком-то объекте (иначе: *Unresolved symbol*).\n"
+"- Объекты размещаются по своему `ORG`; линковщик не перебазирует их.",
+"**Библиотеки:** в `INPUT` можно указывать и архивы `.lib` — линковщик автоматически извлекает только те модули, которые закрывают неразрешённые импорты (по индексу экспортов в архиве).\n"
+"\n"
+"**Правила:**\n"
+"- Модули размещаются **последовательно от `ORIGIN`**: первый — по ORIGIN, каждый следующий — сразу за предыдущим. Собственный `ORG` модуля на размещение не влияет (это только виртуальная база ассемблера).\n"
+"- Каждый `IMPORT` должен быть удовлетворён `EXPORT` в каком-то объекте или модуле библиотеки (иначе: *Unresolved symbol*)."
+    ),
+    (
+"- Add/remove watch items\n"
+"- Clear all items\n"
+"- Save/Load presets (JSON)\n"
+"- Highlight changed values (red background)",
+"- Add/remove watch items\n"
+"- Clear all items\n"
+"- Save/Load presets (JSON)\n"
+"- Highlight changed values (red background)\n"
+"- **Auto watch variables** — after assembly and image load, data labels (DB/DW/DS) are added to the watch list automatically, with the correct addresses and sizes (byte/word). Jump labels are excluded. Auto entries are **not** stored in JSON presets\n"
+"- **Column sorting** — click a column header to sort by name / address / value / format"
+    ),
+    (
+"- Добавление/удаление элементов\n"
+"- Очистка всех элементов\n"
+"- Сохранение/загрузка пресетов (JSON)\n"
+"- Подсветка изменённых значений (красный фон)",
+"- Добавление/удаление элементов\n"
+"- Очистка всех элементов\n"
+"- Сохранение/загрузка пресетов (JSON)\n"
+"- Подсветка изменённых значений (красный фон)\n"
+"- **Авто-переменные** — после ассемблирования и загрузки образа в watch-list автоматически добавляются метки данных (DB/DW/DS) с правильными адресами и размерностью (байт/слово). Метки перехода не добавляются. Авто-записи **не** сохраняются в JSON-пресеты\n"
+"- **Сортировка по колонкам** — клик по заголовку колонки: имя / адрес / значение / формат"
+    ),
+])
+
+# ==================== README.md ====================
+patch("README.md", [
+    (
+"object files, and a linker (EXPORT/IMPORT, relocations, map files)",
+"object files, a linker (EXPORT/IMPORT, relocations, map files), and archive libraries (.lib)"
+    ),
+    (
+"object files, and a linker (EXPORT/IMPORT, relocations, map files)" if False else "объектными файлами и линковщиком (EXPORT/IMPORT, переносы, map-файлы)",
+"объектными файлами, линковщиком (EXPORT/IMPORT, переносы, map-файлы) и архивными библиотеками (.lib)"
+    ),
+    (
+"step / step-over, run-to, watch windows, trace log",
+"step / step-over, run-to, watch windows (with auto variables from map files), trace log"
+    ),
+    (
+"пошаговое выполнение, run-to, watch-окна, трассировка",
+"пошаговое выполнение, run-to, watch-окна (с авто-переменными из map-файлов), трассировка"
+    ),
+])
+
+# ==================== CHANGES.md ====================
+changes_entry = """## v2.1.15 (2026-10-23)
+
+### Архивные библиотеки (.lib), последовательная раскладка от ORIGIN, DATA в map, авто watch
+
+**Новый: библиотекарь (`assemble8080/librarian.py`):**
+- `create_library(obj_paths, lib_path, lib_name)` — упаковывает `.obj`-модули
+  (i8080-obj-v1) в архив `.lib` (формат `i8080-lib-v1`) с индексом экспортов
+  `{UPPER_EXPORT: модуль}`; блокирует дубликаты имён модулей и экспорт-символов
+  (ValueError).
+- `load_library(path)` — загрузка и валидация архива.
+
+**Линковщик: разрешение библиотек (`assemble8080/linker.py`):**
+- `INPUT` в `.lnk` принимает `.obj` и `.lib` файлы.
+- `_resolve_libraries`: worklist-цикл — пока есть неразрешённые импорты, линковщик
+  ищет символ по индексу экспортов архивов, извлекает нужный модуль и обновляет
+  множества разрешённых/требуемых. Неиспользуемые модули в образ не попадают.
+- Тесты: `tests/test_librarian_and_linker_resolving.py` (17/0): создание lib,
+  блокировка дубликата экспорта, извлечение нужного модуля (CALL CCMULT -> 0x0103,
+  ccdiv отсутствует в образе).
+
+**Последовательная раскладка от ORIGIN:**
+- Линковщик игнорирует индивидуальные `org` модулей при размещении:
+  `bases[0]=ORIGIN`, `bases[i]=bases[i-1]+len(data)`. Адреса символов,
+  размещение данных и патч relocation используют `bases[i]`.
+- `ORG` в модуле — только виртуальная база ассемблера для вычисления локальных
+  смещений. Одиночная сборка в GUI: `link([obj], origin=obj.org)` — поведение
+  не изменилось (проверено smoke-тестами).
+- `assembler_example/04_multifile`: ORIGIN 0x0100, helper @ 0x0106, CALL -> 0x0106.
+
+**Классификация DATA/CODE в map (mapfile + objfile + linker):**
+- `mapfile.generate_map`: префикс лейбла отбрасывается перед проверкой директивы
+  DB/DW/DS (раньше `MYS: DB 0x42` помечалось CODE).
+- `objfile`: новое поле `data_lines` (offset, size, исходник) — сериализуется в
+  `.obj` и обратно, заполняется из `AsmResult.listing`.
+- `linker`: при генерации map «listing» строится из `data_lines` объектов,
+  передаётся точный `fake.binary` (не весь 64K-вывод).
+
+**Авто watch-переменные + сортировка (i8080_ci):**
+- `WatchModel.set_auto_watches_from_map()` — после ассемблирования и загрузки
+  образа DATA-символы map добавляются в watch-list: size >= 2 -> word, иначе
+  byte. CODE-метки (переходы) исключены. Повторный запуск перегенерирует
+  auto-записи, ручные сохраняются.
+- Auto-записи не попадают в JSON-пресеты (save_preset/load_preset).
+- Watch-таблица сортируется по колонкам (setSortingEnabled + sort()) — как
+  окно меток ассемблера.
+- `assembler_widget._auto_load_watch_vars()` вызывается после успешной сборки.
+- i18n: `watch_auto_loaded` (EN/RU).
+- Тесты: `tests/test_watch_auto.py` (18/0).
+
+**Документация:** ASSEMBLER_GUIDE.md (7.2-7.8), USER_GUIDE.md (8.14, 13.2),
+README.md — обновлены по новым возможностям.
+
+**Тесты:** 956/0 (run_tests, 36 файлов) + GUI smoke + map autoload flow.
+"""
+p = os.path.join(ROOT, "CHANGES.md")
+raw = open(p, "rb").read()
+nl = "\r\n" if raw.count(b"\r\n") >= raw.count(b"\n") - raw.count(b"\r\n") else "\n"
+text = raw.decode("utf-8", errors="replace")
+anchor = "## v2.1.14 (2026-10-13)"
+if "## v2.1.15" in text:
+    print("CHANGES.md: SKIP (v2.1.15 present)")
+elif anchor not in text:
+    print("CHANGES.md: FAIL anchor"); sys.exit(1)
+else:
+    entry = changes_entry.replace("\n", nl)
+    text = text.replace(anchor, entry + anchor, 1)
+    open(p, "wb").write(text.encode("utf-8"))
+    print("CHANGES.md: v2.1.15 entry added")
+
+# ==================== pyproject.toml ====================
+p = os.path.join(ROOT, "pyproject.toml")
+raw = open(p, "rb").read()
+if b'version = "2.1.15"' in raw:
+    print("pyproject.toml: SKIP (2.1.15)")
+else:
+    nl2 = b"\r\n" if raw.count(b"\r\n") >= raw.count(b"\n") - raw.count(b"\r\n") else b"\n"
+    old = b'version = "2.1.14"'
+    if old not in raw:
+        print("pyproject.toml: FAIL anchor"); sys.exit(1)
+    open(p, "wb").write(raw.replace(old, b'version = "2.1.15"', 1))
+    print("pyproject.toml: 2.1.14 -> 2.1.15")
+
+print("DOCS PATCH DONE")
+```
+<!-- END FILE: _fix_docs.py -->
+
 ### `_fix_en.py` (50 строк)
 
 <!-- FILE: _fix_en.py -->
@@ -3981,6 +4887,101 @@ except py_compile.PyCompileError as e:
 print("Done")
 ```
 <!-- END FILE: _fix_en.py -->
+
+### `_fix_runtests.py` (17 строк)
+
+<!-- FILE: _fix_runtests.py -->
+```python
+# -*- coding: utf-8 -*-
+import os, sys, py_compile
+ROOT = os.path.dirname(os.path.abspath(__file__))
+p = os.path.join(ROOT, "run_tests.py")
+b = open(p, "rb").read()
+nl = b"\r\n" if b"\r\n" in b else b"\n"
+old = "    'tests/test_8085.py',".encode("utf-8").replace(b"\n", nl)
+new = ("    'tests/test_8085.py',\n    'tests/test_watch_auto.py',").encode("utf-8").replace(b"\n", nl)
+if new in b:
+    print("SKIP already applied")
+elif old not in b:
+    print("FAIL anchor"); sys.exit(1)
+else:
+    open(p, "wb").write(b.replace(old, new))
+    print("OK")
+py_compile.compile(p, doraise=True)
+print("COMPILE_OK")
+```
+<!-- END FILE: _fix_runtests.py -->
+
+### `_fix_runtests2.py` (17 строк)
+
+<!-- FILE: _fix_runtests2.py -->
+```python
+# -*- coding: utf-8 -*-
+import os, sys, py_compile
+ROOT = os.path.dirname(os.path.abspath(__file__))
+p = os.path.join(ROOT, "run_tests.py")
+b = open(p, "rb").read()
+nl = b"\r\n" if b"\r\n" in b else b"\n"
+old = ("    'tests/test_wait_signals.py', 'tests/test_8085.py',\n]").encode("utf-8").replace(b"\n", nl)
+new = ("    'tests/test_wait_signals.py', 'tests/test_8085.py',\n    'tests/test_watch_auto.py',\n]").encode("utf-8").replace(b"\n", nl)
+if new in b:
+    print("SKIP already applied")
+elif old not in b:
+    print("FAIL anchor"); sys.exit(1)
+else:
+    open(p, "wb").write(b.replace(old, new))
+    print("OK")
+py_compile.compile(p, doraise=True)
+print("COMPILE_OK")
+```
+<!-- END FILE: _fix_runtests2.py -->
+
+### `_fix_runtests3.py` (16 строк)
+
+<!-- FILE: _fix_runtests3.py -->
+```python
+# -*- coding: utf-8 -*-
+import os, sys, py_compile
+ROOT = os.path.dirname(os.path.abspath(__file__))
+p = os.path.join(ROOT, "run_tests.py")
+b = open(p, "rb").read()
+old = b"'tests/test_8085.py',\n]"
+new = b"'tests/test_8085.py',\n    'tests/test_watch_auto.py',\n]"
+if new in b:
+    print("SKIP already applied")
+elif old not in b:
+    print("FAIL anchor"); sys.exit(1)
+else:
+    open(p, "wb").write(b.replace(old, new))
+    print("OK")
+py_compile.compile(p, doraise=True)
+print("COMPILE_OK")
+```
+<!-- END FILE: _fix_runtests3.py -->
+
+### `_fix_runtests_list.py` (17 строк)
+
+<!-- FILE: _fix_runtests_list.py -->
+```python
+# -*- coding: utf-8 -*-
+import os, sys, py_compile
+ROOT = os.path.dirname(os.path.abspath(__file__))
+p = os.path.join(ROOT, "run_tests.py")
+b = open(p, "rb").read()
+nl = b"\r\n" if b"\r\n" in b else b"\n"
+old = ("    'tests/test_8085.py',").encode("utf-8").replace(b"\n", nl)
+new = ("    'tests/test_8085.py',\n    'tests/test_watch_auto.py',").encode("utf-8").replace(b"\n", nl)
+if old not in b:
+    print("FAIL anchor"); sys.exit(1)
+if new in b:
+    print("SKIP already applied")
+else:
+    open(p, "wb").write(b.replace(old, new))
+    print("OK added test_watch_auto.py to run_tests.py")
+py_compile.compile(p, doraise=True)
+print("COMPILE_OK")
+```
+<!-- END FILE: _fix_runtests_list.py -->
 
 ### `_fix_tests.py` (93 строк)
 
@@ -4082,6 +5083,60 @@ print("DONE")
 ```
 <!-- END FILE: _fix_tests.py -->
 
+### `_make_source_tarball.py` (47 строк)
+
+<!-- FILE: _make_source_tarball.py -->
+```python
+# -*- coding: utf-8 -*-
+"""Сборка исходного архива i8080-5_CI_v<ver>_source.tar.gz в Release/."""
+import os, sys, tarfile
+
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+root = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, root)
+import version
+
+ver = version.__version__
+top = f"i8080-5_CI-v{ver}"
+out = os.path.join(root, "Release", f"i8080-5_CI_v{ver}_source.tar.gz")
+
+EXCLUDE_DIRS = {".git", "build", "dist", "Release", "__pycache__",
+                "node_modules", ".vscode", ".venv-build", "release-linux"}
+
+def excluded_dir(rel, name):
+    if name in EXCLUDE_DIRS or name.endswith(".egg-info") or name.startswith(".venv"):
+        return True
+    if os.path.join(rel, name) == "Plugins/i8080_ci-vscode/out":
+        return True
+    return False
+
+def excluded_file(name):
+    # временные файлы AI-анализа: ОДИН подчёркивание (не __init__.py!)
+    if name.startswith("_") and not name.startswith("__") \
+            and (name.endswith(".py") or name.endswith(".txt")):
+        return True
+    if name == "_ref_page.html":
+        return True
+    return name.endswith((".pyc", ".pyo"))
+
+count = 0
+with tarfile.open(out, "w:gz") as tar:
+    for dirpath, dirnames, filenames in os.walk(root):
+        rel = os.path.relpath(dirpath, root)
+        dirnames[:] = [d for d in dirnames if not excluded_dir(rel, d)]
+        for f in sorted(filenames):
+            if excluded_file(f):
+                continue
+            full = os.path.join(dirpath, f)
+            arc = os.path.join(top, rel, f) if rel != "." else os.path.join(top, f)
+            tar.add(full, arcname=arc)
+            count += 1
+
+size = os.path.getsize(out)
+print(f"OK: {os.path.basename(out)}  files={count}  size={size/1024/1024:.1f} MB")
+```
+<!-- END FILE: _make_source_tarball.py -->
+
 ### `_parse_ref.py` (16 строк)
 
 <!-- FILE: _parse_ref.py -->
@@ -4104,6 +5159,131 @@ for i, t in enumerate(tables):
     open(f'_ref_table_{i}.txt', 'w', encoding='utf-8').write(t)
 ```
 <!-- END FILE: _parse_ref.py -->
+
+### `_patch_debug.py` (29 строк)
+
+<!-- FILE: _patch_debug.py -->
+```python
+# -*- coding: utf-8 -*-
+import io, sys
+path = 'modules/config/system_profiles.py'
+with io.open(path, 'r', encoding='utf-8', newline='') as f:
+    text = f.read()
+eol = '\r\n' if '\r\n' in text else '\n'
+old = ("        except Exception as e:\r\n"
+       "            print(f\"Ошибка загрузки профиля {filepath}: {e}\")\r\n"
+       "\r\n"
+       "# Загружаем при импорте модуля\r\n"
+       "_load_external_profiles()")
+new = ("        except Exception as e:\r\n"
+       "            print(f\"Ошибка загрузки профиля {filepath}: {e}\")\r\n"
+       "\r\n"
+       "    if os.environ.get(\"I8080_DEBUG_PROFILES\"):\r\n"
+       "        print(f\"[profiles] dir={_PROFILES_DIR} loaded={len(_external_profiles)}\")\r\n"
+       "\r\n"
+       "# Загружаем при импорте модуля\r\n"
+       "_load_external_profiles()")
+if new in text:
+    print("SKIP: already patched")
+elif old in text:
+    text = text.replace(old, new)
+    with io.open(path, 'w', encoding='utf-8', newline='') as f:
+        f.write(text)
+    print("OK: patched")
+else:
+    print("FAIL: anchor not found")
+    sys.exit(1)
+```
+<!-- END FILE: _patch_debug.py -->
+
+### `_prep_release_paths.py` (82 строк)
+
+<!-- FILE: _prep_release_paths.py -->
+```python
+# -*- coding: utf-8 -*-
+"""Одноразовая подготовка: минимальные правки путей для PyInstaller-exe (CRLF)."""
+import io, sys
+
+def patch(path, old, new):
+    with io.open(path, 'r', encoding='utf-8', newline='') as f:
+        text = f.read()
+    eol = '\r\n' if '\r\n' in text else '\n'
+    old = old.replace('\r\n', '\n').replace('\n', eol)
+    new = new.replace('\r\n', '\n').replace('\n', eol)
+    if new in text:
+        print(f"SKIP (already patched): {path}")
+        return
+    if old not in text:
+        print(f"FAIL: anchor not found in {path}")
+        sys.exit(1)
+    text = text.replace(old, new)
+    with io.open(path, 'w', encoding='utf-8', newline='') as f:
+        f.write(text)
+    print(f"OK: {path}")
+
+# 1) i8080_CI.py: chdir в каталог exe при frozen
+patch('i8080_CI.py',
+"""import sys
+from PySide6.QtWidgets import QApplication
+from i8080_ci.main_window import MainWindow
+
+def main():
+    app = QApplication(sys.argv)""",
+"""import os
+import sys
+from PySide6.QtWidgets import QApplication
+from i8080_ci.main_window import MainWindow
+
+def main():
+    # PyInstaller: работать из каталога exe, чтобы внешние каталоги
+    # profiles/ и roms/ находились рядом с исполняемым файлом
+    if getattr(sys, "frozen", False):
+        os.chdir(os.path.dirname(os.path.abspath(sys.executable)))
+    app = QApplication(sys.argv)""")
+
+# 2) system_profiles.py: поиск каталога профилей (исходники / CWD / каталог exe)
+patch('modules/config/system_profiles.py',
+"""import os
+import os.path
+import glob
+
+# Базовый каталог проекта (каталог скрипта)
+_PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+_PROFILES_DIR = os.path.join(_PROJECT_DIR, "profiles")""",
+"""import os
+import os.path
+import glob
+import sys
+
+# Базовый каталог проекта (каталог скрипта)
+_PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+def _find_profiles_dir():
+    \"\"\"Каталог профилей: рядом с исходниками, в CWD или рядом с exe (PyInstaller).\"\"\"
+    candidates = [
+        os.path.join(_PROJECT_DIR, "profiles"),
+        os.path.join(os.getcwd(), "profiles"),
+    ]
+    if getattr(sys, "frozen", False):
+        candidates.append(os.path.join(os.path.dirname(os.path.abspath(sys.executable)), "profiles"))
+    for c in candidates:
+        if os.path.isdir(c):
+            return c
+    return os.path.join(_PROJECT_DIR, "profiles")
+
+_PROFILES_DIR = _find_profiles_dir()""")
+
+# 3) system_profiles.py: диагностика, если каталог не найден
+patch('modules/config/system_profiles.py',
+"""    if not os.path.isdir(_PROFILES_DIR):
+        return""",
+"""    if not os.path.isdir(_PROFILES_DIR):
+        print(f"[profiles] Каталог профилей не найден: {_PROFILES_DIR}")
+        return""")
+
+print("DONE")
+```
+<!-- END FILE: _prep_release_paths.py -->
 
 ### `_read_alus.py` (4 строк)
 
@@ -4610,6 +5790,21 @@ print("=" * 60)
 ```
 <!-- END FILE: _run_remaining_tests.py -->
 
+### `_show_struct.py` (8 строк)
+
+<!-- FILE: _show_struct.py -->
+```python
+# -*- coding: utf-8 -*-
+import io
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+s = io.open('modules/config/device_config.py', encoding='utf-8', newline='').read()
+for i, l in enumerate(s.splitlines(), 1):
+    if l.startswith('class ') or 'def _load_rom_file' in l or 'def create_memory_region' in l or 'def _resolve_data_path' in l:
+        print(i, l)
+```
+<!-- END FILE: _show_struct.py -->
+
 ### `_test_addend.py` (104 строк)
 
 <!-- FILE: _test_addend.py -->
@@ -5026,6 +6221,54 @@ else:
 ```
 <!-- END FILE: _test_case.py -->
 
+### `_test_datapath.py` (41 строк)
+
+<!-- FILE: _test_datapath.py -->
+```python
+# -*- coding: utf-8 -*-
+"""Проверка _resolve_data_path: запуск из чужого CWD, файлы должны найтись через каталог проекта."""
+import os
+import sys
+
+sys.stdout.reconfigure(encoding='utf-8')
+os.chdir(r'C:\Windows\Temp')  # CWD без roms/
+sys.path.insert(0, r'c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis')
+
+ok = True
+
+# 1. DeviceConfig._load_rom_file через fallback в каталог проекта
+from modules.config.device_config import DeviceFactory
+data = DeviceFactory._load_rom_file('roms/micro80_monitor.bin', 0xF800)
+n = len(data)
+print(f'ROM micro80_monitor.bin: {n} bytes loaded (expect >0)')
+if n == 0:
+    ok = False
+
+# 2. CharGenerator.load_from_file через fallback
+from modules.io.chargen import CharGenerator
+cg = CharGenerator()
+try:
+    cg.load_from_file('roms/micro80_font.rom', char_width=6, num_chars=128, invert=True, bit_reverse=True)
+    print('Font micro80_font.rom: loaded OK')
+except Exception as e:
+    print(f'Font load FAILED: {e}')
+    ok = False
+
+# 3. Абсолютный путь и несуществующий файл
+d2 = DeviceFactory._load_rom_file(os.path.join(r'c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis', 'roms', 'micro80_font.rom'), 0)
+print(f'Absolute path: {len(d2)} bytes (expect >0)')
+if len(d2) == 0:
+    ok = False
+d3 = DeviceFactory._load_rom_file('roms/nonexistent.bin', 0)
+print(f'Nonexistent: {len(d3)} bytes (expect 0)')
+if len(d3) != 0:
+    ok = False
+
+print('RESULT:', 'PASS' if ok else 'FAIL')
+sys.exit(0 if ok else 1)
+```
+<!-- END FILE: _test_datapath.py -->
+
 ### `_test_dollar.py` (73 строк)
 
 <!-- FILE: _test_dollar.py -->
@@ -5068,9 +6311,9 @@ r = assemble(src)
 check("Assembled OK", r.success, str(r.errors))
 check("Has relocations", len(r.relocations) >= 3, f"got {len(r.relocations)}: {r.relocations}")
 # JZ $1 at offset 3, JMP $0 at offset 6, JNZ $1 at offset 11
-check("JZ $1 reloc", (3, 2, '$1') in r.relocations, str(r.relocations))
-check("JMP $0 reloc", (6, 2, '$0') in r.relocations, str(r.relocations))
-check("JNZ $1 reloc", (11, 2, '$1') in r.relocations, str(r.relocations))
+check("JZ $1 reloc", (3, 2, '$1', 0) in r.relocations, str(r.relocations))
+check("JMP $0 reloc", (6, 2, '$0', 0) in r.relocations, str(r.relocations))
+check("JNZ $1 reloc", (11, 2, '$1', 0) in r.relocations, str(r.relocations))
 
 print("\n=== Test 2: Linker resolves $-labels correctly ===")
 obj = obj_from_asm_result(r, "test.asm")
@@ -5079,7 +6322,7 @@ check("Obj has $1 symbol", '$1' in obj.symbols, f"symbols={list(obj.symbols.keys
 
 # Link at 0x0100
 obj.org = 0x0100
-res = link([obj], origin=0, size=0x10000, fill=0xFF)
+res = link([obj], origin=0x0100, size=0x10000, fill=0xFF)
 check("Link success", res.success, str(res.errors))
 # $0 is at offset 0 → 0x0100
 # $1 is at offset 9 → 0x0109
@@ -5096,7 +6339,7 @@ if os.path.exists(crun_path):
     with open(crun_path, 'r', encoding='utf-8', errors='replace') as f:
         crun_src = f.read()
     r_crun = assemble(crun_src, filename=crun_path)
-    check(f"crun: {len(r_crun.relocations)} relocations (expect 366)", len(r_crun.relocations) == 366,
+    check(f"crun: {len(r_crun.relocations)} relocations (expect 408)", len(r_crun.relocations) == 408,
           f"got {len(r_crun.relocations)}")
 
 print(f"\n{'='*60}")
@@ -5105,6 +6348,32 @@ print(f"{'='*60}")
 sys.exit(0 if failed == 0 else 1)
 ```
 <!-- END FILE: _test_dollar.py -->
+
+### `_test_frozen_profiles.py` (19 строк)
+
+<!-- FILE: _test_frozen_profiles.py -->
+```python
+# -*- coding: utf-8 -*-
+"""Проверка _find_profiles_dir в условиях, имитирующих PyInstaller-exe."""
+import os, sys
+
+rel = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Release")
+os.chdir(rel)
+sys.frozen = True
+sys.executable = os.path.join(rel, "i8080_CI.exe")
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from modules.config import system_profiles as sp
+
+print("PROFILES_DIR:", sp.get_profiles_dir())
+names = sp.get_profile_names()
+print("COUNT:", len(names))
+print("NAMES:", names)
+assert os.path.isdir(sp.get_profiles_dir()), "каталог профилей не найден"
+assert "micro80" in names, "профиль micro80 не загружен"
+print("OK: профили найдены рядом с exe")
+```
+<!-- END FILE: _test_frozen_profiles.py -->
 
 ### `_test_inr_sp.py` (21 строк)
 
@@ -5193,7 +6462,7 @@ check("A: imports in UPPER", 'HELPER' in obj_a.imports,
 check("B: symbols in original case", 'helper' in obj_b.symbols,
       f"(symbols={obj_b.symbols})")
 
-res = link([obj_a, obj_b], origin=0, size=0x10000, fill=0xFF)
+res = link([obj_a, obj_b], origin=0x0100, size=0x10000, fill=0xFF)
 check("Link A+B: success", res.success,
       f"(errors={res.errors})")
 if res.success:
@@ -5201,7 +6470,7 @@ if res.success:
     # helper is at 0x0200, so address should be 0x00, 0x02
     addr_lo = res.binary[0x0101]
     addr_hi = res.binary[0x0102]
-    check("call helper patched to 0x0200", addr_lo == 0x00 and addr_hi == 0x02,
+    check("call helper patched to 0x0104", addr_lo == 0x04 and addr_hi == 0x01,
           f"(got 0x{addr_hi:02X}{addr_lo:02X})")
 
 # Test 2: case-insensitive - reference with different case than definition
@@ -5212,7 +6481,7 @@ src_a2 = """main:
 r_a2 = assemble(src_a2, filename="A2.asm")
 obj_a2 = obj_from_asm_result(r_a2, "A2.asm")
 obj_a2.org = 0x0100
-res2 = link([obj_a2, obj_b], origin=0, size=0x10000, fill=0xFF)
+res2 = link([obj_a2, obj_b], origin=0x0100, size=0x10000, fill=0xFF)
 check("Link A2(HELPER)+B(helper): success (case-insensitive)", res2.success,
       f"(errors={res2.errors})")
 
@@ -5233,7 +6502,7 @@ obj_c1.org = 0x0100
 obj_c2.org = 0x0200
 check("C1: case_sensitive flag in obj", obj_c1.case_sensitive == True)
 check("C2: case_sensitive flag in obj", obj_c2.case_sensitive == True)
-res3 = link([obj_c1, obj_c2], origin=0, size=0x10000, fill=0xFF)
+res3 = link([obj_c1, obj_c2], origin=0x0100, size=0x10000, fill=0xFF)
 check("Link C1(i)+C2(I): FAIL (case-sensitive, different case)", not res3.success,
       f"(success={res3.success})")
 
@@ -5245,7 +6514,7 @@ src_c3 = """main:
 r_c3 = assemble(src_c3, filename="C3.asm", case_sensitive=True)
 obj_c3 = obj_from_asm_result(r_c3, "C3.asm")
 obj_c3.org = 0x0200
-res4 = link([obj_c1, obj_c3], origin=0, size=0x10000, fill=0xFF)
+res4 = link([obj_c1, obj_c3], origin=0x0100, size=0x10000, fill=0xFF)
 check("Link C1(i)+C3(i): success (case-sensitive, same case)", res4.success,
       f"(errors={res4.errors})")
 
@@ -5321,6 +6590,34 @@ for i,l in enumerate(s):
 ```
 <!-- END FILE: _test_push2.py -->
 
+### `_test_release_exe.py` (21 строк)
+
+<!-- FILE: _test_release_exe.py -->
+```python
+# -*- coding: utf-8 -*-
+"""Тест: Release/i8080_CI.exe с I8080_DEBUG_PROFILES=1 (offscreen)."""
+import os, subprocess, time
+
+root = os.path.dirname(os.path.abspath(__file__))
+rel = os.path.join(root, "Release")
+exe = os.path.join(rel, "i8080_CI.exe")
+env = dict(os.environ, QT_QPA_PLATFORM="offscreen", I8080_DEBUG_PROFILES="1",
+           PYTHONUNBUFFERED="1")
+p = subprocess.Popen([exe], cwd=rel, env=env,
+                     stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                     creationflags=0x08000000)
+time.sleep(30)
+subprocess.run(["taskkill", "/T", "/F", "/PID", str(p.pid)],
+               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+out, _ = p.communicate(timeout=15)
+text = out.decode("utf-8", "replace")
+print("OUTPUT:")
+print(text if text.strip() else "(пусто)")
+ok = "[profiles] dir=" in text and "loaded=12" in text
+print("PROFILES_OK:", ok)
+```
+<!-- END FILE: _test_release_exe.py -->
+
 ### `_test_reloc.py` (166 строк)
 
 <!-- FILE: _test_reloc.py -->
@@ -5368,9 +6665,9 @@ check("Relocatable mode", r.origin == 0, f"origin={r.origin:#x}")
 check("Has relocations", len(r.relocations) > 0, f"got {len(r.relocations)}")
 # Expected: CALL SUBR (offset 3), JMP LOOP (offset 6), JNZ LOOP (offset 12)
 print(f"  Relocations: {r.relocations}")
-check("CALL SUBR reloc", (3, 2, 'SUBR') in r.relocations, str(r.relocations))
-check("JMP LOOP reloc", (6, 2, 'LOOP') in r.relocations, str(r.relocations))
-check("JNZ LOOP reloc", (11, 2, 'LOOP') in r.relocations, str(r.relocations))
+check("CALL SUBR reloc", (3, 2, 'SUBR', 0) in r.relocations, str(r.relocations))
+check("JMP LOOP reloc", (6, 2, 'LOOP', 0) in r.relocations, str(r.relocations))
+check("JNZ LOOP reloc", (11, 2, 'LOOP', 0) in r.relocations, str(r.relocations))
 check("3 relocations total", len(r.relocations) == 3, f"got {len(r.relocations)}: {r.relocations}")
 
 print("\n=== Test 2: Absolute mode (.org) does NOT generate relocations for local labels ===")
@@ -5414,8 +6711,8 @@ check("Obj org=0", obj.org == 0, f"org={obj.org:#x}")
 check("Obj has relocations", len(obj.relocations) == 1, f"got {obj.relocations}")
 
 # Link at 0x1000: modify obj.org to simulate linker placing at 0x1000
-obj.org = 0x1000
-res = link([obj], origin=0, size=0x10000, fill=0xFF)
+obj.org = 0x1000  # org ignored for placement; origin drives it
+res = link([obj], origin=0x1000, size=0x10000, fill=0xFF)
 check("Link success", res.success, str(res.errors))
 # CALL at offset 3 in module → absolute 0x1003
 # SUBR is at offset 6 in module → absolute 0x1006
@@ -5465,7 +6762,7 @@ TBL:
 """
 r = assemble(src_dw)
 check("DW assembled", r.success, str(r.errors))
-check("DW has 1 relocation", r.relocations == [(0, 2, 'TBL')], f"got {r.relocations}")
+check("DW has 1 relocation", r.relocations == [(0, 2, 'TBL', 0)], f"got {r.relocations}")
 
 print("\n=== Test 7: LXI with local label in relocatable mode ===")
 src_lxi = """
@@ -5476,7 +6773,7 @@ PTR:
 """
 r = assemble(src_lxi)
 check("LXI assembled", r.success, str(r.errors))
-check("LXI has 1 relocation", r.relocations == [(1, 2, 'PTR')], f"got {r.relocations}")
+check("LXI has 1 relocation", r.relocations == [(1, 2, 'PTR', 0)], f"got {r.relocations}")
 
 print("\n=== Test 8: Numeric literal does NOT generate relocation ===")
 src_num = """
@@ -5591,13 +6888,13 @@ obj5b = obj_from_asm_result(r5b, "test5b.asm")
 obj5b.org = 0x0200
 obj5b.exports = {'EXTERNAL'}
 
-res5 = link([obj5, obj5b], origin=0, size=0x10000, fill=0xFF)
+res5 = link([obj5, obj5b], origin=0x0100, size=0x10000, fill=0xFF)
 check("Link LXI external: success", res5.success)
 # LXI H at 0x0102: opcode 0x21, then address at 0x0103-0x0104
 # EXTERNAL is at 0x0200, so address should be 0x00, 0x02
 addr_lo = res5.binary[0x0103]
 addr_hi = res5.binary[0x0104]
-check("Link LXI external: address = 0x0200", addr_lo == 0x00 and addr_hi == 0x02)
+check("Link LXI external: address = 0x0106", addr_lo == 0x06 and addr_hi == 0x01)
 
 # Test 6: Linker resolves undefined DW symbol from global_symbols
 src6 = """
@@ -5609,13 +6906,13 @@ r6 = assemble(src6)
 obj6 = obj_from_asm_result(r6, "test6.asm")
 obj6.org = 0x0100
 
-res6 = link([obj6, obj5b], origin=0, size=0x10000, fill=0xFF)
+res6 = link([obj6, obj5b], origin=0x0100, size=0x10000, fill=0xFF)
 check("Link DW external: success", res6.success)
 # DW at 0x0102: address at 0x0102-0x0103
 # EXTERNAL is at 0x0200, so address should be 0x00, 0x02
 addr_lo = res6.binary[0x0102]
 addr_hi = res6.binary[0x0103]
-check("Link DW external: address = 0x0200", addr_lo == 0x00 and addr_hi == 0x02)
+check("Link DW external: address = 0x0105", addr_lo == 0x05 and addr_hi == 0x01)
 
 # Test 7: Absolute mode - undefined symbol in LXI → relocation (linker resolves)
 src7 = """
@@ -5677,6 +6974,31 @@ else:
     sys.exit(1)
 ```
 <!-- END FILE: _test_reloc_undefined.py -->
+
+### `_test_source_debug.py` (18 строк)
+
+<!-- FILE: _test_source_debug.py -->
+```python
+# -*- coding: utf-8 -*-
+"""Проверка debug-print в исходном режиме (python i8080_CI.py)."""
+import os, subprocess, sys, time
+
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+root = os.path.dirname(os.path.abspath(__file__))
+env = dict(os.environ, QT_QPA_PLATFORM="offscreen", I8080_DEBUG_PROFILES="1",
+           PYTHONUNBUFFERED="1")
+p = subprocess.Popen([sys.executable, "i8080_CI.py"], cwd=root, env=env,
+                     stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+time.sleep(20)
+subprocess.run(["taskkill", "/T", "/F", "/PID", str(p.pid)],
+               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+out, _ = p.communicate(timeout=15)
+text = out.decode("utf-8", "replace")
+print("OUTPUT:")
+print(text if text.strip() else "(пусто)")
+print("HAS_DEBUG:", "[profiles] dir=" in text)
+```
+<!-- END FILE: _test_source_debug.py -->
 
 ### `_update_docs.py` (61 строк)
 
@@ -5990,17 +7312,22 @@ if __name__ == '__main__':
 ```
 <!-- END FILE: gen_refs.py -->
 
-### `i8080_CI.py` (15 строк)
+### `i8080_CI.py` (20 строк)
 
 <!-- FILE: i8080_CI.py -->
 ```python
 #!/usr/bin/env python3
 """i8080-5 CI - Intel 8080 emulator, debugger, and device interface."""
+import os
 import sys
 from PySide6.QtWidgets import QApplication
 from i8080_ci.main_window import MainWindow
 
 def main():
+    # PyInstaller: работать из каталога exe, чтобы внешние каталоги
+    # profiles/ и roms/ находились рядом с исполняемым файлом
+    if getattr(sys, "frozen", False):
+        os.chdir(os.path.dirname(os.path.abspath(sys.executable)))
     app = QApplication(sys.argv)
     app.setStyle("Fusion")
     window = MainWindow()
@@ -9733,7 +11060,7 @@ print(f"Tables: {body_html.count('<table>')}")
 ```
 <!-- END FILE: md2html.py -->
 
-### `run_tests.py` (96 строк)
+### `run_tests.py` (98 строк)
 
 <!-- FILE: run_tests.py -->
 ```python
@@ -9762,10 +11089,12 @@ unit_tests = [
     'tests/test_i8257.py', 'tests/test_i8259.py', 'tests/test_i8272.py',
     'tests/test_i8272_image.py', 'tests/test_i8275.py', 'tests/test_i8276.py',
     'tests/test_i8279.py', 'tests/test_integration_full.py', 'tests/test_interrupts.py',
+    'tests/test_librarian_and_linker_resolving.py',
     'tests/test_memory_bus.py', 'tests/test_memory_models.py',
     'tests/test_port_invert.py', 'tests/test_shadow_rom.py',
     'tests/test_system_integration.py', 'tests/test_wait_cf_ide.py',
     'tests/test_wait_signals.py', 'tests/test_8085.py',
+    'tests/test_watch_auto.py',
 ]
 
 # Filter to existing files
@@ -9913,7 +11242,7 @@ if __name__ == "__main__":
 ```
 <!-- END FILE: assemble8080/__main__.py -->
 
-### `assemble8080/assembler.py` (2081 строк)
+### `assemble8080/assembler.py` (2089 строк)
 
 <!-- FILE: assemble8080/assembler.py -->
 ```python
@@ -10869,6 +12198,15 @@ class Assembler:
                                     'BC', 'DE', 'HL', 'PSW')
                         if op_clean not in _REG_OPS:
                             size = 2
+                elif fmt == 'r,r' and operand:
+                    # FIX #2: MOV r, #imm - r, imm (2 bytes)
+                    _rr_parts = [p.strip() for p in operand.split(',', 1)]
+                    if len(_rr_parts) == 2:
+                        _src = _rr_parts[1].strip().upper().lstrip('#').strip()
+                        _REG_OPS_RR = ('A', 'B', 'C', 'D', 'E', 'H', 'L', 'M',
+                                       'BC', 'DE', 'HL', 'PSW')
+                        if _src not in _REG_OPS_RR:
+                            size = 2
                 location += size
                 self.pc = location
             else:
@@ -11301,8 +12639,8 @@ class Assembler:
             if len(operands) >= 2:
                 op2_upper = operands[1].strip().upper()
                 if op2_upper not in REGISTERS and op2_upper not in ('BC', 'DE', 'HL', 'PSW'):
-                    ALU_IMM2 = {'CMP': 0xFE, 'ADD': 0xC6, 'ADC': 0xCE, 'SUB': 0xD6,
-                                'SBB': 0xDE, 'ANA': 0xE6, 'XRA': 0xEE, 'ORA': 0xF6}
+                    ALU_IMM2 = {'ADD': 0xC6, 'ADC': 0xCE, 'SUB': 0xD6, 'SBB': 0xDE, 
+                                'ANA': 0xE6, 'XRA': 0xEE, 'ORA': 0xF6, 'CMP': 0xFE, }
                     if mnemonic in ALU_IMM2:
                         val = self._parse_operand(operands[1], line_num, allow_current=True)
                         if val is not None:
@@ -11316,8 +12654,7 @@ class Assembler:
                 return bytearray([opcode | reg_code])
             # Not a register — try as immediate value (ALU d8 forms)
             ALU_IMM_OPCODES = {'ADD': 0xC6, 'ADC': 0xCE, 'SUB': 0xD6, 'SBB': 0xDE,
-                               'ANA': 0xE6, 'XRA': 0xEE, 'ORA': 0xF6, 'CPI': 0xFE,
-                               'CMP': 0xFE}
+                               'ANA': 0xE6, 'XRA': 0xEE, 'ORA': 0xF6, 'CMP': 0xFE}
             if mnemonic in ALU_IMM_OPCODES:
                 val = self._parse_operand(operands[0], line_num, allow_current=True)
                 if val is not None:
@@ -12045,7 +13382,105 @@ class AsmResult:
 ```
 <!-- END FILE: assemble8080/errors.py -->
 
-### `assemble8080/linker.py` (266 строк)
+### `assemble8080/librarian.py` (91 строк)
+
+<!-- FILE: assemble8080/librarian.py -->
+```python
+"""
+Library tool for i8080-5 CI.
+
+Packs multiple object files (.obj, format i8080-obj-v1) into a single
+archive library (.lib).
+
+Archive format: JSON-based, version 1 (i8080-lib-v1).
+{
+  "format": "i8080-lib-v1",
+  "name": library_name,
+  "index": { "EXPORT_SYMBOL": "module_name_where_declared" },
+  "modules": { "module_name": { /* full object file JSON */ } }
+}
+
+The index maps UPPER-cased export symbols to the archive module that
+defines them, so the linker can pull only the modules it needs.
+"""
+import json
+import os
+
+
+LIB_FORMAT_VERSION = "i8080-lib-v1"
+OBJ_FORMAT_VERSION = "i8080-obj-v1"
+
+
+def create_library(obj_file_paths: list[str], lib_output_path: str, lib_name: str) -> None:
+    """Pack object files into an archive library (.lib).
+
+    Args:
+        obj_file_paths: Paths to object files (.obj, i8080-obj-v1).
+        lib_output_path: Path of the resulting .lib archive.
+        lib_name: Logical name of the library.
+
+    Raises:
+        FileNotFoundError: if an object file does not exist.
+        ValueError: on unsupported format, empty or duplicate module name,
+            or duplicate export symbol across modules.
+    """
+    index = {}    # {UPPER export symbol: module name}
+    modules = {}  # {module name: full object file JSON}
+
+    for obj_path in obj_file_paths:
+        if not os.path.exists(obj_path):
+            raise FileNotFoundError(f"Object file not found: {obj_path}")
+
+        with open(obj_path, 'r', encoding='utf-8') as f:
+            obj = json.load(f)
+
+        if obj.get("format") != OBJ_FORMAT_VERSION:
+            raise ValueError(
+                f"Unsupported object format in {obj_path}: {obj.get('format')}")
+
+        mod_name = obj.get("name", "")
+        if not mod_name:
+            raise ValueError(f"Object file {obj_path} has an empty module name")
+        if mod_name in modules:
+            raise ValueError(f"Duplicate module name '{mod_name}' in library")
+
+        modules[mod_name] = obj
+
+        for sym in obj.get("exports", []):
+            key = sym.upper()
+            if key in index:
+                raise ValueError(
+                    f"Duplicate export symbol '{sym}' in library modules")
+            index[key] = mod_name
+
+    lib = {
+        "format": LIB_FORMAT_VERSION,
+        "name": lib_name,
+        "index": index,
+        "modules": modules,
+    }
+
+    out_dir = os.path.dirname(os.path.abspath(lib_output_path))
+    os.makedirs(out_dir, exist_ok=True)
+    with open(lib_output_path, 'w', encoding='utf-8') as f:
+        json.dump(lib, f, indent=2)
+
+
+def load_library(path: str) -> dict:
+    """Load an archive library from disk (.lib, i8080-lib-v1).
+
+    Raises:
+        ValueError: if the file is not a valid i8080-lib-v1 archive.
+    """
+    with open(path, 'r', encoding='utf-8') as f:
+        lib = json.load(f)
+    if lib.get("format") != LIB_FORMAT_VERSION:
+        raise ValueError(f"Unsupported library format: {lib.get('format')}")
+    return lib
+```
+<!-- END FILE: assemble8080/librarian.py -->
+
+### `assemble8080/linker.py` (367 строк)
 
 <!-- FILE: assemble8080/linker.py -->
 ```python
@@ -12056,7 +13491,7 @@ Takes multiple object files (.obj), resolves symbols, applies relocations,
 and produces a single binary output.
 
 Linker script format (.lnk):
-    INPUT file1.obj file2.obj [...]
+    INPUT file1.obj file2.obj [...]  (also .lib archives)
     OUTPUT file.bin
     MAP file.map
     ORIGIN 0x0000
@@ -12066,8 +13501,9 @@ Linker script format (.lnk):
 import os
 from dataclasses import dataclass, field
 
-from .objfile import load_obj
+from .objfile import load_obj, ObjectFile, Relocation, OBJ_FORMAT_VERSION
 from .mapfile import MapEntry, generate_map
+from .librarian import load_library
 
 
 @dataclass
@@ -12147,19 +13583,15 @@ def link(objects: list, origin: int = 0, size: int = 0x10000, fill: int = 0xFF) 
     errors = []
     warnings = []
     
-    # Step 1: Check for ORG conflicts
-    placed = {}  # {org: obj_name}
+    # Step 1: Sequential placement from ORIGIN.
+    # Each object's own org is IGNORED for placement - it is only the
+    # assembler's virtual base used to compute data-relative offsets.
+    # Modules are laid out back-to-back starting at `origin`.
+    bases = []  # base address of each object in the output
+    cursor = origin
     for obj in objects:
-        if obj.org in placed:
-            errors.append(LinkError(
-                f"ORG conflict: {obj.name} and {placed[obj.org]} both at 0x{obj.org:04X}",
-                file=obj.name
-            ))
-        else:
-            placed[obj.org] = obj.name
-    
-    if errors:
-        return LinkResult(success=False, errors=errors)
+        bases.append(cursor)
+        cursor += len(obj.data) if len(obj.data) else obj.size
     
     # Step 2: Build global symbol table
     # Case-insensitive mode (default): normalize keys to UPPER so that
@@ -12170,10 +13602,10 @@ def link(objects: list, origin: int = 0, size: int = 0x10000, fill: int = 0xFF) 
     
     # First pass: collect all exported symbols
     global_symbols = {}  # {name: absolute_address}
-    for obj in objects:
+    for idx, obj in enumerate(objects):
         for name in obj.exports:
             if name in obj.symbols:
-                addr = obj.org + obj.symbols[name]
+                addr = bases[idx] + obj.symbols[name]
                 key = _norm(obj, name)
                 if key in global_symbols:
                     warnings.append(f"Duplicate export: {name} (in {obj.name})")
@@ -12182,9 +13614,9 @@ def link(objects: list, origin: int = 0, size: int = 0x10000, fill: int = 0xFF) 
     
     # Also add all symbols (for local resolution within same object)
     all_symbols = {}
-    for obj in objects:
+    for idx, obj in enumerate(objects):
         for name, offset in obj.symbols.items():
-            addr = obj.org + offset
+            addr = bases[idx] + offset
             key = _norm(obj, name)
             if key not in all_symbols:
                 all_symbols[key] = addr
@@ -12206,15 +13638,15 @@ def link(objects: list, origin: int = 0, size: int = 0x10000, fill: int = 0xFF) 
     output_size = max(size, origin + max((o.org + o.size for o in objects), default=0))
     output = bytearray([fill] * output_size)
     
-    # Step 5: Place object data
-    for obj in objects:
+    # Step 5: Place object data at its assigned base
+    for idx, obj in enumerate(objects):
         for i, byte in enumerate(obj.data):
-            addr = obj.org + i
+            addr = bases[idx] + i
             if addr < output_size:
                 output[addr] = byte
     
     # Step 6: Apply relocations
-    for obj in objects:
+    for idx, obj in enumerate(objects):
         for reloc in obj.relocations:
             sym_key = _norm(obj, reloc.symbol)
             sym_addr = global_symbols.get(sym_key) or all_symbols.get(sym_key)
@@ -12222,7 +13654,7 @@ def link(objects: list, origin: int = 0, size: int = 0x10000, fill: int = 0xFF) 
                 warnings.append(f"Relocation: symbol '{reloc.symbol}' not found (in {obj.name})")
                 continue
             
-            patch_addr = obj.org + reloc.offset
+            patch_addr = bases[idx] + reloc.offset
             if patch_addr >= output_size:
                 continue
             
@@ -12247,9 +13679,13 @@ def link(objects: list, origin: int = 0, size: int = 0x10000, fill: int = 0xFF) 
             pass
         fake = _FakeResult()
         fake.origin = origin
-        fake.binary = bytes(output)
+        fake.binary = b"".join(o.data for o in objects)
         fake.symbols = all_symbols
-        fake.listing = []
+        fake.listing = [
+            (bases[i] + dl[0], bytes(dl[1]), dl[2])
+            for i, o in enumerate(objects)
+            for dl in getattr(o, 'data_lines', [])
+        ]
         from .mapfile import generate_map
         map_text = generate_map(fake, source_name="(linked)")
     
@@ -12264,16 +13700,110 @@ def link(objects: list, origin: int = 0, size: int = 0x10000, fill: int = 0xFF) 
     )
 
 
+def _obj_from_json(d: dict) -> ObjectFile:
+    """Deserialize an object file JSON dict into an ObjectFile."""
+    if d.get("format") != OBJ_FORMAT_VERSION:
+        raise ValueError(f"Unsupported object format: {d.get('format')}")
+    obj = ObjectFile(
+        name=d.get("name", ""),
+        source=d.get("source", ""),
+        org=d.get("org", 0),
+        size=d.get("size", 0),
+        data=bytes.fromhex(d.get("data", "")),
+        symbols=d.get("symbols", {}),
+        exports=list(d.get("exports", [])),
+        imports=list(d.get("imports", [])),
+        case_sensitive=d.get("case_sensitive", False),
+    )
+    for r in d.get("relocations", []):
+        obj.relocations.append(Relocation(
+            offset=r["offset"],
+            size=r["size"],
+            symbol=r["symbol"],
+            addend=r.get("addend", 0),
+        ))
+    return obj
+
+
+def _resolve_libraries(objects: list, libraries: list) -> None:
+    """Resolution stage: pull archive modules for undefined imports.
+
+    Mutates `objects`, appending every module extracted from the
+    archives in the order they were needed.
+
+    Args:
+        objects: list of ObjectFile (project inputs).
+        libraries: list of (path, dict) - loaded .lib archives.
+
+    Raises:
+        ValueError: if a required symbol is absent from every index.
+    """
+    extracted = set()  # (library name, module name) pairs already pulled
+
+    def _key(obj, name):
+        return name if obj.case_sensitive else name.upper()
+
+    # Symbols already defined (exports) vs symbols requested (imports)
+    resolved = set()
+    required = set()
+    for obj in objects:
+        resolved.update(_key(obj, n) for n in obj.exports)
+        required.update(_key(obj, n) for n in obj.imports)
+
+    while True:
+        unresolved = required - resolved
+        if not unresolved:
+            break
+        symbol = sorted(unresolved)[0]
+
+        # Search every archive index (keys are UPPER-cased export names)
+        mod_name = None
+        archive = None
+        for _path, lib in libraries:
+            index = lib.get("index", {})
+            mod_name = index.get(symbol) or index.get(symbol.upper())
+            if mod_name:
+                archive = lib
+                break
+
+        if mod_name is None:
+            raise ValueError(
+                f"Linker Error: Undefined reference to symbol '{symbol}'")
+
+        archive_key = (archive.get("name", ""), mod_name)
+        if archive_key not in extracted:
+            extracted.add(archive_key)
+            obj_json = archive.get("modules", {}).get(mod_name)
+            if obj_json is None:
+                raise ValueError(
+                    f"Linker Error: archive '{archive.get('name', '')}'"
+                    f"index points to missing module '{mod_name}'")
+            new_obj = _obj_from_json(obj_json)
+            objects.append(new_obj)
+            resolved.update(_key(new_obj, n) for n in new_obj.exports)
+            required.update(_key(new_obj, n) for n in new_obj.imports)
+        else:
+            # Module already in the link set - its exports cover the symbol.
+            resolved.add(symbol)
+
+
 def link_from_script(script_path: str) -> LinkResult:
-    """Link using a .lnk script file."""
+    """Link using a .lnk script file.
+
+    INPUT may reference project objects (.obj) and archive libraries
+    (.lib, format i8080-lib-v1). Modules are pulled from archives on
+    demand: a module is linked only if it satisfies a symbol that is
+    currently undefined in the project.
+    """
     with open(script_path, 'r', encoding='utf-8') as f:
         text = f.read()
     
     config = parse_link_script(text)
     script_dir = os.path.dirname(os.path.abspath(script_path))
     
-    # Load object files
+    # Split inputs: explicit project objects (.obj) vs archives (.lib)
     objects = []
+    libraries = []  # [(path, dict)]
     errors = []
     for inp in config["inputs"]:
         path = inp if os.path.isabs(inp) else os.path.join(script_dir, inp)
@@ -12281,12 +13811,18 @@ def link_from_script(script_path: str) -> LinkResult:
             errors.append(LinkError(f"Input file not found: {path}"))
             continue
         try:
-            objects.append(load_obj(path))
+            if path.lower().endswith(".lib"):
+                libraries.append((path, load_library(path)))
+            else:
+                objects.append(load_obj(path))
         except Exception as e:
             errors.append(LinkError(f"Error loading {path}: {e}"))
     
     if errors:
         return LinkResult(success=False, errors=errors)
+    
+    # Resolution stage: pull archive modules for undefined imports
+    _resolve_libraries(objects, libraries)
     
     # Link
     result = link(
@@ -12318,7 +13854,7 @@ def link_from_script(script_path: str) -> LinkResult:
 ```
 <!-- END FILE: assemble8080/linker.py -->
 
-### `assemble8080/mapfile.py` (162 строк)
+### `assemble8080/mapfile.py` (165 строк)
 
 <!-- FILE: assemble8080/mapfile.py -->
 ```python
@@ -12429,7 +13965,10 @@ def generate_map(result, source_name: str = "", date_str: str = "") -> str:
         # Check if this address has data directives in listing
         for (laddr, lbytes, lsrc) in result.listing:
             if laddr == addr:
-                src_upper = lsrc.strip().upper()
+                src = lsrc.strip()
+                if ":" in src:
+                    src = src.split(":", 1)[1].strip()
+                src_upper = src.upper()
                 if any(src_upper.startswith(d) for d in ('DB', 'DW', 'DS', '.DB', '.DW', '.DS')):
                     entry_type = "DATA"
                 break
@@ -12578,7 +14117,7 @@ class NumberParser:
 ```
 <!-- END FILE: assemble8080/numbers.py -->
 
-### `assemble8080/objfile.py` (147 строк)
+### `assemble8080/objfile.py` (160 строк)
 
 <!-- FILE: assemble8080/objfile.py -->
 ```python
@@ -12623,6 +14162,7 @@ class ObjectFile:
     exports: list = field(default_factory=list)       # [name]
     imports: list = field(default_factory=list)       # [name]
     relocations: list = field(default_factory=list)   # [Relocation]
+    data_lines: list = field(default_factory=list)    # [[offset, size, src], ...] DB/DW/DS
     case_sensitive: bool = False                      # True = регистр лейблов значим
 
     def symbol_address(self, name: str) -> Optional[int]:
@@ -12647,6 +14187,10 @@ def save_obj(path: str, obj: ObjectFile):
         "relocations": [
             {"offset": r.offset, "size": r.size, "symbol": r.symbol, "addend": r.addend}
             for r in obj.relocations
+        ],
+        "data_lines": [
+            {"offset": o, "size": s, "src": t}
+            for (o, s, t) in obj.data_lines
         ],
         "case_sensitive": obj.case_sensitive,
     }
@@ -12673,6 +14217,8 @@ def load_obj(path: str) -> ObjectFile:
         imports=d.get("imports", []),
         case_sensitive=d.get("case_sensitive", False),
     )
+    for dl in d.get("data_lines", []):
+        obj.data_lines.append([dl["offset"], dl["size"], dl["src"]])
     for r in d.get("relocations", []):
         obj.relocations.append(Relocation(
             offset=r["offset"],
@@ -12717,6 +14263,12 @@ def obj_from_asm_result(result, source_name: str = "") -> ObjectFile:
     obj.imports = list(getattr(result, 'imports', []))
     obj.case_sensitive = bool(getattr(result, 'case_sensitive', False))
     
+    # Data directive lines (DB/DW/DS) for map DATA classification
+    for (laddr, lbytes, lsrc) in getattr(result, 'listing', []):
+        offset = laddr - result.origin
+        if offset >= 0:
+            obj.data_lines.append([offset, len(lbytes), lsrc])
+
     for reloc in getattr(result, 'relocations', []):
         if isinstance(reloc, tuple):
             if len(reloc) == 4:
@@ -13877,7 +15429,7 @@ def main():
             fails += 1
 
     check("main.asm: IMPORT HELPER", 'HELPER' in r_main.imports)
-    check("main.asm: EXPORT main", 'MAIN' in r_main.exports)
+    check("main.asm: EXPORT main", 'main' in r_main.exports)
     check("main.asm: relocation для CALL HELPER", len(r_main.relocations) == 1)
     check("helper.asm: EXPORT HELPER", 'HELPER' in r_helper.exports)
 
@@ -13900,14 +15452,14 @@ def main():
 
     b = lr.binary
     # main.asm в 0x0100: MVI A,0x42 (3E 42) + CALL HELPER (CD 00 02) + HLT (76)
-    check("app.bin[0x0100]: 3E 42 CD 00 02 76",
-          b[0x0100:0x0106] == bytes([0x3E, 0x42, 0xCD, 0x00, 0x02, 0x76]))
+    check("app.bin[0x0100]: 3E 42 CD 06 01 76",
+          b[0x0100:0x0106] == bytes([0x3E, 0x42, 0xCD, 0x06, 0x01, 0x76]))
     # helper.asm в 0x0200: ADD B (80) + RET (C9)
-    check("app.bin[0x0200]: 80 C9",
-          b[0x0200:0x0202] == bytes([0x80, 0xC9]))
+    check("app.bin[0x0106]: 80 C9 (helper после main)",
+          b[0x0106:0x0108] == bytes([0x80, 0xC9]))
     # CALL HELPER должен быть пропатчен на 0x0200 (little-endian: 00 02)
-    check("CALL HELPER пропатчен на 0x0200",
-          b[0x0103:0x0105] == bytes([0x00, 0x02]))
+    check("CALL HELPER пропатчен на 0x0106",
+          b[0x0103:0x0105] == bytes([0x06, 0x01]))
 
     # Проверка map-файла
     if os.path.exists(MAP):
@@ -13920,8 +15472,8 @@ def main():
     # Hexdump ключевых областей
     print("  app.bin [0x0100..0x0105]:")
     print(hexdump(b[0x0100:0x0106], start=0x0100))
-    print("  app.bin [0x0200..0x0201]:")
-    print(hexdump(b[0x0200:0x0202], start=0x0200))
+    print("  app.bin [0x0106..0x0107]:")
+    print(hexdump(b[0x0106:0x0108], start=0x0106))
 
     if fails:
         print(f"  ИТОГ: пример 04 — {fails} проверок не пройдено")
@@ -14063,7 +15615,7 @@ def write_text_utf8(path: str, content: str):
 ```
 <!-- END FILE: common/encoding.py -->
 
-### `common/i18n.py` (969 строк)
+### `common/i18n.py` (971 строк)
 
 <!-- FILE: common/i18n.py -->
 ```python
@@ -14204,6 +15756,7 @@ LANGS = {
         "watch_preset_save_err": "Failed to save preset",
         "watch_preset_load_err": "Failed to load preset. Check file format.",
         "watch_auto_prefix": "Auto: ",
+        "watch_auto_loaded": "Auto watch variables loaded: {n}",
         "watch_err_addr": "Enter memory address!",
         "watch_err_fmt_title": "Format Error",
         "watch_err_add": "Failed to add Watch:\n",
@@ -14571,6 +16124,7 @@ LANGS = {
         "watch_preset_save_err": "Не удалось сохранить пресет",
         "watch_preset_load_err": "Не удалось загрузить пресет. Проверьте формат файла.",
         "watch_auto_prefix": "Авто: ",
+        "watch_auto_loaded": "Авто-переменные Watch загружены: {n}",
         "watch_err_addr": "Введите адрес памяти!",
         "watch_err_fmt_title": "Ошибка формата",
         "watch_err_add": "Не удалось добавить Watch:\n",
@@ -15187,7 +16741,7 @@ __all__ = [
 ```
 <!-- END FILE: i8080_ci/__init__.py -->
 
-### `i8080_ci/assembler_widget.py` (2037 строк)
+### `i8080_ci/assembler_widget.py` (2059 строк)
 
 <!-- FILE: i8080_ci/assembler_widget.py -->
 ```python
@@ -16926,7 +18480,7 @@ class AssemblerWidget(QWidget):
                 result = link_from_script(path)
             else:
                 obj = load_obj(path)
-                result = link([obj])
+                result = link([obj], origin=obj.org)
             if not result.success:
                 if self.main_window is not None:
                     self.main_window.log(_tr("asm_link_errors").format(n=len(result.errors)))
@@ -17037,6 +18591,8 @@ class AssemblerWidget(QWidget):
         # Update labels table with global label info
         self._update_labels_table(result.symbols, result.global_labels,
                                   getattr(result, 'equ_symbols', None))
+        # Auto-load watch variables (data labels) from the fresh map
+        self._auto_load_watch_vars(result)
         # Store result in tab info for tab-switch restore
         ti = self._current_tab_info()
         if ti:
@@ -17069,6 +18625,16 @@ class AssemblerWidget(QWidget):
                     if n in result.symbols
                 }
             self._auto_load_map(result)
+
+    def _auto_load_watch_vars(self, result):
+        """Repopulate auto watch entries from the fresh assemble map (data labels only)."""
+        if self.main_window is None or not getattr(result, 'map_text', ''):
+            return
+        try:
+            mf = parse_map(result.map_text)
+            self.main_window.auto_load_watch_from_map(mf)
+        except Exception as e:
+            self.main_window.log(f"Watch auto-load skipped: {e}")
 
     def _auto_load_map(self, result):
         """Auto-load map file into disassembler and emulator."""
@@ -17139,6 +18705,16 @@ class AssemblerWidget(QWidget):
             return
         try:
             mw = self.main_window
+            # FIX: clear tail of previously loaded larger image at same origin
+            prev = getattr(self, '_last_load', None)
+            if prev is not None and prev[0] == origin and prev[1] > len(binary):
+                removed = {}
+                for addr in range(origin + len(binary), origin + prev[1]):
+                    if addr in mw.mem_data:
+                        removed[addr] = mw.mem_data.pop(addr)
+                if removed:
+                    mw.hex_model.update_data({a: 0xFF for a in removed})
+            self._last_load = (origin, len(binary))
             changes = {}
             for i, byte in enumerate(binary):
                 mw.mem_data[origin + i] = byte & 0xFF
@@ -18858,7 +20434,7 @@ class IntelHex:
 ```
 <!-- END FILE: i8080_ci/intelhex.py -->
 
-### `i8080_ci/main_window.py` (4192 строк)
+### `i8080_ci/main_window.py` (4203 строк)
 
 <!-- FILE: i8080_ci/main_window.py -->
 ```python
@@ -20454,6 +22030,7 @@ class MainWindow(QMainWindow):
             self.disassembler.set_map(map_file)
             self.disassembler.set_equ(self.equ_dict)
             self.map_file = map_file
+            self.auto_load_watch_from_map(map_file)
             if hasattr(self.disasm_view, "set_symbols"):
                 self.disasm_view.set_symbols(map_file)
             if hasattr(self, 'emu_disasm_view') and hasattr(self.emu_disasm_view, "set_symbols"):
@@ -21431,6 +23008,7 @@ class MainWindow(QMainWindow):
         self.watch_table.setSelectionBehavior(QTableView.SelectRows)
         self.watch_table.setSelectionMode(QTableView.SingleSelection)
         self.watch_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.watch_table.setSortingEnabled(True)
         watch_layout.addWidget(self.watch_table)
         
         self.watch_group.setLayout(watch_layout)
@@ -22419,6 +23997,15 @@ class MainWindow(QMainWindow):
         existing = self.emulator.get_bp_condition(addr)
         self.bp_condition_dialog(addr, existing)
         
+    def auto_load_watch_from_map(self, map_file=None):
+        """(Re)populate auto watch entries from a map's DATA symbols."""
+        mf = map_file if map_file is not None else getattr(self, 'map_file', None)
+        if mf is None or not hasattr(self, 'watch_model'):
+            return
+        n = self.watch_model.set_auto_watches_from_map(mf)
+        if n:
+            self.log(self.tr("watch_auto_loaded").format(n=n))
+
     def _save_watch_prev_values(self):
         """Сохранить текущие значения Watch перед выполнением"""
         if hasattr(self, 'watch_model'):
@@ -23506,7 +25093,7 @@ class TraceModel(QAbstractTableModel):
 ```
 <!-- END FILE: i8080_ci/models/trace_model.py -->
 
-### `i8080_ci/models/watch_model.py` (247 строк)
+### `i8080_ci/models/watch_model.py` (300 строк)
 
 <!-- FILE: i8080_ci/models/watch_model.py -->
 ```python
@@ -23539,13 +25126,14 @@ class WatchModel(QAbstractTableModel):
     # УПРАВЛЕНИЕ ЭЛЕМЕНТАМИ
     # =============================================
     
-    def add_watch(self, name, watch_type, target, fmt="hex"):
-        """Добавить элемент наблюдения"""
+    def add_watch(self, name, watch_type, target, fmt="hex", auto=False):
+        """Добавить элемент наблюдения. auto=True — динамическая запись из map (не сохраняется в пресет)."""
         item = {
             "name": name,
             "type": watch_type,
             "target": target,
-            "format": fmt
+            "format": fmt,
+            "auto": auto
         }
         self.beginInsertRows(QModelIndex(), len(self.items), len(self.items))
         self.items.append(item)
@@ -23565,6 +25153,56 @@ class WatchModel(QAbstractTableModel):
         self.prev_values.clear()
         self.endResetModel()
         
+    # =============================================
+    # АВТОЗАГРУЗКА ИЗ MAP + СОРТИРОВКА
+    # =============================================
+
+    def set_auto_watches_from_map(self, map_file):
+        """(Re)generate dynamic watch entries from the map's DATA symbols.
+        CODE / jump labels are skipped; only data variables (DB/DW/DS) are
+        watched, by their address and size. Returns number of items added."""
+        self.beginResetModel()
+        self.items = [it for it in self.items if not it.get("auto")]
+        existing = {(it["type"], it["target"]) for it in self.items}
+        count = 0
+        for e in getattr(map_file, "entries", []):
+            if getattr(e, "entry_type", "CODE").upper() != "DATA":
+                continue
+            wtype = self.TYPE_MEM_WORD if e.size >= 2 else self.TYPE_MEM_BYTE
+            key = (wtype, e.address)
+            if key in existing:
+                continue
+            existing.add(key)
+            self.items.append({
+                "name": e.name,
+                "type": wtype,
+                "target": e.address,
+                "format": "hex",
+                "auto": True
+            })
+            count += 1
+        self.endResetModel()
+        return count
+
+    def sort(self, column, order=Qt.AscendingOrder):
+        """Сортировка по колонке (как в таблице меток ассемблера)."""
+        reg_order = {r: i for i, r in enumerate(
+            ['A', 'B', 'C', 'D', 'E', 'H', 'L', 'BC', 'DE', 'HL', 'SP', 'PC', 'FLAGS'])}
+        desc = (order == Qt.DescendingOrder)
+        if column == 0:
+            key = lambda it: it["name"].lower()
+        elif column == 1:
+            key = lambda it: ((1, reg_order.get(str(it["target"]).upper(), 99))
+                              if it["type"] == self.TYPE_REG
+                              else (0, it["target"]))
+        elif column == 2:
+            key = lambda it: self.get_value(it)
+        else:
+            key = lambda it: it["format"]
+        self.layoutAboutToBeChanged.emit()
+        self.items.sort(key=key, reverse=desc)
+        self.layoutChanged.emit()
+
     # =============================================
     # ПОЛУЧЕНИЕ И ФОРМАТИРОВАНИЕ ЗНАЧЕНИЙ
     # =============================================
@@ -23648,6 +25286,7 @@ class WatchModel(QAbstractTableModel):
                     "format": item["format"]
                 }
                 for item in self.items
+                if not item.get("auto")
             ]
         }
         try:
@@ -23664,7 +25303,7 @@ class WatchModel(QAbstractTableModel):
                 data = json.load(f)
             
             self.beginResetModel()
-            self.items.clear()
+            self.items = [it for it in self.items if it.get("auto")]
             self.prev_values.clear()
             
             for watch in data.get("watches", []):
@@ -23672,7 +25311,8 @@ class WatchModel(QAbstractTableModel):
                     "name": watch.get("name", "watch"),
                     "type": watch.get("type", self.TYPE_MEM_BYTE),
                     "target": watch.get("target", 0),
-                    "format": watch.get("format", "hex")
+                    "format": watch.get("format", "hex"),
+                    "auto": False
                 })
             
             self.endResetModel()
@@ -25515,7 +27155,7 @@ class DeviceFactory:
 ```
 <!-- END FILE: modules/config/device_config.py -->
 
-### `modules/config/system_profiles.py` (115 строк)
+### `modules/config/system_profiles.py` (134 строк)
 
 <!-- FILE: modules/config/system_profiles.py -->
 ```python
@@ -25531,10 +27171,25 @@ class DeviceFactory:
 import os
 import os.path
 import glob
+import sys
 
 # Базовый каталог проекта (каталог скрипта)
 _PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-_PROFILES_DIR = os.path.join(_PROJECT_DIR, "profiles")
+
+def _find_profiles_dir():
+    """Каталог профилей: рядом с исходниками, в CWD или рядом с exe (PyInstaller)."""
+    candidates = [
+        os.path.join(_PROJECT_DIR, "profiles"),
+        os.path.join(os.getcwd(), "profiles"),
+    ]
+    if getattr(sys, "frozen", False):
+        candidates.append(os.path.join(os.path.dirname(os.path.abspath(sys.executable)), "profiles"))
+    for c in candidates:
+        if os.path.isdir(c):
+            return c
+    return os.path.join(_PROJECT_DIR, "profiles")
+
+_PROFILES_DIR = _find_profiles_dir()
 
 # ============================================================
 # ВСТРОЕННЫЕ ПРОФИЛИ (минимальный набор, если нет внешних)
@@ -25569,6 +27224,7 @@ def _load_external_profiles():
     _external_profiles = {}
 
     if not os.path.isdir(_PROFILES_DIR):
+        print(f"[profiles] Каталог профилей не найден: {_PROFILES_DIR}")
         return
 
     try:
@@ -25602,6 +27258,9 @@ def _load_external_profiles():
                 }
         except Exception as e:
             print(f"Ошибка загрузки профиля {filepath}: {e}")
+
+    if os.environ.get("I8080_DEBUG_PROFILES"):
+        print(f"[profiles] dir={_PROFILES_DIR} loaded={len(_external_profiles)}")
 
 # Загружаем при импорте модуля
 _load_external_profiles()
@@ -36118,7 +37777,7 @@ def create_terminal_widget(device):
 
 ■ РАЗДЕЛ 4: ИЗМЕНЕНИЯ РЕФАКТОРИНГА
 
-Источник: `CHANGES.md` (2774 строк)
+Источник: `CHANGES.md` (2827 строк)
 
 ```markdown
 # Changelog / Журнал изменений
@@ -36127,6 +37786,59 @@ def create_terminal_widget(device):
 
 
 
+## v2.1.15 (2026-10-23)
+
+### Архивные библиотеки (.lib), последовательная раскладка от ORIGIN, DATA в map, авто watch
+
+**Новый: библиотекарь (`assemble8080/librarian.py`):**
+- `create_library(obj_paths, lib_path, lib_name)` — упаковывает `.obj`-модули
+  (i8080-obj-v1) в архив `.lib` (формат `i8080-lib-v1`) с индексом экспортов
+  `{UPPER_EXPORT: модуль}`; блокирует дубликаты имён модулей и экспорт-символов
+  (ValueError).
+- `load_library(path)` — загрузка и валидация архива.
+
+**Линковщик: разрешение библиотек (`assemble8080/linker.py`):**
+- `INPUT` в `.lnk` принимает `.obj` и `.lib` файлы.
+- `_resolve_libraries`: worklist-цикл — пока есть неразрешённые импорты, линковщик
+  ищет символ по индексу экспортов архивов, извлекает нужный модуль и обновляет
+  множества разрешённых/требуемых. Неиспользуемые модули в образ не попадают.
+- Тесты: `tests/test_librarian_and_linker_resolving.py` (17/0): создание lib,
+  блокировка дубликата экспорта, извлечение нужного модуля (CALL CCMULT -> 0x0103,
+  ccdiv отсутствует в образе).
+
+**Последовательная раскладка от ORIGIN:**
+- Линковщик игнорирует индивидуальные `org` модулей при размещении:
+  `bases[0]=ORIGIN`, `bases[i]=bases[i-1]+len(data)`. Адреса символов,
+  размещение данных и патч relocation используют `bases[i]`.
+- `ORG` в модуле — только виртуальная база ассемблера для вычисления локальных
+  смещений. Одиночная сборка в GUI: `link([obj], origin=obj.org)` — поведение
+  не изменилось (проверено smoke-тестами).
+- `assembler_example/04_multifile`: ORIGIN 0x0100, helper @ 0x0106, CALL -> 0x0106.
+
+**Классификация DATA/CODE в map (mapfile + objfile + linker):**
+- `mapfile.generate_map`: префикс лейбла отбрасывается перед проверкой директивы
+  DB/DW/DS (раньше `MYS: DB 0x42` помечалось CODE).
+- `objfile`: новое поле `data_lines` (offset, size, исходник) — сериализуется в
+  `.obj` и обратно, заполняется из `AsmResult.listing`.
+- `linker`: при генерации map «listing» строится из `data_lines` объектов,
+  передаётся точный `fake.binary` (не весь 64K-вывод).
+
+**Авто watch-переменные + сортировка (i8080_ci):**
+- `WatchModel.set_auto_watches_from_map()` — после ассемблирования и загрузки
+  образа DATA-символы map добавляются в watch-list: size >= 2 -> word, иначе
+  byte. CODE-метки (переходы) исключены. Повторный запуск перегенерирует
+  auto-записи, ручные сохраняются.
+- Auto-записи не попадают в JSON-пресеты (save_preset/load_preset).
+- Watch-таблица сортируется по колонкам (setSortingEnabled + sort()) — как
+  окно меток ассемблера.
+- `assembler_widget._auto_load_watch_vars()` вызывается после успешной сборки.
+- i18n: `watch_auto_loaded` (EN/RU).
+- Тесты: `tests/test_watch_auto.py` (18/0).
+
+**Документация:** ASSEMBLER_GUIDE.md (7.2-7.8), USER_GUIDE.md (8.14, 13.2),
+README.md — обновлены по новым возможностям.
+
+**Тесты:** 956/0 (run_tests, 36 файлов) + GUI smoke + map autoload flow.
 ## v2.1.14 (2026-10-13)
 
 ### Поддержка label+addend, безопасная замена $, эталон опкодов, чистка тестов
@@ -38900,7 +40612,7 @@ Menu title and items update on language switch.
 
 ■ РАЗДЕЛ 5: ТЕСТЫ
 
-Всего тестовых файлов: 74, строк: 11718
+Всего тестовых файлов: 76, строк: 11972
 
 ### `tests/PPI_3D_8x8x8_Flame.py` (224 строк)
 
@@ -43223,13 +44935,13 @@ helper:
         save_obj(obj2_path, obj2)
         
         # Link
-        result_link = link([obj1, obj2], origin=0, size=0x10000, fill=0xFF)
+        result_link = link([obj1, obj2], origin=0x0100, size=0x10000, fill=0xFF)
         check("Link success", result_link.success, str(result_link.errors))
         check("Link: binary size", len(result_link.binary) == 0x10000)
         check("Link: symbols has MAIN", 'MAIN' in result_link.symbols)
         check("Link: symbols has HELPER", 'HELPER' in result_link.symbols)
         check("Link: MAIN at 0x0100", result_link.symbols.get('MAIN') == 0x0100)
-        check("Link: HELPER at 0x0200", result_link.symbols.get('HELPER') == 0x0200, f"got {result_link.symbols.get('HELPER')}")
+        check("Link: HELPER at 0x0106 (after main)", result_link.symbols.get('HELPER') == 0x0106, f"got {result_link.symbols.get('HELPER')}")
         
         # Verify binary layout
         # main at 0x0100: MVI A, 0x01 (0x0E, 0x01)
@@ -43237,8 +44949,8 @@ helper:
         # helper at 0x0200: INR B (0x04), RET (0xC9)
         check("MVI A at 0x0100", result_link.binary[0x0100] == 0x3E, f"got 0x{result_link.binary[0x0100]:02X}")
         check("CALL at 0x0102", result_link.binary[0x0102] == 0xCD, f"got 0x{result_link.binary[0x0102]:02X}")
-        check("INR B at 0x0200", result_link.binary[0x0200] == 0x04, f"got 0x{result_link.binary[0x0200]:02X}")
-        check("RET at 0x0201", result_link.binary[0x0201] == 0xC9, f"got 0x{result_link.binary[0x0201]:02X}")
+        check("INR B at 0x0106", result_link.binary[0x0106] == 0x04, f"got 0x{result_link.binary[0x0106]:02X}")
+        check("RET at 0x0107", result_link.binary[0x0107] == 0xC9, f"got 0x{result_link.binary[0x0107]:02X}")
         check("Fill 0xFF elsewhere", result_link.binary[0x0300] == 0xFF)
         
         # === Test 4: Linker script ===
@@ -43368,12 +45080,12 @@ END
         check("Link B: success", rB.success, str(rB.errors))
         objA = obj_from_asm_result(rA, 'a.asm')
         objB = obj_from_asm_result(rB, 'b.asm')
-        res = link([objA, objB], origin=0, size=0x10000)
+        res = link([objA, objB], origin=0x0100, size=0x10000)
         check("Link: success", res.success, str(res.errors))
-        check("Link: HELPER at 0x200", res.symbols.get('HELPER') == 0x200, str(res.symbols.get('HELPER')))
-        call_bytes = res.binary[0x100:0x103]
-        check("Link: CALL patched to 0x0200", call_bytes == bytes([0xCD, 0x00, 0x02]), call_bytes.hex())
-        helper_bytes = res.binary[0x200:0x203]
+        check("Link: HELPER at 0x0100", res.symbols.get('HELPER') == 0x0100, str(res.symbols.get('HELPER')))
+        call_bytes = res.binary[0x103:0x106]
+        check("Link: CALL patched to 0x0100", call_bytes == bytes([0xCD, 0x00, 0x01]), call_bytes.hex())
+        helper_bytes = res.binary[0x100:0x103]
         check("Link: HELPER code intact", helper_bytes == bytes([0x3E, 0x2A, 0xC9]), helper_bytes.hex())
         
     finally:
@@ -48864,6 +50576,179 @@ else:
 ```
 <!-- END FILE: tests/test_invert_port_range.py -->
 
+### `tests/test_librarian_and_linker_resolving.py` (166 строк)
+
+<!-- FILE: tests/test_librarian_and_linker_resolving.py -->
+```python
+# -*- coding: utf-8 -*-
+"""
+Тесты архиватора библиотек (librarian) и этапа разрешения зависимостей
+линкера (автоматическое извлечение модулей из .lib).
+"""
+import os
+import sys
+import json
+import tempfile
+import shutil
+
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from assemble8080.librarian import create_library, load_library, LIB_FORMAT_VERSION
+from assemble8080.objfile import ObjectFile, Relocation, save_obj, load_obj
+from assemble8080.linker import link_from_script
+
+passed = 0
+failed = 0
+
+
+def check(name, condition, msg=""):
+    global passed, failed
+    if condition:
+        passed += 1
+        print(f"  \u2705 {name}")
+    else:
+        failed += 1
+        print(f"  \u274c {name}: {msg}")
+
+
+def mkobj(path, name, org, data, symbols=None, exports=None, imports=None, relocs=None):
+    """Собрать и сохранить ObjectFile во временный .obj."""
+    obj = ObjectFile(
+        name=name,
+        source=name + ".asm",
+        org=org,
+        size=len(data) // 2,
+        data=bytes.fromhex(data),
+        symbols=symbols or {},
+        exports=exports or [],
+        imports=imports or [],
+    )
+    for r in (relocs or []):
+        obj.relocations.append(Relocation(*r))
+    save_obj(path, obj)
+    return obj
+
+
+def main():
+    global passed, failed
+    tmpdir = tempfile.mkdtemp(prefix="lib_link_test_")
+
+    try:
+        # === Тест 1: успешное создание библиотеки ===
+        print("Тест 1: Создание библиотеки (.lib) библиотекарем")
+        obj_mul = mkobj(
+            os.path.join(tmpdir, "math_mul.obj"), "math_mul", 0x200,
+            "00", symbols={"CCMULT": 0}, exports=["CCMULT"], imports=["CCSXT"])
+        obj_div = mkobj(
+            os.path.join(tmpdir, "math_div.obj"), "math_div", 0x300,
+            "00", symbols={"CCDIV": 0}, exports=["CCDIV"])
+
+        lib_path = os.path.join(tmpdir, "test_math.lib")
+        create_library(
+            [os.path.join(tmpdir, "math_mul.obj"),
+             os.path.join(tmpdir, "math_div.obj")],
+            lib_path, "test_math")
+        check("Файл .lib создан", os.path.exists(lib_path))
+
+        with open(lib_path, 'r', encoding='utf-8') as f:
+            lib = json.load(f)
+        check("Поле format == i8080-lib-v1", lib["format"] == LIB_FORMAT_VERSION, lib["format"])
+        check("Имя библиотеки", lib["name"] == "test_math")
+        check(
+            "Индекс ровно {CCMULT, CCDIV}",
+            lib["index"] == {"CCMULT": "math_mul", "CCDIV": "math_div"},
+            str(lib["index"]))
+        check("Модули: оба присутствуют", set(lib["modules"]) == {"math_mul", "math_div"})
+        check("Модуль math_mul: полный JSON сохранён",
+              lib["modules"]["math_mul"]["data"] == "00"
+              and lib["modules"]["math_mul"]["exports"] == ["CCMULT"]
+              and lib["modules"]["math_mul"]["imports"] == ["CCSXT"]
+              and lib["modules"]["math_mul"]["symbols"] == {"CCMULT": 0})
+        check("load_library: валидация формата", load_library(lib_path)["name"] == "test_math")
+
+        # === Тест 2: дубликат экспорта -> ValueError ===
+        print("Тест 2: Перехват дубликата символов библиотекарем")
+        mkobj(os.path.join(tmpdir, "dup_a.obj"), "dup_a", 0x400,
+              "00", symbols={"CCMULT": 0}, exports=["CCMULT"])
+        mkobj(os.path.join(tmpdir, "dup_b.obj"), "dup_b", 0x500,
+              "00", symbols={"CCMULT": 0}, exports=["CCMULT"])
+        caught = False
+        try:
+            create_library(
+                [os.path.join(tmpdir, "dup_a.obj"), os.path.join(tmpdir, "dup_b.obj")],
+                os.path.join(tmpdir, "dup.lib"), "dup")
+        except ValueError as e:
+            caught = "Duplicate export symbol 'CCMULT'" in str(e)
+        check("Дубликат экспорта заблокирован (Duplicate export symbol)", caught)
+        check("Сборка заблокирована, .lib не создан",
+              not os.path.exists(os.path.join(tmpdir, "dup.lib")))
+
+        # === Тест 3: автоматическое извлечение нужного модуля из .lib ===
+        print("Тест 3: Resolving — извлечение востребованного модуля из .lib")
+        mkobj(os.path.join(tmpdir, "main.obj"), "main", 0x100,
+              "CD0000", symbols={"MAIN": 0}, exports=["MAIN"], imports=["CCMULT"],
+              relocs=[(1, 2, "CCMULT")])
+        mkobj(os.path.join(tmpdir, "ccmul.obj"), "ccmul", 0x200,
+              "80C9", symbols={"CCMULT": 0}, exports=["CCMULT"])
+        mkobj(os.path.join(tmpdir, "ccdiv.obj"), "ccdiv", 0x300,
+              "90C9", symbols={"CCDIV": 0}, exports=["CCDIV"])
+
+        lib2 = os.path.join(tmpdir, "runtime.lib")
+        create_library(
+            [os.path.join(tmpdir, "ccmul.obj"), os.path.join(tmpdir, "ccdiv.obj")],
+            lib2, "runtime")
+
+        lnk = os.path.join(tmpdir, "project.lnk")
+        with open(lnk, 'w', encoding='utf-8') as f:
+            f.write("INPUT main.obj runtime.lib\nOUTPUT app.bin\nORIGIN 0x0100\n")
+
+        result = link_from_script(lnk)
+        check("Линковка завершилась успехом", result.success, str(result.errors))
+        check("Итоговый бинарник содержит код main", result.binary[0x100] == 0xCD)
+        check("CALL CCMULT пересчитан на адрес 0x0103 (ccmul сразу после main)",
+              result.binary[0x100:0x103] == bytes([0xCD, 0x03, 0x01]),
+              result.binary[0x100:0x103].hex())
+        check("Код ccmul извлечён и наложен на 0x0103",
+              result.binary[0x103:0x105] == bytes([0x80, 0xC9]),
+              result.binary[0x103:0x105].hex())
+        check("Символ CCMULT в глобальной таблице = 0x0103",
+              result.symbols.get("CCMULT") == 0x103, str(result.symbols.get("CCMULT")))
+        check("Неиспользуемый ccdiv ОТСУТСТВУЕТ (fill 0xFF на 0x0300)",
+              result.binary[0x300:0x302] == bytes([0xFF, 0xFF]),
+              result.binary[0x300:0x302].hex())
+        check("app.bin записан на диск", os.path.exists(os.path.join(tmpdir, "app.bin")))
+
+        # === Тест 4: паника линкера при отсутствии символа ===
+        print("Тест 4: Undefined reference — символ не найден в библиотеке")
+        mkobj(os.path.join(tmpdir, "main_u.obj"), "main_u", 0x100,
+              "CD0000", symbols={"MAIN": 0}, exports=["MAIN"], imports=["UNKNOWN_SYM"],
+              relocs=[(1, 2, "UNKNOWN_SYM")])
+        lnk2 = os.path.join(tmpdir, "project_u.lnk")
+        with open(lnk2, 'w', encoding='utf-8') as f:
+            f.write("INPUT main_u.obj runtime.lib\nOUTPUT app_u.bin\nORIGIN 0x0100\n")
+        caught = False
+        try:
+            link_from_script(lnk2)
+        except ValueError as e:
+            caught = "Undefined reference to symbol 'UNKNOWN_SYM'" in str(e)
+        check("Символ не найден (Undefined reference to 'UNKNOWN_SYM')", caught)
+
+    finally:
+        shutil.rmtree(tmpdir, ignore_errors=True)
+
+    # Summary
+    print(f"\n{'='*60}")
+    print(f"РЕЗУЛЬТАТ: {passed} пройдено, {failed} провалено")
+    print(f"{'='*60}")
+    return 0 if failed == 0 else 1
+
+
+if __name__ == '__main__':
+    sys.exit(main())
+```
+<!-- END FILE: tests/test_librarian_and_linker_resolving.py -->
+
 ### `tests/test_map_autoload.py` (59 строк)
 
 <!-- FILE: tests/test_map_autoload.py -->
@@ -51079,6 +52964,101 @@ else:
 ```
 <!-- END FILE: tests/test_wait_signals.py -->
 
+### `tests/test_watch_auto.py` (88 строк)
+
+<!-- FILE: tests/test_watch_auto.py -->
+```python
+# -*- coding: utf-8 -*-
+"""Тест автозагрузки watch-list из map-файла + сортировка + preset-исключение auto."""
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from assemble8080.assembler import assemble
+from assemble8080.objfile import obj_from_asm_result
+from assemble8080.linker import link
+from assemble8080.mapfile import parse_map
+
+from PySide6.QtCore import Qt
+from i8080_ci.models.watch_model import WatchModel
+
+SRC = """\
+ORG 0x0100
+START:   JMP LOOP
+LOOP:    NOP
+         RET
+MYS:     DB 0x42
+MYSUM:   DW 0x1234
+"""
+
+ok = True
+def check(name, cond, info=""):
+    global ok
+    print(("\u2705 " if cond else "\u274c ") + name + ((" - " + info) if (info and not cond) else ""))
+    ok = ok and bool(cond)
+
+r = assemble(SRC)
+obj = obj_from_asm_result(r)
+res = link([obj], origin=obj.org)
+mf = parse_map(res.map_text)
+
+types = {e.name.upper(): e.entry_type for e in mf.entries}
+check("map: MYS -> DATA", types.get("MYS") == "DATA", str(types))
+check("map: MYSUM -> DATA", types.get("MYSUM") == "DATA", str(types))
+check("map: START -> CODE", types.get("START") == "CODE", str(types))
+check("map: LOOP -> CODE", types.get("LOOP") == "CODE", str(types))
+sizes = {e.name.upper(): e.size for e in mf.entries}
+check("map: MYS size 1", sizes.get("MYS") == 1, str(sizes))
+check("map: MYSUM size 2", sizes.get("MYSUM") == 2, str(sizes))
+
+class FakeEmu:
+    def __init__(self):
+        self.mem = {0x0105: 0x42, 0x0106: 0x34, 0x0107: 0x12}
+    def read_byte(self, a): return self.mem.get(a, 0)
+    def read_word(self, a): return self.mem.get(a, 0) | (self.mem.get(a + 1, 0) << 8)
+    def get_reg(self, *a): return 0
+    def get_reg_pair(self, *a): return 0
+    sp = 0; pc = 0x0100
+    flag_s = flag_z = flag_ac = flag_p = flag_cy = 0
+
+m = WatchModel(FakeEmu())
+n = m.set_auto_watches_from_map(mf)
+check("auto count == 2", n == 2, str(n))
+auto = [it for it in m.items if it["auto"]]
+check("2 auto items", len(auto) == 2, str(m.items))
+by_name = {it["name"].upper(): it for it in auto}
+check("MYS byte @0x0105", by_name.get("MYS", {}).get("type") == "mem_byte" and by_name.get("MYS", {}).get("target") == 0x0105)
+check("MYSUM word @0x0106", by_name.get("MYSUM", {}).get("type") == "mem_word" and by_name.get("MYSUM", {}).get("target") == 0x0106)
+check("no CODE labels in watch", not any(x in by_name for x in ("START", "LOOP")))
+check("value MYSUM == 0x1234", m.get_value(by_name["MYSUM"]) == 0x1234, hex(m.get_value(by_name["MYSUM"])))
+
+m.add_watch("manual", WatchModel.TYPE_REG, "PC")
+n2 = m.set_auto_watches_from_map(mf)
+check("re-run: auto regenerated, manual kept", n2 == 2 and len(m.items) == 3, f"n2={n2} total={len(m.items)}")
+
+pf = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_tmp_watch_preset.json")
+m.save_preset(pf)
+import json
+data = json.load(open(pf, encoding="utf-8"))
+check("preset excludes auto", len(data["watches"]) == 1 and data["watches"][0]["name"] == "manual", str(data))
+m2 = WatchModel(FakeEmu())
+m2.load_preset(pf)
+check("load_preset: manual added, no auto", any(it["name"] == "manual" and not it["auto"] for it in m2.items) and not any(it.get("auto") for it in m2.items))
+os.remove(pf)
+
+m.sort(0, Qt.AscendingOrder)
+names = [it["name"] for it in m.items]
+check("sort by name asc", names == sorted(names, key=str.lower), str(names))
+m.sort(0, Qt.DescendingOrder)
+check("sort by name desc", [it["name"] for it in m.items] == list(reversed(names)))
+m.sort(1, Qt.AscendingOrder)
+targets = [it["target"] for it in m.items if it["type"] != "reg"]
+check("sort by addr asc", targets == [0x0105, 0x0106], str(targets))
+
+print("RESULT:", "ALL PASS" if ok else "FAILURES")
+sys.exit(0 if ok else 1)
+```
+<!-- END FILE: tests/test_watch_auto.py -->
+
 ### `tests/uart_test.py` (52 строк)
 
 <!-- FILE: tests/uart_test.py -->
@@ -51142,7 +53122,7 @@ else:
 
 ■ РАЗДЕЛ 6: СИСТЕМНЫЕ ПРОФИЛИ
 
-Всего профилей: 22
+Всего профилей: 43
 
 ### `pyproject.toml` (61 строк)
 
@@ -51154,7 +53134,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "i8080-5-ci"
-version = "0.5.0"
+version = "2.1.15"
 description = "i8080-5 Master Controller — GUI, emulator, MCP server and Arduino bridge for i8080-based hardware"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -51211,6 +53191,935 @@ warn_unused_configs = true
 ignore_missing_imports = true
 ```
 <!-- END FILE: pyproject.toml -->
+
+### `Release/profiles/apogey.toml` (41 строк)
+
+<!-- FILE: Release/profiles/apogey.toml -->
+```toml
+# Апогей БК-01 (1988)
+# Процессор: КР580ВМ80А @ 2 МГц
+# ОЗУ: 32 КБ (0000-7FFF)
+# ПЗУ: 2 КБ монитор (F800-FFFF)
+# Клавиатура: матрица через порт
+# Улучшенный Радио-86РК
+
+[profiles.apogey]
+description = "Апогей БК-01 (1988) — улучшенный Радио-86РК"
+
+[profiles.apogey.system]
+name = "Апогей БК-01"
+cpu = "i8080"  # или "i8085" для систем на 8085
+clock_mhz = 2
+
+# ОЗУ 32 КБ
+[[profiles.apogey.memory.regions]]
+type = "ram"
+start = 0x0000
+end = 0x7FFF
+name = "RAM 32KB"
+
+# ПЗУ монитора 2 КБ
+[[profiles.apogey.memory.regions]]
+type = "rom"
+start = 0xF800
+end = 0xFFFF
+name = "Monitor ROM"
+# file = "roms/apogey_monitor.bin"
+
+# 8255 для клавиатуры/дисплея
+[[profiles.apogey.devices]]
+type = "i8255"
+name = "PPI Keyboard/Display"
+base_port = 0x00
+
+# Таймер
+[[profiles.apogey.devices]]
+type = "i8253"
+name = "PIT Timer"
+base_port = 0x04
+```
+<!-- END FILE: Release/profiles/apogey.toml -->
+
+### `Release/profiles/display_test.toml` (40 строк)
+
+<!-- FILE: Release/profiles/display_test.toml -->
+```toml
+# Тестовый профиль со всеми дисплейными устройствами
+
+[profiles.display_test]
+description = "Тест дисплеев: LCD1602, LCD2004, TFT8080, 8275, 8276"
+
+[profiles.display_test.system]
+name = "Display Test System"
+cpu = "i8080"  # или "i8085" для систем на 8085
+clock_mhz = 2
+
+[[profiles.display_test.memory.regions]]
+type = "ram"
+start = 0x0000
+end = 0xFFFF
+name = "RAM"
+
+[[profiles.display_test.devices]]
+type = "lcd1602"
+name = "LCD1602"
+base_port = 0x10
+
+[[profiles.display_test.devices]]
+type = "lcd2004"
+name = "LCD2004"
+base_port = 0x14
+
+[[profiles.display_test.devices]]
+type = "tft8080"
+name = "TFT8080"
+base_port = 0x20
+
+[[profiles.display_test.devices]]
+type = "i8275"
+name = "I8275"
+base_port = 0x30
+
+[[profiles.display_test.devices]]
+type = "i8276"
+name = "I8276"
+base_port = 0x34
+```
+<!-- END FILE: Release/profiles/display_test.toml -->
+
+### `Release/profiles/empty8080.toml` (12 строк)
+
+<!-- FILE: Release/profiles/empty8080.toml -->
+```toml
+[profiles.empty8080]
+description = "Пустая система (без устройств)"
+
+[profiles.empty8080.system]
+name = "Empty System 64k RAM, CPU 8080"
+cpu = "i8080"  # i8080 для систем на 8080 или "i8085" для систем на 8085
+clock_mhz = 2
+
+[[profiles.empty8080.memory.regions]]
+type = "ram"
+start = 0x0000
+end = 0xFFFF
+```
+<!-- END FILE: Release/profiles/empty8080.toml -->
+
+### `Release/profiles/empty8085.toml` (12 строк)
+
+<!-- FILE: Release/profiles/empty8085.toml -->
+```toml
+[profiles.empty8085]
+description = "Пустая система (без устройств)"
+
+[profiles.empty8085.system]
+name = "Empty System 64k RAM, CPU 8085"
+cpu = "i8085"  # i8080 для систем на 8080 или "i8085" для систем на 8085
+clock_mhz = 2
+
+[[profiles.empty8085.memory.regions]]
+type = "ram"
+start = 0x0000
+end = 0xFFFF
+```
+<!-- END FILE: Release/profiles/empty8085.toml -->
+
+### `Release/profiles/full.toml` (102 строк)
+
+<!-- FILE: Release/profiles/full.toml -->
+```toml
+[profiles.full_system]
+description = "Полная система с устройствами"
+
+[profiles.full_system.system]
+name = "Full System with devices"
+cpu = "i8080"  # или "i8085" для систем на 8085
+clock_mhz = 2
+
+[[profiles.full_system.memory.regions]]
+type = "ram"
+start = 0x0000
+end = 0xFFFF
+#image_file = "images/full_ram.bin"
+
+[[profiles.full_system.devices]]
+type = "i8251"
+name = "USART"
+base_port = 0x01
+
+[[profiles.full_system.devices]]
+type = "i8253"
+name = "PIT"
+base_port = 0x04
+
+[[profiles.full_system.devices]]
+type = "i8255"
+name = "PPI"
+base_port = 0x08
+
+[[profiles.full_system.devices]]
+type = "i512vi1"
+name = "RTC"
+base_port = 0x0D
+#image_file = "images/nvram.bin"
+
+[[profiles.full_system.devices]]
+type = "i8259"
+name = "PIC"
+base_port = 0x10
+
+[[profiles.full_system.devices]]
+type = "i8279"
+name = "KBD"
+base_port = 0x16
+
+[[profiles.full_system.devices]]
+type = "keyboard8279"
+name = "Keyboard"
+i8279_device = "KBD"
+
+[[profiles.full_system.devices]]
+type = "i8272"
+name = "FDC"
+base_port = 0x20
+
+[[profiles.full_system.devices]]
+type = "i8257"
+name = "DMA"
+base_port = 0x24
+
+[[profiles.full_system.devices]]
+type = "lcd1602"
+name = "LCD16x2"
+base_port = 0x36
+cols = 16
+rows = 2
+
+[[profiles.full_system.devices]]
+type = "lcd2004"
+name = "LCD20x4"
+base_port = 0x38
+cols = 20
+rows = 4
+
+[[profiles.full_system.devices]]
+type = "i8275"
+name = "CRT8275"
+base_port = 0x40
+
+[[profiles.full_system.devices]]
+type = "i8276"
+name = "Matrix8276"
+base_port = 0x50
+
+[[profiles.full_system.devices]]
+type = "tft8080"
+name = "TFT320x240"
+base_port = 0x60
+
+[[profiles.full_system.devices]]
+type = "cf_ide"
+name = "IDE8"
+base_port = 0x70
+#image_file = "images/cf_ide.bin"
+
+[[profiles.full_system.devices]]
+type = "cube3d"
+name = "Cube3D"
+ppi_device = "PPI"
+port_x = 0
+port_y = 1
+port_z = 2
+```
+<!-- END FILE: Release/profiles/full.toml -->
+
+### `Release/profiles/lvovpk01.toml` (32 строк)
+
+<!-- FILE: Release/profiles/lvovpk01.toml -->
+```toml
+# Львов ПК-01 (1988)
+# Процессор: КР580ВМ80А @ 2.5 МГц
+# ОЗУ: 64 КБ
+# Графика: 256×256, 4 цвета
+# Клавиатура: матрица через порт
+
+[profiles.lvovpk01]
+description = "Львов ПК-01 (1988) — графический микрокомпьютер"
+
+[profiles.lvovpk01.system]
+name = "Львов ПК-01"
+cpu = "i8080"  # или "i8085" для систем на 8085
+clock_mhz = 2.5
+
+# ОЗУ 64 КБ
+[[profiles.lvovpk01.memory.regions]]
+type = "ram"
+start = 0x0000
+end = 0xFFFF
+name = "RAM 64KB"
+
+# 8255 для клавиатуры
+[[profiles.lvovpk01.devices]]
+type = "i8255"
+name = "PPI Keyboard"
+base_port = 0x00
+
+# Таймер
+[[profiles.lvovpk01.devices]]
+type = "i8253"
+name = "PIT Timer"
+base_port = 0x04
+```
+<!-- END FILE: Release/profiles/lvovpk01.toml -->
+
+### `Release/profiles/micro80.toml` (89 строк)
+
+<!-- FILE: Release/profiles/micro80.toml -->
+```toml
+# Микро-80 (1979) — предшественник Радио-86РК
+# Процессор: КР580ВМ80А @ 1.78 МГц
+# ОЗУ: 16 КБ (0000-3FFF)
+# ПЗУ: 2 КБ монитор (F800-FFFF)
+# Клавиатура: матрица через порт
+# В оригинале — дискретная логика, эмулируем через 8255
+
+[profiles.micro80]
+description = "Микро-80 (1979) — одноплатный микрокомпьютер, предшественник Радио-86РК"
+
+[profiles.micro80.system]
+name = "Микро-80"
+cpu = "i8080"  # или "i8085" для систем на 8085
+clock_mhz = 1.78
+
+# ОЗУ 16 КБ
+[[profiles.micro80.memory.regions]]
+type = "ram"
+start = 0x0000
+end = 0x3FFF
+name = "RAM 16KB"
+
+# ПЗУ монитора 2 КБ
+[[profiles.micro80.memory.regions]]
+type = "rom"
+start = 0xF800
+end = 0xFFFF
+name = "Monitor ROM"
+file = "roms/micro80_monitor.bin"
+
+# 8255 для клавиатуры
+[[profiles.micro80.devices]]
+type = "i8255"
+name = "PPI"
+base_port = 0x04
+port_invert = true    # ← Регистры перевёрнуты (Микро-80)
+
+[[profiles.micro80.devices]]
+type = "keyboard8x8"
+name = "Keyboard"
+ppi_device = "PPI"
+output_port = 0    # Порт A — выбор строки
+input_port = 1     # Порт B — чтение столбцов
+
+# Видеопамять (0xE000..0xEFFF)
+[[profiles.micro80.memory.regions]]
+type = "ram"
+start = 0xE000
+end = 0xEFFF
+name = "Video RAM"
+
+# Дискретное видео
+[[profiles.micro80.devices]]
+type = "discrete_video"
+name = "Video"
+video_addr = 0xE800       # Видеопамять символов
+attr_addr = 0xE000        # Видеопамять атрибутов/курсора
+chars_per_line = 64
+lines_per_screen = 32
+char_width = 6
+char_height = 8
+chargen_file = "roms/micro80_font.rom"	# опционально, иначе встроенный
+invert = true
+bit_reverse = true
+num_chars = 128
+
+############
+## MMIO-регион для 8255 (доступ через память)
+#[[profiles.micro80.memory.regions]]
+#type = "mmio"
+#name = "PPI_regs"
+#device = "PPI"
+#
+#[[profiles.micro80.memory.regions.mappings]]
+#addr = 0x04
+#port = 0x04
+#
+#[[profiles.micro80.memory.regions.mappings]]
+#addr = 0x05
+#port = 0x05
+#
+#[[profiles.micro80.memory.regions.mappings]]
+#addr = 0x06
+#port = 0x06
+#
+#[[profiles.micro80.memory.regions.mappings]]
+#addr = 0x07
+#port = 0x07
+############
+```
+<!-- END FILE: Release/profiles/micro80.toml -->
+
+### `Release/profiles/microsha.toml` (41 строк)
+
+<!-- FILE: Release/profiles/microsha.toml -->
+```toml
+# Микроша (1988)
+# Процессор: КР580ВМ80А @ 1.78 МГц
+# ОЗУ: 16 КБ (0000-3FFF)
+# ПЗУ: 2 КБ монитор (F800-FFFF)
+# Клавиатура: матрица через порт
+# Магнитофон: для загрузки программ
+
+[profiles.microsha]
+description = "Микроша (1988) — учебный микрокомпьютер"
+
+[profiles.microsha.system]
+name = "Микроша"
+cpu = "i8080"  # или "i8085" для систем на 8085
+clock_mhz = 1.78
+
+# ОЗУ 16 КБ
+[[profiles.microsha.memory.regions]]
+type = "ram"
+start = 0x0000
+end = 0x3FFF
+name = "RAM 16KB"
+
+# ПЗУ монитора 2 КБ
+[[profiles.microsha.memory.regions]]
+type = "rom"
+start = 0xF800
+end = 0xFFFF
+name = "Monitor ROM"
+# file = "roms/microsha_monitor.bin"
+
+# 8255 для клавиатуры/дисплея
+[[profiles.microsha.devices]]
+type = "i8255"
+name = "PPI Keyboard/Display"
+base_port = 0x00
+
+# Таймер
+[[profiles.microsha.devices]]
+type = "i8253"
+name = "PIT Timer"
+base_port = 0x04
+```
+<!-- END FILE: Release/profiles/microsha.toml -->
+
+### `Release/profiles/orion128.toml` (42 строк)
+
+<!-- FILE: Release/profiles/orion128.toml -->
+```toml
+# Орион-128 (1987)
+# Процессор: КР580ВМ80А @ 2.5 МГц
+# ОЗУ: 32 КБ (0000-7FFF) + банковая до 128 КБ
+# Графика: 384×288, 2 цвета
+# Клавиатура: матрица через порт
+
+[profiles.orion128]
+description = "Орион-128 (1987) — графический микрокомпьютер с банковой памятью"
+
+[profiles.orion128.system]
+name = "Орион-128"
+cpu = "i8080"  # или "i8085" для систем на 8085
+clock_mhz = 2.5
+
+# Банковая память: 32 КБ окно, 4 банка по 32 КБ (128 КБ всего)
+[[profiles.orion128.memory.regions]]
+type = "banked"
+start = 0x0000
+end = 0x7FFF
+name = "Banked RAM 128KB"
+num_banks = 4
+switch_port = 0x00
+switch_addr = 0x0000
+
+# Видеопамять (переключаемая страница)
+[[profiles.orion128.memory.regions]]
+type = "ram"
+start = 0x8000
+end = 0xFFFF
+name = "Video RAM / Additional RAM"
+
+# 8255 для клавиатуры
+[[profiles.orion128.devices]]
+type = "i8255"
+name = "PPI Keyboard"
+base_port = 0x04
+
+# Таймер
+[[profiles.orion128.devices]]
+type = "i8253"
+name = "PIT Timer"
+base_port = 0x08
+```
+<!-- END FILE: Release/profiles/orion128.toml -->
+
+### `Release/profiles/radio86rk.toml` (72 строк)
+
+<!-- FILE: Release/profiles/radio86rk.toml -->
+```toml
+# Радио-86РК (1986)
+# Процессор: КР580ВМ80А @ 1.78 МГц
+# ОЗУ: 16 КБ (0000-3FFF)
+# ПЗУ: 2 КБ монитор (F800-FFFF)
+# Клавиатура: матрица через порт
+# В оригинале — дискретная логика, эмулируем через 8255
+
+[profiles.radio86rk]
+description = "Радио-86РК (1986) — одноплатный микрокомпьютер"
+
+[profiles.radio86rk.system]
+name = "Радио-86РК"
+cpu = "i8080"  # или "i8085" для систем на 8085
+clock_mhz = 1.78
+
+# ОЗУ 16 КБ
+[[profiles.radio86rk.memory.regions]]
+type = "ram"
+start = 0x0000
+end = 0x3FFF
+name = "RAM 16KB"
+
+# ПЗУ монитора 2 КБ
+[[profiles.radio86rk.memory.regions]]
+type = "rom"
+start = 0xF800
+end = 0xFFFF
+name = "Monitor ROM"
+file = "roms/radio86rk_monitor.bin"
+
+# 8255 для клавиатуры
+[[profiles.radio86rk.devices]]
+type = "i8255"
+name = "PPI"
+base_port = 0x00
+
+[[profiles.radio86rk.devices]]
+type = "keyboard8x8"
+name = "Keyboard"
+ppi_device = "PPI"
+output_port = 0    # Порт A — выбор строки
+input_port = 1     # Порт B — чтение столбцов
+
+[[profiles.radio86rk.devices]]
+type = "i8275"
+name = "CRT"
+base_port = 0x08
+video_addr = 0x3800
+chars_per_line = 64
+lines_per_screen = 25
+char_height = 8
+char_width = 6
+chargen_file = "roms/radio86rk_font.rom"	# опционально, иначе встроенный
+invert = true
+bit_reverse = true
+num_chars = 256
+shift_bits = 0
+
+# === MMIO: регистры ВГ75 через память ===
+[[profiles.radio86rk.memory.regions]]
+type = "mmio"
+name = "VG75_regs"
+device = "CRT"
+
+# Маппинг: адреса памяти → порты 8275
+[[profiles.radio86rk.memory.regions.mappings]]
+addr = 0xC000
+port = 0x08        # Порт 0: Status (чтение) / P1 (запись)
+
+[[profiles.radio86rk.memory.regions.mappings]]
+addr = 0xC001
+port = 0x09        # Порт 1: Command (чтение) / P2/Command (запись)
+```
+<!-- END FILE: Release/profiles/radio86rk.toml -->
+
+### `Release/profiles/specialist.toml` (58 строк)
+
+<!-- FILE: Release/profiles/specialist.toml -->
+```toml
+# Специалист (1987)
+# Процессор: КР580ВМ80А @ 1.78 МГц
+# ОЗУ: 16 КБ (0000-3FFF)
+# ПЗУ: 2 КБ (F800-FFFF)
+# Графика: 256×256, монохром
+# Клавиатура: матрица через порт
+
+[profiles.specialist]
+description = "Специалист (1987) — графический одноплатник"
+
+[profiles.specialist.system]
+name = "Специалист"
+cpu = "i8080"  # или "i8085" для систем на 8085
+clock_mhz = 1.78
+
+# ОЗУ
+[[profiles.specialist.memory.regions]]
+type = "ram"
+start = 0x0000
+end = 0xBFFF
+name = "RAM"
+
+# Видеопамять (в ОЗУ, 256×256 моно = 8 КБ)
+[[profiles.specialist.memory.regions]]
+type = "ram"
+start = 0xC000
+end = 0xDFFF
+name = "Video RAM"
+
+# Графический контроллер
+[[profiles.specialist.devices]]
+type = "bitmap_video"
+name = "Video"
+video_addr = 0xC000      # адрес видеопамяти (уточнить)
+width = 384
+height = 256
+planes = 1               # монохром
+bit0_left = true         # порядок битов (уточнить)
+
+# ПЗУ монитора 2 КБ
+[[profiles.specialist.memory.regions]]
+type = "rom"
+start = 0xF800
+end = 0xFFFF
+name = "Monitor ROM"
+#file = "roms/specialist_monitor.bin"
+
+# 8255 для клавиатуры
+[[profiles.specialist.devices]]
+type = "i8255"
+name = "PPI Keyboard"
+base_port = 0x00
+
+# Таймер
+[[profiles.specialist.devices]]
+type = "i8253"
+name = "PIT Timer"
+base_port = 0x04
+```
+<!-- END FILE: Release/profiles/specialist.toml -->
+
+### `Release/profiles/vector06c.toml` (40 строк)
+
+<!-- FILE: Release/profiles/vector06c.toml -->
+```toml
+# Вектор-06Ц (1986)
+# Процессор: КР580ВМ80А @ 3 МГц
+# ОЗУ: 64 КБ (0000-FFFF) + 16 КБ видеопамяти
+# Графика: 256×256, 16 цветов
+# Звук: AY-3-8910 (YM2149)
+# Клавиатура: матрица через порт
+
+[profiles.vector06c]
+description = "Вектор-06Ц (1986) — графический микрокомпьютер"
+
+[profiles.vector06c.system]
+name = "Вектор-06Ц"
+cpu = "i8080"  # или "i8085" для систем на 8085
+clock_mhz = 3
+
+# ОЗУ 64 КБ
+[[profiles.vector06c.memory.regions]]
+type = "ram"
+start = 0x0000
+end = 0xFFFF
+name = "RAM 64KB"
+
+# 8255 для системного порта и клавиатуры
+[[profiles.vector06c.devices]]
+type = "i8255"
+name = "PPI System/Keyboard"
+base_port = 0x00
+
+# Таймер
+[[profiles.vector06c.devices]]
+type = "i8253"
+name = "PIT Timer"
+base_port = 0x04
+
+# Звук: AY-3-8910 (YM2149) — нет в списке устройств
+# Оставляем комментарий для будущей реализации
+# [[profiles.vector06c.devices]]
+# type = "ay38910"
+# name = "Sound AY-3-8910"
+# base_port = 0x08
+```
+<!-- END FILE: Release/profiles/vector06c.toml -->
+
+### `Release/profiles/template/01_basic_ram_rom.toml` (20 строк)
+
+<!-- FILE: Release/profiles/template/01_basic_ram_rom.toml -->
+```toml
+# 01_basic_ram_rom.toml
+# Простая система: RAM + ROM в фиксированных диапазонах
+
+[system]
+name = "Basic i8080 System"
+cpu = "i8080A"
+clock = 2000000  # 2 МГц
+
+[[memory.regions]]
+type = "ram"
+name = "Main RAM"
+start = 0x0000
+end = 0xF7FF
+
+[[memory.regions]]
+type = "rom"
+name = "Monitor ROM"
+start = 0xF800
+end = 0xFFFF
+file = "monitor.bin"
+```
+<!-- END FILE: Release/profiles/template/01_basic_ram_rom.toml -->
+
+### `Release/profiles/template/02_radio86rk.toml` (25 строк)
+
+<!-- FILE: Release/profiles/template/02_radio86rk.toml -->
+```toml
+# 02_radio86rk.toml
+# Радио-86РК: теневое ПЗУ с переключением по 2-му такту M1
+# После сброса ROM виден по 0x0000, после чтения 3 байт (JMP)
+# переезжает на 0xF800, освобождая нижние 2КБ для RAM
+
+[system]
+name = "Радио-86РК"
+cpu = "i8080A"
+clock = 1780000  # 1.78 МГц
+
+[[memory.regions]]
+type = "shadow_rom"
+name = "Monitor ROM"
+low_addr = 0x0000
+high_addr = 0xF800
+file = "radio86rk_monitor.bin"
+mode = "m1"           # Переключение по N чтениям
+m1_count = 3          # 3 байта = размер JMP
+action = "move"       # Переместить на high_addr
+
+[[memory.regions]]
+type = "ram"
+name = "Main RAM"
+start = 0x0000
+end = 0x7FFF          # 32 КБ RAM
+```
+<!-- END FILE: Release/profiles/template/02_radio86rk.toml -->
+
+### `Release/profiles/template/03_mikro80.toml` (23 строк)
+
+<!-- FILE: Release/profiles/template/03_mikro80.toml -->
+```toml
+# 03_mikro80.toml
+# Микро-80: аналог Радио-86РК, теневое ПЗУ с переключением по M1
+
+[system]
+name = "Микро-80"
+cpu = "i8080A"
+clock = 1000000  # 1 МГц
+
+[[memory.regions]]
+type = "shadow_rom"
+name = "Monitor ROM"
+low_addr = 0x0000
+high_addr = 0xF800
+file = "mikro80_monitor.bin"
+mode = "m1"
+m1_count = 3
+action = "move"
+
+[[memory.regions]]
+type = "ram"
+name = "Main RAM"
+start = 0x0000
+end = 0x3FFF          # 16 КБ RAM
+```
+<!-- END FILE: Release/profiles/template/03_mikro80.toml -->
+
+### `Release/profiles/template/04_banked_ram_io.toml` (16 строк)
+
+<!-- FILE: Release/profiles/template/04_banked_ram_io.toml -->
+```toml
+# 04_banked_ram_io.toml
+# Банковая RAM: 4 банка по 64 КБ, переключение через порт 0x00
+# Пример: Орион-128 стиль
+
+[system]
+name = "Banked RAM System"
+cpu = "i8080A"
+clock = 2000000
+
+[[memory.regions]]
+type = "banked_ram"
+name = "Banked RAM"
+start = 0x0000
+end = 0xFFFF          # Окно на всё адресное пространство
+num_banks = 4         # 4 банка по 64 КБ = 256 КБ физической памяти
+switch_port = 0x00    # OUT 0x00, N — выбрать банк N
+```
+<!-- END FILE: Release/profiles/template/04_banked_ram_io.toml -->
+
+### `Release/profiles/template/05_banked_ram_addr.toml` (16 строк)
+
+<!-- FILE: Release/profiles/template/05_banked_ram_addr.toml -->
+```toml
+# 05_banked_ram_addr.toml
+# Банковая RAM: переключение банка записью по адресу 0xFFFE
+# Пример: некоторые советские системы
+
+[system]
+name = "Banked RAM (addr switch)"
+cpu = "i8080A"
+clock = 2000000
+
+[[memory.regions]]
+type = "banked_ram"
+name = "Banked RAM"
+start = 0x0000
+end = 0xFFFF
+num_banks = 8         # 8 банков по 64 КБ = 512 КБ
+switch_addr = 0xFFFE  # Запись по этому адресу выбирает банк
+```
+<!-- END FILE: Release/profiles/template/05_banked_ram_addr.toml -->
+
+### `Release/profiles/template/06_banked_rom.toml` (27 строк)
+
+<!-- FILE: Release/profiles/template/06_banked_rom.toml -->
+```toml
+# 06_banked_rom.toml
+# Банковое ПЗУ: 4 банка ROM по 16 КБ, переключение через порт 0x80
+# Пример: Вектор-06Ц стиль
+
+[system]
+name = "Вектор-06Ц"
+cpu = "i8080A"
+clock = 3000000  # 3 МГц
+
+[[memory.regions]]
+type = "ram"
+name = "Main RAM"
+start = 0x0000
+end = 0xBFFF          # 48 КБ RAM
+
+[[memory.regions]]
+type = "banked_rom"
+name = "Banked ROM"
+start = 0xC000
+end = 0xFFFF          # Окно 16 КБ
+banks = [
+    "vector06c_rom0.bin",
+    "vector06c_rom1.bin",
+    "vector06c_rom2.bin",
+    "vector06c_rom3.bin"
+]
+switch_port = 0x80    # OUT 0x80, N — выбрать банк N
+```
+<!-- END FILE: Release/profiles/template/06_banked_rom.toml -->
+
+### `Release/profiles/template/07_shadow_rom_io.toml` (26 строк)
+
+<!-- FILE: Release/profiles/template/07_shadow_rom_io.toml -->
+```toml
+# 07_shadow_rom_io.toml
+# Теневое ПЗУ: переключение записью в IO-порт
+# OUT 0x80, 0x01 — переместить ROM на high_addr
+# OUT 0x80, 0xFF — полностью отключить ROM
+# OUT 0x80, 0x00 — вернуть ROM на low_addr
+
+[system]
+name = "Shadow ROM (IO switch)"
+cpu = "i8080A"
+clock = 2000000
+
+[[memory.regions]]
+type = "shadow_rom"
+name = "Boot ROM"
+low_addr = 0x0000
+high_addr = 0xE000
+file = "boot.bin"
+mode = "io_write"     # Переключение по записи в IO-порт
+trigger_port = 0x80   # Порт переключения
+action = "move"       # Переместить на high_addr
+
+[[memory.regions]]
+type = "ram"
+name = "Main RAM"
+start = 0x0000
+end = 0xFFFF
+```
+<!-- END FILE: Release/profiles/template/07_shadow_rom_io.toml -->
+
+### `Release/profiles/template/08_shadow_rom_mem.toml` (24 строк)
+
+<!-- FILE: Release/profiles/template/08_shadow_rom_mem.toml -->
+```toml
+# 08_shadow_rom_mem.toml
+# Теневое ПЗУ: переключение записью по адресу памяти
+# Запись по 0xE000 — переместить ROM на high_addr
+
+[system]
+name = "Shadow ROM (mem switch)"
+cpu = "i8080A"
+clock = 2000000
+
+[[memory.regions]]
+type = "shadow_rom"
+name = "Boot ROM"
+low_addr = 0x0000
+high_addr = 0xE000
+file = "boot.bin"
+mode = "mem_write"    # Переключение по записи в память
+trigger_addr = 0xE000 # Адрес переключения
+action = "move"
+
+[[memory.regions]]
+type = "ram"
+name = "Main RAM"
+start = 0x0000
+end = 0xFFFF
+```
+<!-- END FILE: Release/profiles/template/08_shadow_rom_mem.toml -->
+
+### `Release/profiles/template/09_shadow_rom_disable.toml` (24 строк)
+
+<!-- FILE: Release/profiles/template/09_shadow_rom_disable.toml -->
+```toml
+# 09_shadow_rom_disable.toml
+# Теневое ПЗУ: после переключения полностью отключается
+# Пример: boot-загрузчик, который после запуска исчезает
+
+[system]
+name = "Boot ROM (disable)"
+cpu = "i8080A"
+clock = 2000000
+
+[[memory.regions]]
+type = "shadow_rom"
+name = "Boot ROM"
+low_addr = 0x0000
+high_addr = 0x0000    # Не используется при action = "disable"
+file = "bootloader.bin"
+mode = "io_write"
+trigger_port = 0x40
+action = "disable"    # Полностью отключить ROM после переключения
+
+[[memory.regions]]
+type = "ram"
+name = "Main RAM"
+start = 0x0000
+end = 0xFFFF
+```
+<!-- END FILE: Release/profiles/template/09_shadow_rom_disable.toml -->
 
 ### `profiles/apogey.toml` (41 строк)
 
@@ -52145,7 +55054,7 @@ end = 0xFFFF
 
 ■ РАЗДЕЛ 7: ГЛАВНОЕ ОКНО И ВКЛАДКИ
 
-Файл: `i8080_ci/main_window.py` (4192 строк)
+Файл: `i8080_ci/main_window.py` (4203 строк)
 
 **Вкладки (11):**
 | 0 | `create_tab_assembler()` |
@@ -52187,7 +55096,7 @@ end = 0xFFFF
 - `self.tr("menu_help"`
 
 **Классы:**
-- **MainWindow**(QMainWindow) — 148 методов
+- **MainWindow**(QMainWindow) — 149 методов
 
 ---
 
@@ -53140,14 +56049,20 @@ After fixes, verified / После исправлений, верифициро�
 
 ### TODO/FIXME в коде (2):
 
-- `i8080_ci/main_window.py:3196` — return "mem_XXXX"
-- `i8080_ci/main_window.py:3203` — return "word_XXXX"
+- `i8080_ci/main_window.py:3198` — return "mem_XXXX"
+- `i8080_ci/main_window.py:3205` — return "word_XXXX"
 
 ---
 
 ■ РАЗДЕЛ 10: ПРИЛОЖЕНИЯ
 
 ### A. Таблицы констант из кода
+
+**EXCLUDE_DIRS** (из `_make_source_tarball.py`):
+```python
+EXCLUDE_DIRS = {".git", "build", "dist", "Release", "__pycache__",
+                "node_modules", ".vscode", ".venv-build", "release-linux"}
+```
 
 **API_SNIPPETS** (из `_run_all_tests.py`):
 ```python
@@ -53302,8 +56217,7 @@ MNEMONICS = {# Без операндов
 **ALU_IMM_OPCODES** (из `assemble8080/assembler.py`):
 ```python
 ALU_IMM_OPCODES = {'ADD': 0xC6, 'ADC': 0xCE, 'SUB': 0xD6, 'SBB': 0xDE,
-                               'ANA': 0xE6, 'XRA': 0xEE, 'ORA': 0xF6, 'CPI': 0xFE,
-                               'CMP': 0xFE}
+                               'ANA': 0xE6, 'XRA': 0xEE, 'ORA': 0xF6, 'CMP': 0xFE}
 ```
 
 **_CATCH_ALL** (из `common/encoding.py`):
@@ -53445,127 +56359,7 @@ LANGS = {"en": {
         "watch_preset_save_err": "Failed to save preset",
         "watch_preset_load_err": "Failed to load preset. Check file format.",
         "watch_auto_prefix": "Auto: ",
-        "watch_err_addr": "Enter memory address!",
-        "watch_err_fmt_title": "Format Error",
-        "watch_err_add": "Failed to add Watch:\n",
-
-
-        # BP: статусы и пресеты
-        "bp_select": "Select a breakpoint",
-        "bp_add_title": "Add Breakpoint",
-        "bp_addr": "Address (HEX): ",
-        "bp_err_addr": "Invalid address!",
-        "bp_save_preset": "Save BP Preset",
-        "bp_load_preset": "Load BP Preset",
-        "bp_preset_saved": "BP preset saved: ",
-        "bp_preset_loaded": "BP preset loaded: ",
-        "bp_preset_save_err": "Failed to save BP preset:\n",
-        "bp_preset_load_err": "Failed to load BP preset:\n",
-        "bp_cond_err": "Invalid condition syntax!",
-        "bp_cond_example": "Example: A == 0x55",
-
-        # Диалоги
-        "set_pc_title": "Set PC",
-        "export_disasm_title": "Export Disassembly",
-        "export_disasm_log": "Disassembly exported to: ",
-        "export_disasm_status": "Exported to ",
-        "search_invalid_hex": "Invalid HEX pattern!",
-        "search_invalid_len": "Invalid pattern length!",
-        "search_invalid_byte": "Invalid byte: ",
-        "search_found": "Found ",
-        "search_matches": " matches",
-        "fill_size": "Size (Dec): ",
-        "fill_start_addr": "Start Address (HEX): ",
-        # Статусбар
-        "status_cursor": "Cursor: 0x",
-        "status_cursor_hint": " (Ctrl+F10 — run to cursor)",
-        "status_not_connected": "Not connected!",
-        "status_bus_active": "Bus already active!",
-        "status_bus_not_active": "Bus not active!",
-        "status_reached_cursor": "Reached cursor 0x",
-        "status_emu_stopped": "Emulator stopped",
-        "status_bp_hit": "Breakpoint at 0x",
-        "status_running": "Running...",
-        "status_cpu_halted": "CPU halted. Press Reset (Ctrl+F2).",
-        "status_cpu_halted_short": "CPU halted. Press Reset.",
-        "status_cursor_not_set": "Cursor not set. Click a disassembler line.",
-        "status_cursor_eq_pc": "Cursor equals PC.",
-        "status_running_to": "Running to 0x",
-        "status_running_from": "Running from 0x",
-        "status_pc_set": "PC set to 0x",
-        "status_state_restored": "State restored: PC=0x",
-        "status_trace_search_err": "Invalid query format: ",
-        "status_trace_found": "Found: ",
-        "status_trace_of": " of ",
-        "status_refreshed": "Refreshed",
-        "status_undo_depth": "Undo depth: ",
-        "status_nothing_undo": "Nothing to undo",
-        "status_undo": "Undo: ",
-        "status_undo_bytes": " bytes",
-        "status_nothing_redo": "Nothing to redo",
-        "status_redo": "Redo: ",
-        "status_redo_bytes": " bytes",
-        "status_profile_loaded": "Profile loaded: ",
-        "status_profile_err": "Profile Error",
-        # Скрипты
-        "script_no_code": "No code to run.",
-        "script_running": "Running script...",
-        "script_done": "✓ Script completed successfully.",
-        "script_completed": "Script completed",
-        "script_err": "✗ ERROR: ",
-        "script_error": "Script error!",
-        "script_load_title": "Load Script",
-        "script_loaded": "Script loaded: ",
-        "script_save_title": "Save Script",
-        "script_saved": "Script saved: ",
-        # Скрипты: метка вывода
-        "script_output_label": "Output: ",
-        # IO секвенсор: placeholder
-        "seq_placeholder": "Format:\nW 01 FF ; Write value FFh to port 01h\nR 02    ; Read from port 02h\nD 10    ; Delay 10 ms",
-        # Разное
-        "bus_not_active_msg": "Bus not active! Hold the bus first.",
-        "mcp_err_title": "MCP",
-        "mcp_err_msg": "MCP Server unavailable. Install dependencies:\npip install mcp uvicorn starlette",
-        "info_title": "Info",
-        "hold_bus_first": "Hold the bus (HOLD) before flashing.",
-        "dev_not_connected": "Device not connected. Firmware loaded to editor only.",
-        "bus_not_active_log": "Bus not active. Hold the bus before flashing.",
-        "trace_buf_cleared": "Trace buffer cleared",
-        "trace_search_log": "Trace search: '",
-        "trace_search_found": "' — found ",
-        "tip_watch_add":  "Add watch item ",  "tip_watch_del":  "Delete selected item ",
-        "tip_watch_clear":  "Clear all ",  "tip_watch_save":  "Save preset ",
-        "tip_watch_load":  "Load preset ",  "tip_bp_add":  "Add breakpoint ",
-        "tip_bp_cond":  "Edit condition ",  "tip_bp_toggle":  "Enable/disable ",
-        "tip_bp_del":  "Delete selected ",  "tip_bp_clear":  "Clear all ",
-        "tip_bp_save":  "Save BP preset ",  "tip_bp_load":  "Load BP preset ",
-        "tip_trace_enable":  "Enable trace recording ",
-        "watch_col_name":   "Name  ",   "watch_col_target":   "Addr/Reg  ",
-        "watch_col_value":   "Value  ",   "watch_col_format":   "Format  ",
-        "bp_col_addr":   "Address  ",   "bp_col_cond":   "Condition  ",
-        "bp_col_enabled":   "On  ",   "bp_col_hits":   "Hits  ",
-        # Устройства
-        "menu_devices": "Devices", "device_manager": "Device Manager",
-        "endian_little": "Little-Endian",
-        "endian_big": "Big-Endian",
-        "test_pattern_checker": "Checker",
-        "test_pattern_zero": "Zero",
-        "test_pattern_one": "One",
-        "test_pattern_addr": "Address",
-        "mcp_off": "MCP Server: OFF",
-        "mcp_on": "MCP Server: ON",
-        "bus_active": "BUS ACTIVE",
-        "bus_free": "BUS FREE",
-        "search_placeholder": "C3 00 10 or HELLO",
-        # === Device Manager ===
-        "dm_title": "Device Manager",
-        "dm_subtitle": "Devices of current profile",
-        "dm_open": "Open Window",
-        "dm_close_all": "Close All",
-        "dm_refresh": "Refresh",
-        "dm_always_on_top": "Device windows always on top",
-        "dm_no_devices": "(no devices)",
-        "dm_cube_title": "3D Cube 8x8x8 - {name}
+        "watch_auto_loaded": "Auto watch variables loaded: {n}
 ```
 
 **MNEMONIC_INFO** (из `common/i18n.py`):
@@ -53793,6 +56587,27 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 | Профиль | Строк |
 |---------|-------|
 | `pyproject.toml` | 61 |
+| `Release/profiles/apogey.toml` | 41 |
+| `Release/profiles/display_test.toml` | 40 |
+| `Release/profiles/empty8080.toml` | 12 |
+| `Release/profiles/empty8085.toml` | 12 |
+| `Release/profiles/full.toml` | 102 |
+| `Release/profiles/lvovpk01.toml` | 32 |
+| `Release/profiles/micro80.toml` | 89 |
+| `Release/profiles/microsha.toml` | 41 |
+| `Release/profiles/orion128.toml` | 42 |
+| `Release/profiles/radio86rk.toml` | 72 |
+| `Release/profiles/specialist.toml` | 58 |
+| `Release/profiles/vector06c.toml` | 40 |
+| `Release/profiles/template/01_basic_ram_rom.toml` | 20 |
+| `Release/profiles/template/02_radio86rk.toml` | 25 |
+| `Release/profiles/template/03_mikro80.toml` | 23 |
+| `Release/profiles/template/04_banked_ram_io.toml` | 16 |
+| `Release/profiles/template/05_banked_ram_addr.toml` | 16 |
+| `Release/profiles/template/06_banked_rom.toml` | 27 |
+| `Release/profiles/template/07_shadow_rom_io.toml` | 26 |
+| `Release/profiles/template/08_shadow_rom_mem.toml` | 24 |
+| `Release/profiles/template/09_shadow_rom_disable.toml` | 24 |
 | `profiles/apogey.toml` | 41 |
 | `profiles/display_test.toml` | 40 |
 | `profiles/empty8080.toml` | 12 |
@@ -53818,21 +56633,11 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 ### C. Конфигурационные файлы
 
 - `Addendum.txt` (81 строк)
-- `_api_out.txt` (444 строк)
-- `_ref_table_0.txt` (24 строк)
-- `_ref_table_1.txt` (22 строк)
-- `_ref_table_2.txt` (30 строк)
-- `_ref_table_3.txt` (3369 строк)
-- `_ref_table_4.txt` (38 строк)
-- `_ref_text.txt` (1 строк)
-- `_snap.txt` (0 строк)
-- `_tl2.txt` (67 строк)
-- `_tl_out.txt` (67 строк)
 - `claude_desktop_config.json` (7 строк)
 - `config.json` (10 строк)
 - `micro-80_bp_preset.json` (77 строк)
-- `package-lock.json` (6 строк)
 - `requirements.txt` (22 строк)
+- `.github/workflows/build-linux.yml` (51 строк)
 - `Plugins/i8080_ci-vscode/language-configuration.json` (31 строк)
 - `Plugins/i8080_ci-vscode/package-lock.json` (59 строк)
 - `Plugins/i8080_ci-vscode/package.json` (279 строк)
@@ -53877,6 +56682,11 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 - `ASM_FOR_TEST/mon85-v13.rom`
 - `ASM_FOR_TEST/rtty.bin`
 - `ASM_FOR_TEST/shell.rom`
+- `Release/logo.png`
+- `Release/roms/micro80_font.rom`
+- `Release/roms/micro80_monitor.bin`
+- `Release/roms/radio86rk_font.rom`
+- `Release/roms/radio86rk_monitor.bin`
 - `assembler_example/01_hello/hello.bin`
 - `assembler_example/02_directives/directives.bin`
 - `assembler_example/03_macros/macros.bin`
@@ -53888,9 +56698,10 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 
 ### F. Прочие файлы
 
-- `.gitignore` (, 10 строк)
+- `.gitignore` (, 18 строк)
 - `Doxyfile` (, 2970 строк)
 - `LICENSE` (, 21 строк)
+- `build_linux.sh` (.sh, 42 строк)
 - `i8080_CI.spec` (.spec, 39 строк)
 - `make.cmd` (.cmd, 1 строк)
 - `ASM_FOR_TEST/4KBAS.ASM` (.asm, 2300 строк)
@@ -54041,6 +56852,11 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 - `Plugins/i8080_ci-vscode/src/python.ts` (.ts, 96 строк)
 - `Plugins/i8080_ci-vscode/types/node-globals.d.ts` (.ts, 114 строк)
 - `Plugins/i8080_ci-vscode/types/vscode/index.d.ts` (.ts, 1 строк)
+- `Release/LICENSE` (, 21 строк)
+- `Release/i8080-5_CI_v2.1.14_linux_x86_64.tar.gz` (.gz, 726725 строк)
+- `Release/i8080-5_CI_v2.1.14_source.tar.gz` (.gz, 18127 строк)
+- `Release/i8080-5_CI_v2.1.14_win64.zip` (.zip, 601291 строк)
+- `Release/i8080_CI.exe` (.exe, 594666 строк)
 - `assembler_example/01_hello/hello.asm` (.asm, 24 строк)
 - `assembler_example/01_hello/hello.map` (.map, 13 строк)
 - `assembler_example/02_directives/defs.inc` (.inc, 7 строк)
@@ -54053,12 +56869,12 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 - `assembler_example/04_multifile/app.map` (.map, 10 строк)
 - `assembler_example/04_multifile/helper.asm` (.asm, 13 строк)
 - `assembler_example/04_multifile/helper.map` (.map, 9 строк)
-- `assembler_example/04_multifile/helper.obj` (.obj, 16 строк)
+- `assembler_example/04_multifile/helper.obj` (.obj, 17 строк)
 - `assembler_example/04_multifile/main.asm` (.asm, 15 строк)
 - `assembler_example/04_multifile/main.map` (.map, 10 строк)
-- `assembler_example/04_multifile/main.obj` (.obj, 24 строк)
+- `assembler_example/04_multifile/main.obj` (.obj, 26 строк)
 - `tests/test_all.cmd` (.cmd, 33 строк)
 
 ---
 
-*Конец среза. Сгенерировано 2026-10-13 14:45:54.*
+*Конец среза. Сгенерировано 2026-10-23 16:06:51.*

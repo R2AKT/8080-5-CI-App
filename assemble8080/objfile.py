@@ -39,6 +39,7 @@ class ObjectFile:
     exports: list = field(default_factory=list)       # [name]
     imports: list = field(default_factory=list)       # [name]
     relocations: list = field(default_factory=list)   # [Relocation]
+    data_lines: list = field(default_factory=list)    # [[offset, size, src], ...] DB/DW/DS
     case_sensitive: bool = False                      # True = регистр лейблов значим
 
     def symbol_address(self, name: str) -> Optional[int]:
@@ -63,6 +64,10 @@ def save_obj(path: str, obj: ObjectFile):
         "relocations": [
             {"offset": r.offset, "size": r.size, "symbol": r.symbol, "addend": r.addend}
             for r in obj.relocations
+        ],
+        "data_lines": [
+            {"offset": o, "size": s, "src": t}
+            for (o, s, t) in obj.data_lines
         ],
         "case_sensitive": obj.case_sensitive,
     }
@@ -89,6 +94,8 @@ def load_obj(path: str) -> ObjectFile:
         imports=d.get("imports", []),
         case_sensitive=d.get("case_sensitive", False),
     )
+    for dl in d.get("data_lines", []):
+        obj.data_lines.append([dl["offset"], dl["size"], dl["src"]])
     for r in d.get("relocations", []):
         obj.relocations.append(Relocation(
             offset=r["offset"],
@@ -133,6 +140,12 @@ def obj_from_asm_result(result, source_name: str = "") -> ObjectFile:
     obj.imports = list(getattr(result, 'imports', []))
     obj.case_sensitive = bool(getattr(result, 'case_sensitive', False))
     
+    # Data directive lines (DB/DW/DS) for map DATA classification
+    for (laddr, lbytes, lsrc) in getattr(result, 'listing', []):
+        offset = laddr - result.origin
+        if offset >= 0:
+            obj.data_lines.append([offset, len(lbytes), lsrc])
+
     for reloc in getattr(result, 'relocations', []):
         if isinstance(reloc, tuple):
             if len(reloc) == 4:

@@ -129,13 +129,13 @@ helper:
         save_obj(obj2_path, obj2)
         
         # Link
-        result_link = link([obj1, obj2], origin=0, size=0x10000, fill=0xFF)
+        result_link = link([obj1, obj2], origin=0x0100, size=0x10000, fill=0xFF)
         check("Link success", result_link.success, str(result_link.errors))
         check("Link: binary size", len(result_link.binary) == 0x10000)
         check("Link: symbols has MAIN", 'MAIN' in result_link.symbols)
         check("Link: symbols has HELPER", 'HELPER' in result_link.symbols)
         check("Link: MAIN at 0x0100", result_link.symbols.get('MAIN') == 0x0100)
-        check("Link: HELPER at 0x0200", result_link.symbols.get('HELPER') == 0x0200, f"got {result_link.symbols.get('HELPER')}")
+        check("Link: HELPER at 0x0106 (after main)", result_link.symbols.get('HELPER') == 0x0106, f"got {result_link.symbols.get('HELPER')}")
         
         # Verify binary layout
         # main at 0x0100: MVI A, 0x01 (0x0E, 0x01)
@@ -143,8 +143,8 @@ helper:
         # helper at 0x0200: INR B (0x04), RET (0xC9)
         check("MVI A at 0x0100", result_link.binary[0x0100] == 0x3E, f"got 0x{result_link.binary[0x0100]:02X}")
         check("CALL at 0x0102", result_link.binary[0x0102] == 0xCD, f"got 0x{result_link.binary[0x0102]:02X}")
-        check("INR B at 0x0200", result_link.binary[0x0200] == 0x04, f"got 0x{result_link.binary[0x0200]:02X}")
-        check("RET at 0x0201", result_link.binary[0x0201] == 0xC9, f"got 0x{result_link.binary[0x0201]:02X}")
+        check("INR B at 0x0106", result_link.binary[0x0106] == 0x04, f"got 0x{result_link.binary[0x0106]:02X}")
+        check("RET at 0x0107", result_link.binary[0x0107] == 0xC9, f"got 0x{result_link.binary[0x0107]:02X}")
         check("Fill 0xFF elsewhere", result_link.binary[0x0300] == 0xFF)
         
         # === Test 4: Linker script ===
@@ -274,12 +274,12 @@ END
         check("Link B: success", rB.success, str(rB.errors))
         objA = obj_from_asm_result(rA, 'a.asm')
         objB = obj_from_asm_result(rB, 'b.asm')
-        res = link([objA, objB], origin=0, size=0x10000)
+        res = link([objA, objB], origin=0x0100, size=0x10000)
         check("Link: success", res.success, str(res.errors))
-        check("Link: HELPER at 0x200", res.symbols.get('HELPER') == 0x200, str(res.symbols.get('HELPER')))
-        call_bytes = res.binary[0x100:0x103]
-        check("Link: CALL patched to 0x0200", call_bytes == bytes([0xCD, 0x00, 0x02]), call_bytes.hex())
-        helper_bytes = res.binary[0x200:0x203]
+        check("Link: HELPER at 0x0100", res.symbols.get('HELPER') == 0x0100, str(res.symbols.get('HELPER')))
+        call_bytes = res.binary[0x103:0x106]
+        check("Link: CALL patched to 0x0100", call_bytes == bytes([0xCD, 0x00, 0x01]), call_bytes.hex())
+        helper_bytes = res.binary[0x100:0x103]
         check("Link: HELPER code intact", helper_bytes == bytes([0x3E, 0x2A, 0xC9]), helper_bytes.hex())
         
     finally:

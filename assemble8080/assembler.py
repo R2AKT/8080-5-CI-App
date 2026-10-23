@@ -1391,8 +1391,8 @@ class Assembler:
             if len(operands) >= 2:
                 op2_upper = operands[1].strip().upper()
                 if op2_upper not in REGISTERS and op2_upper not in ('BC', 'DE', 'HL', 'PSW'):
-                    ALU_IMM2 = {'CMP': 0xFE, 'ADD': 0xC6, 'ADC': 0xCE, 'SUB': 0xD6,
-                                'SBB': 0xDE, 'ANA': 0xE6, 'XRA': 0xEE, 'ORA': 0xF6}
+                    ALU_IMM2 = {'ADD': 0xC6, 'ADC': 0xCE, 'SUB': 0xD6, 'SBB': 0xDE, 
+                                'ANA': 0xE6, 'XRA': 0xEE, 'ORA': 0xF6, 'CMP': 0xFE, }
                     if mnemonic in ALU_IMM2:
                         val = self._parse_operand(operands[1], line_num, allow_current=True)
                         if val is not None:
@@ -1406,8 +1406,7 @@ class Assembler:
                 return bytearray([opcode | reg_code])
             # Not a register — try as immediate value (ALU d8 forms)
             ALU_IMM_OPCODES = {'ADD': 0xC6, 'ADC': 0xCE, 'SUB': 0xD6, 'SBB': 0xDE,
-                               'ANA': 0xE6, 'XRA': 0xEE, 'ORA': 0xF6, 'CPI': 0xFE,
-                               'CMP': 0xFE}
+                               'ANA': 0xE6, 'XRA': 0xEE, 'ORA': 0xF6, 'CMP': 0xFE}
             if mnemonic in ALU_IMM_OPCODES:
                 val = self._parse_operand(operands[0], line_num, allow_current=True)
                 if val is not None:

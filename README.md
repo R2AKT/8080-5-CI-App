@@ -43,11 +43,11 @@
 
 **EN:**
 - **Dual CPU: i8080 + i8085** — selectable CPU type; i8085 adds SIM/RIM, DSUB, ARHL, RDEL, LDHI/LDSI, RSTV, SHLX, JNK, LHLX, JK
-- **Assembler** — built-in two-pass i8080/i8085 assembler with preprocessor (macros, includes, conditionals), syntax highlighting, load-to-memory, object files, and a linker (EXPORT/IMPORT, relocations, map files)
+- **Assembler** — built-in two-pass i8080/i8085 assembler with preprocessor (macros, includes, conditionals), syntax highlighting, load-to-memory, object files, a linker (EXPORT/IMPORT, relocations, map files), and archive libraries (.lib)
 - **CLI Assembler** — headless command-line assembler `python -m assemble8080` (no GUI required)
 - **VS Code Plugin** — `i8080-ci-vscode` extension with an MCP client for the headless server
 - **i8080/i8085 CPU Emulator** — full 256-instruction set including undocumented instructions
-- **Debugger** — breakpoints (regular & conditional), step / step-over, run-to, watch windows, trace log
+- **Debugger** — breakpoints (regular & conditional), step / step-over, run-to, watch windows (with auto variables from map files), trace log
 - **Disassembler** — real-time with jump arrows and instruction-type highlighting
 - **Hex Editor** — view and edit memory images with search and block operations
 - **Memory Test** — RAM verification using various patterns (walking bit, chessboard, etc.)
@@ -55,11 +55,11 @@
 
 **RU:**
 - **Два CPU: i8080 + i8085** — выбор типа CPU; i8085 добавляет SIM/RIM, DSUB, ARHL, RDEL, LDHI/LDSI, RSTV, SHLX, JNK, LHLX, JK
-- **Ассемблер** — встроенный двухпроходный ассемблер i8080/i8085 с препроцессором (макросы, include, условия), подсветкой синтаксиса, загрузкой в память, объектными файлами и линковщиком (EXPORT/IMPORT, переносы, map-файлы)
+- **Ассемблер** — встроенный двухпроходный ассемблер i8080/i8085 с препроцессором (макросы, include, условия), подсветкой синтаксиса, загрузкой в память, объектными файлами, линковщиком (EXPORT/IMPORT, переносы, map-файлы) и архивными библиотеками (.lib)
 - **Ассемблер из командной строки** — автономный CLI-ассемблер `python -m assemble8080` (без GUI)
 - **Плагин VS Code** — расширение `i8080-ci-vscode` с MCP-клиентом для headless-сервера
 - **Эмулятор i8080/i8085 CPU** — полный набор из 256 инструкций, включая недокументированные
-- **Отладчик** — точки останова (обычные и условные), пошаговое выполнение, run-to, watch-окна, трассировка
+- **Отладчик** — точки останова (обычные и условные), пошаговое выполнение, run-to, watch-окна (с авто-переменными из map-файлов), трассировка
 - **Дизассемблер** — в реальном времени со стрелками переходов и подсветкой типов команд
 - **Hex-редактор** — просмотр и редактирование образов памяти с поиском и блочными операциями
 - **Тест памяти** — проверка RAM различными паттернами (walking bit, шахматный и др.)

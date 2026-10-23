@@ -1590,6 +1590,7 @@ class MainWindow(QMainWindow):
             self.disassembler.set_map(map_file)
             self.disassembler.set_equ(self.equ_dict)
             self.map_file = map_file
+            self.auto_load_watch_from_map(map_file)
             if hasattr(self.disasm_view, "set_symbols"):
                 self.disasm_view.set_symbols(map_file)
             if hasattr(self, 'emu_disasm_view') and hasattr(self.emu_disasm_view, "set_symbols"):
@@ -2567,6 +2568,7 @@ class MainWindow(QMainWindow):
         self.watch_table.setSelectionBehavior(QTableView.SelectRows)
         self.watch_table.setSelectionMode(QTableView.SingleSelection)
         self.watch_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.watch_table.setSortingEnabled(True)
         watch_layout.addWidget(self.watch_table)
         
         self.watch_group.setLayout(watch_layout)
@@ -3555,6 +3557,15 @@ class MainWindow(QMainWindow):
         existing = self.emulator.get_bp_condition(addr)
         self.bp_condition_dialog(addr, existing)
         
+    def auto_load_watch_from_map(self, map_file=None):
+        """(Re)populate auto watch entries from a map's DATA symbols."""
+        mf = map_file if map_file is not None else getattr(self, 'map_file', None)
+        if mf is None or not hasattr(self, 'watch_model'):
+            return
+        n = self.watch_model.set_auto_watches_from_map(mf)
+        if n:
+            self.log(self.tr("watch_auto_loaded").format(n=n))
+
     def _save_watch_prev_values(self):
         """Сохранить текущие значения Watch перед выполнением"""
         if hasattr(self, 'watch_model'):

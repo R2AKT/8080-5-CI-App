@@ -5,7 +5,7 @@ Takes multiple object files (.obj), resolves symbols, applies relocations,
 and produces a single binary output.
 
 Linker script format (.lnk):
-    INPUT file1.obj file2.obj [...]
+    INPUT file1.obj file2.obj [...]  (also .lib archives)
     OUTPUT file.bin
     MAP file.map
     ORIGIN 0x0000
@@ -15,8 +15,9 @@ Linker script format (.lnk):
 import os
 from dataclasses import dataclass, field
 
-from .objfile import load_obj
+from .objfile import load_obj, ObjectFile, Relocation, OBJ_FORMAT_VERSION
 from .mapfile import MapEntry, generate_map
+from .librarian import load_library
 
 
 @dataclass
@@ -96,19 +97,15 @@ def link(objects: list, origin: int = 0, size: int = 0x10000, fill: int = 0xFF) 
     errors = []
     warnings = []
     
-    # Step 1: Check for ORG conflicts
-    placed = {}  # {org: obj_name}
+    # Step 1: Sequential placement from ORIGIN.
+    # Each object's own org is IGNORED for placement - it is only the
+    # assembler's virtual base used to compute data-relative offsets.
+    # Modules are laid out back-to-back starting at `origin`.
+    bases = []  # base address of each object in the output
+    cursor = origin
     for obj in objects:
-        if obj.org in placed:
-            errors.append(LinkError(
-                f"ORG conflict: {obj.name} and {placed[obj.org]} both at 0x{obj.org:04X}",
-                file=obj.name
-            ))
-        else:
-            placed[obj.org] = obj.name
-    
-    if errors:
-        return LinkResult(success=False, errors=errors)
+        bases.append(cursor)
+        cursor += len(obj.data) if len(obj.data) else obj.size
     
     # Step 2: Build global symbol table
     # Case-insensitive mode (default): normalize keys to UPPER so that
@@ -119,10 +116,10 @@ def link(objects: list, origin: int = 0, size: int = 0x10000, fill: int = 0xFF) 
     
     # First pass: collect all exported symbols
     global_symbols = {}  # {name: absolute_address}
-    for obj in objects:
+    for idx, obj in enumerate(objects):
         for name in obj.exports:
             if name in obj.symbols:
-                addr = obj.org + obj.symbols[name]
+                addr = bases[idx] + obj.symbols[name]
                 key = _norm(obj, name)
                 if key in global_symbols:
                     warnings.append(f"Duplicate export: {name} (in {obj.name})")
@@ -131,9 +128,9 @@ def link(objects: list, origin: int = 0, size: int = 0x10000, fill: int = 0xFF) 
     
     # Also add all symbols (for local resolution within same object)
     all_symbols = {}
-    for obj in objects:
+    for idx, obj in enumerate(objects):
         for name, offset in obj.symbols.items():
-            addr = obj.org + offset
+            addr = bases[idx] + offset
             key = _norm(obj, name)
             if key not in all_symbols:
                 all_symbols[key] = addr
@@ -155,15 +152,15 @@ def link(objects: list, origin: int = 0, size: int = 0x10000, fill: int = 0xFF) 
     output_size = max(size, origin + max((o.org + o.size for o in objects), default=0))
     output = bytearray([fill] * output_size)
     
-    # Step 5: Place object data
-    for obj in objects:
+    # Step 5: Place object data at its assigned base
+    for idx, obj in enumerate(objects):
         for i, byte in enumerate(obj.data):
-            addr = obj.org + i
+            addr = bases[idx] + i
             if addr < output_size:
                 output[addr] = byte
     
     # Step 6: Apply relocations
-    for obj in objects:
+    for idx, obj in enumerate(objects):
         for reloc in obj.relocations:
             sym_key = _norm(obj, reloc.symbol)
             sym_addr = global_symbols.get(sym_key) or all_symbols.get(sym_key)
@@ -171,7 +168,7 @@ def link(objects: list, origin: int = 0, size: int = 0x10000, fill: int = 0xFF) 
                 warnings.append(f"Relocation: symbol '{reloc.symbol}' not found (in {obj.name})")
                 continue
             
-            patch_addr = obj.org + reloc.offset
+            patch_addr = bases[idx] + reloc.offset
             if patch_addr >= output_size:
                 continue
             
@@ -196,9 +193,13 @@ def link(objects: list, origin: int = 0, size: int = 0x10000, fill: int = 0xFF) 
             pass
         fake = _FakeResult()
         fake.origin = origin
-        fake.binary = bytes(output)
+        fake.binary = b"".join(o.data for o in objects)
         fake.symbols = all_symbols
-        fake.listing = []
+        fake.listing = [
+            (bases[i] + dl[0], bytes(dl[1]), dl[2])
+            for i, o in enumerate(objects)
+            for dl in getattr(o, 'data_lines', [])
+        ]
         from .mapfile import generate_map
         map_text = generate_map(fake, source_name="(linked)")
     
@@ -213,16 +214,110 @@ def link(objects: list, origin: int = 0, size: int = 0x10000, fill: int = 0xFF) 
     )
 
 
+def _obj_from_json(d: dict) -> ObjectFile:
+    """Deserialize an object file JSON dict into an ObjectFile."""
+    if d.get("format") != OBJ_FORMAT_VERSION:
+        raise ValueError(f"Unsupported object format: {d.get('format')}")
+    obj = ObjectFile(
+        name=d.get("name", ""),
+        source=d.get("source", ""),
+        org=d.get("org", 0),
+        size=d.get("size", 0),
+        data=bytes.fromhex(d.get("data", "")),
+        symbols=d.get("symbols", {}),
+        exports=list(d.get("exports", [])),
+        imports=list(d.get("imports", [])),
+        case_sensitive=d.get("case_sensitive", False),
+    )
+    for r in d.get("relocations", []):
+        obj.relocations.append(Relocation(
+            offset=r["offset"],
+            size=r["size"],
+            symbol=r["symbol"],
+            addend=r.get("addend", 0),
+        ))
+    return obj
+
+
+def _resolve_libraries(objects: list, libraries: list) -> None:
+    """Resolution stage: pull archive modules for undefined imports.
+
+    Mutates `objects`, appending every module extracted from the
+    archives in the order they were needed.
+
+    Args:
+        objects: list of ObjectFile (project inputs).
+        libraries: list of (path, dict) - loaded .lib archives.
+
+    Raises:
+        ValueError: if a required symbol is absent from every index.
+    """
+    extracted = set()  # (library name, module name) pairs already pulled
+
+    def _key(obj, name):
+        return name if obj.case_sensitive else name.upper()
+
+    # Symbols already defined (exports) vs symbols requested (imports)
+    resolved = set()
+    required = set()
+    for obj in objects:
+        resolved.update(_key(obj, n) for n in obj.exports)
+        required.update(_key(obj, n) for n in obj.imports)
+
+    while True:
+        unresolved = required - resolved
+        if not unresolved:
+            break
+        symbol = sorted(unresolved)[0]
+
+        # Search every archive index (keys are UPPER-cased export names)
+        mod_name = None
+        archive = None
+        for _path, lib in libraries:
+            index = lib.get("index", {})
+            mod_name = index.get(symbol) or index.get(symbol.upper())
+            if mod_name:
+                archive = lib
+                break
+
+        if mod_name is None:
+            raise ValueError(
+                f"Linker Error: Undefined reference to symbol '{symbol}'")
+
+        archive_key = (archive.get("name", ""), mod_name)
+        if archive_key not in extracted:
+            extracted.add(archive_key)
+            obj_json = archive.get("modules", {}).get(mod_name)
+            if obj_json is None:
+                raise ValueError(
+                    f"Linker Error: archive '{archive.get('name', '')}'"
+                    f"index points to missing module '{mod_name}'")
+            new_obj = _obj_from_json(obj_json)
+            objects.append(new_obj)
+            resolved.update(_key(new_obj, n) for n in new_obj.exports)
+            required.update(_key(new_obj, n) for n in new_obj.imports)
+        else:
+            # Module already in the link set - its exports cover the symbol.
+            resolved.add(symbol)
+
+
 def link_from_script(script_path: str) -> LinkResult:
-    """Link using a .lnk script file."""
+    """Link using a .lnk script file.
+
+    INPUT may reference project objects (.obj) and archive libraries
+    (.lib, format i8080-lib-v1). Modules are pulled from archives on
+    demand: a module is linked only if it satisfies a symbol that is
+    currently undefined in the project.
+    """
     with open(script_path, 'r', encoding='utf-8') as f:
         text = f.read()
     
     config = parse_link_script(text)
     script_dir = os.path.dirname(os.path.abspath(script_path))
     
-    # Load object files
+    # Split inputs: explicit project objects (.obj) vs archives (.lib)
     objects = []
+    libraries = []  # [(path, dict)]
     errors = []
     for inp in config["inputs"]:
         path = inp if os.path.isabs(inp) else os.path.join(script_dir, inp)
@@ -230,12 +325,18 @@ def link_from_script(script_path: str) -> LinkResult:
             errors.append(LinkError(f"Input file not found: {path}"))
             continue
         try:
-            objects.append(load_obj(path))
+            if path.lower().endswith(".lib"):
+                libraries.append((path, load_library(path)))
+            else:
+                objects.append(load_obj(path))
         except Exception as e:
             errors.append(LinkError(f"Error loading {path}: {e}"))
     
     if errors:
         return LinkResult(success=False, errors=errors)
+    
+    # Resolution stage: pull archive modules for undefined imports
+    _resolve_libraries(objects, libraries)
     
     # Link
     result = link(

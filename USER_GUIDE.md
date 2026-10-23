@@ -495,7 +495,7 @@ DATA:   DB 42H, 'A'
 The assembler can produce **object files** (`.obj`, JSON format `i8080-obj-v1`) and a **linker** combines several objects into a single binary.
 
 **Workflow:**
-1. Write each module with `ORG` (its load address), `EXPORT` for public symbols, and `IMPORT` for symbols defined elsewhere.
+1. Write each module with `ORG` (its assembly base), `EXPORT` for public symbols, and `IMPORT` for symbols defined elsewhere.
 2. Click **📦 Assemble → OBJ** for each module — saves a `.obj` file (binary + symbols + exports + imports + relocations).
 3. Write a **linker script** (`.lnk`) and click **🔗 Link**.
 
@@ -503,10 +503,10 @@ The assembler can produce **object files** (`.obj`, JSON format `i8080-obj-v1`) 
 
 | Directive | Purpose |
 |---|---|
-| `INPUT f1.obj f2.obj ...` | Object files to link (in order) |
+| `INPUT f1.obj f2.obj lib.lib ...` | Object files (`.obj`) and archive libraries (`.lib`) to link (in order) |
 | `OUTPUT out.bin` | Output binary file |
 | `MAP out.map` | Generate a map file |
-| `ORIGIN 0x0000` | Base address for the output |
+| `ORIGIN 0x0000` | Base address for the output — modules are placed **sequentially** from ORIGIN |
 | `SIZE 0x10000` | Total output size |
 | `FILL 0xFF` | Fill byte for gaps |
 
@@ -516,17 +516,18 @@ The assembler can produce **object files** (`.obj`, JSON format `i8080-obj-v1`) 
 INPUT main.obj helper.obj
 OUTPUT app.bin
 MAP app.map
-ORIGIN 0x0000
+ORIGIN 0x0100
 SIZE 0x10000
 FILL 0xFF
 ```
 
 **Relocations:** when an instruction references an `IMPORT`ed symbol (e.g. `CALL HELPER`, `JMP LABEL`, `LHLD PTR`, `DW TBL`), the assembler records a relocation entry. The linker patches the 16-bit address with the symbol's final location. Local symbols are resolved at assembly time and need no relocation.
 
+**Libraries:** `INPUT` can also reference `.lib` archives — the linker extracts only the modules that satisfy unresolved imports (via the archive's export index).
+
 **Rules:**
-- Each object must have a **unique `ORG`** (the linker reports ORG conflicts).
-- Every `IMPORT` must be satisfied by an `EXPORT` in some object (otherwise: *Unresolved symbol*).
-- Objects are placed at their own `ORG`; the linker does not rebase them.
+- Modules are placed **sequentially from `ORIGIN`**: the first at ORIGIN, each next immediately after the previous one. A module's own `ORG` does not affect placement (it is only the assembler's virtual base).
+- Every `IMPORT` must be satisfied by an `EXPORT` in some object or library module (otherwise: *Unresolved symbol*).
 
 ### 8.15. Map Files and Symbol Resolution / Map-файлы и резолв символов
 
@@ -692,7 +693,7 @@ DATA:   DB 42H, 'A'
 Ассемблер может создавать **объектные файлы** (`.obj`, JSON-формат `i8080-obj-v1`), а **линковщик** объединяет несколько объектов в единый бинарник.
 
 **Порядок работы:**
-1. Напишите каждый модуль с `ORG` (адрес загрузки), `EXPORT` для публичных символов и `IMPORT` для символов, определённых в других модулях.
+1. Напишите каждый модуль с `ORG` (базовый адрес сборки), `EXPORT` для публичных символов и `IMPORT` для символов, определённых в других модулях.
 2. Для каждого модуля нажмите **📦 Собрать → OBJ** — сохраняется `.obj` файл (бинарник + символы + экспорты + импорты + переносы).
 3. Напишите **скрипт линковщика** (`.lnk`) и нажмите **🔗 Линковка**.
 
@@ -700,10 +701,10 @@ DATA:   DB 42H, 'A'
 
 | Директива | Назначение |
 |---|---|
-| `INPUT f1.obj f2.obj ...` | Объектные файлы для линковки (в порядке) |
+| `INPUT f1.obj f2.obj lib.lib ...` | Объектные файлы (`.obj`) и архивные библиотеки (`.lib`) для линковки (в порядке) |
 | `OUTPUT out.bin` | Выходной бинарный файл |
 | `MAP out.map` | Сгенерировать map-файл |
-| `ORIGIN 0x0000` | Базовый адрес вывода |
+| `ORIGIN 0x0000` | Базовый адрес вывода — модули размещаются **последовательно** от ORIGIN |
 | `SIZE 0x10000` | Общий размер вывода |
 | `FILL 0xFF` | Байт заполнения для промежутков |
 
@@ -713,17 +714,18 @@ DATA:   DB 42H, 'A'
 INPUT main.obj helper.obj
 OUTPUT app.bin
 MAP app.map
-ORIGIN 0x0000
+ORIGIN 0x0100
 SIZE 0x10000
 FILL 0xFF
 ```
 
 **Переносы (relocations):** когда инструкция ссылается на `IMPORT`-символ (например `CALL HELPER`, `JMP LABEL`, `LHLD PTR`, `DW TBL`), ассемблер записывает запись переноса. Линковщик подставляет 16-битный адрес финального расположения символа. Локальные символы резолвятся при ассемблировании и не требуют переноса.
 
+**Библиотеки:** в `INPUT` можно указывать и архивы `.lib` — линковщик автоматически извлекает только те модули, которые закрывают неразрешённые импорты (по индексу экспортов в архиве).
+
 **Правила:**
-- У каждого объекта должен быть **уникальный `ORG`** (линковщик сообщает о конфликтах ORG).
-- Каждый `IMPORT` должен быть удовлетворён `EXPORT` в каком-то объекте (иначе: *Unresolved symbol*).
-- Объекты размещаются по своему `ORG`; линковщик не перебазирует их.
+- Модули размещаются **последовательно от `ORIGIN`**: первый — по ORIGIN, каждый следующий — сразу за предыдущим. Собственный `ORG` модуля на размещение не влияет (это только виртуальная база ассемблера).
+- Каждый `IMPORT` должен быть удовлетворён `EXPORT` в каком-то объекте или модуле библиотеки (иначе: *Unresolved symbol*).
 
 ### 8.15. Map-файлы и резолв символов
 
@@ -994,6 +996,8 @@ Watch window for observing memory and register values.
 - Clear all items
 - Save/Load presets (JSON)
 - Highlight changed values (red background)
+- **Auto watch variables** — after assembly and image load, data labels (DB/DW/DS) are added to the watch list automatically, with the correct addresses and sizes (byte/word). Jump labels are excluded. Auto entries are **not** stored in JSON presets
+- **Column sorting** — click a column header to sort by name / address / value / format
 
 ### 13.3. Column 3: Breakpoints
 
@@ -1090,6 +1094,8 @@ Watch-окно для наблюдения за значениями памят�
 - Очистка всех элементов
 - Сохранение/загрузка пресетов (JSON)
 - Подсветка изменённых значений (красный фон)
+- **Авто-переменные** — после ассемблирования и загрузки образа в watch-list автоматически добавляются метки данных (DB/DW/DS) с правильными адресами и размерностью (байт/слово). Метки перехода не добавляются. Авто-записи **не** сохраняются в JSON-пресеты
+- **Сортировка по колонкам** — клик по заголовку колонки: имя / адрес / значение / формат
 
 ### 13.3. Колонка 3: Breakpoints / Точки останова
 

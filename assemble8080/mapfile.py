@@ -105,7 +105,10 @@ def generate_map(result, source_name: str = "", date_str: str = "") -> str:
         # Check if this address has data directives in listing
         for (laddr, lbytes, lsrc) in result.listing:
             if laddr == addr:
-                src_upper = lsrc.strip().upper()
+                src = lsrc.strip()
+                if ":" in src:
+                    src = src.split(":", 1)[1].strip()
+                src_upper = src.upper()
                 if any(src_upper.startswith(d) for d in ('DB', 'DW', 'DS', '.DB', '.DW', '.DS')):
                     entry_type = "DATA"
                 break
