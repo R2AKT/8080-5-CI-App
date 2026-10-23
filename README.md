@@ -4,7 +4,7 @@
   <img src="logo.svg" width="200" alt="8080-5 CI Logo"/>
 </p>
 
-![Version](https://img.shields.io/badge/Version-2.1.14-orange.svg)
+![Version](https://img.shields.io/badge/Version-2.1.15-orange.svg)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
 ![Qt](https://img.shields.io/badge/PySide6-6.5+-red.svg)
@@ -211,6 +211,7 @@ assemble8080/              # i8080/i8085 assembler / Ассемблер i8080/i8
 │   mapfile.py             #   Map file gen/parse / Генерация/парсинг map-файлов
 │   objfile.py             #   Object file format / Формат объектного файла (.obj)
 │   linker.py              #   Linker / Линковщик (.lnk scripts, relocations)
+|　|   librarian.py             #   Library manager / Библиотекарь (.lib archives)
 common/                    # Common utilities / Общие утилиты
 │   i18n.py                #   Internationalization / Интернационализация (RU/EN)
 │   encoding.py            #   File encoding auto-detect / Автоопределение кодировки файлов
@@ -324,13 +325,13 @@ Profile files / Файлы профилей: `profiles/` (TOML format / TOML-ф�
 
 ## Testing / Тестирование
 
-**EN:** 60+ test files: `run_tests.py` (921 passed, 0 failed), the zasm reference
+**EN:** 60+ test files: `run_tests.py` (964 passed, 0 failed), the zasm reference
 comparison `tests/test_bin_compare.py` (15 reference files, byte-identical), the
 round-trip test `tests/test_roundtrip_256.py` (assemble → disassemble → re-assemble,
 3 consecutive cycles), `tests/test_8085.py`, and GUI smoke tests. Full cycle:
 `python _run_all_tests.py`.
 
-**RU:** 60+ тест-файлов: `run_tests.py` (921 пройдено, 0 провалов), сравнение с
+**RU:** 60+ тест-файлов: `run_tests.py` (964 пройдено, 0 провалов), сравнение с
 эталонами zasm `tests/test_bin_compare.py` (15 эталонных файлов, побайтово),
 round-trip тест `tests/test_roundtrip_256.py` (ассемблирование → дизассемблирование →
 повторная сборка, 3 последовательных цикла), `tests/test_8085.py` и GUI smoke-тесты.
