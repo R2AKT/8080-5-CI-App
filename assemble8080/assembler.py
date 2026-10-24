@@ -19,6 +19,8 @@ assemble8080 — компактный макроассемблер Intel 8080.
     else:
         for err in result.errors:
             print(err)
+Каноническая таблица опкодов: OPCODE_REFERENCE.md (SINGLE SOURCE OF TRUTH).
+Никогда не выдумывай опкоды — сверяйся с этим файлом.
 """
 
 from __future__ import annotations
@@ -137,6 +139,8 @@ MNEMONICS = {
     # Операции с памятью через HL
     'STAX':  (0x02, 'rp', 1),
     'LDAX':  (0x0A, 'rp', 1),
+    # STAX H/L и LDAX H/L — алиасы для MOV M,A (0x77) / MOV A,M (0x7E).
+    # Не каноничные 8080: 0x22=SHLD, 0x2A=LHLD. Такты 7, hover: MOV.
     'SHLD':  (0x22, 'd16', 3),
     'LHLD':  (0x2A, 'd16', 3),
     'STA':   (0x32, 'd16', 3),
@@ -1380,6 +1384,16 @@ class Assembler:
                             operands: list[str], line_num: int) -> bytearray | None:
         """Кодирует одну инструкцию. Возвращает байты или None при ошибке."""
 
+        # Алиасы (НЕ каноничные 8080): STAX H/L = MOV M,A (0x77), LDAX H/L = MOV A,M (0x7E).
+        # 0x22=SHLD, 0x2A=LHLD — каноничные. Такты: 7 (MOV). Hover: MOV M,A / MOV A,M.
+        if fmt == 'rp' and len(operands) >= 1:
+            _op = operands[0].strip().upper()
+            if _op in ('H', 'L', 'HL'):
+                if mnemonic == 'STAX':
+                    return bytearray([0x77])  # MOV M, A
+                if mnemonic == 'LDAX':
+                    return bytearray([0x7E])  # MOV A, M
+
         if fmt == '':
             return bytearray([opcode])
 
@@ -1391,8 +1405,8 @@ class Assembler:
             if len(operands) >= 2:
                 op2_upper = operands[1].strip().upper()
                 if op2_upper not in REGISTERS and op2_upper not in ('BC', 'DE', 'HL', 'PSW'):
-                    ALU_IMM2 = {'CMP': 0xFE, 'ADD': 0xC6, 'ADC': 0xCE, 'SUB': 0xD6,
-                                'SBB': 0xDE, 'ANA': 0xE6, 'XRA': 0xEE, 'ORA': 0xF6}
+                    ALU_IMM2 = {'ADD': 0xC6, 'ADC': 0xCE, 'SUB': 0xD6, 'SBB': 0xDE, 
+                                'ANA': 0xE6, 'XRA': 0xEE, 'ORA': 0xF6, 'CMP': 0xFE, }
                     if mnemonic in ALU_IMM2:
                         val = self._parse_operand(operands[1], line_num, allow_current=True)
                         if val is not None:
@@ -1406,8 +1420,7 @@ class Assembler:
                 return bytearray([opcode | reg_code])
             # Not a register — try as immediate value (ALU d8 forms)
             ALU_IMM_OPCODES = {'ADD': 0xC6, 'ADC': 0xCE, 'SUB': 0xD6, 'SBB': 0xDE,
-                               'ANA': 0xE6, 'XRA': 0xEE, 'ORA': 0xF6, 'CPI': 0xFE,
-                               'CMP': 0xFE}
+                               'ANA': 0xE6, 'XRA': 0xEE, 'ORA': 0xF6, 'CMP': 0xFE}
             if mnemonic in ALU_IMM_OPCODES:
                 val = self._parse_operand(operands[0], line_num, allow_current=True)
                 if val is not None:

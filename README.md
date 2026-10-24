@@ -1,10 +1,10 @@
-# i8080-5 CI
+﻿# i8080-5 CI
 
 <p align="center">
   <img src="logo.svg" width="200" alt="8080-5 CI Logo"/>
 </p>
 
-![Version](https://img.shields.io/badge/Version-2.1.14-orange.svg)
+![Version](https://img.shields.io/badge/Version-2.1.15-orange.svg)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
 ![Qt](https://img.shields.io/badge/PySide6-6.5+-red.svg)
@@ -43,11 +43,11 @@
 
 **EN:**
 - **Dual CPU: i8080 + i8085** — selectable CPU type; i8085 adds SIM/RIM, DSUB, ARHL, RDEL, LDHI/LDSI, RSTV, SHLX, JNK, LHLX, JK
-- **Assembler** — built-in two-pass i8080/i8085 assembler with preprocessor (macros, includes, conditionals), syntax highlighting, load-to-memory, object files, and a linker (EXPORT/IMPORT, relocations, map files)
+- **Assembler** — built-in two-pass i8080/i8085 assembler with preprocessor (macros, includes, conditionals), syntax highlighting, load-to-memory, object files, a linker (EXPORT/IMPORT, relocations, map files), and archive libraries (.lib)
 - **CLI Assembler** — headless command-line assembler `python -m assemble8080` (no GUI required)
 - **VS Code Plugin** — `i8080-ci-vscode` extension with an MCP client for the headless server
 - **i8080/i8085 CPU Emulator** — full 256-instruction set including undocumented instructions
-- **Debugger** — breakpoints (regular & conditional), step / step-over, run-to, watch windows, trace log
+- **Debugger** — breakpoints (regular & conditional), step / step-over, run-to, watch windows (with auto variables from map files), trace log
 - **Disassembler** — real-time with jump arrows and instruction-type highlighting
 - **Hex Editor** — view and edit memory images with search and block operations
 - **Memory Test** — RAM verification using various patterns (walking bit, chessboard, etc.)
@@ -55,11 +55,11 @@
 
 **RU:**
 - **Два CPU: i8080 + i8085** — выбор типа CPU; i8085 добавляет SIM/RIM, DSUB, ARHL, RDEL, LDHI/LDSI, RSTV, SHLX, JNK, LHLX, JK
-- **Ассемблер** — встроенный двухпроходный ассемблер i8080/i8085 с препроцессором (макросы, include, условия), подсветкой синтаксиса, загрузкой в память, объектными файлами и линковщиком (EXPORT/IMPORT, переносы, map-файлы)
+- **Ассемблер** — встроенный двухпроходный ассемблер i8080/i8085 с препроцессором (макросы, include, условия), подсветкой синтаксиса, загрузкой в память, объектными файлами, линковщиком (EXPORT/IMPORT, переносы, map-файлы) и архивными библиотеками (.lib)
 - **Ассемблер из командной строки** — автономный CLI-ассемблер `python -m assemble8080` (без GUI)
 - **Плагин VS Code** — расширение `i8080-ci-vscode` с MCP-клиентом для headless-сервера
 - **Эмулятор i8080/i8085 CPU** — полный набор из 256 инструкций, включая недокументированные
-- **Отладчик** — точки останова (обычные и условные), пошаговое выполнение, run-to, watch-окна, трассировка
+- **Отладчик** — точки останова (обычные и условные), пошаговое выполнение, run-to, watch-окна (с авто-переменными из map-файлов), трассировка
 - **Дизассемблер** — в реальном времени со стрелками переходов и подсветкой типов команд
 - **Hex-редактор** — просмотр и редактирование образов памяти с поиском и блочными операциями
 - **Тест памяти** — проверка RAM различными паттернами (walking bit, шахматный и др.)
@@ -211,6 +211,7 @@ assemble8080/              # i8080/i8085 assembler / Ассемблер i8080/i8
 │   mapfile.py             #   Map file gen/parse / Генерация/парсинг map-файлов
 │   objfile.py             #   Object file format / Формат объектного файла (.obj)
 │   linker.py              #   Linker / Линковщик (.lnk scripts, relocations)
+|　|   librarian.py             #   Library manager / Библиотекарь (.lib archives)
 common/                    # Common utilities / Общие утилиты
 │   i18n.py                #   Internationalization / Интернационализация (RU/EN)
 │   encoding.py            #   File encoding auto-detect / Автоопределение кодировки файлов
@@ -324,13 +325,13 @@ Profile files / Файлы профилей: `profiles/` (TOML format / TOML-ф�
 
 ## Testing / Тестирование
 
-**EN:** 60+ test files: `run_tests.py` (921 passed, 0 failed), the zasm reference
+**EN:** 60+ test files: `run_tests.py` (978 passed, 0 failed), the zasm reference
 comparison `tests/test_bin_compare.py` (15 reference files, byte-identical), the
 round-trip test `tests/test_roundtrip_256.py` (assemble → disassemble → re-assemble,
 3 consecutive cycles), `tests/test_8085.py`, and GUI smoke tests. Full cycle:
 `python _run_all_tests.py`.
 
-**RU:** 60+ тест-файлов: `run_tests.py` (921 пройдено, 0 провалов), сравнение с
+**RU:** 60+ тест-файлов: `run_tests.py` (978 пройдено, 0 провалов), сравнение с
 эталонами zasm `tests/test_bin_compare.py` (15 эталонных файлов, побайтово),
 round-trip тест `tests/test_roundtrip_256.py` (ассемблирование → дизассемблирование →
 повторная сборка, 3 последовательных цикла), `tests/test_8085.py` и GUI smoke-тесты.
@@ -366,6 +367,7 @@ python i8080_emulator.py
 | [MCP_GUIDE.md](MCP_GUIDE.md) | MCP integration guide / Руководство по MCP-интеграции |
 | [SCRIPTS_GUIDE.md](SCRIPTS_GUIDE.md) | Automation scripts guide / Руководство по скриптам |
 | [ASSEMBLER_GUIDE.md](ASSEMBLER_GUIDE.md) | Assembler programmer's guide / Руководство программиста по ассемблеру |
+| [OPCODE_REFERENCE.md](OPCODE_REFERENCE.md) | **Canonical opcode table (SINGLE SOURCE OF TRUTH)** / Каноническая таблица опкодов |
 | [ANALYSIS.md](ANALYSIS.md) | Technical project analysis / Технический анализ проекта |
 | [CHANGES.md](CHANGES.md) | Changelog / Журнал изменений |
 | [I18N_AUDIT.md](I18N_AUDIT.md) | i18n audit report / Аудит интернационализации |

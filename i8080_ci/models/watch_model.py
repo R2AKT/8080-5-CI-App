@@ -27,13 +27,14 @@ class WatchModel(QAbstractTableModel):
     # УПРАВЛЕНИЕ ЭЛЕМЕНТАМИ
     # =============================================
     
-    def add_watch(self, name, watch_type, target, fmt="hex"):
-        """Добавить элемент наблюдения"""
+    def add_watch(self, name, watch_type, target, fmt="hex", auto=False):
+        """Добавить элемент наблюдения. auto=True — динамическая запись из map (не сохраняется в пресет)."""
         item = {
             "name": name,
             "type": watch_type,
             "target": target,
-            "format": fmt
+            "format": fmt,
+            "auto": auto
         }
         self.beginInsertRows(QModelIndex(), len(self.items), len(self.items))
         self.items.append(item)
@@ -53,6 +54,56 @@ class WatchModel(QAbstractTableModel):
         self.prev_values.clear()
         self.endResetModel()
         
+    # =============================================
+    # АВТОЗАГРУЗКА ИЗ MAP + СОРТИРОВКА
+    # =============================================
+
+    def set_auto_watches_from_map(self, map_file):
+        """(Re)generate dynamic watch entries from the map's DATA symbols.
+        CODE / jump labels are skipped; only data variables (DB/DW/DS) are
+        watched, by their address and size. Returns number of items added."""
+        self.beginResetModel()
+        self.items = [it for it in self.items if not it.get("auto")]
+        existing = {(it["type"], it["target"]) for it in self.items}
+        count = 0
+        for e in getattr(map_file, "entries", []):
+            if getattr(e, "entry_type", "CODE").upper() != "DATA":
+                continue
+            wtype = self.TYPE_MEM_WORD if e.size >= 2 else self.TYPE_MEM_BYTE
+            key = (wtype, e.address)
+            if key in existing:
+                continue
+            existing.add(key)
+            self.items.append({
+                "name": e.name,
+                "type": wtype,
+                "target": e.address,
+                "format": "hex",
+                "auto": True
+            })
+            count += 1
+        self.endResetModel()
+        return count
+
+    def sort(self, column, order=Qt.AscendingOrder):
+        """Сортировка по колонке (как в таблице меток ассемблера)."""
+        reg_order = {r: i for i, r in enumerate(
+            ['A', 'B', 'C', 'D', 'E', 'H', 'L', 'BC', 'DE', 'HL', 'SP', 'PC', 'FLAGS'])}
+        desc = (order == Qt.DescendingOrder)
+        if column == 0:
+            key = lambda it: it["name"].lower()
+        elif column == 1:
+            key = lambda it: ((1, reg_order.get(str(it["target"]).upper(), 99))
+                              if it["type"] == self.TYPE_REG
+                              else (0, it["target"]))
+        elif column == 2:
+            key = lambda it: self.get_value(it)
+        else:
+            key = lambda it: it["format"]
+        self.layoutAboutToBeChanged.emit()
+        self.items.sort(key=key, reverse=desc)
+        self.layoutChanged.emit()
+
     # =============================================
     # ПОЛУЧЕНИЕ И ФОРМАТИРОВАНИЕ ЗНАЧЕНИЙ
     # =============================================
@@ -136,6 +187,7 @@ class WatchModel(QAbstractTableModel):
                     "format": item["format"]
                 }
                 for item in self.items
+                if not item.get("auto")
             ]
         }
         try:
@@ -152,7 +204,7 @@ class WatchModel(QAbstractTableModel):
                 data = json.load(f)
             
             self.beginResetModel()
-            self.items.clear()
+            self.items = [it for it in self.items if it.get("auto")]
             self.prev_values.clear()
             
             for watch in data.get("watches", []):
@@ -160,7 +212,8 @@ class WatchModel(QAbstractTableModel):
                     "name": watch.get("name", "watch"),
                     "type": watch.get("type", self.TYPE_MEM_BYTE),
                     "target": watch.get("target", 0),
-                    "format": watch.get("format", "hex")
+                    "format": watch.get("format", "hex"),
+                    "auto": False
                 })
             
             self.endResetModel()

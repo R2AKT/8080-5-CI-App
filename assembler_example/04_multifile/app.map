@@ -1,10 +1,10 @@
 ; i8080-5 CI map file v1
 ; source: (linked)
-; date: 2026-10-09 13:29:06
-; org: 0x0000
-; size: 65536
+; date: 2026-10-23 23:24:07
+; org: 0x0100
+; size: 8
 ; symbols: 2
 
 ADDRESS   SIZE  TYPE    NAME
-0100      0100  CODE    MAIN
-0200      FE00  CODE    HELPER
+0100      0006  CODE    MAIN
+0106      0002  CODE    HELPER

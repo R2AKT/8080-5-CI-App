@@ -7,6 +7,6 @@
 INPUT main.obj helper.obj
 OUTPUT app.bin
 MAP app.map
-ORIGIN 0x0000
+ORIGIN 0x0100
 SIZE 0x10000
 FILL 0xFF

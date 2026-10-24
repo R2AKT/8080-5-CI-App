@@ -52,7 +52,7 @@ def main():
             fails += 1
 
     check("main.asm: IMPORT HELPER", 'HELPER' in r_main.imports)
-    check("main.asm: EXPORT main", 'MAIN' in r_main.exports)
+    check("main.asm: EXPORT main", 'main' in r_main.exports)
     check("main.asm: relocation для CALL HELPER", len(r_main.relocations) == 1)
     check("helper.asm: EXPORT HELPER", 'HELPER' in r_helper.exports)
 
@@ -74,15 +74,15 @@ def main():
     check("app.map создан", os.path.exists(MAP))
 
     b = lr.binary
-    # main.asm в 0x0100: MVI A,0x42 (3E 42) + CALL HELPER (CD 00 02) + HLT (76)
-    check("app.bin[0x0100]: 3E 42 CD 00 02 76",
-          b[0x0100:0x0106] == bytes([0x3E, 0x42, 0xCD, 0x00, 0x02, 0x76]))
-    # helper.asm в 0x0200: ADD B (80) + RET (C9)
-    check("app.bin[0x0200]: 80 C9",
-          b[0x0200:0x0202] == bytes([0x80, 0xC9]))
-    # CALL HELPER должен быть пропатчен на 0x0200 (little-endian: 00 02)
-    check("CALL HELPER пропатчен на 0x0200",
-          b[0x0103:0x0105] == bytes([0x00, 0x02]))
+    # main.asm в 0x0100: MVI A,0x42 (3E 42) + CALL HELPER (CD 06 01) + HLT (76)
+    check("app.bin[0x0100]: 3E 42 CD 06 01 76",
+          b[0x0100:0x0106] == bytes([0x3E, 0x42, 0xCD, 0x06, 0x01, 0x76]))
+    # helper.asm в 0x0106: ADD B (80) + RET (C9) — последовательная раскладка от ORIGIN
+    check("app.bin[0x0106]: 80 C9 (helper после main)",
+          b[0x0106:0x0108] == bytes([0x80, 0xC9]))
+    # CALL HELPER должен быть пропатчен на 0x0106 (little-endian: 06 01)
+    check("CALL HELPER пропатчен на 0x0106",
+          b[0x0103:0x0105] == bytes([0x06, 0x01]))
 
     # Проверка map-файла
     if os.path.exists(MAP):
@@ -95,8 +95,8 @@ def main():
     # Hexdump ключевых областей
     print("  app.bin [0x0100..0x0105]:")
     print(hexdump(b[0x0100:0x0106], start=0x0100))
-    print("  app.bin [0x0200..0x0201]:")
-    print(hexdump(b[0x0200:0x0202], start=0x0200))
+    print("  app.bin [0x0106..0x0107]:")
+    print(hexdump(b[0x0106:0x0108], start=0x0106))
 
     if fails:
         print(f"  ИТОГ: пример 04 — {fails} проверок не пройдено")

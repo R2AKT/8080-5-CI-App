@@ -1733,7 +1733,7 @@ class AssemblerWidget(QWidget):
                 result = link_from_script(path)
             else:
                 obj = load_obj(path)
-                result = link([obj])
+                result = link([obj], origin=obj.org)
             if not result.success:
                 if self.main_window is not None:
                     self.main_window.log(_tr("asm_link_errors").format(n=len(result.errors)))
@@ -1844,6 +1844,8 @@ class AssemblerWidget(QWidget):
         # Update labels table with global label info
         self._update_labels_table(result.symbols, result.global_labels,
                                   getattr(result, 'equ_symbols', None))
+        # Auto-load watch variables (data labels) from the fresh map
+        self._auto_load_watch_vars(result)
         # Store result in tab info for tab-switch restore
         ti = self._current_tab_info()
         if ti:
@@ -1876,6 +1878,16 @@ class AssemblerWidget(QWidget):
                     if n in result.symbols
                 }
             self._auto_load_map(result)
+
+    def _auto_load_watch_vars(self, result):
+        """Repopulate auto watch entries from the fresh assemble map (data labels only)."""
+        if self.main_window is None or not getattr(result, 'map_text', ''):
+            return
+        try:
+            mf = parse_map(result.map_text)
+            self.main_window.auto_load_watch_from_map(mf)
+        except Exception as e:
+            self.main_window.log(f"Watch auto-load skipped: {e}")
 
     def _auto_load_map(self, result):
         """Auto-load map file into disassembler and emulator."""
@@ -1954,7 +1966,11 @@ class AssemblerWidget(QWidget):
                     if addr in mw.mem_data:
                         removed[addr] = mw.mem_data.pop(addr)
                 if removed:
-                    mw.hex_model.update_data({a: 0xFF for a in removed})
+                    # Хвост уже удалён из общего словаря mem_data == hex_model.mem.
+                    # Не возвращаем его как 0xFF: пересчитываем диапазон таблицы
+                    # и обновляем вид (иначе хвост остаётся в hex-окне).
+                    mw.hex_model.update_range()
+                    mw.hex_model.layoutChanged.emit()
             self._last_load = (origin, len(binary))
             changes = {}
             for i, byte in enumerate(binary):
