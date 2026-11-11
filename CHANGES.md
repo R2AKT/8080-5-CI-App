@@ -6,6 +6,29 @@
 
 ## v2.1.15 (2026-10-23)
 
+### CF IDE: CHS-геометрия, serial=имя файла, SET FEATURES
+
+**IDENTIFY DEVICE (0xEC) — полные параметры диска:**
+- CHS-геометрия (Words 1-2, 6, 26-27): 255 голов, 63 сект/дорожку,
+  цилиндры = ceil(total_sectors / 16065). Совместимо с FDISK/BIOS.
+- LBA-секторы (Words 60-61): из реального размера файла.
+- Serial (Words 10-19): `os.path.basename(disk_file)`, левое выравнивание,
+  пробелы до 20 символов. Файл не подключён — «NO-DISK».
+
+**SET FEATURES (0x03):**
+- NOP (feature=0x00): мгновенное подтверждение (30 тактов).
+- Write-protect toggle (feature=0x05): инвертирует флаг `write_protected`.
+- WRITE SECTORS при write-protect — ошибка ABRT+ERR.
+
+**GitHub Actions: мультиплатформенная сборка (`build.yml`):**
+- Linux x86_64 (ubuntu-latest), Windows x64 (windows-latest), macOS (macos-latest).
+- PyInstaller --onefile, артефакты tar.gz / zip с docs+profiles+roms.
+- Запуск: тег v* или workflow_dispatch.
+
+**Тесты:** 978/0 (run_tests), 19/19 CF IDE.
+
+## v2.1.15 (2026-10-23)
+
 ### Архивные библиотеки (.lib), последовательная раскладка от ORIGIN, DATA в map, авто watch
 
 **Новый: библиотекарь (`assemble8080/librarian.py`):**
@@ -56,12 +79,18 @@
 **Документация:** ASSEMBLER_GUIDE.md (7.2-7.8), USER_GUIDE.md (8.14, 13.2),
 README.md — обновлены по новым возможностям.
 
-**Тесты:** 956/0 (run_tests, 36 файлов) + GUI smoke + map autoload flow.
-
-**FIX (хвост образа в hex-окне эмулятора):** `HexModel.mem` — тот же словарь, что `mem_data`,
-поэтому «очистка хвоста» прежнего большего образа через `hex_model.update_data({a: 0xFF})`
-возвращала те же адреса обратно как 0xFF — хвост оставался в окне. Теперь после pop
-хвоста из `mem_data` вызывается только `update_range() + layoutChanged.emit()` без
+**Тесты:** 956/0 (run_tests, 36 файлов) + GUI smoke + map autoload flow.
+
+
+
+**FIX (хвост образа в hex-окне эмулятора):** `HexModel.mem` — тот же словарь, что `mem_data`,
+
+поэтому «очистка хвоста» прежнего большего образа через `hex_model.update_data({a: 0xFF})`
+
+возвращала те же адреса обратно как 0xFF — хвост оставался в окне. Теперь после pop
+
+хвоста из `mem_data` вызывается только `update_range() + layoutChanged.emit()` без
+
 возврата 0xFF. Тесты: tests/test_hex_tail.py (8/0).
 ## v2.1.14 (2026-10-13)
 

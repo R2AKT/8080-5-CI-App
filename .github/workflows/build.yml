@@ -1,0 +1,107 @@
+name: build
+
+# Сборка портативных бинарников для Linux, Windows, macOS (PyInstaller one-file)
+# Запуск: автоматически при теге v* или вручную (Actions → Run workflow).
+# Результат: артефакты i8080-5_CI_{linux_x86_64|win64|macos_universal2}
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pyinstaller
+      - name: Build one-file binary
+        run: pyinstaller --onefile --optimize 2 i8080_CI.py
+      - name: Assemble release package
+        run: |
+          VERSION=$(python -c "import version; print(version.__version__)")
+          rm -rf release-linux
+          mkdir -p release-linux
+          cp dist/i8080_CI release-linux/i8080_CI
+          chmod +x release-linux/i8080_CI
+          cp -r profiles roms release-linux/
+          for f in README.md LICENSE CHANGES.md INSTALL.md USER_GUIDE.md \
+                   ASSEMBLER_GUIDE.md OPCODE_REFERENCE.md MCP_GUIDE.md \
+                   SCRIPTS_GUIDE.md logo.png; do
+            [ -f "$f" ] && cp "$f" release-linux/
+          done
+          tar czf "i8080-5_CI_v${VERSION}_linux_x86_64.tar.gz" -C release-linux .
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: i8080-5_CI_linux_x86_64
+          path: i8080-5_CI_v*_linux_x86_64.tar.gz
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pyinstaller
+      - name: Build one-file binary
+        run: pyinstaller --onefile --optimize 2 i8080_CI.py
+      - name: Assemble release package
+        run: |
+          $VERSION = python -c "import version; print(version.__version__)"
+          New-Item -ItemType Directory -Force -Path release-win
+          Copy-Item dist/i8080_CI.exe release-win/
+          Copy-Item -Recurse profiles roms release-win/
+          $docs = @('README.md','LICENSE','CHANGES.md','INSTALL.md','USER_GUIDE.md','ASSEMBLER_GUIDE.md','OPCODE_REFERENCE.md','MCP_GUIDE.md','SCRIPTS_GUIDE.md','logo.png')
+          foreach ($f in $docs) { if (Test-Path $f) { Copy-Item $f release-win/ } }
+          Compress-Archive -Path release-win/* -DestinationPath "i8080-5_CI_v${VERSION}_win64.zip" -Force
+        shell: pwsh
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: i8080-5_CI_win64
+          path: i8080-5_CI_v*_win64.zip
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pyinstaller
+      - name: Build one-file binary
+        run: pyinstaller --onefile --optimize 2 i8080_CI.py
+      - name: Assemble release package
+        run: |
+          VERSION=$(python -c "import version; print(version.__version__)")
+          rm -rf release-mac
+          mkdir -p release-mac
+          cp dist/i8080_CI release-mac/i8080_CI
+          chmod +x release-mac/i8080_CI
+          cp -r profiles roms release-mac/
+          for f in README.md LICENSE CHANGES.md INSTALL.md USER_GUIDE.md \
+                   ASSEMBLER_GUIDE.md OPCODE_REFERENCE.md MCP_GUIDE.md \
+                   SCRIPTS_GUIDE.md logo.png; do
+            [ -f "$f" ] && cp "$f" release-mac/
+          done
+          tar czf "i8080-5_CI_v${VERSION}_macos_universal2.tar.gz" -C release-mac .
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: i8080-5_CI_macos_universal2
+          path: i8080-5_CI_v*_macos_universal2.tar.gz
