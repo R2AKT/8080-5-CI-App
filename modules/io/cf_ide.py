@@ -5,7 +5,7 @@ CF IDE — CompactFlash в режиме ATA/IDE.
 Особенности для i8080:
 - Шина данных 8 бит (16-битные регистры читаются по 2 байта)
 - Режим 8-bit PIO для совместимости
-- LBA-адресация (без CHS)
+- LBA-адресация + CHS-геометрия (255/63) для совместимости
 
 Регистры (8 портов, base_port + offset):
   offset 0: Data (16-bit, читается как 2 байта LSB/MSB)
@@ -23,6 +23,7 @@ CF IDE — CompactFlash в режиме ATA/IDE.
   0x21: READ SECTORS (без прерывания)
   0x30: WRITE SECTORS (с прерыванием)
   0x31: WRITE SECTORS (без прерывания)
+  0x03: SET FEATURES (NOP=0x00, write-protect=0x05)
 
 Статусные биты (Status Register):
   Bit 7: BSY  — занят
@@ -43,6 +44,7 @@ class CFIDE(IODevice):
     CMD_READ_SECTORS_NI = 0x21  # без прерывания
     CMD_WRITE_SECTORS   = 0x30  # с прерыванием
     CMD_WRITE_SECTORS_NI = 0x31  # без прерывания
+    CMD_SET_FEATURES      = 0x03  # SET FEATURES
 
     # Биты статуса
     STATUS_BSY  = 0x80  # Занят
@@ -94,6 +96,7 @@ class CFIDE(IODevice):
         self._pending_irq = False
         self.on_wait = None  # Callback для WAIT-сигнала
         self.emulate_delay = False  # по умолчанию задержка выключена
+        self.write_protected = False  # SET FEATURES: write-protect
 
     # =============================================
     # РАБОТА С ОБРАЗОМ ДИСКА
@@ -260,6 +263,8 @@ class CFIDE(IODevice):
             self._cmd_read_sectors()
         elif self.command in (self.CMD_WRITE_SECTORS, self.CMD_WRITE_SECTORS_NI):
             self._cmd_write_sectors()
+        elif self.command == self.CMD_SET_FEATURES:
+            self._cmd_set_features()
         else:
             self.error_reg = self.ERROR_ABRT
             self.status = self.STATUS_DRDY | self.STATUS_ERR
@@ -281,6 +286,7 @@ class CFIDE(IODevice):
 
     def _cmd_identify(self):
         """IDENTIFY DEVICE (0xEC)"""
+        import os
         # Формируем Identify данные (512 байт)
         identify_data = [0x00] * 512
 
@@ -288,9 +294,24 @@ class CFIDE(IODevice):
         identify_data[0] = 0x84  # Fixed device, non-removable
         identify_data[1] = 0x8A
 
-        # Words 1-2: Number of logical cylinders (не используется в LBA)
-        identify_data[2] = 0x00
-        identify_data[3] = 0x00
+        # === CHS-геометрия (совместимость с FDISK/BIOS) ===
+        heads = 255
+        sectors_per_track = 63
+        sectors_per_cylinder = heads * sectors_per_track
+        cylinders = (self.total_sectors + sectors_per_cylinder - 1) // sectors_per_cylinder
+        cyl_max = cylinders - 1 if cylinders > 0 else 0
+
+        # Words 1-2: Number of logical cylinders (max = cylinders-1)
+        identify_data[2] = cyl_max & 0xFF
+        identify_data[3] = (cyl_max >> 8) & 0xFF
+
+        # Word 6: Number of heads
+        identify_data[12] = heads & 0xFF
+        identify_data[13] = (heads >> 8) & 0xFF
+
+        # Words 26-27: Sectors per track
+        identify_data[52] = sectors_per_track & 0xFF
+        identify_data[53] = (sectors_per_track >> 8) & 0xFF
 
         # Word 49: Capabilities (LBA supported)
         identify_data[98] = 0x02  # LBA supported
@@ -312,8 +333,12 @@ class CFIDE(IODevice):
         for i, ch in enumerate(fw[:8]):
             identify_data[46 + i] = ord(ch)
 
-        # Words 10-19: Serial number (20 символов)
-        serial = "12345678901234567890"
+        # Words 10-19: Serial number (20 символов) — имя файла без пути
+        if self.disk_file:
+            serial = os.path.basename(self.disk_file)
+        else:
+            serial = "NO-DISK"
+        serial = serial[:20].ljust(20)
         for i, ch in enumerate(serial[:20]):
             identify_data[20 + i] = ord(ch)
 
@@ -351,6 +376,12 @@ class CFIDE(IODevice):
         if count == 0:
             count = 256
 
+        # Проверяем write-protect
+        if self.write_protected:
+            self.error_reg = self.ERROR_ABRT
+            self.status = self.STATUS_DRDY | self.STATUS_ERR
+            return
+
         # Проверяем границы
         if lba + count > self.total_sectors:
             self.error_reg = self.ERROR_IDNF
@@ -363,6 +394,16 @@ class CFIDE(IODevice):
         self.data_direction = 'write'
         self.data_count = count
         self.status = self.STATUS_DRDY | self.STATUS_DRQ
+
+    def _cmd_set_features(self):
+        """SET FEATURES (0x03) — NOP или write-protect toggle"""
+        feat = self.features_reg
+        if feat == 0x00:
+            pass  # NOP
+        elif feat == 0x05:
+            self.write_protected = not self.write_protected
+        self.status = self.STATUS_DRDY
+        self._start_operation(30, self.STATUS_DRDY, generate_irq=False)
 
     def _complete_write(self):
         """Завершение записи сектора"""
