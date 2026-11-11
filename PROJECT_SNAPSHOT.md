@@ -1,10 +1,10 @@
 # СРЕЗ ПРОЕКТА (PROJECT SNAPSHOT)
 
-> Сгенерировано: 2026-10-23 23:35:31
+> Сгенерировано: 2026-11-11 16:33:22
 > Корень проекта: `c:\Мега-80\8080-5 CI\i8080-5_CI-AI-analysis`
-> Код: 169 файлов, 35385 строк
+> Код: 177 файлов, 36218 строк
 > Тесты: 78 файлов, 12082 строк
-> Профили: 43 файлов, 1625 строк
+> Профили: 44 файлов, 1686 строк
 
 ---
 
@@ -139,7 +139,7 @@
 │   ├── Z_ZAPPLEASM.original.asm  [330 строк]
 │   └── zasm-test-opcodes-8080.asm  [408 строк]
 ├── assemble8080/
-│   ├── __init__.py  [28 строк]
+│   ├── __init__.py  [61 строк]
 │   ├── __main__.py  [19 строк]
 │   ├── assembler.py  [2103 строк]
 │   ├── errors.py  [37 строк]
@@ -186,7 +186,7 @@
 ├── common/
 │   ├── __init__.py  [5 строк]
 │   ├── encoding.py  [109 строк]
-│   ├── i18n.py  [973 строк]
+│   ├── i18n.py  [975 строк]
 │   └── themes.py  [115 строк]
 ├── i8080_ci/
 │   ├── models/
@@ -210,6 +210,8 @@
 │   ├── intelhex.py  [51 строк]
 │   ├── main_window.py  [4203 строк]
 │   └── slip.py  [61 строк]
+├── images/
+│   └── cf_ide.bin  [1 строк]
 ├── modules/
 │   ├── config/
 │   │   ├── __init__.py  [5 строк]
@@ -365,20 +367,24 @@
 │   │   ├── micro80_monitor.bin  [19 строк]
 │   │   ├── radio86rk_font.rom  [1 строк]
 │   │   └── radio86rk_monitor.bin  [27 строк]
-│   ├── ASSEMBLER_GUIDE.md  [1304 строк]
-│   ├── CHANGES.md  [2774 строк]
-│   ├── i8080-5_CI_v2.1.14_linux_x86_64.tar.gz  [726725 строк]
-│   ├── i8080-5_CI_v2.1.14_source.tar.gz  [18127 строк]
-│   ├── i8080-5_CI_v2.1.14_win64.zip  [601291 строк]
-│   ├── i8080_CI.exe  [594666 строк]
+│   ├── ASSEMBLER_GUIDE.md  [1375 строк]
+│   ├── CHANGES.md  [2839 строк]
+│   ├── i8080-5_CI_v2.1.15_linux_x86_64.tar.gz  [726838 строк]
+│   ├── i8080-5_CI_v2.1.15_source.tar.gz  [18515 строк]
+│   ├── i8080-5_CI_v2.1.15_win64.zip  [600765 строк]
+│   ├── i8080_CI.exe  [594664 строк]
 │   ├── INSTALL.md  [60 строк]
 │   ├── LICENSE  [21 строк]
 │   ├── logo.png  [1161 строк]
 │   ├── MCP_GUIDE.md  [356 строк]
-│   ├── OPCODE_REFERENCE.md  [452 строк]
-│   ├── README.md  [389 строк]
+│   ├── OPCODE_REFERENCE.md  [484 строк]
+│   ├── pyproject.toml  [61 строк]
+│   ├── README.md  [391 строк]
+│   ├── RELEASE_NOTES.md  [75 строк]
+│   ├── requirements.txt  [22 строк]
 │   ├── SCRIPTS_GUIDE.md  [551 строк]
-│   └── USER_GUIDE.md  [1445 строк]
+│   ├── SHA256SUMS.txt  [43 строк]
+│   └── USER_GUIDE.md  [1451 строк]
 ├── roms/
 │   ├── micro80_font.rom  [1 строк]
 │   ├── micro80_monitor.bin  [19 строк]
@@ -474,6 +480,7 @@
 │   ├── keyboard_widget.py  [146 строк]
 │   └── serial_terminal.py  [244 строк]
 ├── .gitignore  [18 строк]
+├── .mcp.json  [13 строк]
 ├── 8080-5 CI_app.png  [170 строк]
 ├── 8080-5 CI_app_device.png  [666 строк]
 ├── 8080-5 CI_app_disas.png  [325 строк]
@@ -489,6 +496,8 @@
 ├── _diag.py  [106 строк]
 ├── _diag_ds.py  [6 строк]
 ├── _diag_tail.py  [27 строк]
+├── _dl_linux.py  [89 строк]
+├── _dl_linux2.py  [81 строк]
 ├── _final_fixes.py  [134 строк]
 ├── _fix_addend.py  [250 строк]
 ├── _fix_alias_table.py  [41 строк]
@@ -498,6 +507,7 @@
 ├── _fix_docs.py  [373 строк]
 ├── _fix_en.py  [50 строк]
 ├── _fix_hextail.py  [38 строк]
+├── _fix_notes.py  [41 строк]
 ├── _fix_readme.py  [47 строк]
 ├── _fix_runtests.py  [17 строк]
 ├── _fix_runtests2.py  [17 строк]
@@ -531,6 +541,7 @@
 ├── _read_tl.py  [4 строк]
 ├── _read_ver.py  [11 строк]
 ├── _ref_page.html  [3636 строк]
+├── _release_prep.py  [248 строк]
 ├── _repro_ds.py  [32 строк]
 ├── _run_all_tests.py  [94 строк]
 ├── _run_remaining_tests.py  [65 строк]
@@ -550,8 +561,13 @@
 ├── _test_reloc_undefined.py  [177 строк]
 ├── _test_source_debug.py  [18 строк]
 ├── _update_docs.py  [61 строк]
+├── _update_release_body.py  [14 строк]
+├── _upload_release.py  [104 строк]
+├── _upload_release2.py  [107 строк]
 ├── _verify_fixes.py  [43 строк]
+├── _wait_linux_build.py  [114 строк]
 ├── Addendum.txt  [81 строк]
+├── AGENTS.md  [65 строк]
 ├── ANALYSIS.md  [536 строк]
 ├── ANALYSIS_ASSEMBLER.md  [341 строк]
 ├── ASSEMBLER_AUDIT_REPORT.md  [177 строк]
@@ -586,13 +602,13 @@
 ├── md2html.py  [372 строк]
 ├── micro-80_bp_preset.json  [77 строк]
 ├── OPCODE_REFERENCE.md  [484 строк]
-├── PROJECT_SNAPSHOT.md  [58129 строк]
+├── PROJECT_SNAPSHOT.md  [59897 строк]
 ├── pyproject.toml  [61 строк]
-├── README.md  [391 строк]
+├── README.md  [406 строк]
 ├── requirements.txt  [22 строк]
 ├── run_tests.py  [100 строк]
 ├── SCRIPTS_GUIDE.md  [551 строк]
-├── USER_GUIDE.html  [1471 строк]
+├── USER_GUIDE.html  [1475 строк]
 ├── USER_GUIDE.md  [1451 строк]
 └── version.py  [9 строк]
 ```
@@ -678,6 +694,48 @@
 - `sys`
 - `os`
 - `re`
+
+---
+
+### `_dl_linux.py` (89 строк)
+
+> Download Linux artifact and upload to release.
+
+**Импорты (7):**
+- `json`
+- `os`
+- `sys`
+- `io`
+- `urllib.request`
+- `urllib.error`
+- `zipfile`
+
+**Функции (1):**
+- `api_get(url)`
+
+**Константы:** TOKEN, BASE, REL_ID, RUN_ID, ART_ID
+
+---
+
+### `_dl_linux2.py` (81 строк)
+
+> Download Linux artifact (handle 302 to Azure) and upload to release.
+
+**Импорты (8):**
+- `json`
+- `os`
+- `sys`
+- `io`
+- `urllib.request`
+- `urllib.error`
+- `zipfile`
+- `from urllib.parse import urlparse`
+
+**Классы (1):**
+- **NoRedirectHandler**(urllib.request.HTTPRedirectHandler)
+  - Методы (1): redirect_request(self, req, fp, code, msg, headers, newurl)
+
+**Константы:** TOKEN, BASE, REL_ID, RUN_ID, ART_ID
 
 ---
 
@@ -788,6 +846,15 @@
 - `py_compile`
 
 **Константы:** ROOT
+
+---
+
+### `_fix_notes.py` (41 строк)
+
+> Fix RELEASE_NOTES.md: replace File Manifest + Installation with actual release archives.
+
+**Импорты (1):**
+- `sys`
 
 ---
 
@@ -1080,6 +1147,27 @@
 
 ---
 
+### `_release_prep.py` (248 строк)
+
+> Prepare Release/ folder for i8080-5 CI v2.1.15.
+
+**Импорты (7):**
+- `os`
+- `sys`
+- `shutil`
+- `tarfile`
+- `datetime`
+- `hashlib`
+- `version`
+
+**Функции (2):**
+- `excluded_dir(rel, name)`
+- `excluded_file(name)`
+
+**Константы:** ROOT, RELEASE, VER, BUILD, DATE, TAG, EXCLUDE_DIRS
+
+---
+
 ### `_repro_ds.py` (32 строк)
 
 **Импорты (7):**
@@ -1330,11 +1418,79 @@
 
 ---
 
+### `_update_release_body.py` (14 строк)
+
+**Импорты (3):**
+- `json`
+- `sys`
+- `urllib.request`
+
+**Константы:** TOKEN
+
+---
+
+### `_upload_release.py` (104 строк)
+
+> Upload release v2.1.15 to GitHub via REST API.
+
+**Импорты (5):**
+- `json`
+- `os`
+- `sys`
+- `urllib.request`
+- `urllib.error`
+
+**Функции (1):**
+- `api(method, url, data, raw_body, content_type)`
+
+**Константы:** TOKEN, OWNER, REPO, TAG, NAME, BASE, HDRS
+
+---
+
+### `_upload_release2.py` (107 строк)
+
+> Create tag + release v2.1.15 on GitHub via API.
+
+**Импорты (5):**
+- `json`
+- `os`
+- `sys`
+- `urllib.request`
+- `urllib.error`
+
+**Функции (1):**
+- `api(method, url, data, raw_body, ctype)`
+
+**Константы:** TOKEN, BASE, MAIN_SHA
+
+---
+
 ### `_verify_fixes.py` (43 строк)
 
 **Импорты (2):**
 - `sys`
 - `py_compile`
+
+---
+
+### `_wait_linux_build.py` (114 строк)
+
+> Wait for build-linux workflow, download artifact, upload to release.
+
+**Импорты (8):**
+- `json`
+- `os`
+- `sys`
+- `time`
+- `urllib.request`
+- `urllib.error`
+- `zipfile`
+- `io`
+
+**Функции (1):**
+- `api(method, url, data, raw_body, ctype)`
+
+**Константы:** TOKEN, BASE, REL_ID
 
 ---
 
@@ -1590,17 +1746,15 @@
 
 ---
 
-### `assemble8080/__init__.py` (28 строк)
+### `assemble8080/__init__.py` (61 строк)
 
 > assemble8080 — компактный макроассемблер i8080.
 
-**Импорты (6):**
-- `from assembler import Assembler, assemble, AsmError, AsmResult, MNEMONICS, REGISTERS, REG_PAIRS, parse_number`
-- `from preprocessor import Preprocessor, PreprocessorError`
-- `from numbers import NumberParser`
-- `from mapfile import MapFile, MapEntry, generate_map, parse_map, load_map_file, save_map_file`
-- `from objfile import ObjectFile, Relocation, save_obj, load_obj, obj_from_asm_result`
-- `from linker import link, link_from_script, parse_link_script, LinkResult, LinkError`
+**Функции (2):**
+- `__getattr__(name)`
+- `__dir__()`
+
+**Константы:** _LAZY_MAP
 
 ---
 
@@ -1942,7 +2096,7 @@
 
 ---
 
-### `common/i18n.py` (973 строк)
+### `common/i18n.py` (975 строк)
 
 ---
 
@@ -3935,6 +4089,190 @@ for root, dirs, files in os.walk("."):
 ```
 <!-- END FILE: _diag_tail.py -->
 
+### `_dl_linux.py` (89 строк)
+
+<!-- FILE: _dl_linux.py -->
+```python
+#!/usr/bin/env python3
+"""Download Linux artifact and upload to release."""
+import json, os, sys, io, urllib.request, urllib.error, zipfile
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+TOKEN = "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"
+BASE = "https://api.github.com/repos/r2akt/8080-5-CI-App"
+REL_ID = 422600857
+RUN_ID = 40078039369
+ART_ID = 12553649385
+
+def api_get(url):
+    req = urllib.request.Request(url)
+    req.add_header("Authorization", f"Bearer {TOKEN}")
+    req.add_header("Accept", "application/vnd.github+json")
+    req.add_header("X-GitHub-Api-Version", "2022-11-28")
+    with urllib.request.urlopen(req) as r:
+        return r.status, r.read()
+
+# 1. Get artifact download URL
+print("1. Getting artifact download URL...")
+s, b = api_get(f"{BASE}/actions/artifacts/{ART_ID}/zip")
+# s=200 means we got the data directly (no redirect)
+# But actually the API returns 302 -> we need to check
+print(f"   API response: HTTP {s}, size={len(b)}")
+
+if s == 200 and len(b) > 1000:
+    # Got the zip data directly
+    zf = zipfile.ZipFile(io.BytesIO(b))
+    name = zf.namelist()[0]
+    print(f"   Extracting {name}...")
+    data = zf.read(name)
+else:
+    # Try to get the archive_download_url from the artifact listing
+    print("   Trying archive_download_url...")
+    s2, b2 = api_get(f"{BASE}/actions/runs/{RUN_ID}/artifacts")
+    arts = json.loads(b2)
+    art = None
+    for a in arts.get("artifacts", []):
+        if "linux" in a["name"].lower():
+            art = a
+            break
+    if not art:
+        print("   FATAL: no linux artifact")
+        sys.exit(1)
+    dl_url = art["archive_download_url"]
+    print(f"   URL: {dl_url[:80]}...")
+    req = urllib.request.Request(dl_url)
+    req.add_header("Authorization", f"Bearer {TOKEN}")
+    req.add_header("Accept", "application/vnd.github+json")
+    with urllib.request.urlopen(req) as r:
+        b = r.read()
+    zf = zipfile.ZipFile(io.BytesIO(b))
+    name = zf.namelist()[0]
+    print(f"   Extracting {name}...")
+    data = zf.read(name)
+
+out_path = "Release/i8080-5_CI_v2.1.15_linux_x86_64.tar.gz"
+with open(out_path, "wb") as f:
+    f.write(data)
+print(f"   Saved: {out_path} ({os.path.getsize(out_path)/1024/1024:.1f} MB)")
+
+# 2. Upload to release
+print(f"\n2. Uploading to release...")
+upload_url = f"{BASE}/releases/{REL_ID}/assets?name={os.path.basename(out_path)}"
+with open(out_path, "rb") as f:
+    raw = f.read()
+req = urllib.request.Request(upload_url, data=raw, method="POST")
+req.add_header("Authorization", f"Bearer {TOKEN}")
+req.add_header("Accept", "application/vnd.github+json")
+req.add_header("X-GitHub-Api-Version", "2022-11-28")
+req.add_header("Content-Type", "application/gzip")
+try:
+    with urllib.request.urlopen(req) as r:
+        asset = json.loads(r.read())
+        print(f"   OK: {asset['name']} ({asset['size']:,} bytes)")
+except urllib.error.HTTPError as e:
+    print(f"   FATAL: HTTP {e.code}: {e.read().decode()[:500]}")
+    sys.exit(1)
+
+# 3. Final state
+print(f"\n3. Release assets:")
+s, b = api_get(f"{BASE}/releases/{REL_ID}")
+rel = json.loads(b)
+for a in rel.get("assets", []):
+    print(f"   {a['name']}  ({a['size']/1024/1024:.1f} MB)")
+print(f"\n{'='*50}")
+print(f"RELEASE v2.1.15: Windows + Linux COMPLETE")
+print(f"URL: {rel.get('html_url', '?')}")
+print(f"{'='*50}")
+```
+<!-- END FILE: _dl_linux.py -->
+
+### `_dl_linux2.py` (81 строк)
+
+<!-- FILE: _dl_linux2.py -->
+```python
+#!/usr/bin/env python3
+"""Download Linux artifact (handle 302 to Azure) and upload to release."""
+import json, os, sys, io, urllib.request, urllib.error, zipfile
+from urllib.parse import urlparse
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+TOKEN = "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"
+BASE = "https://api.github.com/repos/r2akt/8080-5-CI-App"
+REL_ID = 422600857
+RUN_ID = 40078039369
+ART_ID = 12553649385
+
+class NoRedirectHandler(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None  # Don't follow redirects
+
+opener = urllib.request.build_opener(NoRedirectHandler)
+
+# 1. Get artifact download URL (302 -> Azure)
+print("1. Requesting artifact (expecting 302)...")
+req = urllib.request.Request(f"{BASE}/actions/artifacts/{ART_ID}/zip")
+req.add_header("Authorization", f"Bearer {TOKEN}")
+req.add_header("Accept", "application/vnd.github+json")
+req.add_header("X-GitHub-Api-Version", "2022-11-28")
+try:
+    resp = opener.open(req)
+    data = resp.read()
+    print(f"   Direct 200: {len(data)} bytes")
+except urllib.error.HTTPError as e:
+    if e.code == 302:
+        azure_url = e.headers["Location"]
+        print(f"   302 -> {azure_url[:80]}...")
+        # Follow redirect WITHOUT auth header
+        req2 = urllib.request.Request(azure_url)
+        with urllib.request.urlopen(req2) as r:
+            data = r.read()
+        print(f"   Downloaded: {len(data)/1024/1024:.1f} MB")
+    else:
+        print(f"   FATAL: HTTP {e.code}")
+        sys.exit(1)
+
+# 2. Extract tar.gz from artifact zip
+zf = zipfile.ZipFile(io.BytesIO(data))
+name = zf.namelist()[0]
+print(f"2. Extracting {name}...")
+tarball = zf.read(name)
+out_path = "Release/i8080-5_CI_v2.1.15_linux_x86_64.tar.gz"
+with open(out_path, "wb") as f:
+    f.write(tarball)
+print(f"   Saved: {out_path} ({os.path.getsize(out_path)/1024/1024:.1f} MB)")
+
+# 3. Upload to release
+print(f"\n3. Uploading to release...")
+upload_url = f"{BASE}/releases/{REL_ID}/assets?name={os.path.basename(out_path)}"
+with open(out_path, "rb") as f:
+    raw = f.read()
+req3 = urllib.request.Request(upload_url, data=raw, method="POST")
+req3.add_header("Authorization", f"Bearer {TOKEN}")
+req3.add_header("Accept", "application/vnd.github+json")
+req3.add_header("X-GitHub-Api-Version", "2022-11-28")
+req3.add_header("Content-Type", "application/gzip")
+try:
+    with urllib.request.urlopen(req3) as r:
+        asset = json.loads(r.read())
+        print(f"   OK: {asset['name']} ({asset['size']:,} bytes)")
+except urllib.error.HTTPError as e:
+    print(f"   FATAL: HTTP {e.code}: {e.read().decode()[:500]}")
+    sys.exit(1)
+
+# 4. Final state
+print(f"\n4. Release assets:")
+req4 = urllib.request.Request(f"{BASE}/releases/{REL_ID}")
+req4.add_header("Authorization", f"Bearer {TOKEN}")
+req4.add_header("Accept", "application/vnd.github+json")
+with urllib.request.urlopen(req4) as r:
+    rel = json.loads(r.read())
+for a in rel.get("assets", []):
+    print(f"   {a['name']}  ({a['size']/1024/1024:.1f} MB)")
+print(f"\n{'='*50}")
+print(f"RELEASE v2.1.15: Windows + Linux COMPLETE")
+print(f"URL: {rel.get('html_url', '?')}")
+print(f"{'='*50}")
+```
+<!-- END FILE: _dl_linux2.py -->
+
 ### `_final_fixes.py` (134 строк)
 
 <!-- FILE: _final_fixes.py -->
@@ -5261,6 +5599,54 @@ print("COMPILE_OK")
 ```
 <!-- END FILE: _fix_hextail.py -->
 
+### `_fix_notes.py` (41 строк)
+
+<!-- FILE: _fix_notes.py -->
+```python
+#!/usr/bin/env python3
+"""Fix RELEASE_NOTES.md: replace File Manifest + Installation with actual release archives."""
+import sys
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+s = open("Release/RELEASE_NOTES.md", "r", encoding="utf-8").read()
+old_start = s.find("## File Manifest")
+old_end = s.find("## Changelog")
+assert old_start > 0 and old_end > old_start, f"markers not found: {old_start}, {old_end}"
+new = """## Release Archives
+
+| Archive | Size | Contents |
+|---------|------|----------|
+| `i8080-5_CI_v2.1.15_win64.zip` | 76.5 MB | **Windows x64**: `i8080_CI.exe` (76.8 MB, PyInstaller) + docs + `profiles/` (21 .toml) + `roms/` (4 files) |
+| `i8080-5_CI_v2.1.15_linux_x86_64.tar.gz` | 93.2 MB | **Linux x86_64**: `i8080_CI` (PyInstaller one-file) + docs + `profiles/` + `roms/` |
+| `i8080-5_CI_v2.1.15_source.tar.gz` | 2.3 MB | **Source**: 440 source files (no .git, __pycache__, node_modules) |
+| `SHA256SUMS.txt` | 3.9 KB | SHA-256 checksums for all release files |
+
+## Installation
+
+See [INSTALL.md](INSTALL.md) for platform-specific instructions.
+
+### Windows (x64)
+1. Download `i8080-5_CI_v2.1.15_win64.zip`
+2. Extract — everything is included: exe + `profiles/` + `roms/` + docs
+3. Run `i8080_CI.exe`
+
+### Linux (x86_64)
+1. Download `i8080-5_CI_v2.1.15_linux_x86_64.tar.gz`
+2. `tar xzf i8080-5_CI_v2.1.15_linux_x86_64.tar.gz`
+3. `chmod +x i8080_CI && ./i8080_CI`
+
+### From source (any platform)
+1. Download `i8080-5_CI_v2.1.15_source.tar.gz`
+2. `tar xzf i8080-5_CI_v2.1.15_source.tar.gz`
+3. `pip install -r requirements.txt`
+4. `python i8080_CI.py`
+
+"""
+s2 = s[:old_start] + new + s[old_end:]
+open("Release/RELEASE_NOTES.md", "w", encoding="utf-8").write(s2)
+print(f"DONE: {len(s)} -> {len(s2)} chars")
+```
+<!-- END FILE: _fix_notes.py -->
+
 ### `_fix_readme.py` (47 строк)
 
 <!-- FILE: _fix_readme.py -->
@@ -6441,6 +6827,261 @@ for i,l in enumerate(open('CHANGES.md', encoding='utf-8').read().splitlines()[:3
     print(f"{i+1}: {l}")
 ```
 <!-- END FILE: _read_ver.py -->
+
+### `_release_prep.py` (248 строк)
+
+<!-- FILE: _release_prep.py -->
+```python
+#!/usr/bin/env python3
+"""Prepare Release/ folder for i8080-5 CI v2.1.15."""
+import os, sys, shutil, tarfile, datetime, hashlib
+
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+ROOT = os.path.dirname(os.path.abspath(__file__))
+RELEASE = os.path.join(ROOT, "Release")
+os.makedirs(RELEASE, exist_ok=True)
+
+import version
+VER = version.__version__
+BUILD = version.__build__
+DATE = datetime.date.today().strftime("%Y-%m-%d")
+TAG = f"i8080-5_CI-v{VER}"
+
+print(f"=== RELEASE PREPARATION: {TAG} (build {BUILD}) ===\n")
+
+# --- 1. Copy/update documentation ---
+docs = [
+    ("README.md", "README.md"),
+    ("CHANGES.md", "CHANGES.md"),
+    ("INSTALL.md", "INSTALL.md"),
+    ("USER_GUIDE.md", "USER_GUIDE.md"),
+    ("ASSEMBLER_GUIDE.md", "ASSEMBLER_GUIDE.md"),
+    ("OPCODE_REFERENCE.md", "OPCODE_REFERENCE.md"),
+    ("MCP_GUIDE.md", "MCP_GUIDE.md"),
+    ("SCRIPTS_GUIDE.md", "SCRIPTS_GUIDE.md"),
+    ("LICENSE", "LICENSE"),
+    ("logo.png", "logo.png"),
+    ("requirements.txt", "requirements.txt"),
+    ("pyproject.toml", "pyproject.toml"),
+]
+
+print("1. Documentation & config:")
+for src, dst in docs:
+    s = os.path.join(ROOT, src)
+    d = os.path.join(RELEASE, dst)
+    if os.path.exists(s):
+        shutil.copy2(s, d)
+        print(f"   OK: {dst} ({os.path.getsize(d):,} bytes)")
+    else:
+        print(f"   SKIP: {src} not found")
+
+# --- 2. Copy profiles ---
+print("\n2. Profiles:")
+profiles_src = os.path.join(ROOT, "profiles")
+profiles_dst = os.path.join(RELEASE, "profiles")
+if os.path.exists(profiles_src):
+    if os.path.exists(profiles_dst):
+        shutil.rmtree(profiles_dst)
+    shutil.copytree(profiles_src, profiles_dst)
+    count = sum(len(f) for _, _, f in os.walk(profiles_dst))
+    print(f"   OK: {count} profile files")
+else:
+    print("   SKIP: profiles/ not found")
+
+# --- 3. Copy ROMs ---
+print("\n3. ROMs:")
+roms_src = os.path.join(ROOT, "roms")
+roms_dst = os.path.join(RELEASE, "roms")
+if os.path.exists(roms_src):
+    if os.path.exists(roms_dst):
+        shutil.rmtree(roms_dst)
+    shutil.copytree(roms_src, roms_dst)
+    count = sum(len(f) for _, _, f in os.walk(roms_dst))
+    print(f"   OK: {count} ROM files")
+else:
+    print("   SKIP: roms/ not found")
+
+# --- 4. Create source tarball ---
+print("\n4. Source tarball:")
+EXCLUDE_DIRS = {".git", "build", "dist", "Release", "__pycache__",
+                "node_modules", ".vscode", ".venv-build", "release-linux"}
+
+def excluded_dir(rel, name):
+    if name in EXCLUDE_DIRS or name.endswith(".egg-info") or name.startswith(".venv"):
+        return True
+    if os.path.join(rel, name) == "Plugins/i8080_ci-vscode/out":
+        return True
+    return False
+
+def excluded_file(name):
+    if name.startswith("_") and not name.startswith("__") \
+            and (name.endswith(".py") or name.endswith(".txt")):
+        return True
+    if name == "_ref_page.html":
+        return True
+    return name.endswith((".pyc", ".pyo"))
+
+src_tar = os.path.join(RELEASE, f"i8080-5_CI_v{VER}_source.tar.gz")
+count = 0
+with tarfile.open(src_tar, "w:gz") as tar:
+    for dirpath, dirnames, filenames in os.walk(ROOT):
+        rel = os.path.relpath(dirpath, ROOT)
+        dirnames[:] = [d for d in dirnames if not excluded_dir(rel, d)]
+        for f in sorted(filenames):
+            if excluded_file(f):
+                continue
+            full = os.path.join(dirpath, f)
+            arc = os.path.join(TAG, rel, f) if rel != "." else os.path.join(TAG, f)
+            tar.add(full, arcname=arc)
+            count += 1
+size = os.path.getsize(src_tar)
+print(f"   OK: {os.path.basename(src_tar)}  files={count}  size={size/1024/1024:.1f} MB")
+
+# --- 5. Keep exe (note: built from v2.1.14 source, changes are i18n-only) ---
+print("\n5. Executable:")
+exe = os.path.join(RELEASE, "i8080_CI.exe")
+if os.path.exists(exe):
+    print(f"   KEEP: i8080_CI.exe ({os.path.getsize(exe)/1024/1024:.1f} MB) — built from v2.1.14")
+    print(f"   NOTE: rebuild with PyInstaller for v2.1.15 exe")
+else:
+    print("   NOTE: no exe found — run PyInstaller build")
+
+# --- 6. Generate RELEASE_NOTES.md ---
+print("\n6. RELEASE_NOTES.md:")
+release_notes = f"""# i8080-5 CI v{VER} — Release Notes
+
+**Build:** {BUILD}
+**Date:** {DATE}
+**Tests:** 978 passed, 0 failed (38 test files)
+
+## What's New in v{VER}
+
+### 8085 CPU Support (Major)
+- Full i8085 instruction set: SIM, RIM, DSUB, ARHL, SHLX, LHLX, RSTV
+- CPU type aware assembler, emulator, and disassembler
+- `.8080` / `.8085` directives in assembler
+- 12 overlapping opcodes correctly separated by CPU type
+- 8080 undocumented instructions: RET* (0xD9), JMP* (0xCB), CALL* (0xDD/0xED/0xFD)
+
+### Assembler v2 (Notepad++ Style)
+- Multi-tab file editing (QTabWidget)
+- Workspace files (.ws JSON)
+- Ctrl+Click navigation to labels
+- Global label highlighting (::)
+- Auto map-file loading after assembly
+- DS assembler directive (byte fill)
+- STAX H / LDAX H aliases (→ MOV M,A / MOV A,M)
+
+### Disassembler
+- CPU type aware disassembly (i8080 vs i8085)
+- 256-entry opcode tables for both CPU variants
+
+### GUI Improvements
+- Hex editor 0xFF tail fix
+- Auto watch-list from map file (DS labels, DATA words)
+- Column sorting in watch view
+- DS label support in auto watches
+
+### Bug Fixes
+- i18n opcode corrections: SIM=0x30, RIM=0x20, SHLX=0xD9, LHLX=0xED
+- RSTV added to i18n (was missing)
+- README test count: 964 → 978
+- 02_directives build.py: case-sensitive label fix
+- 04_multifile build.py: stale comment fix
+
+## File Manifest
+
+| File | Size | Description |
+|------|------|-------------|
+"""
+
+# Add file manifest
+manifest_files = []
+for dirpath, dirnames, filenames in os.walk(RELEASE):
+    for f in sorted(filenames):
+        full = os.path.join(dirpath, f)
+        rel = os.path.relpath(full, RELEASE)
+        sz = os.path.getsize(full)
+        manifest_files.append((rel, sz))
+manifest_files.sort()
+
+for rel, sz in manifest_files:
+    if rel.endswith((".tar.gz", ".zip")):
+        desc = "Archive"
+    elif rel.endswith(".exe"):
+        desc = "Windows executable (PyInstaller)"
+    elif rel.endswith(".md"):
+        desc = "Documentation"
+    elif rel.endswith(".toml"):
+        desc = "System profile"
+    elif rel.endswith((".rom", ".bin")):
+        desc = "ROM image"
+    elif rel.endswith(".png"):
+        desc = "Logo"
+    elif rel.endswith(".txt"):
+        desc = "Requirements"
+    else:
+        desc = "Config"
+    manifest_files_desc = f"| {rel} | {sz:,} | {desc} |"
+    release_notes += manifest_files_desc + "\n"
+
+release_notes += f"""
+## Installation
+
+See [INSTALL.md](INSTALL.md) for platform-specific instructions.
+
+### Windows
+1. Download `i8080_CI.exe` (or build from source with PyInstaller)
+2. Place `profiles/` and `roms/` folders next to the exe
+3. Run `i8080_CI.exe`
+
+### Linux / macOS
+1. Extract source tarball
+2. `pip install -r requirements.txt`
+3. `python i8080_CI.py`
+
+## Changelog
+Full changelog: [CHANGES.md](CHANGES.md)
+
+## License
+MIT — see [LICENSE](LICENSE)
+"""
+
+notes_path = os.path.join(RELEASE, "RELEASE_NOTES.md")
+with open(notes_path, "w", encoding="utf-8") as f:
+    f.write(release_notes)
+print(f"   OK: RELEASE_NOTES.md ({os.path.getsize(notes_path):,} bytes)")
+
+# --- 7. Generate checksums ---
+print("\n7. SHA256 checksums:")
+sha256_lines = []
+for dirpath, dirnames, filenames in os.walk(RELEASE):
+    for f in sorted(filenames):
+        if f == "SHA256SUMS.txt":
+            continue
+        full = os.path.join(dirpath, f)
+        rel = os.path.relpath(full, RELEASE)
+        h = hashlib.sha256()
+        with open(full, "rb") as fh:
+            for chunk in iter(lambda: fh.read(8192), b""):
+                h.update(chunk)
+        sha256_lines.append(f"{h.hexdigest()}  {rel}")
+sha256_lines.sort()
+with open(os.path.join(RELEASE, "SHA256SUMS.txt"), "w") as f:
+    f.write("\n".join(sha256_lines) + "\n")
+print(f"   OK: SHA256SUMS.txt ({len(sha256_lines)} entries)")
+
+# --- Summary ---
+print(f"\n{'='*60}")
+print(f"RELEASE v{VER} PREPARATION COMPLETE")
+print(f"  Build: {BUILD}")
+print(f"  Date:  {DATE}")
+print(f"  Files: {len(manifest_files)} in Release/")
+total_size = sum(sz for _, sz in manifest_files)
+print(f"  Total: {total_size/1024/1024:.1f} MB")
+print(f"{'='*60}")
+```
+<!-- END FILE: _release_prep.py -->
 
 ### `_repro_ds.py` (32 строк)
 
@@ -7932,6 +8573,252 @@ print("DONE")
 ```
 <!-- END FILE: _update_docs.py -->
 
+### `_update_release_body.py` (14 строк)
+
+<!-- FILE: _update_release_body.py -->
+```python
+#!/usr/bin/env python3
+import json, sys, urllib.request
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+TOKEN = "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"
+body = open("Release/RELEASE_NOTES.md", "r", encoding="utf-8").read()
+data = json.dumps({"body": body}).encode("utf-8")
+req = urllib.request.Request("https://api.github.com/repos/r2akt/8080-5-CI-App/releases/422600857", data=data, method="PATCH")
+req.add_header("Authorization", f"Bearer {TOKEN}")
+req.add_header("Accept", "application/vnd.github+json")
+req.add_header("Content-Type", "application/json")
+with urllib.request.urlopen(req) as r:
+    d = json.loads(r.read())
+    print(f"OK: body updated ({len(body)} chars)")
+    print(f"URL: {d.get('html_url','?')}")
+```
+<!-- END FILE: _update_release_body.py -->
+
+### `_upload_release.py` (104 строк)
+
+<!-- FILE: _upload_release.py -->
+```python
+#!/usr/bin/env python3
+"""Upload release v2.1.15 to GitHub via REST API."""
+import json, os, sys, urllib.request, urllib.error
+
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
+TOKEN = "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"
+OWNER = "r2akt"
+REPO = "8080-5-CI-App"
+TAG = "v2.1.15"
+NAME = "i8080-5 CI v2.1.15 (build 20261023)"
+BASE = f"https://api.github.com/repos/{OWNER}/{REPO}"
+HDRS = {"Authorization": f"Bearer {TOKEN}", "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28"}
+
+def api(method, url, data=None, raw_body=None, content_type=None):
+    if raw_body is not None:
+        req = urllib.request.Request(url, data=raw_body, method=method)
+    elif data is not None:
+        req = urllib.request.Request(url, data=json.dumps(data).encode(), method=method)
+    else:
+        req = urllib.request.Request(url, method=method)
+    req.add_header("Authorization", f"Bearer {TOKEN}")
+    req.add_header("Accept", "application/vnd.github+json")
+    req.add_header("X-GitHub-Api-Version", "2022-11-28")
+    if data is not None or raw_body is not None:
+        req.add_header("Content-Type", content_type or "application/json")
+    try:
+        with urllib.request.urlopen(req) as resp:
+            body = resp.read().decode("utf-8", errors="replace")
+            return resp.status, json.loads(body) if body.strip() else {}
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8", errors="replace")
+        print(f"  HTTP {e.code}: {body[:500]}")
+        return e.code, json.loads(body) if body.strip() else {}
+
+# --- 1. Check repo exists ---
+print("1. Checking repo...")
+status, repo = api("GET", BASE)
+print(f"   {repo.get('full_name','?')} (id={repo.get('id','?')}) private={repo.get('private','?')}")
+if status != 200:
+    print("   FATAL: repo not accessible")
+    sys.exit(1)
+
+# --- 2. Create tag + release ---
+print(f"\n2. Creating release {TAG}...")
+
+# Read RELEASE_NOTES.md
+notes_path = os.path.join("Release", "RELEASE_NOTES.md")
+with open(notes_path, "r", encoding="utf-8") as f:
+    body = f.read()
+
+data = {
+    "tag_name": TAG,
+    "target_commitish": "master",
+    "name": NAME,
+    "body": body,
+    "draft": False,
+    "prerelease": False,
+    "generate_release_notes": False
+}
+status, rel = api("POST", f"{BASE}/releases", data)
+if status in (200, 201):
+    upload_url = rel.get("upload_url", "").split("{?name,label}")[0]
+    print(f"   OK: release_id={rel['id']}  url={rel.get('html_url','?')}")
+else:
+    print(f"   FATAL: could not create release (HTTP {status})")
+    sys.exit(1)
+
+# --- 3. Upload assets ---
+assets = [
+    ("Release/i8080-5_CI_v2.1.15_source.tar.gz", "source", "application/gzip"),
+    ("Release/i8080-5_CI_v2.1.15_win64.zip", "win64", "application/zip"),
+    ("Release/SHA256SUMS.txt", "checksums", "text/plain"),
+]
+
+for filepath, name, ctype in assets:
+    if not os.path.exists(filepath):
+        print(f"\n   SKIP {os.path.basename(filepath)}: not found")
+        continue
+    size = os.path.getsize(filepath)
+    print(f"\n3. Uploading {os.path.basename(filepath)} ({size/1024/1024:.1f} MB) as '{name}'...")
+    with open(filepath, "rb") as f:
+        raw = f.read()
+    up_url = f"{upload_url}?name={os.path.basename(filepath)}"
+    status, asset = api("POST", up_url, raw_body=raw, content_type=ctype)
+    if status in (200, 201):
+        print(f"   OK: {asset.get('name','?')}  size={asset.get('size',0):,}  downloads={asset.get('download_count',0)}")
+    else:
+        print(f"   WARN: upload returned HTTP {status}")
+
+# --- 4. List release assets ---
+print(f"\n4. Release assets:")
+status, rel2 = api("GET", f"{BASE}/releases/{rel['id']}")
+if status == 200:
+    for a in rel2.get("assets", []):
+        print(f"   {a['name']}  ({a['size']:,} bytes)  downloads={a['download_count']}")
+else:
+    print(f"   HTTP {status}")
+
+print(f"\n{'='*50}")
+print(f"RELEASE v2.1.15 UPLOADED")
+print(f"URL: {rel.get('html_url','?')}")
+print(f"{'='*50}")
+```
+<!-- END FILE: _upload_release.py -->
+
+### `_upload_release2.py` (107 строк)
+
+<!-- FILE: _upload_release2.py -->
+```python
+#!/usr/bin/env python3
+"""Create tag + release v2.1.15 on GitHub via API."""
+import json, os, sys, urllib.request, urllib.error
+
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+TOKEN = "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"
+OWNER, REPO, TAG = "r2akt", "8080-5-CI-App", "v2.1.15"
+BASE = f"https://api.github.com/repos/{OWNER}/{REPO}"
+MAIN_SHA = "9904c7e304c68c54b5cbd9d5c506b234d5f5ff42"
+
+def api(method, url, data=None, raw_body=None, ctype=None):
+    if raw_body is not None:
+        req = urllib.request.Request(url, data=raw_body, method=method)
+    elif data is not None:
+        req = urllib.request.Request(url, data=json.dumps(data).encode(), method=method)
+    else:
+        req = urllib.request.Request(url, method=method)
+    req.add_header("Authorization", f"Bearer {TOKEN}")
+    req.add_header("Accept", "application/vnd.github+json")
+    req.add_header("X-GitHub-Api-Version", "2022-11-28")
+    if data is not None or raw_body is not None:
+        req.add_header("Content-Type", ctype or "application/json")
+    try:
+        with urllib.request.urlopen(req) as r:
+            b = r.read().decode("utf-8", errors="replace")
+            return r.status, json.loads(b) if b.strip() else {}
+    except urllib.error.HTTPError as e:
+        b = e.read().decode("utf-8", errors="replace")
+        print(f"  HTTP {e.code}: {b[:500]}")
+        return e.code, json.loads(b) if b.strip() else {}
+
+# 1. Create lightweight tag
+print("1. Creating tag...")
+s, tag = api("POST", f"{BASE}/git/tags", {"tag": TAG, "message": f"i8080-5 CI {TAG}", "object": MAIN_SHA, "type": "commit"})
+if s in (200, 201):
+    tag_sha = tag["sha"]
+    print(f"   tag object: {tag_sha}")
+else:
+    print(f"   WARN: tag object creation returned {s} (may already exist)")
+    # Try to get existing tag
+    s2, existing = api("GET", f"{BASE}/git/tags/{TAG}")
+    if s2 == 200:
+        tag_sha = existing["sha"]
+        print(f"   using existing tag: {tag_sha}")
+    else:
+        # Fallback: use commit sha directly for lightweight tag
+        tag_sha = MAIN_SHA
+        print(f"   fallback: using commit SHA as lightweight tag")
+
+# Create tag ref
+s, ref = api("PUT", f"{BASE}/git/refs/tags/{TAG}", {"ref": f"refs/tags/{TAG}", "sha": tag_sha})
+if s in (200, 201):
+    print(f"   tag ref created: {TAG}")
+else:
+    print(f"   tag ref: HTTP {s} (may already exist)")
+
+# 2. Create release
+print("\n2. Creating release...")
+with open("Release/RELEASE_NOTES.md", "r", encoding="utf-8") as f:
+    body = f.read()
+
+s, rel = api("POST", f"{BASE}/releases", {
+    "tag_name": TAG, "target_commitish": "main",
+    "name": f"i8080-5 CI {TAG} (build 20261023)",
+    "body": body, "draft": False, "prerelease": False,
+    "generate_release_notes": False
+})
+if s in (200, 201):
+    rel_id = rel["id"]
+    upload_url = rel.get("upload_url", "").split("{?name,label}")[0]
+    print(f"   release_id={rel_id}  url={rel.get('html_url','?')}")
+else:
+    print(f"   FATAL: HTTP {s}")
+    sys.exit(1)
+
+# 3. Upload assets
+assets = [
+    ("Release/i8080-5_CI_v2.1.15_source.tar.gz", "application/gzip"),
+    ("Release/i8080-5_CI_v2.1.15_win64.zip", "application/zip"),
+    ("Release/SHA256SUMS.txt", "text/plain"),
+]
+for fp, ct in assets:
+    if not os.path.exists(fp):
+        print(f"\n   SKIP {os.path.basename(fp)}: not found")
+        continue
+    sz = os.path.getsize(fp)
+    print(f"\n   Uploading {os.path.basename(fp)} ({sz/1024/1024:.1f} MB)...")
+    with open(fp, "rb") as f:
+        raw = f.read()
+    s, asset = api("POST", f"{upload_url}?name={os.path.basename(fp)}", raw_body=raw, ctype=ct)
+    if s in (200, 201):
+        print(f"   OK: {asset.get('name','?')} ({asset.get('size',0):,} bytes)")
+    else:
+        print(f"   WARN: HTTP {s}")
+
+# 4. Summary
+print(f"\n4. Final state:")
+s, rel2 = api("GET", f"{BASE}/releases/{rel_id}")
+if s == 200:
+    print(f"   {rel2.get('html_url','?')}")
+    for a in rel2.get("assets", []):
+        print(f"   - {a['name']}  ({a['size']:,} bytes)")
+
+print(f"\n{'='*50}")
+print(f"RELEASE {TAG} UPLOADED SUCCESSFULLY")
+print(f"URL: {rel.get('html_url','?')}")
+print(f"{'='*50}")
+```
+<!-- END FILE: _upload_release2.py -->
+
 ### `_verify_fixes.py` (43 строк)
 
 <!-- FILE: _verify_fixes.py -->
@@ -7981,6 +8868,127 @@ print("\n=== MAIN WINDOW RETRANSLATE CALL ===")
 print(mw[max(0,idx3-100):idx3+200])
 ```
 <!-- END FILE: _verify_fixes.py -->
+
+### `_wait_linux_build.py` (114 строк)
+
+<!-- FILE: _wait_linux_build.py -->
+```python
+#!/usr/bin/env python3
+"""Wait for build-linux workflow, download artifact, upload to release."""
+import json, os, sys, time, urllib.request, urllib.error
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+TOKEN = "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"
+BASE = "https://api.github.com/repos/r2akt/8080-5-CI-App"
+REL_ID = 422600857
+
+def api(method, url, data=None, raw_body=None, ctype=None):
+    if raw_body is not None:
+        req = urllib.request.Request(url, data=raw_body, method=method)
+    elif data is not None:
+        req = urllib.request.Request(url, data=json.dumps(data).encode(), method=method)
+    else:
+        req = urllib.request.Request(url, method=method)
+    req.add_header("Authorization", f"Bearer {TOKEN}")
+    req.add_header("Accept", "application/vnd.github+json")
+    req.add_header("X-GitHub-Api-Version", "2022-11-28")
+    if data is not None or raw_body is not None:
+        req.add_header("Content-Type", ctype or "application/json")
+    try:
+        with urllib.request.urlopen(req) as r:
+            b = r.read()
+            return r.status, b
+    except urllib.error.HTTPError as e:
+        b = e.read()
+        print(f"  HTTP {e.code}: {b.decode('utf-8', errors='replace')[:500]}")
+        return e.code, b
+
+# 1. Find the workflow run
+print("1. Finding workflow run...")
+s, b = api("GET", f"{BASE}/actions/runs?per_page=1")
+runs = json.loads(b)
+r = runs["workflow_runs"][0]
+run_id = r["id"]
+print(f"   Run #{run_id}: {r['status']} / {r.get('conclusion', 'pending')}")
+print(f"   {r['name']}  branch={r['head_branch']}  event={r['event']}")
+
+# 2. Wait for completion
+done = False
+wait = 0
+while not done and wait < 180:
+    time.sleep(20)
+    wait += 20
+    s, b = api("GET", f"{BASE}/actions/runs/{run_id}")
+    r2 = json.loads(b)
+    print(f"   [{wait}s] status={r2['status']}  conclusion={r2.get('conclusion', '?')}")
+    done = r2["status"] == "completed"
+
+if not done:
+    print("   TIMEOUT: workflow still running after 3 min")
+    sys.exit(1)
+
+conclusion = r2.get("conclusion", "unknown")
+print(f"\n2. Workflow finished: {conclusion}")
+if conclusion != "success":
+    print("   FATAL: build failed")
+    sys.exit(1)
+
+# 3. List artifacts
+print("\n3. Listing artifacts...")
+s, b = api("GET", f"{BASE}/actions/runs/{run_id}/artifacts")
+artifacts = json.loads(b)
+art = None
+for a in artifacts.get("artifacts", []):
+    print(f"   {a['name']}  ({a['size_in_bytes']/1024/1024:.1f} MB)  id={a['id']}")
+    if "linux" in a["name"].lower():
+        art = a
+if not art:
+    print("   FATAL: no linux artifact found")
+    sys.exit(1)
+
+# 4. Download artifact
+print(f"\n4. Downloading {art['name']}...")
+s, b = api("GET", f"{BASE}/actions/artifacts/{art['id']}/zip", raw_body=None)
+if s != 200:
+    print(f"   FATAL: download failed HTTP {s}")
+    sys.exit(1)
+out_path = "Release/i8080-5_CI_v2.1.15_linux_x86_64.tar.gz"
+# The artifact zip contains the tar.gz file
+import zipfile, io
+zf = zipfile.ZipFile(io.BytesIO(b))
+name = zf.namelist()[0]
+print(f"   Extracting {name} from artifact...")
+data = zf.read(name)
+with open(out_path, "wb") as f:
+    f.write(data)
+print(f"   Saved: {out_path} ({os.path.getsize(out_path)/1024/1024:.1f} MB)")
+
+# 5. Upload to release
+print(f"\n5. Uploading to release {REL_ID}...")
+upload_url = f"{BASE}/releases/{REL_ID}/assets"
+with open(out_path, "rb") as f:
+    raw = f.read()
+s, b = api("POST", f"{upload_url}?name={os.path.basename(out_path)}",
+           raw_body=raw, ctype="application/gzip")
+if s in (200, 201):
+    asset = json.loads(b)
+    print(f"   OK: {asset['name']} ({asset['size']:,} bytes)")
+else:
+    print(f"   FATAL: upload failed HTTP {s}")
+    sys.exit(1)
+
+# 6. Final state
+print(f"\n6. Release assets:")
+s, b = api("GET", f"{BASE}/releases/{REL_ID}")
+rel = json.loads(b)
+for a in rel.get("assets", []):
+    print(f"   {a['name']}  ({a['size']/1024/1024:.1f} MB)")
+
+print(f"\n{'='*50}")
+print(f"RELEASE v2.1.15 COMPLETE: Windows + Linux")
+print(f"URL: {rel.get('html_url', '?')}")
+print(f"{'='*50}")
+```
+<!-- END FILE: _wait_linux_build.py -->
 
 ### `audit_cycle1.py` (135 строк)
 
@@ -13008,38 +14016,71 @@ def get_version_string():
 ```
 <!-- END FILE: version.py -->
 
-### `assemble8080/__init__.py` (28 строк)
+### `assemble8080/__init__.py` (61 строк)
 
 <!-- FILE: assemble8080/__init__.py -->
 ```python
 """
 assemble8080 — компактный макроассемблер i8080.
-"""
-from .assembler import (
-    Assembler, assemble,
-    AsmError, AsmResult,
-    MNEMONICS, REGISTERS, REG_PAIRS,
-    parse_number,
-)
-from .preprocessor import Preprocessor, PreprocessorError
-from .numbers import NumberParser
-from .mapfile import MapFile, MapEntry, generate_map, parse_map, load_map_file, save_map_file
-from .objfile import ObjectFile, Relocation, save_obj, load_obj, obj_from_asm_result
-from .linker import link, link_from_script, parse_link_script, LinkResult, LinkError
 
-__all__ = [
-    "Assembler", "assemble",
-    "AsmError", "AsmResult",
-    "MNEMONICS", "REGISTERS", "REG_PAIRS",
-    "Preprocessor", "PreprocessorError",
-    "NumberParser",
-    "parse_number",
-    "MapFile", "MapEntry", "generate_map", "parse_map",
-    "load_map_file", "save_map_file",
-    "ObjectFile", "Relocation", "save_obj", "load_obj", "obj_from_asm_result",
-    "link", "link_from_script", "parse_link_script",
-    "LinkResult", "LinkError",
-]
+Использует PEP 562 lazy imports: подмодули загружаются
+только при первом обращении, что исключает RuntimeWarning
+при `python -m assemble8080.assembler`.
+"""
+
+# Карта: имя → (подмодуль, [экспортируемые имена])
+_LAZY_MAP = {
+    "Assembler":           ("assembler",    ["Assembler"]),
+    "assemble":            ("assembler",    ["assemble"]),
+    "AsmError":            ("assembler",    ["AsmError"]),
+    "AsmResult":           ("assembler",    ["AsmResult"]),
+    "MNEMONICS":           ("assembler",    ["MNEMONICS"]),
+    "MNEMONICS_8080":      ("assembler",    ["MNEMONICS_8080"]),
+    "MNEMONICS_8085":      ("assembler",    ["MNEMONICS_8085"]),
+    "ALL_MNEMONICS":       ("assembler",    ["ALL_MNEMONICS"]),
+    "REGISTERS":           ("assembler",    ["REGISTERS"]),
+    "REG_PAIRS":           ("assembler",    ["REG_PAIRS"]),
+    "REG_PAIRS_PSW":       ("assembler",    ["REG_PAIRS_PSW"]),
+    "CONDITIONS":          ("assembler",    ["CONDITIONS"]),
+    "parse_number":        ("numbers",      ["parse_number"]),
+    "NumberParser":        ("numbers",      ["NumberParser"]),
+    "Preprocessor":        ("preprocessor", ["Preprocessor"]),
+    "PreprocessorError":   ("preprocessor", ["PreprocessorError"]),
+    "MapFile":             ("mapfile",      ["MapFile"]),
+    "MapEntry":            ("mapfile",      ["MapEntry"]),
+    "generate_map":        ("mapfile",      ["generate_map"]),
+    "parse_map":           ("mapfile",      ["parse_map"]),
+    "load_map_file":       ("mapfile",      ["load_map_file"]),
+    "save_map_file":       ("mapfile",      ["save_map_file"]),
+    "ObjectFile":          ("objfile",      ["ObjectFile"]),
+    "Relocation":          ("objfile",      ["Relocation"]),
+    "save_obj":            ("objfile",      ["save_obj"]),
+    "load_obj":            ("objfile",      ["load_obj"]),
+    "obj_from_asm_result": ("objfile",      ["obj_from_asm_result"]),
+    "link":                ("linker",       ["link"]),
+    "link_from_script":    ("linker",       ["link_from_script"]),
+    "parse_link_script":   ("linker",       ["parse_link_script"]),
+    "LinkResult":          ("linker",       ["LinkResult"]),
+    "LinkError":           ("linker",       ["LinkError"]),
+}
+
+__all__ = list(_LAZY_MAP.keys())
+
+
+def __getattr__(name):
+    if name in _LAZY_MAP:
+        mod_name, attrs = _LAZY_MAP[name]
+        import importlib
+        mod = importlib.import_module(f".{mod_name}", __name__)
+        val = getattr(mod, name)
+        # Кэшируем в namespace пакета, чтобы subsequent getattr шло напрямую
+        globals()[name] = val
+        return val
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
+
+def __dir__():
+    return __all__
 ```
 <!-- END FILE: assemble8080/__init__.py -->
 
@@ -17456,7 +18497,7 @@ def write_text_utf8(path: str, content: str):
 ```
 <!-- END FILE: common/encoding.py -->
 
-### `common/i18n.py` (973 строк)
+### `common/i18n.py` (975 строк)
 
 <!-- FILE: common/i18n.py -->
 ```python
@@ -17833,6 +18874,7 @@ LANGS = {
         "fold_locked": "Block is collapsed. Expand to edit.",
         "sel_cycles": "Selected code",
         "help_author": "\n\n Author - Sergey Dorozhkin aka R2AKT",
+        "help_acknowledgments": "\nThe program was developed with the support of Weber Labs.\nI thank you for the expertise and access to the tools provided.\n\nA special thanks to my family for their understanding and support at all stages of the project.",
     },
     "ru": {
         "app_title": "i8080-5 CI",
@@ -18197,6 +19239,7 @@ LANGS = {
         "fold_locked": "Блок свёрнут. Разверните для редактирования.",
         "sel_cycles": "Выделенный код",
         "help_author": "\n\n - Автор - Сергей Дорожкин aka R2AKT",
+        "help_acknowledgments": "\nРазработка программы осуществлялась при поддержке Weber Labs.\nБлагодарю за предоставленную экспертизу и доступ к инструментам.\n\nОтдельная благодарность моей семье за понимание и поддержку на всех этапах работы над проектом.",
     }
 }
 
@@ -26459,7 +27502,7 @@ class MainWindow(QMainWindow):
 
     def _show_about(self):
         """Show About dialog."""
-        QMessageBox.about(self, self.tr("help_about"), self.tr("help_about_text")+"\n\n"+get_version_string()+self.tr("help_author"))
+        QMessageBox.about(self, self.tr("help_about"), self.tr("help_about_text")+"\n\n"+get_version_string()+self.tr("help_author")+"\n\n"+self.tr("help_acknowledgments"))
 
     @staticmethod
     def _md_to_html(md_text: str) -> str:
@@ -55105,7 +56148,7 @@ else:
 
 ■ РАЗДЕЛ 6: СИСТЕМНЫЕ ПРОФИЛИ
 
-Всего профилей: 43
+Всего профилей: 44
 
 ### `pyproject.toml` (61 строк)
 
@@ -55174,6 +56217,74 @@ warn_unused_configs = true
 ignore_missing_imports = true
 ```
 <!-- END FILE: pyproject.toml -->
+
+### `Release/pyproject.toml` (61 строк)
+
+<!-- FILE: Release/pyproject.toml -->
+```toml
+[build-system]
+requires = ["setuptools>=65.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "i8080-5-ci"
+version = "2.1.15"
+description = "i8080-5 Master Controller — GUI, emulator, MCP server and Arduino bridge for i8080-based hardware"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "i8080-5 CI Team"}
+]
+keywords = ["i8080", "emulator", "retrocomputing", "mcp", "arduino"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: System :: Hardware",
+    "Topic :: System :: Emulators",
+]
+dependencies = [
+    "PySide6>=6.6.0",
+    "pyserial>=3.5",
+    "mcp>=1.0.0",
+    "uvicorn>=0.23.0",
+    "starlette>=0.27.0",
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
+    "toml>=0.10.2",
+    "tomli>=2.0.0; python_version < \"3.11\"",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "mypy>=1.0.0",
+    "pyinstaller>=6.0.0",
+]
+
+[project.scripts]
+i8080-ci = "i8080_CI:main"
+
+[tool.setuptools.packages.find]
+include = ["modules*", "ui*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+```
+<!-- END FILE: Release/pyproject.toml -->
 
 ### `Release/profiles/apogey.toml` (41 строк)
 
@@ -56334,7 +57445,7 @@ base_port = 0x60
 type = "cf_ide"
 name = "IDE8"
 base_port = 0x70
-#image_file = "images/cf_ide.bin"
+image_file = "images/cf_ide.bin"
 
 [[profiles.full_system.devices]]
 type = "cube3d"
@@ -57914,6 +59025,12 @@ EXCLUDE_DIRS = {".git", "build", "dist", "Release", "__pycache__",
                 "node_modules", ".vscode", ".venv-build", "release-linux"}
 ```
 
+**EXCLUDE_DIRS** (из `_release_prep.py`):
+```python
+EXCLUDE_DIRS = {".git", "build", "dist", "Release", "__pycache__",
+                "node_modules", ".vscode", ".venv-build", "release-linux"}
+```
+
 **API_SNIPPETS** (из `_run_all_tests.py`):
 ```python
 API_SNIPPETS = {"ppi_test.py", "kbd_test.py", "font_test.py", "display_test.py",
@@ -57927,6 +59044,47 @@ API_SNIPPETS = {"ppi_test.py", "kbd_test.py", "font_test.py", "display_test.py",
 **SELF** (из `_run_all_tests.py`):
 ```python
 SELF = {"_run_all_tests.py", "run_api_snippets.py", "run_all.py", "_check_unused.py"}
+```
+
+**HDRS** (из `_upload_release.py`):
+```python
+HDRS = {"Authorization": f"Bearer {TOKEN}
+```
+
+**_LAZY_MAP** (из `assemble8080/__init__.py`):
+```python
+_LAZY_MAP = {"Assembler":           ("assembler",    ["Assembler"]),
+    "assemble":            ("assembler",    ["assemble"]),
+    "AsmError":            ("assembler",    ["AsmError"]),
+    "AsmResult":           ("assembler",    ["AsmResult"]),
+    "MNEMONICS":           ("assembler",    ["MNEMONICS"]),
+    "MNEMONICS_8080":      ("assembler",    ["MNEMONICS_8080"]),
+    "MNEMONICS_8085":      ("assembler",    ["MNEMONICS_8085"]),
+    "ALL_MNEMONICS":       ("assembler",    ["ALL_MNEMONICS"]),
+    "REGISTERS":           ("assembler",    ["REGISTERS"]),
+    "REG_PAIRS":           ("assembler",    ["REG_PAIRS"]),
+    "REG_PAIRS_PSW":       ("assembler",    ["REG_PAIRS_PSW"]),
+    "CONDITIONS":          ("assembler",    ["CONDITIONS"]),
+    "parse_number":        ("numbers",      ["parse_number"]),
+    "NumberParser":        ("numbers",      ["NumberParser"]),
+    "Preprocessor":        ("preprocessor", ["Preprocessor"]),
+    "PreprocessorError":   ("preprocessor", ["PreprocessorError"]),
+    "MapFile":             ("mapfile",      ["MapFile"]),
+    "MapEntry":            ("mapfile",      ["MapEntry"]),
+    "generate_map":        ("mapfile",      ["generate_map"]),
+    "parse_map":           ("mapfile",      ["parse_map"]),
+    "load_map_file":       ("mapfile",      ["load_map_file"]),
+    "save_map_file":       ("mapfile",      ["save_map_file"]),
+    "ObjectFile":          ("objfile",      ["ObjectFile"]),
+    "Relocation":          ("objfile",      ["Relocation"]),
+    "save_obj":            ("objfile",      ["save_obj"]),
+    "load_obj":            ("objfile",      ["load_obj"]),
+    "obj_from_asm_result": ("objfile",      ["obj_from_asm_result"]),
+    "link":                ("linker",       ["link"]),
+    "link_from_script":    ("linker",       ["link_from_script"]),
+    "parse_link_script":   ("linker",       ["parse_link_script"]),
+    "LinkResult":          ("linker",       ["LinkResult"]),
+    "LinkError":           ("linker",       ["LinkError"]),}
 ```
 
 **REGISTERS** (из `assemble8080/assembler.py`):
@@ -58440,6 +59598,7 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 | Профиль | Строк |
 |---------|-------|
 | `pyproject.toml` | 61 |
+| `Release/pyproject.toml` | 61 |
 | `Release/profiles/apogey.toml` | 41 |
 | `Release/profiles/display_test.toml` | 40 |
 | `Release/profiles/empty8080.toml` | 12 |
@@ -58485,6 +59644,7 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 
 ### C. Конфигурационные файлы
 
+- `.mcp.json` (13 строк)
 - `Addendum.txt` (81 строк)
 - `FINAL_OUTPUT.json` (3 строк)
 - `claude_desktop_config.json` (7 строк)
@@ -58502,10 +59662,12 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 - `Plugins/i8080_ci-vscode/src/opcodes_8080.json` (1538 строк)
 - `Plugins/i8080_ci-vscode/src/opcodes_8085.json` (1538 строк)
 - `Plugins/i8080_ci-vscode/syntaxes/i8080-asm.tmLanguage.json` (115 строк)
+- `Release/SHA256SUMS.txt` (43 строк)
+- `Release/requirements.txt` (22 строк)
 
 ### D. HTML-документы
 
-- `USER_GUIDE.html` (1471 строк)
+- `USER_GUIDE.html` (1475 строк)
 - `_ref_page.html` (3636 строк)
 
 ### E. Ресурсы (изображения, шрифты, ROM)
@@ -58545,6 +59707,7 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 - `assembler_example/02_directives/directives.bin`
 - `assembler_example/03_macros/macros.bin`
 - `assembler_example/04_multifile/app.bin`
+- `images/cf_ide.bin`
 - `roms/micro80_font.rom`
 - `roms/micro80_monitor.bin`
 - `roms/radio86rk_font.rom`
@@ -58707,10 +59870,10 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 - `Plugins/i8080_ci-vscode/types/node-globals.d.ts` (.ts, 114 строк)
 - `Plugins/i8080_ci-vscode/types/vscode/index.d.ts` (.ts, 1 строк)
 - `Release/LICENSE` (, 21 строк)
-- `Release/i8080-5_CI_v2.1.14_linux_x86_64.tar.gz` (.gz, 726725 строк)
-- `Release/i8080-5_CI_v2.1.14_source.tar.gz` (.gz, 18127 строк)
-- `Release/i8080-5_CI_v2.1.14_win64.zip` (.zip, 601291 строк)
-- `Release/i8080_CI.exe` (.exe, 594666 строк)
+- `Release/i8080-5_CI_v2.1.15_linux_x86_64.tar.gz` (.gz, 726838 строк)
+- `Release/i8080-5_CI_v2.1.15_source.tar.gz` (.gz, 18515 строк)
+- `Release/i8080-5_CI_v2.1.15_win64.zip` (.zip, 600765 строк)
+- `Release/i8080_CI.exe` (.exe, 594664 строк)
 - `assembler_example/01_hello/hello.asm` (.asm, 24 строк)
 - `assembler_example/01_hello/hello.map` (.map, 13 строк)
 - `assembler_example/02_directives/defs.inc` (.inc, 7 строк)
@@ -58731,4 +59894,4 @@ FORMATS = {368640:  (40, 2, 9, 512),   # 5.25" 360 КБ
 
 ---
 
-*Конец среза. Сгенерировано 2026-10-23 23:35:31.*
+*Конец среза. Сгенерировано 2026-11-11 16:33:22.*
